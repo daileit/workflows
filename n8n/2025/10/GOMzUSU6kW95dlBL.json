@@ -362,7 +362,7 @@
           "interval": [
             {
               "triggerAtHour": 13,
-              "triggerAtMinute": 20
+              "triggerAtMinute": 25
             }
           ]
         }
@@ -402,6 +402,6 @@
   },
   "tags": [],
   "triggerCount": 1,
-  "updatedAt": "2025-10-31T12:41:06.617Z",
-  "versionId": "9379a66a-fa02-4379-a5aa-c2cbbb562529"
+  "updatedAt": "2025-10-31T20:59:42.620Z",
+  "versionId": "c2bba913-a3b5-46e6-af1b-37972b715db4"
 }
