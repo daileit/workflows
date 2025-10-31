@@ -556,7 +556,7 @@
         },
         "filePath": "={{ $('Config').item.json.repo_path }}{{ $json.subPath }}{{$('Execute Workflow Trigger').first().json.id}}.json",
         "fileContent": "={{$('isDiffOrNew').item.json[\"n8n_data_stringy\"]}}",
-        "commitMessage": "=chore: {{$('Execute Workflow Trigger').first().json.name}} ({{$json.github_status}})"
+        "commitMessage": "={{$('Execute Workflow Trigger').first().json.isArchived === \"true\" ? \"archived\" : \"chore\" }}({{$('Execute Workflow Trigger').first().json.name}}): {{$json.github_status}} {{$('Execute Workflow Trigger').first().json.active === \"true\" ? \"active\" : \"\" }}"
       },
       "id": "4d2876f1-2389-4d86-8ab5-a713046eff1d",
       "name": "Create new file",
@@ -590,7 +590,7 @@
         },
         "filePath": "={{ $('Config').item.json.repo_path }}{{ $json.subPath }}{{$('Execute Workflow Trigger').first().json.id}}.json",
         "fileContent": "={{$('isDiffOrNew').item.json[\"n8n_data_stringy\"]}}",
-        "commitMessage": "=chore: {{$('Execute Workflow Trigger').first().json.name}} ({{$json.github_status}})"
+        "commitMessage": "={{$('Execute Workflow Trigger').first().json.isArchived === \"true\" ? \"archived\" : \"chore\" }}({{$('Execute Workflow Trigger').first().json.name}}): {{$json.github_status}} {{$('Execute Workflow Trigger').first().json.active === \"true\" ? \"active\" : \"\" }}"
       },
       "id": "cbf7e6a8-08d6-49fa-ac50-ad9941198cb8",
       "name": "Edit existing file",
@@ -930,6 +930,6 @@
   },
   "tags": [],
   "triggerCount": 1,
-  "updatedAt": "2025-10-31T21:16:30.513Z",
-  "versionId": "0c452289-73c6-4de8-b581-c0d5281ea2e2"
+  "updatedAt": "2025-10-31T21:33:36.236Z",
+  "versionId": "74e68fd4-607b-4e10-80a4-e211ea773a54"
 }
