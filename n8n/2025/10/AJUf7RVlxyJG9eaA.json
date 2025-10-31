@@ -556,7 +556,7 @@
         },
         "filePath": "={{ $('Config').item.json.repo_path }}{{ $json.subPath }}{{$('Execute Workflow Trigger').first().json.id}}.json",
         "fileContent": "={{$('isDiffOrNew').item.json[\"n8n_data_stringy\"]}}",
-        "commitMessage": "={{$('Execute Workflow Trigger').first().json.isArchived === \"true\" ? \"archived\" : \"chore\" }}({{$('Execute Workflow Trigger').first().json.name}}): {{$json.github_status}} {{$('Execute Workflow Trigger').first().json.active === \"true\" ? \"active\" : \"\" }}"
+        "commitMessage": "={{$('Execute Workflow Trigger').first().json.isArchived === true ? \"archived\" : \"chore\" }}({{$('Execute Workflow Trigger').first().json.name}}): {{$json.github_status}} {{$('Execute Workflow Trigger').first().json.active === true ? \"active\" : \"\" }}"
       },
       "id": "4d2876f1-2389-4d86-8ab5-a713046eff1d",
       "name": "Create new file",
@@ -590,7 +590,7 @@
         },
         "filePath": "={{ $('Config').item.json.repo_path }}{{ $json.subPath }}{{$('Execute Workflow Trigger').first().json.id}}.json",
         "fileContent": "={{$('isDiffOrNew').item.json[\"n8n_data_stringy\"]}}",
-        "commitMessage": "={{$('Execute Workflow Trigger').first().json.isArchived === \"true\" ? \"archived\" : \"chore\" }}({{$('Execute Workflow Trigger').first().json.name}}): {{$json.github_status}} {{$('Execute Workflow Trigger').first().json.active === \"true\" ? \"active\" : \"\" }}"
+        "commitMessage": "={{$('Execute Workflow Trigger').first().json.isArchived === true ? \"archived\" : \"chore\" }}({{$('Execute Workflow Trigger').first().json.name}}): {{$json.github_status}} {{$('Execute Workflow Trigger').first().json.active === true ? \"active\" : \"\" }}"
       },
       "id": "cbf7e6a8-08d6-49fa-ac50-ad9941198cb8",
       "name": "Edit existing file",
@@ -772,7 +772,7 @@
     {
       "parameters": {
         "chatId": "-870986299",
-        "text": "=✅ *N8n Github Backup has completed: {{ $('merge').first().json.data.length }} workflows have been processed.*\nChanges:\n{{ $('merge').first().json.data.filter(item => item.changed.trim() === \"update\" ).map(item => ` - ${item.changed.trim().toTitleCase()}d [${item.flowName.trim()}](${item.fileUrl.trim()}) *(${item.fileName})*`) }}\nIgnored {{ $('merge').first().json.data.filter(item => item.changed.trim() === 'same').length }}: {{ $('merge').first().json.data.filter(item => item.changed.trim() === \"same\").map(item => `\\n - ${item.flowName.trim()}`) }}",
+        "text": "=✅ *N8n Github Backup has completed: {{ $('merge').first().json.data.length }} workflows have been processed.*\nChanges:{{ $('merge').first().json.data.filter(item => item.changed.trim() !== \"same\" ).map(item => `\\n - ${item.changed.trim().toTitleCase()}d [${item.flowName.trim()}](${item.fileUrl.trim()}) *(${item.fileName})*`) }}\nIgnored {{ $('merge').first().json.data.filter(item => item.changed.trim() === 'same').length }}: {{ $('merge').first().json.data.filter(item => item.changed.trim() === \"same\").map(item => `\\n - ${item.flowName.trim()}`) }}",
         "additionalFields": {
           "appendAttribution": false
         }
@@ -930,6 +930,6 @@
   },
   "tags": [],
   "triggerCount": 1,
-  "updatedAt": "2025-10-31T21:33:36.236Z",
-  "versionId": "74e68fd4-607b-4e10-80a4-e211ea773a54"
+  "updatedAt": "2025-10-31T21:38:02.342Z",
+  "versionId": "5b853878-2904-4a3b-902e-3a32ce0b19be"
 }
