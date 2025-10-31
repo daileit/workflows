@@ -152,7 +152,7 @@
       "main": [
         [
           {
-            "node": "Notify Start",
+            "node": "n8n",
             "type": "main",
             "index": 0
           }
@@ -203,7 +203,7 @@
       "main": [
         [
           {
-            "node": "Notify Start",
+            "node": "n8n",
             "type": "main",
             "index": 0
           }
@@ -226,17 +226,6 @@
         [
           {
             "node": "Config",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Notify Start": {
-      "main": [
-        [
-          {
-            "node": "n8n",
             "type": "main",
             "index": 0
           }
@@ -351,7 +340,7 @@
       "name": "n8n",
       "type": "n8n-nodes-base.n8n",
       "position": [
-        1152,
+        1040,
         -48
       ],
       "typeVersion": 1,
@@ -777,31 +766,7 @@
     {
       "parameters": {
         "chatId": "-870986299",
-        "text": "=Hi master!\nStarting **{{ $workflow.name }}** (Backup n8n workflows to Github)\nRun ID: [{{ $execution.id }}] at {{ $now.setZone('Asia/Ho_Chi_Minh').format('yyyy-MM-dd HH:mm') }}",
-        "additionalFields": {
-          "appendAttribution": false
-        }
-      },
-      "type": "n8n-nodes-base.telegram",
-      "typeVersion": 1.2,
-      "position": [
-        960,
-        -48
-      ],
-      "id": "882d48c7-ac70-4a14-804d-42be9beda8a5",
-      "name": "Notify Start",
-      "webhookId": "bcce5dfe-47aa-45e8-8361-f7aa73fd9df1",
-      "credentials": {
-        "telegramApi": {
-          "id": "RHYciMpF31QQslz5",
-          "name": "desert_eagle_bot"
-        }
-      }
-    },
-    {
-      "parameters": {
-        "chatId": "-870986299",
-        "text": "=✅ Backup has completed - {{ $('merge').first().json.data.length }} workflows have been processed.\nChanged {{ $('merge').first().json.data.filter(item => item.changed.trim() === 'different').length }} flows: *{{ $('merge').first().json.data.filter(item => item.changed.trim() === \"different\").map(item => `${item.flowName.trim()} (${item.fileName})`) }}*\nUnchanged {{ $('merge').first().json.data.filter(item => item.changed.trim() === 'same').length }}: {{ $('merge').first().json.data.filter(item => item.changed.trim() === \"same\").map(item => item.flowName.trim()) }}",
+        "text": "=✅ N8n Backup has completed: *{{ $('merge').first().json.data.length }}* workflows have been processed.\nChanged {{ $('merge').first().json.data.filter(item => item.changed.trim() === 'different').length }} flows: *{{ $('merge').first().json.data.filter(item => item.changed.trim() === \"different\").map(item => `${item.flowName.trim()} (${item.fileName})`) }}*\nUnchanged {{ $('merge').first().json.data.filter(item => item.changed.trim() === 'same').length }}: {{ $('merge').first().json.data.filter(item => item.changed.trim() === \"same\").map(item => item.flowName.trim()) }}",
         "additionalFields": {
           "appendAttribution": false
         }
@@ -950,6 +915,6 @@
   },
   "tags": [],
   "triggerCount": 1,
-  "updatedAt": "2025-10-31T12:34:31.002Z",
-  "versionId": "421baf51-479b-42b4-b631-6b70b07afc4a"
+  "updatedAt": "2025-10-31T12:36:01.779Z",
+  "versionId": "d37aa4a9-d749-4429-a995-d335f4ae2d00"
 }
