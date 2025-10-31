@@ -366,6 +366,18 @@
               "name": "changed",
               "value": "= {{ $('isDiffOrNew').item.json.github_status }}",
               "type": "string"
+            },
+            {
+              "id": "82080ca0-6374-4133-8068-33c69e22732d",
+              "name": "flowName",
+              "value": "={{$('Execute Workflow Trigger').first().json.name}} ",
+              "type": "string"
+            },
+            {
+              "id": "9261e4fa-0543-4bf3-ad5d-16e66d3575cd",
+              "name": "fileName",
+              "value": "={{$('Execute Workflow Trigger').first().json.id}}.json",
+              "type": "string"
             }
           ]
         },
@@ -893,6 +905,6 @@
   },
   "tags": [],
   "triggerCount": 1,
-  "updatedAt": "2025-10-31T11:52:52.369Z",
-  "versionId": "1756d9a8-e522-47df-9faa-c96d1f365d7f"
+  "updatedAt": "2025-10-31T11:57:07.101Z",
+  "versionId": "6cc3530c-c7f9-4a02-9a0d-d424f83489d3"
 }
