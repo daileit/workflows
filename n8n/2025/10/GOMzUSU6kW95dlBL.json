@@ -1,0 +1,407 @@
+{
+  "active": true,
+  "connections": {
+    "Generate title": {
+      "main": [
+        [
+          {
+            "node": "Pick top Categories",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merge to list": {
+      "main": [
+        [
+          {
+            "node": "Generate title",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Pick top Categories": {
+      "main": [
+        [
+          {
+            "node": "Get Approval",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Generate content": {
+      "main": [
+        [
+          {
+            "node": "Post to CloudyEz @daileit",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get CloudyEZ blog categories": {
+      "main": [
+        [
+          {
+            "node": "Merge to list",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Generate content",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Generate title",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Post to CloudyEz @daileit": {
+      "main": [
+        [
+          {
+            "node": "Notify result",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Approval": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "Get CloudyEZ blog categories",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2025-10-29T08:54:45.823Z",
+  "id": "GOMzUSU6kW95dlBL",
+  "isArchived": false,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "name": "AI-blog-post",
+  "nodes": [
+    {
+      "parameters": {
+        "modelId": {
+          "__rl": true,
+          "value": "groq/compound-mini",
+          "mode": "list",
+          "cachedResultName": "GROQ/COMPOUND-MINI"
+        },
+        "messages": {
+          "values": [
+            {
+              "content": "You are a Vietnamese content writer. You will receive a list of categories, then you will generate one blog post Title in Vietnamese and picked some related categories from the provided list. \nThe topic should be catchy, practical, mordern and helpful for tech viewer. Should not use too generic topic, narrow it down for condensed content.\nExample of good topic: \"Cách nhanh nhất để triển khai ứng dụng Python lên Kubernetes bằng Gitlab CI và Docker Compose\"\nExample of bad topic: \"Hướng dẫn bảo mật trên AWS\"\nShould return in json format with this shema {\"title\": \"How to use Helm chart to deploy Redis Setinel\", \"categorites_ids\": [\"1\",\"3\",\"4\"]}.\nReturn json only, no explaination, no code block.",
+              "role": "system"
+            },
+            {
+              "content": "=Must use this as Main category: {{ $('Merge to list').first().json.categories.randomItem().toJsonString() }}\nCan choose some related extra supporting categories from this list: {{ $('Merge to list').first().json.categories.toJsonString() }}"
+            }
+          ]
+        },
+        "jsonOutput": true,
+        "options": {
+          "temperature": 1,
+          "topP": 0.7
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1.8,
+      "position": [
+        640,
+        0
+      ],
+      "id": "c23aea9e-de87-4c19-a3d6-2005d1994d7f",
+      "name": "Generate title",
+      "credentials": {
+        "openAiApi": {
+          "id": "AK30dMCwrhg3myvP",
+          "name": "Groq OpenAPI"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "aggregate": "aggregateAllItemData",
+        "destinationFieldName": "categories",
+        "include": "specifiedFields",
+        "fieldsToInclude": "id, name",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.aggregate",
+      "typeVersion": 1,
+      "position": [
+        448,
+        0
+      ],
+      "id": "e76d1442-95cb-41f9-a418-814790711c51",
+      "name": "Merge to list"
+    },
+    {
+      "parameters": {
+        "language": "python",
+        "pythonCode": "# Loop over input items and add a new field called 'myNewField' to the JSON of each one\noutput = []\nfor item in _input.first().json.message.content.categorites_ids:\n  output.append(int(item))\nprint(output)\nreturn {\"output\": output}"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        960,
+        -208
+      ],
+      "id": "a7d7bc00-746b-4aed-bc75-c41944552cee",
+      "name": "Pick top Categories"
+    },
+    {
+      "parameters": {
+        "modelId": {
+          "__rl": true,
+          "value": "groq/compound",
+          "mode": "list",
+          "cachedResultName": "GROQ/COMPOUND"
+        },
+        "messages": {
+          "values": [
+            {
+              "content": "You are a Vietnamese senior content writer named daileit. You are working for a tech blog wordpress website. You mastered the content writring with excellent SEO skills. Given you a topic and you will generate the perfect blog post instantly with SEO keywords at the end.\n### FORMATTING GUIDE ###\nFormat the post as a wordpress post's html block, no need to add title. First start with an excerpt inside <p> block, then write the rest of the content with proper headings and html formmatting, place the SEO keywords at the end.\nYou should always response one blog post content. No css styling, no explaination, no code or json format.",
+              "role": "system"
+            },
+            {
+              "content": "=Bạn tên daileit, Viết một bài blog tràn đầy thông tin hữu ích nhưng với giọng văn pha một chút hài hước về chủ đề: {{ $('Generate title').item.json.message.content.title }}.\nNội dung cần chi tiết, dài hơn 700 từ."
+            }
+          ]
+        },
+        "jsonOutput": true,
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1.8,
+      "position": [
+        1408,
+        -208
+      ],
+      "id": "a1e0ac62-e086-4442-97be-cd395ecc9835",
+      "name": "Generate content",
+      "credentials": {
+        "openAiApi": {
+          "id": "AK30dMCwrhg3myvP",
+          "name": "Groq OpenAPI"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "title": "={{ $('Generate title').item.json.message.content.title }}",
+        "additionalFields": {
+          "content": "={{ $json.message.content.replace('\\n','<br>') }}",
+          "status": "draft",
+          "categories": "={{ $('Pick top Categories').item.json.output }}",
+          "tags": [
+            43,
+            36,
+            44
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.wordpress",
+      "typeVersion": 1,
+      "position": [
+        1712,
+        0
+      ],
+      "id": "26fd2528-43ce-4719-ac3b-57f241424b1b",
+      "name": "Post to CloudyEz @daileit",
+      "credentials": {
+        "wordpressApi": {
+          "id": "SEl4a56hTUSx8vE2",
+          "name": "Wordpress account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "url": "https://cloudyez.com/wp-json/wp/v2/categories?per_page=50",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        272,
+        0
+      ],
+      "id": "5f9eeea3-cd30-44b9-abea-2a8a4ba45c4c",
+      "name": "Get CloudyEZ blog categories"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "61b57bed-fb22-4229-a326-6b55ebe599a7",
+              "leftValue": "={{ $json.data.approved }}",
+              "rightValue": "true",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "looseTypeValidation": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        1280,
+        0
+      ],
+      "id": "7dbd01fc-26ad-4317-a587-52e690784933",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "operation": "sendAndWait",
+        "chatId": "-870986299",
+        "message": "=Hi master!\nI'm asking you the permission to write and publish a post titled: \"{{ $('Generate title').item.json.message.content.title }}\" to [CloudyEZ.com](https://cloudyez.com) as @daileit",
+        "approvalOptions": {
+          "values": {
+            "approvalType": "double"
+          }
+        },
+        "options": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        1168,
+        -208
+      ],
+      "id": "3318e30e-c584-468b-8a26-223d12123087",
+      "name": "Get Approval",
+      "webhookId": "efd6b9f2-a2f1-479d-9d8b-8de44648fb95",
+      "credentials": {
+        "telegramApi": {
+          "id": "RHYciMpF31QQslz5",
+          "name": "desert_eagle_bot"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "chatId": "-870986299",
+        "text": "=The post was uploaded [{{ $json.title.raw }}](https://cloudyez.com/{{ $json.generated_slug }})",
+        "additionalFields": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        1888,
+        0
+      ],
+      "id": "9c45ded7-2e8a-455b-adf5-a0f8b17ae08b",
+      "name": "Notify result",
+      "webhookId": "05822e9b-2589-4b98-9299-c24fe7b7c791",
+      "credentials": {
+        "telegramApi": {
+          "id": "RHYciMpF31QQslz5",
+          "name": "desert_eagle_bot"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "triggerAtHour": 13,
+              "triggerAtMinute": 25
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        112,
+        0
+      ],
+      "id": "bceb7261-89e9-49a6-999b-c633bb1087a7",
+      "name": "Schedule Trigger"
+    }
+  ],
+  "pinData": {},
+  "repo_name": "workflows",
+  "repo_owner": "daileit",
+  "repo_path": "n8n/",
+  "settings": {
+    "executionOrder": "v1",
+    "timezone": "Asia/Ho_Chi_Minh",
+    "callerPolicy": "workflowsFromSameOwner"
+  },
+  "shared": [
+    {
+      "createdAt": "2025-10-29T08:54:45.823Z",
+      "updatedAt": "2025-10-29T08:54:45.823Z",
+      "role": "workflow:owner",
+      "workflowId": "GOMzUSU6kW95dlBL",
+      "projectId": "TgT7sbikPaxzUZlq"
+    }
+  ],
+  "staticData": {
+    "node:Schedule Trigger": {
+      "recurrenceRules": []
+    }
+  },
+  "tags": [],
+  "triggerCount": 1,
+  "updatedAt": "2025-10-31T08:33:12.931Z",
+  "versionId": "1e34b257-48f4-451c-9f65-c54117e1ccd2"
+}
