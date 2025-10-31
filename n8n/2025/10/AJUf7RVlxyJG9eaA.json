@@ -748,7 +748,7 @@
     {
       "parameters": {
         "chatId": "-870986299",
-        "text": "=Hi master!\n{{ $workflow.name }}: Starting n8n Workflows Backup to github [{{ $execution.id }}] at {{ $now.setZone('Asia/Ho_Chi_Minh').format('yyyy-MM-dd HH:mm') }}",
+        "text": "=Hi master!\nStarting **{{ $workflow.name }}** (Backup n8n workflows to Github)\nRun ID: [{{ $execution.id }}] at {{ $now.setZone('Asia/Ho_Chi_Minh').format('yyyy-MM-dd HH:mm') }}",
         "additionalFields": {
           "appendAttribution": false
         }
@@ -887,6 +887,6 @@
   },
   "tags": [],
   "triggerCount": 1,
-  "updatedAt": "2025-10-31T11:39:08.635Z",
-  "versionId": "30ca5c5f-55f6-4e33-b1a2-e513dd2b9cc7"
+  "updatedAt": "2025-10-31T11:42:57.310Z",
+  "versionId": "93673629-029e-4567-8011-4bbbac16a369"
 }
