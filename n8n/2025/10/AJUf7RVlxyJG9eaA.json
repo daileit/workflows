@@ -468,7 +468,7 @@
     },
     {
       "parameters": {
-        "jsCode": "const orderJsonKeys = (jsonObj) => {\n  const ordered = {};\n  Object.keys(jsonObj).sort().forEach(key => {\n    ordered[key] = jsonObj[key];\n  });\n  return ordered;\n}\n\n// Check if file returned with content\nif (Object.keys($input.all()[0].json).includes(\"content\")) {\n  // Decode base64 content and parse JSON\n  const origWorkflow = JSON.parse(Buffer.from($input.all()[0].json.content, 'base64').toString());\n  const n8nWorkflow = $input.all()[1].json;\n  \n  // Order JSON objects\n  const orderedOriginal = orderJsonKeys(origWorkflow);\n  const orderedActual = orderJsonKeys(n8nWorkflow);\n\n  // Determine difference\n  if (JSON.stringify(orderedOriginal) === JSON.stringify(orderedActual)) {\n    $input.all()[0].json.github_status = \"same\";\n  } else {\n    $input.all()[0].json.github_status = \"update\";\n    $input.all()[0].json.n8n_data_stringy = JSON.stringify(orderedActual, null, 2);\n  }\n  $input.all()[0].json.content_decoded = orderedOriginal;\n// No file returned / new workflow\n} else if (Object.keys($input.all()[0].json).includes(\"data\")) {\n  const origWorkflow = JSON.parse($input.all()[0].json.data);\n  const n8nWorkflow = $input.all()[1].json;\n  \n  // Order JSON objects\n  const orderedOriginal = orderJsonKeys(origWorkflow);\n  const orderedActual = orderJsonKeys(n8nWorkflow);\n\n  // Determine difference\n  if (JSON.stringify(orderedOriginal) === JSON.stringify(orderedActual)) {\n    $input.all()[0].json.github_status = \"same\";\n  } else {\n    $input.all()[0].json.github_status = \"update\";\n    $input.all()[0].json.n8n_data_stringy = JSON.stringify(orderedActual, null, 2);\n  }\n  $input.all()[0].json.content_decoded = orderedOriginal;\n\n} else {\n  // Order JSON object\n  const n8nWorkflow = $input.all()[1].json;\n  const orderedActual = orderJsonKeys(n8nWorkflow);\n  \n  // Proper formatting\n  $input.all()[0].json.github_status = \"new\";\n  $input.all()[0].json.n8n_data_stringy = JSON.stringify(orderedActual, null, 2);\n}\n\n// Return items\nreturn $input.all();\n"
+        "jsCode": "const orderJsonKeys = (jsonObj) => {\n  const ordered = {};\n  Object.keys(jsonObj).sort().forEach(key => {\n    ordered[key] = jsonObj[key];\n  });\n  return ordered;\n}\n\n// Check if file returned with content\nif (Object.keys($input.all()[0].json).includes(\"content\")) {\n  // Decode base64 content and parse JSON\n  const origWorkflow = JSON.parse(Buffer.from($input.all()[0].json.content, 'base64').toString());\n  const n8nWorkflow = $input.all()[1].json;\n  \n  // Order JSON objects\n  const orderedOriginal = orderJsonKeys(origWorkflow);\n  const orderedActual = orderJsonKeys(n8nWorkflow);\n\n  // Determine difference\n  if (JSON.stringify(orderedOriginal) === JSON.stringify(orderedActual)) {\n    $input.all()[0].json.github_status = \"same\";\n  } else {\n    $input.all()[0].json.github_status = \"update\";\n    $input.all()[0].json.n8n_data_stringy = JSON.stringify(orderedActual, null, 2);\n  }\n  $input.all()[0].json.content_decoded = orderedOriginal;\n// No file returned / new workflow\n} else if (Object.keys($input.all()[0].json).includes(\"data\")) {\n  const origWorkflow = JSON.parse($input.all()[0].json.data);\n  const n8nWorkflow = $input.all()[1].json;\n  \n  // Order JSON objects\n  const orderedOriginal = orderJsonKeys(origWorkflow);\n  const orderedActual = orderJsonKeys(n8nWorkflow);\n\n  // Determine difference\n  if (JSON.stringify(orderedOriginal) === JSON.stringify(orderedActual)) {\n    $input.all()[0].json.github_status = \"same\";\n  } else {\n    $input.all()[0].json.github_status = \"update\";\n    $input.all()[0].json.n8n_data_stringy = JSON.stringify(orderedActual, null, 2);\n  }\n  $input.all()[0].json.content_decoded = orderedOriginal;\n\n} else {\n  // Order JSON object\n  const n8nWorkflow = $input.all()[1].json;\n  const orderedActual = orderJsonKeys(n8nWorkflow);\n  \n  // Proper formatting\n  $input.all()[0].json.github_status = \"create\";\n  $input.all()[0].json.n8n_data_stringy = JSON.stringify(orderedActual, null, 2);\n}\n\n// Return items\nreturn $input.all();\n"
       },
       "id": "5815e3f8-f077-4f59-8582-c30d834c65c9",
       "name": "isDiffOrNew",
@@ -493,7 +493,7 @@
               "output": 1
             },
             {
-              "value2": "new",
+              "value2": "create",
               "output": 2
             }
           ]
@@ -627,7 +627,7 @@
           "interval": [
             {
               "field": "hours",
-              "triggerAtMinute": 5
+              "triggerAtMinute": 1
             }
           ]
         }
@@ -772,7 +772,7 @@
     {
       "parameters": {
         "chatId": "-870986299",
-        "text": "=✅ N8n Backup has completed: *{{ $('merge').first().json.data.length }}* workflows have been pushed to [Github](https://github.com/daileit).\n{{ $('merge').first().json.data.filter(item => item.changed.trim() !== \"same\" ).map(item => `${item.changed.toTitleCase().trim()}: \\n - [${item.flowName.trim()}](${item.fileUrl.trim()}) *(${item.fileName})*`) }}\nUnchanged {{ $('merge').first().json.data.filter(item => item.changed.trim() === 'same').length }}: {{ $('merge').first().json.data.filter(item => item.changed.trim() === \"same\").map(item => item.flowName.trim()) }}\n",
+        "text": "=✅ *N8n Backup has completed: {{ $('merge').first().json.data.length }} workflows have been pushed to Github.*\n{{ $('merge').first().json.data.filter(item => item.changed.trim() !== \"same\" ).map(item => `${item.changed.toTitleCase().trim()}d: \\n - [${item.flowName.trim()}](${item.fileUrl.trim()}) *(${item.fileName})*`) }}\nUnchanged {{ $('merge').first().json.data.filter(item => item.changed.trim() === 'same').length }}: {{ $('merge').first().json.data.filter(item => item.changed.trim() === \"same\").map(item => `\\n - ${item.flowName.trim()}`) }}",
         "additionalFields": {
           "appendAttribution": false
         }
@@ -930,6 +930,6 @@
   },
   "tags": [],
   "triggerCount": 1,
-  "updatedAt": "2025-10-31T20:54:24.248Z",
-  "versionId": "bc89aa8c-a2b0-488e-9b94-9d73ff7401ab"
+  "updatedAt": "2025-10-31T21:00:05.809Z",
+  "versionId": "4fff0611-df4c-4628-9cf3-b39ed307a8ba"
 }
