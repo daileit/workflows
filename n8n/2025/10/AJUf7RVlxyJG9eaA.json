@@ -620,8 +620,8 @@
         "rule": {
           "interval": [
             {
-              "triggerAtHour": 1,
-              "triggerAtMinute": 33
+              "field": "hours",
+              "triggerAtMinute": 5
             }
           ]
         }
@@ -766,7 +766,7 @@
     {
       "parameters": {
         "chatId": "-870986299",
-        "text": "=✅ N8n Backup has completed: *{{ $('merge').first().json.data.length }}* workflows have been processed.\nChanged {{ $('merge').first().json.data.filter(item => item.changed.trim() === 'different').length }} flows:*{{ $('merge').first().json.data.filter(item => item.changed.trim() === \"different\").map(item => `\\n - ${item.flowName.trim()} (${item.fileName})`) }}*\nUnchanged {{ $('merge').first().json.data.filter(item => item.changed.trim() === 'same').length }}: {{ $('merge').first().json.data.filter(item => item.changed.trim() === \"same\").map(item => item.flowName.trim()) }}",
+        "text": "=✅ N8n Backup has completed: *{{ $('merge').first().json.data.length }}* workflows have been pushed to [Github](https://github.com/daileit).\nChanged {{ $('merge').first().json.data.filter(item => item.changed.trim() === 'different').length }} flows:*{{ $('merge').first().json.data.filter(item => item.changed.trim() === \"different\").map(item => `\\n - ${item.flowName.trim()} (${item.fileName})`) }}*\nUnchanged {{ $('merge').first().json.data.filter(item => item.changed.trim() === 'same').length }}: {{ $('merge').first().json.data.filter(item => item.changed.trim() === \"same\").map(item => item.flowName.trim()) }}",
         "additionalFields": {
           "appendAttribution": false
         }
@@ -915,6 +915,6 @@
   },
   "tags": [],
   "triggerCount": 1,
-  "updatedAt": "2025-10-31T12:45:46.593Z",
-  "versionId": "62b20a39-8179-424b-b6c3-f212b1b3da3a"
+  "updatedAt": "2025-10-31T12:49:27.763Z",
+  "versionId": "d85ff3f3-066f-40af-abd3-f41d79733593"
 }
