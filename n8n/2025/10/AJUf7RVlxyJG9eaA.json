@@ -790,7 +790,7 @@
     {
       "parameters": {
         "chatId": "-870986299",
-        "text": "=✅ Backup has completed - {{ $('merge').first().json.data.length }} workflows have been processed.\nChanged: {{ $('merge').first().json.data.filter(item => item.changed.trim() === 'different').length }} {{ $('merge').first().json.data.filter(item => item.changed.trim() === \"different\").map(item => `${item.flowName.trim()} (${item.fileName})`) }}\nUnchange: {{ $('merge').first().json.data.filter(item => item.changed.trim() === 'same').length }} {{ $('merge').first().json.data.filter(item => item.changed.trim() === \"same\").map(item => item.flowName.trim()) }}",
+        "text": "=✅ Backup has completed - {{ $('merge').first().json.data.length }} workflows have been processed.\nChanged {{ $('merge').first().json.data.filter(item => item.changed.trim() === 'different').length }} flow: {{ $('merge').first().json.data.filter(item => item.changed.trim() === \"different\").map(item => `${item.flowName.trim()} (${item.fileName})`) }}\nUnchange {{ $('merge').first().json.data.filter(item => item.changed.trim() === 'same').length }} flow: {{ $('merge').first().json.data.filter(item => item.changed.trim() === \"same\").map(item => item.flowName.trim()) }}",
         "additionalFields": {
           "appendAttribution": false
         }
@@ -905,6 +905,6 @@
   },
   "tags": [],
   "triggerCount": 1,
-  "updatedAt": "2025-10-31T12:19:48.959Z",
-  "versionId": "19e37c2f-3ed1-431b-8b58-779076e83dfd"
+  "updatedAt": "2025-10-31T12:20:48.711Z",
+  "versionId": "f90a3201-2105-4610-bee7-4e8d8342fb4a"
 }
