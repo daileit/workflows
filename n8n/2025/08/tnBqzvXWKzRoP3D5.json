@@ -48,7 +48,7 @@
   },
   "createdAt": "2025-08-20T12:46:27.057Z",
   "id": "tnBqzvXWKzRoP3D5",
-  "isArchived": false,
+  "isArchived": true,
   "meta": {
     "templateId": "PT1i+zU92Ii5O2XCObkhfHJR5h9rNJTpiCIkYJk9jHU="
   },
@@ -205,6 +205,6 @@
   "staticData": null,
   "tags": [],
   "triggerCount": 0,
-  "updatedAt": "2025-08-20T12:46:27.057Z",
-  "versionId": "a5ffa3b6-6dcd-4b49-ab7b-f8065f11565d"
+  "updatedAt": "2025-10-31T10:42:47.704Z",
+  "versionId": "a1f5936c-279e-4f2d-ad47-566cde3db4b4"
 }
