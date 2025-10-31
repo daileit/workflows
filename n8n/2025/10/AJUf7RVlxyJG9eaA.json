@@ -325,7 +325,7 @@
       "name": "Execute Workflow Trigger",
       "type": "n8n-nodes-base.executeWorkflowTrigger",
       "position": [
-        304,
+        320,
         624
       ],
       "typeVersion": 1,
@@ -408,7 +408,7 @@
       "type": "n8n-nodes-base.httpRequest",
       "position": [
         944,
-        320
+        352
       ],
       "typeVersion": 4.2
     },
@@ -627,7 +627,7 @@
           "interval": [
             {
               "field": "hours",
-              "triggerAtMinute": 1
+              "triggerAtMinute": 5
             }
           ]
         }
@@ -930,6 +930,6 @@
   },
   "tags": [],
   "triggerCount": 1,
-  "updatedAt": "2025-10-31T21:38:02.342Z",
-  "versionId": "5b853878-2904-4a3b-902e-3a32ce0b19be"
+  "updatedAt": "2025-10-31T21:41:43.292Z",
+  "versionId": "a80d08ed-4653-4bf5-a821-6231935ba597"
 }
