@@ -382,7 +382,7 @@
             {
               "id": "1d7d1a13-2790-462e-a9c4-8f40e5849de1",
               "name": "fileUrl",
-              "value": "={{ $json._links.html }}",
+              "value": "={{ $json.content?.html_url ?? $json.html_url  }} ",
               "type": "string"
             }
           ]
@@ -772,7 +772,7 @@
     {
       "parameters": {
         "chatId": "-870986299",
-        "text": "=✅ N8n Backup has completed: *{{ $('merge').first().json.data.length }}* workflows have been pushed to [Github](https://github.com/daileit).\n{{ $('merge').first().json.data.filter(item => item.changed.trim() === \"new\").map(item => `${item.changed.trim()} flows: ${item.flowName.trim()}`) }} \nChanged {{ $('merge').first().json.data.filter(item => item.changed.trim() === 'update').length }} flows:*{{ $('merge').first().json.data.filter(item => item.changed.trim() === \"update\").map(item => `\\n - ${item.flowName.trim()} ([${item.fileName}]({item.fileUrl}))`) }}*\nUnchanged {{ $('merge').first().json.data.filter(item => item.changed.trim() === 'same').length }}: {{ $('merge').first().json.data.filter(item => item.changed.trim() === \"same\").map(item => item.flowName.trim()) }}",
+        "text": "=✅ N8n Backup has completed: *{{ $('merge').first().json.data.length }}* workflows have been pushed to [Github](https://github.com/daileit).\n{{ $('merge').first().json.data.filter(item => item.changed.trim() === \"new\").map(item => `${item.changed.trim()} flows: ${item.flowName.trim()}`) }} \nChanged {{ $('merge').first().json.data.filter(item => item.changed.trim() === 'update').length }} flows:*{{ $('merge').first().json.data.filter(item => item.changed.trim() === \"update\").map(item => `\\n - ${item.flowName.trim()} ([${item.fileName}](${item.fileUrl}))`) }}*\nUnchanged {{ $('merge').first().json.data.filter(item => item.changed.trim() === 'same').length }}: {{ $('merge').first().json.data.filter(item => item.changed.trim() === \"same\").map(item => item.flowName.trim()) }}",
         "additionalFields": {
           "appendAttribution": false
         }
@@ -930,6 +930,6 @@
   },
   "tags": [],
   "triggerCount": 1,
-  "updatedAt": "2025-10-31T20:29:35.673Z",
-  "versionId": "eec5c7eb-9f36-42e1-b822-cedc63b8738e"
+  "updatedAt": "2025-10-31T20:43:41.003Z",
+  "versionId": "e357d360-77e4-4c4e-a154-1aeb6f1d2e0b"
 }
