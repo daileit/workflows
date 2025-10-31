@@ -247,7 +247,7 @@
       "main": [
         [
           {
-            "node": "Notify Success",
+            "node": "If",
             "type": "main",
             "index": 0
           }
@@ -277,6 +277,17 @@
         [
           {
             "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Notify Success",
             "type": "main",
             "index": 0
           }
@@ -798,8 +809,8 @@
       "type": "n8n-nodes-base.telegram",
       "typeVersion": 1.2,
       "position": [
-        1888,
-        -208
+        1968,
+        -192
       ],
       "id": "a77aad6f-ca5a-48fa-a925-8ae921e9cb57",
       "name": "Notify Success",
@@ -819,8 +830,8 @@
       "type": "n8n-nodes-base.aggregate",
       "typeVersion": 1,
       "position": [
-        1680,
-        -208
+        1552,
+        -176
       ],
       "id": "022b564c-1ba7-4888-ac1a-c001d062df2c",
       "name": "merge"
@@ -865,7 +876,7 @@
       "type": "n8n-nodes-base.telegram",
       "typeVersion": 1.2,
       "position": [
-        1888,
+        1968,
         -16
       ],
       "id": "c91475ae-4237-49ae-a0d7-c9f612d77af6",
@@ -877,6 +888,40 @@
           "name": "desert_eagle_bot"
         }
       }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "b542f09a-5bd8-4e6a-a2c1-992798bfc7da",
+              "leftValue": "={{ $('merge').first().json.data.filter(item => item.changed.trim() === 'different').length }} ",
+              "rightValue": 0,
+              "operator": {
+                "type": "number",
+                "operation": "notEquals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "looseTypeValidation": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        1728,
+        -176
+      ],
+      "id": "c0d777b7-bcf1-475d-8579-1fa7acd0c8e2",
+      "name": "If"
     }
   ],
   "pinData": {},
@@ -905,6 +950,6 @@
   },
   "tags": [],
   "triggerCount": 1,
-  "updatedAt": "2025-10-31T12:29:02.194Z",
-  "versionId": "d4ab7564-3a6a-49dd-9093-dcc4c87e6eb2"
+  "updatedAt": "2025-10-31T12:34:31.002Z",
+  "versionId": "421baf51-479b-42b4-b631-6b70b07afc4a"
 }
