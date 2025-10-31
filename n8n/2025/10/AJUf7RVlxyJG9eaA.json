@@ -360,6 +360,12 @@
               "name": "Done",
               "type": "boolean",
               "value": true
+            },
+            {
+              "id": "0da25247-98ed-46e6-89c7-9a75e1c4ceaa",
+              "name": "changed",
+              "value": "= {{ $('isDiffOrNew').item.json.github_status }}",
+              "type": "string"
             }
           ]
         },
@@ -887,6 +893,6 @@
   },
   "tags": [],
   "triggerCount": 1,
-  "updatedAt": "2025-10-31T11:42:57.310Z",
-  "versionId": "93673629-029e-4567-8011-4bbbac16a369"
+  "updatedAt": "2025-10-31T11:52:52.369Z",
+  "versionId": "1756d9a8-e522-47df-9faa-c96d1f365d7f"
 }
