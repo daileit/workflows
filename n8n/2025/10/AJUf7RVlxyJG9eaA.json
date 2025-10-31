@@ -243,17 +243,6 @@
         ]
       ]
     },
-    "Notify Failure": {
-      "main": [
-        [
-          {
-            "node": "Loop Over Items",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
     "merge": {
       "main": [
         [
@@ -277,6 +266,17 @@
         [
           {
             "node": "Notify Failure",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Notify Failure": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
             "type": "main",
             "index": 0
           }
@@ -532,7 +532,7 @@
         },
         "filePath": "={{ $('Config').item.json.repo_path }}{{ $json.subPath }}{{$('Execute Workflow Trigger').first().json.id}}.json",
         "fileContent": "={{$('isDiffOrNew').item.json[\"n8n_data_stringy\"]}}",
-        "commitMessage": "={{$('Execute Workflow Trigger').first().json.name}} ({{$json.github_status}})"
+        "commitMessage": "=chore: {{$('Execute Workflow Trigger').first().json.name}} ({{$json.github_status}})"
       },
       "id": "4d2876f1-2389-4d86-8ab5-a713046eff1d",
       "name": "Create new file",
@@ -556,17 +556,17 @@
         "operation": "edit",
         "owner": {
           "__rl": true,
-          "mode": "",
-          "value": "={{ $('Config').first().item.repo_owner }}"
+          "value": "={{ $('Config').item.json.repo_owner }}",
+          "mode": ""
         },
         "repository": {
           "__rl": true,
-          "mode": "",
-          "value": "={{ $('Config').first().item.repo_name }}"
+          "value": "={{ $('Config').item.json.repo_name }}",
+          "mode": ""
         },
-        "filePath": "={{ $('Config').first().item.repo_path }}{{ $json.subPath }}{{$('Execute Workflow Trigger').first().json.id}}.json",
+        "filePath": "={{ $('Config').item.json.repo_path }}{{ $json.subPath }}{{$('Execute Workflow Trigger').first().json.id}}.json",
         "fileContent": "={{$('isDiffOrNew').item.json[\"n8n_data_stringy\"]}}",
-        "commitMessage": "={{$('Execute Workflow Trigger').first().json.name}} ({{$json.github_status}})"
+        "commitMessage": "=chore: {{$('Execute Workflow Trigger').first().json.name}} ({{$json.github_status}})"
       },
       "id": "cbf7e6a8-08d6-49fa-ac50-ad9941198cb8",
       "name": "Edit existing file",
@@ -660,8 +660,8 @@
     {
       "parameters": {
         "content": "## Main workflow loop",
-        "height": 416.1856906618075,
-        "width": 1272.6408145680155,
+        "height": 416,
+        "width": 1481,
         "color": 7
       },
       "id": "5cd8d3ef-1e9f-4ddf-a376-a2e989264565",
@@ -679,15 +679,15 @@
         "operation": "get",
         "owner": {
           "__rl": true,
-          "mode": "",
-          "value": "={{ $('Config').first().item.repo_owner }}"
+          "value": "={{ $('Config').item.json.repo_owner }}",
+          "mode": ""
         },
         "repository": {
           "__rl": true,
-          "mode": "",
-          "value": "={{ $('Config').first().item.repo_name }}"
+          "value": "={{ $('Config').item.json.repo_name }}",
+          "mode": ""
         },
-        "filePath": "={{ $('Config').first().item.repo_path }}{{ $('Execute Workflow Trigger').first().json.createdAt.split('-')[0] }}/{{ $('Execute Workflow Trigger').first().json.createdAt.split('-')[1] }}/{{$json.id}}.json",
+        "filePath": "={{ $('Config').item.json.repo_path }}{{ $('Execute Workflow Trigger').first().json.createdAt.split('-')[0] }}/{{ $('Execute Workflow Trigger').first().json.createdAt.split('-')[1] }}/{{$json.id}}.json",
         "asBinaryProperty": false,
         "additionalParameters": {}
       },
@@ -772,30 +772,6 @@
     {
       "parameters": {
         "chatId": "-870986299",
-        "text": "=❌ Failed to backup {{ $('Loop Over Items').item.json.name }} : {{ $json.error }}",
-        "additionalFields": {
-          "appendAttribution": false
-        }
-      },
-      "type": "n8n-nodes-base.telegram",
-      "typeVersion": 1.2,
-      "position": [
-        1744,
-        -16
-      ],
-      "id": "c91475ae-4237-49ae-a0d7-c9f612d77af6",
-      "name": "Notify Failure",
-      "webhookId": "5b5299a0-dc31-4392-b068-a5f2bb12e9c4",
-      "credentials": {
-        "telegramApi": {
-          "id": "RHYciMpF31QQslz5",
-          "name": "desert_eagle_bot"
-        }
-      }
-    },
-    {
-      "parameters": {
-        "chatId": "-870986299",
         "text": "=✅ Backup has completed - {{ $('merge').first().json.data.length }} workflows have been processed.",
         "additionalFields": {
           "appendAttribution": false
@@ -804,8 +780,8 @@
       "type": "n8n-nodes-base.telegram",
       "typeVersion": 1.2,
       "position": [
-        1776,
-        -192
+        1888,
+        -208
       ],
       "id": "a77aad6f-ca5a-48fa-a925-8ae921e9cb57",
       "name": "Notify Success",
@@ -825,7 +801,7 @@
       "type": "n8n-nodes-base.aggregate",
       "typeVersion": 1,
       "position": [
-        1536,
+        1680,
         -208
       ],
       "id": "022b564c-1ba7-4888-ac1a-c001d062df2c",
@@ -859,6 +835,30 @@
       "id": "1a82afbc-0e56-450c-ac31-8f60bf2ac5a6",
       "name": "Execute Sync",
       "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "chatId": "-870986299",
+        "text": "=❌ Failed to backup {{ $('Loop Over Items').item.json.name }} : {{ $json.error }}",
+        "additionalFields": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        1888,
+        -16
+      ],
+      "id": "c91475ae-4237-49ae-a0d7-c9f612d77af6",
+      "name": "Notify Failure",
+      "webhookId": "5b5299a0-dc31-4392-b068-a5f2bb12e9c4",
+      "credentials": {
+        "telegramApi": {
+          "id": "RHYciMpF31QQslz5",
+          "name": "desert_eagle_bot"
+        }
+      }
     }
   ],
   "pinData": {},
@@ -866,7 +866,10 @@
   "repo_owner": "daileit",
   "repo_path": "n8n/",
   "settings": {
-    "executionOrder": "v1"
+    "executionOrder": "v1",
+    "timezone": "Asia/Ho_Chi_Minh",
+    "callerPolicy": "workflowsFromSameOwner",
+    "availableInMCP": false
   },
   "shared": [
     {
@@ -877,9 +880,13 @@
       "projectId": "TgT7sbikPaxzUZlq"
     }
   ],
-  "staticData": null,
+  "staticData": {
+    "node:Schedule Trigger": {
+      "recurrenceRules": []
+    }
+  },
   "tags": [],
-  "triggerCount": 0,
-  "updatedAt": "2025-10-31T10:25:44.457Z",
-  "versionId": "4105c714-11f8-46ac-a512-cea33bfb3a3c"
+  "triggerCount": 1,
+  "updatedAt": "2025-10-31T11:38:07.509Z",
+  "versionId": "b9ab3d79-c520-409e-b390-8e648bd74337"
 }
