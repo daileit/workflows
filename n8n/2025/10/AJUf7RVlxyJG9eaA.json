@@ -340,7 +340,7 @@
       "name": "n8n",
       "type": "n8n-nodes-base.n8n",
       "position": [
-        1040,
+        960,
         -48
       ],
       "typeVersion": 1,
@@ -610,7 +610,7 @@
       "name": "Loop Over Items",
       "type": "n8n-nodes-base.splitInBatches",
       "position": [
-        1344,
+        1168,
         -48
       ],
       "typeVersion": 3
@@ -766,7 +766,7 @@
     {
       "parameters": {
         "chatId": "-870986299",
-        "text": "=✅ N8n Backup has completed: *{{ $('merge').first().json.data.length }}* workflows have been processed.\nChanged {{ $('merge').first().json.data.filter(item => item.changed.trim() === 'different').length }} flows: *{{ $('merge').first().json.data.filter(item => item.changed.trim() === \"different\").map(item => `${item.flowName.trim()} (${item.fileName})`) }}*\nUnchanged {{ $('merge').first().json.data.filter(item => item.changed.trim() === 'same').length }}: {{ $('merge').first().json.data.filter(item => item.changed.trim() === \"same\").map(item => item.flowName.trim()) }}",
+        "text": "=✅ N8n Backup has completed: *{{ $('merge').first().json.data.length }}* workflows have been processed.\nChanged {{ $('merge').first().json.data.filter(item => item.changed.trim() === 'different').length }} flows:\n``{{ $('merge').first().json.data.filter(item => item.changed.trim() === \"different\").map(item => `\\n - ${item.flowName.trim()} (${item.fileName})`) }}\n``\nUnchanged {{ $('merge').first().json.data.filter(item => item.changed.trim() === 'same').length }}: {{ $('merge').first().json.data.filter(item => item.changed.trim() === \"same\").map(item => item.flowName.trim()) }}",
         "additionalFields": {
           "appendAttribution": false
         }
@@ -774,7 +774,7 @@
       "type": "n8n-nodes-base.telegram",
       "typeVersion": 1.2,
       "position": [
-        1968,
+        1920,
         -192
       ],
       "id": "a77aad6f-ca5a-48fa-a925-8ae921e9cb57",
@@ -795,7 +795,7 @@
       "type": "n8n-nodes-base.aggregate",
       "typeVersion": 1,
       "position": [
-        1552,
+        1440,
         -176
       ],
       "id": "022b564c-1ba7-4888-ac1a-c001d062df2c",
@@ -823,7 +823,7 @@
       "type": "n8n-nodes-base.executeWorkflow",
       "typeVersion": 1.3,
       "position": [
-        1552,
+        1440,
         -32
       ],
       "id": "1a82afbc-0e56-450c-ac31-8f60bf2ac5a6",
@@ -841,7 +841,7 @@
       "type": "n8n-nodes-base.telegram",
       "typeVersion": 1.2,
       "position": [
-        1968,
+        1680,
         -16
       ],
       "id": "c91475ae-4237-49ae-a0d7-c9f612d77af6",
@@ -882,7 +882,7 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.2,
       "position": [
-        1728,
+        1680,
         -176
       ],
       "id": "c0d777b7-bcf1-475d-8579-1fa7acd0c8e2",
@@ -915,6 +915,6 @@
   },
   "tags": [],
   "triggerCount": 1,
-  "updatedAt": "2025-10-31T12:36:01.779Z",
-  "versionId": "d37aa4a9-d749-4429-a995-d335f4ae2d00"
+  "updatedAt": "2025-10-31T12:40:41.778Z",
+  "versionId": "27b29e40-b37a-4bb2-a1e6-f06452a458b3"
 }
