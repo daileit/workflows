@@ -1,0 +1,73 @@
+{
+  "active": false,
+  "connections": {
+    "When clicking ‘Execute workflow’": {
+      "main": [
+        [
+          {
+            "node": "Reply to a message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2025-10-31T21:18:01.469Z",
+  "id": "rb2G4Xi9euDO6R4I",
+  "isArchived": false,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "name": "process-email",
+  "nodes": [
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "95774393-f686-4e28-bcb1-edf508d66d83",
+      "name": "When clicking ‘Execute workflow’"
+    },
+    {
+      "parameters": {
+        "resource": "thread",
+        "operation": "reply",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        208,
+        0
+      ],
+      "id": "71657173-0287-4861-9513-08e47dde34c2",
+      "name": "Reply to a message",
+      "webhookId": "f4a45e6c-5634-425f-9287-dfc49e0e966e"
+    }
+  ],
+  "pinData": {},
+  "repo_name": "workflows",
+  "repo_owner": "daileit",
+  "repo_path": "n8n/",
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "shared": [
+    {
+      "createdAt": "2025-10-31T21:18:01.469Z",
+      "updatedAt": "2025-10-31T21:18:01.469Z",
+      "role": "workflow:owner",
+      "workflowId": "rb2G4Xi9euDO6R4I",
+      "projectId": "TgT7sbikPaxzUZlq"
+    }
+  ],
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 0,
+  "updatedAt": "2025-10-31T21:19:43.862Z",
+  "versionId": "51e5bcd5-2da7-42a7-b115-b761534c4688"
+}
