@@ -627,7 +627,7 @@
           "interval": [
             {
               "field": "hours",
-              "triggerAtMinute": 5
+              "triggerAtMinute": 10
             }
           ]
         }
@@ -930,6 +930,6 @@
   },
   "tags": [],
   "triggerCount": 1,
-  "updatedAt": "2025-10-31T21:48:13.859Z",
-  "versionId": "29aaa88b-6f27-42a8-af37-f37b7e3897c4"
+  "updatedAt": "2025-11-01T11:07:49.956Z",
+  "versionId": "319033af-f5fd-4d71-8eab-42f01bda919a"
 }
