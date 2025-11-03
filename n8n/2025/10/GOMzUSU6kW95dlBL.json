@@ -120,9 +120,8 @@
       "parameters": {
         "modelId": {
           "__rl": true,
-          "value": "groq/compound-mini",
-          "mode": "list",
-          "cachedResultName": "GROQ/COMPOUND-MINI"
+          "value": "tomi-the-staff",
+          "mode": "id"
         },
         "messages": {
           "values": [
@@ -151,8 +150,8 @@
       "name": "Generate title",
       "credentials": {
         "openAiApi": {
-          "id": "AK30dMCwrhg3myvP",
-          "name": "Groq OpenAPI"
+          "id": "wXOpvtRZJrJcNEjI",
+          "name": "timo_llm_inference"
         }
       }
     },
@@ -191,9 +190,8 @@
       "parameters": {
         "modelId": {
           "__rl": true,
-          "value": "groq/compound",
-          "mode": "list",
-          "cachedResultName": "GROQ/COMPOUND"
+          "value": "tomi-the-staff",
+          "mode": "id"
         },
         "messages": {
           "values": [
@@ -219,8 +217,8 @@
       "name": "Generate content",
       "credentials": {
         "openAiApi": {
-          "id": "AK30dMCwrhg3myvP",
-          "name": "Groq OpenAPI"
+          "id": "wXOpvtRZJrJcNEjI",
+          "name": "timo_llm_inference"
         }
       }
     },
@@ -402,6 +400,6 @@
   },
   "tags": [],
   "triggerCount": 1,
-  "updatedAt": "2025-10-31T21:45:15.984Z",
-  "versionId": "e3e2d3c7-c12e-4579-8ada-2a673e1d1fca"
+  "updatedAt": "2025-11-03T09:27:22.795Z",
+  "versionId": "baf6f958-aee9-4f8d-9a7c-d0185262789d"
 }
