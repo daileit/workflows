@@ -5,7 +5,18 @@
       "main": [
         [
           {
-            "node": "Message a model",
+            "node": "Get Groq Models",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Groq Models": {
+      "main": [
+        [
+          {
+            "node": "Get Timo Models",
             "type": "main",
             "index": 0
           }
@@ -34,32 +45,45 @@
     },
     {
       "parameters": {
-        "modelId": {
-          "__rl": true,
-          "value": "apac.anthropic.claude-3-5-sonnet-20240620-v1:0",
-          "mode": "id"
-        },
-        "messages": {
-          "values": [
-            {
-              "content": "who are you"
-            }
-          ]
-        },
+        "url": "https://api.groq.com/openai/v1/models",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "openAiApi",
         "options": {}
       },
-      "type": "@n8n/n8n-nodes-langchain.openAi",
-      "typeVersion": 1.8,
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
       "position": [
-        208,
-        0
+        256,
+        -32
       ],
-      "id": "e93db48c-5c91-4334-a694-9238bcc48f9f",
-      "name": "Message a model",
+      "id": "8771c3be-cbd5-4316-8d60-ab9b23fe6a5b",
+      "name": "Get Groq Models",
       "credentials": {
         "openAiApi": {
-          "id": "pVKHFWiRKfdhvgtu",
-          "name": "aws_bedrock_model"
+          "id": "AK30dMCwrhg3myvP",
+          "name": "Groq OpenAPI"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "url": "http://timo-llm-inference.timo-llm.svc.cluster.local/api/v1/models",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "openAiApi",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        480,
+        -32
+      ],
+      "id": "32f46af6-6082-42b7-ac8e-8ba8a178c234",
+      "name": "Get Timo Models",
+      "credentials": {
+        "openAiApi": {
+          "id": "wXOpvtRZJrJcNEjI",
+          "name": "timo_llm_inference"
         }
       }
     }
@@ -73,8 +97,8 @@
   },
   "shared": [
     {
-      "createdAt": "2025-10-31T21:18:01.469Z",
       "updatedAt": "2025-10-31T21:18:01.469Z",
+      "createdAt": "2025-10-31T21:18:01.469Z",
       "role": "workflow:owner",
       "workflowId": "rb2G4Xi9euDO6R4I",
       "projectId": "TgT7sbikPaxzUZlq"
@@ -83,6 +107,6 @@
   "staticData": null,
   "tags": [],
   "triggerCount": 0,
-  "updatedAt": "2025-11-03T09:05:29.307Z",
-  "versionId": "a925d29a-37b9-4fca-82f3-3fcdcf808ac9"
+  "updatedAt": "2025-11-03T11:54:21.735Z",
+  "versionId": "52ea4367-690f-499e-a88d-d5b2d3da34e9"
 }
