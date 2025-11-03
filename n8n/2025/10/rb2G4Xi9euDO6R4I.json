@@ -5,7 +5,7 @@
       "main": [
         [
           {
-            "node": "Reply to a message",
+            "node": "Message a model",
             "type": "main",
             "index": 0
           }
@@ -34,19 +34,34 @@
     },
     {
       "parameters": {
-        "resource": "thread",
-        "operation": "reply",
+        "modelId": {
+          "__rl": true,
+          "value": "apac.anthropic.claude-3-5-sonnet-20240620-v1:0",
+          "mode": "id"
+        },
+        "messages": {
+          "values": [
+            {
+              "content": "who are you"
+            }
+          ]
+        },
         "options": {}
       },
-      "type": "n8n-nodes-base.gmail",
-      "typeVersion": 2.1,
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1.8,
       "position": [
         208,
         0
       ],
-      "id": "71657173-0287-4861-9513-08e47dde34c2",
-      "name": "Reply to a message",
-      "webhookId": "f4a45e6c-5634-425f-9287-dfc49e0e966e"
+      "id": "e93db48c-5c91-4334-a694-9238bcc48f9f",
+      "name": "Message a model",
+      "credentials": {
+        "openAiApi": {
+          "id": "pVKHFWiRKfdhvgtu",
+          "name": "aws_bedrock_model"
+        }
+      }
     }
   ],
   "pinData": {},
@@ -68,6 +83,6 @@
   "staticData": null,
   "tags": [],
   "triggerCount": 0,
-  "updatedAt": "2025-10-31T21:19:43.862Z",
-  "versionId": "51e5bcd5-2da7-42a7-b115-b761534c4688"
+  "updatedAt": "2025-11-03T09:05:29.307Z",
+  "versionId": "a925d29a-37b9-4fca-82f3-3fcdcf808ac9"
 }
