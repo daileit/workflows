@@ -290,7 +290,7 @@
   "meta": {
     "templateCredsSetupCompleted": true
   },
-  "name": "github-sync",
+  "name": "github_sync",
   "nodes": [
     {
       "parameters": {},
@@ -930,6 +930,6 @@
   },
   "tags": [],
   "triggerCount": 1,
-  "updatedAt": "2025-11-01T11:07:49.956Z",
-  "versionId": "319033af-f5fd-4d71-8eab-42f01bda919a"
+  "updatedAt": "2025-11-04T15:01:26.109Z",
+  "versionId": "6ae4eb38-22a5-4612-ac27-f9edcc1a5d22"
 }
