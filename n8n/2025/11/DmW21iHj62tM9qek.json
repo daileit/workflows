@@ -1,5 +1,5 @@
 {
-  "active": false,
+  "active": true,
   "connections": {
     "Memory": {
       "ai_memory": [
@@ -63,13 +63,7 @@
     },
     "search_google": {
       "ai_tool": [
-        [
-          {
-            "node": "Routing Agent",
-            "type": "ai_tool",
-            "index": 0
-          }
-        ]
+        []
       ]
     },
     "Get Data": {
@@ -89,6 +83,22 @@
           {
             "node": "Get Data",
             "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Message a model in Google Gemini": {
+      "ai_tool": [
+        []
+      ]
+    },
+    "google_search": {
+      "ai_tool": [
+        [
+          {
+            "node": "Routing Agent",
+            "type": "ai_tool",
             "index": 0
           }
         ]
@@ -129,7 +139,7 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
       "position": [
         512,
-        240
+        256
       ],
       "typeVersion": 1.2,
       "credentials": {
@@ -282,8 +292,8 @@
       "type": "@n8n/n8n-nodes-langchain.toolCode",
       "typeVersion": 1.3,
       "position": [
-        912,
-        256
+        1248,
+        240
       ],
       "id": "58c650ee-4656-4ced-8720-65b8a229c211",
       "name": "search_google"
@@ -337,6 +347,69 @@
           "name": "tomi_the_bot"
         }
       }
+    },
+    {
+      "parameters": {
+        "modelId": {
+          "__rl": true,
+          "value": "models/gemini-2.5-flash",
+          "mode": "list",
+          "cachedResultName": "models/gemini-2.5-flash"
+        },
+        "messages": {
+          "values": [
+            {}
+          ]
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.googleGeminiTool",
+      "typeVersion": 1,
+      "position": [
+        1088,
+        240
+      ],
+      "id": "f5f63210-d556-4cf8-8703-2abeb3492d07",
+      "name": "Message a model in Google Gemini",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "dr7uh9o5CsnRf6UB",
+          "name": "gemini_k1"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "toolDescription": "Use this tool to search for external information from internet using one complementary search for comprehensive results and citations.\nOnly use this tool if you can not find the answer by your own or user requested to search for internet latest update. Do not use for casual chat.",
+        "method": "POST",
+        "url": "={{ $('Edit Fields').item.json.search_url }}/v1beta/models/gemini-2.0-flash:generateContent",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "googlePalmApi",
+        "sendHeaders": true,
+        "specifyHeaders": "json",
+        "jsonHeaders": "{\n\"Content-Type\": \"application/json\",\n\"User-Agent\": \"Apifox/1.0.0 (https://apifox.com)\"\n}",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"contents\": [\n    {\n        \"parts\": [\n            {\"text\": \"{{ $fromAI('query', `The input should be the search query in user's language focusing on factual information`, 'string', 'find some news') }} with the source links\"}\n        ]\n    }\n],\n\"tools\": [{\"googleSearch\": {}}]\n}",
+        "options": {},
+        "optimizeResponse": true,
+        "fieldsToInclude": "selected",
+        "fields": "candidates[0].content.parts[0].text ,candidates[0].groundingMetadata.groundingSupports, candidates[0].groundingMetadata.groundingChunks"
+      },
+      "type": "n8n-nodes-base.httpRequestTool",
+      "typeVersion": 4.3,
+      "position": [
+        912,
+        240
+      ],
+      "id": "50f5727a-f21e-4ec3-a73e-30a9222cfbe4",
+      "name": "google_search",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "dr7uh9o5CsnRf6UB",
+          "name": "gemini_k1"
+        }
+      }
     }
   ],
   "pinData": {},
@@ -358,6 +431,6 @@
   "staticData": null,
   "tags": [],
   "triggerCount": 1,
-  "updatedAt": "2025-11-04T10:03:13.722Z",
-  "versionId": "6b68c0bd-0f44-44a0-89d0-990c0cc1fabd"
+  "updatedAt": "2025-11-04T11:07:35.776Z",
+  "versionId": "364a89ed-1f74-4fb8-8879-89f8a651e2e2"
 }
