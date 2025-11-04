@@ -143,7 +143,7 @@
   "meta": {
     "templateCredsSetupCompleted": true
   },
-  "name": "ai-blog-post",
+  "name": "ai_blog_post",
   "nodes": [
     {
       "parameters": {
@@ -260,7 +260,7 @@
         "title": "={{ $('Generate title').item.json.message.content.title }}",
         "additionalFields": {
           "content": "={{ $json.message.content.replace('\\n','<br>') }}",
-          "status": "publish",
+          "status": "draft",
           "categories": "={{ $('Pick top Categories').item.json.output }}",
           "tags": [
             43,
@@ -280,7 +280,7 @@
       "credentials": {
         "wordpressApi": {
           "id": "SEl4a56hTUSx8vE2",
-          "name": "Wordpress account"
+          "name": "cloudyez_daileit"
         }
       }
     },
@@ -604,6 +604,6 @@
   },
   "tags": [],
   "triggerCount": 1,
-  "updatedAt": "2025-11-04T08:45:26.018Z",
-  "versionId": "a95d1a7c-480b-46e0-9441-2002705ad674"
+  "updatedAt": "2025-11-04T15:03:15.132Z",
+  "versionId": "45afe159-f528-42b7-8c9f-f7f8c8217d56"
 }
