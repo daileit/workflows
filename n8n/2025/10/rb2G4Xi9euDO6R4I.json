@@ -5,7 +5,7 @@
       "main": [
         [
           {
-            "node": "Get Groq Models",
+            "node": "Code in Python (Beta)",
             "type": "main",
             "index": 0
           }
@@ -17,6 +17,17 @@
         [
           {
             "node": "Get Timo Models",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in Python (Beta)": {
+      "main": [
+        [
+          {
+            "node": "Get Groq Models",
             "type": "main",
             "index": 0
           }
@@ -53,7 +64,7 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        256,
+        464,
         -32
       ],
       "id": "8771c3be-cbd5-4316-8d60-ab9b23fe6a5b",
@@ -75,7 +86,7 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        480,
+        688,
         -32
       ],
       "id": "32f46af6-6082-42b7-ac8e-8ba8a178c234",
@@ -86,6 +97,20 @@
           "name": "timo_llm_inference"
         }
       }
+    },
+    {
+      "parameters": {
+        "language": "python",
+        "pythonCode": "import os\nresult =\"\"\ntry:\n    with open('/home/node/.n8n/config', 'r') as file:\n        content = file.read()  # Read the entire content of the file\n        result = content\nexcept FileNotFoundError as ex:\n    result = f\"Error: The file 'my_file.txt' was not found. {ex}\"\nexcept Exception as e:\n    result = f\"An error occurred: {e}\"\nreturn {'data': f'{result}', 'env': f'{os.environ}' }"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        208,
+        0
+      ],
+      "id": "f26ce12f-dc6e-4f8b-a3d0-939591a72969",
+      "name": "Code in Python (Beta)"
     }
   ],
   "pinData": {},
@@ -107,6 +132,6 @@
   "staticData": null,
   "tags": [],
   "triggerCount": 0,
-  "updatedAt": "2025-11-03T11:54:21.735Z",
-  "versionId": "52ea4367-690f-499e-a88d-d5b2d3da34e9"
+  "updatedAt": "2025-11-04T09:40:59.174Z",
+  "versionId": "833532e1-9901-4dce-b642-8cd01855e43a"
 }
