@@ -416,11 +416,11 @@
       "parameters": {
         "conditions": {
           "options": {
-            "leftValue": "",
             "caseSensitive": true,
-            "typeValidation": "strict"
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 1
           },
-          "combinator": "and",
           "conditions": [
             {
               "id": "45ce825e-9fa6-430c-8931-9aaf22c42585",
@@ -442,7 +442,8 @@
               "leftValue": "={{ $json.error }}",
               "rightValue": ""
             }
-          ]
+          ],
+          "combinator": "and"
         },
         "options": {}
       },
@@ -556,7 +557,7 @@
         },
         "filePath": "={{ $('Config').item.json.repo_path }}{{ $json.subPath }}{{$('Execute Workflow Trigger').first().json.id}}.json",
         "fileContent": "={{$('isDiffOrNew').item.json[\"n8n_data_stringy\"]}}",
-        "commitMessage": "={{$('Execute Workflow Trigger').first().json.isArchived === true ? \"archived\" : \"chore\" }}({{$('Execute Workflow Trigger').first().json.name}}): {{$json.github_status}} {{$('Execute Workflow Trigger').first().json.active === true ? \"active workflow\" : \"workflow\" }}"
+        "commitMessage": "={{$('Execute Workflow Trigger').first().json.isArchived === true ? \"archived\" : \"feat\" }}({{$('Execute Workflow Trigger').first().json.name}}): {{$json.github_status}} {{$('Execute Workflow Trigger').first().json.active === true ? \"active workflow\" : \"workflow\" }}"
       },
       "id": "4d2876f1-2389-4d86-8ab5-a713046eff1d",
       "name": "Create new file",
@@ -930,6 +931,6 @@
   },
   "tags": [],
   "triggerCount": 1,
-  "updatedAt": "2025-11-04T15:01:26.109Z",
-  "versionId": "6ae4eb38-22a5-4612-ac27-f9edcc1a5d22"
+  "updatedAt": "2025-11-04T19:32:20.734Z",
+  "versionId": "01dcb539-f436-4639-ac7f-4794adf4fbc0"
 }
