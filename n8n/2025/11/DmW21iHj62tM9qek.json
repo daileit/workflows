@@ -61,11 +61,6 @@
         ]
       ]
     },
-    "search_google": {
-      "ai_tool": [
-        []
-      ]
-    },
     "Get Data": {
       "main": [
         [
@@ -88,12 +83,12 @@
         ]
       ]
     },
-    "Message a model in Google Gemini": {
+    "google_search": {
       "ai_tool": [
         []
       ]
     },
-    "google_search": {
+    "Call 'google_ai_search'": {
       "ai_tool": [
         [
           {
@@ -164,7 +159,7 @@
             {
               "id": "dc859472-0731-4317-b5db-46487fb37da6",
               "name": "chatInput",
-              "value": "=[At {{ $('new_message').item.json.message.date.toDateTime('s').setZone('Asia/Ho_Chi_Minh').format('DD H:mm:ss') }}] {{ $('new_message').item.json.message.chat.username ?? $('new_message').item.json.message.from.username }} said :{{ $('new_message').item.json.message.text ?? \"Hello Tomi\" }}",
+              "value": "=[{{ $('new_message').item.json.message.date.toDateTime('s').setZone('Asia/Ho_Chi_Minh').format('DD at H:mm:ss') }}] {{ $('new_message').item.json.message.chat.username ?? $('new_message').item.json.message.from.username }} said: {{ $('new_message').item.json.message.text ?? \"Hello Tomi\" }}",
               "type": "string"
             },
             {
@@ -292,21 +287,6 @@
     },
     {
       "parameters": {
-        "description": "=Retrieves the external information from internet using two complementary searches for comprehensive results and citations.\nOnly use this tool if you can not find the answer by your own or user requested to search for internet latest update. Do not use for casual chat.\nThe input should be the search query in user's language focusing on factual information",
-        "language": "python",
-        "pythonCode": "# Example: convert the incoming query to uppercase and return it\nimport random\nimport aiohttp\n\nsearch_url = {{ $('Get Data').item.json.search_url }}\nsearch_k1 = {{ $('Get Data').item.json.search_k1 }}\ngem_models = [\n    \"gemini-2.0-flash\",\n    \"gemini-2.0-flash\",\n    \"gemini-2.0-flash\",\n    \"gemini-2.5-flash-preview-04-17\",\n]\nkeys = []\nkeys.append(search_k1)\n\nasync with aiohttp.ClientSession() as session:\n    async with session.post(\n        f\"{search_url}/v1beta/models/{random.choice(gem_models)}:generateContent\",\n        params={\"key\": random.choice(keys)},\n        headers={\n            \"Content-Type\": \"application/json\",\n            \"User-Agent\": \"Apifox/1.0.0 (https://apifox.com)\",\n        },\n        json={\n            \"contents\": [\n                {\n                    \"parts\": [\n                        {\"text\": primary_query + \" with the source links\"}\n                    ]\n                }\n            ],\n            \"tools\": [{\"googleSearch\": {}}],\n        },\n    ) as response:\n        result = await response.json()\n        self.logger.info(f\"Primary Query: {primary_query}\")\n        if \"candidates\" in result and len(result[\"candidates\"]) > 0:\n            text = \"\".join(\n                part[\"text\"]\n                for part in result[\"candidates\"][0][\"content\"][\"parts\"]\n            )\n            results.append(\n                f\"Primary Query: {primary_query}? \\n Primary Answer:{text}\"\n            )\n            self.logger.info(f\"Primary Result: {text}\")\n        if \"groundingMetadata\" in result[\"candidates\"][0]:\n            groundingChunks = result[\"candidates\"][0][\"groundingMetadata\"][\n                \"groundingChunks\"\n            ]\n            citations = await self.__convert_grounding_to_citations__(\n                groundingChunks\n            )\n            results.append(f\"\\n Citations: {citations}\")\n            self.logger.info(f\"Citations: {citations}\")\nreturn query.upper()"
-      },
-      "type": "@n8n/n8n-nodes-langchain.toolCode",
-      "typeVersion": 1.3,
-      "position": [
-        1248,
-        256
-      ],
-      "id": "58c650ee-4656-4ced-8720-65b8a229c211",
-      "name": "search_google"
-    },
-    {
-      "parameters": {
         "operation": "get",
         "dataTableId": {
           "__rl": true,
@@ -357,36 +337,6 @@
     },
     {
       "parameters": {
-        "modelId": {
-          "__rl": true,
-          "value": "models/gemini-2.5-flash",
-          "mode": "list",
-          "cachedResultName": "models/gemini-2.5-flash"
-        },
-        "messages": {
-          "values": [
-            {}
-          ]
-        },
-        "options": {}
-      },
-      "type": "@n8n/n8n-nodes-langchain.googleGeminiTool",
-      "typeVersion": 1,
-      "position": [
-        1088,
-        256
-      ],
-      "id": "f5f63210-d556-4cf8-8703-2abeb3492d07",
-      "name": "Message a model in Google Gemini",
-      "credentials": {
-        "googlePalmApi": {
-          "id": "dr7uh9o5CsnRf6UB",
-          "name": "gemini_k1"
-        }
-      }
-    },
-    {
-      "parameters": {
         "toolDescription": "Use this tool to search for external information from internet using one complementary search for comprehensive results and citations.\nOnly use this tool if you can not find the answer by your own or user requested to search for internet latest update. Do not use for casual chat.",
         "method": "POST",
         "url": "={{ $('Edit Fields').item.json.search_url }}/v1beta/models/gemini-2.0-flash:generateContent",
@@ -406,8 +356,8 @@
       "type": "n8n-nodes-base.httpRequestTool",
       "typeVersion": 4.3,
       "position": [
-        912,
-        256
+        1088,
+        240
       ],
       "id": "50f5727a-f21e-4ec3-a73e-30a9222cfbe4",
       "name": "google_search",
@@ -417,6 +367,49 @@
           "name": "gemini_k2"
         }
       }
+    },
+    {
+      "parameters": {
+        "description": "Use this tool to search for external information from internet using one complementary search for comprehensive results and citations.\nOnly use this tool if you can not find the answer by your own or user requested to search for internet latest update. Do not use for casual chat.",
+        "workflowId": {
+          "__rl": true,
+          "value": "ddZ4jrrH0SA3K6aL",
+          "mode": "list",
+          "cachedResultUrl": "/workflow/ddZ4jrrH0SA3K6aL",
+          "cachedResultName": "google_ai_search"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "query": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('query', `The input should be a search query in user's language focusing on factual information`, 'string') }}"
+          },
+          "matchingColumns": [
+            "query"
+          ],
+          "schema": [
+            {
+              "id": "query",
+              "displayName": "query",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
+      "typeVersion": 2.2,
+      "position": [
+        912,
+        240
+      ],
+      "id": "5846c8c2-ede7-4e0d-aba4-28bee73d01e8",
+      "name": "Call 'google_ai_search'"
     }
   ],
   "pinData": {},
@@ -438,6 +431,6 @@
   "staticData": null,
   "tags": [],
   "triggerCount": 1,
-  "updatedAt": "2025-11-04T11:48:17.806Z",
-  "versionId": "e3130c3b-4fc3-45f9-8fbe-a1ffee519d5c"
+  "updatedAt": "2025-11-04T18:09:01.388Z",
+  "versionId": "791f2f65-9468-49f4-93f4-1c2d27c8aa8a"
 }
