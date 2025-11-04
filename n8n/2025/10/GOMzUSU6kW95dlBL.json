@@ -149,9 +149,9 @@
       "parameters": {
         "modelId": {
           "__rl": true,
-          "value": "analyzer-foundation",
+          "value": "apac.anthropic.claude-sonnet-4-20250514-v1:0",
           "mode": "list",
-          "cachedResultName": "ANALYZER-FOUNDATION"
+          "cachedResultName": "APAC.ANTHROPIC.CLAUDE-SONNET-4-20250514-V1:0"
         },
         "messages": {
           "values": [
@@ -604,6 +604,6 @@
   },
   "tags": [],
   "triggerCount": 1,
-  "updatedAt": "2025-11-03T12:04:08.423Z",
-  "versionId": "e35fd0de-58e5-4350-b21b-25bd79766be4"
+  "updatedAt": "2025-11-04T08:45:26.018Z",
+  "versionId": "a95d1a7c-480b-46e0-9441-2002705ad674"
 }
