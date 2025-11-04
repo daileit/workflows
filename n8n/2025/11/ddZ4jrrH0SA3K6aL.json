@@ -56,7 +56,7 @@
       "main": [
         [
           {
-            "node": "Edit Fields",
+            "node": "extract_chunks",
             "type": "main",
             "index": 0
           }
@@ -67,7 +67,45 @@
       "main": [
         [
           {
-            "node": "Edit Fields",
+            "node": "extract_chunks",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "extract_chunks": {
+      "main": [
+        [
+          {
+            "node": "Split Out",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Split Out": {
+      "main": [
+        [
+          {
+            "node": "fetch_uri",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript": {
+      "main": [
+        []
+      ]
+    },
+    "fetch_uri": {
+      "main": [
+        [
+          {
+            "node": "combine_result",
             "type": "main",
             "index": 0
           }
@@ -83,39 +121,6 @@
   },
   "name": "google_ai_search",
   "nodes": [
-    {
-      "parameters": {
-        "toolDescription": "Use this tool to search for external information from internet using one complementary search for comprehensive results and citations.\nOnly use this tool if you can not find the answer by your own or user requested to search for internet latest update. Do not use for casual chat.",
-        "method": "POST",
-        "url": "={{ $('prepare_data').item.json.search_url }}/v1beta/models/gemini-2.0-flash:generateContent",
-        "authentication": "predefinedCredentialType",
-        "nodeCredentialType": "googlePalmApi",
-        "sendHeaders": true,
-        "specifyHeaders": "json",
-        "jsonHeaders": "{\n\"Content-Type\": \"application/json\",\n\"User-Agent\": \"Apifox/1.0.0 (https://apifox.com)\"\n}",
-        "sendBody": true,
-        "specifyBody": "json",
-        "jsonBody": "={\n  \"contents\": [\n    {\n        \"parts\": [\n            {\"text\": \"{{ $fromAI('query', `The input should be the search query in user's language focusing on factual information`, 'string', 'find some news') }} with the source links\"}\n        ]\n    }\n],\n\"tools\": [{\"googleSearch\": {}}]\n}",
-        "options": {},
-        "optimizeResponse": true,
-        "fieldsToInclude": "selected",
-        "fields": "candidates[0].content.parts[0].text ,candidates[0].groundingMetadata.groundingSupports, candidates[0].groundingMetadata.groundingChunks"
-      },
-      "type": "n8n-nodes-base.httpRequestTool",
-      "typeVersion": 4.3,
-      "position": [
-        128,
-        -272
-      ],
-      "id": "5f94ae56-905f-470c-9f77-aedb171b9663",
-      "name": "google_search",
-      "credentials": {
-        "googlePalmApi": {
-          "id": "rQbku0bzkqB5T3tq",
-          "name": "gemini_k2"
-        }
-      }
-    },
     {
       "parameters": {
         "assignments": {
@@ -234,7 +239,7 @@
     {
       "parameters": {
         "method": "POST",
-        "url": "={{ $('prepare_data').item.json.search_url }}/v1beta/models/gemini-2.0-flash:generateContent",
+        "url": "={{ $('prepare_data').item.json.search_url }}/v1beta/models/{{ $('prepare_data').item.json.path.toNumber() === 0 ? \"gemini-2.0-flash\" : \"gemini-2.5-flash-lite\" }}:generateContent",
         "authentication": "predefinedCredentialType",
         "nodeCredentialType": "googlePalmApi",
         "sendHeaders": true,
@@ -279,7 +284,7 @@
     {
       "parameters": {
         "method": "POST",
-        "url": "={{ $('prepare_data').item.json.search_url }}/v1beta/models/gemini-2.0-flash:generateContent",
+        "url": "={{ $('prepare_data').item.json.search_url }}/v1beta/models/{{ $('prepare_data').item.json.path.toNumber() === 0 ? \"gemini-2.0-flash\" : \"gemini-2.5-flash-lite\" }}:generateContent",
         "authentication": "predefinedCredentialType",
         "nodeCredentialType": "googlePalmApi",
         "sendHeaders": true,
@@ -323,6 +328,28 @@
     },
     {
       "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "3449c8ef-88ee-4ae6-a36a-03f32c789b00",
+              "name": "result",
+              "value": "={{ $json.candidates[0].content.parts[0].text }}",
+              "type": "string"
+            },
+            {
+              "id": "455a8011-530a-4c0f-90c9-aeaaa97fab14",
+              "name": "groundingSupport",
+              "value": "={{ $json.candidates[0].groundingMetadata.groundingSupports }}",
+              "type": "array"
+            },
+            {
+              "id": "0807c05a-dff2-4bd9-999a-4e80a1ec726d",
+              "name": "groundingChunks",
+              "value": "={{ $json.candidates[0].groundingMetadata.groundingChunks }}",
+              "type": "array"
+            }
+          ]
+        },
         "options": {}
       },
       "type": "n8n-nodes-base.set",
@@ -332,7 +359,113 @@
         112
       ],
       "id": "4d653a33-eaaf-45df-b5c7-c724d59bec85",
-      "name": "Edit Fields"
+      "name": "extract_chunks"
+    },
+    {
+      "parameters": {
+        "fieldToSplitOut": "groundingChunks",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitOut",
+      "typeVersion": 1,
+      "position": [
+        864,
+        112
+      ],
+      "id": "76f7e21e-9cc5-4dae-aafb-8452a2ac5c3f",
+      "name": "Split Out"
+    },
+    {
+      "parameters": {
+        "jsCode": "async function fetchFinalUrl(url) {\n    const headers = {\n        \"Content-Type\": \"application/json\",\n        \"User-Agent\": \"Tomi/1.0.1 (https://tomi.dev.lspm.io)\",\n    };\n\n    const tryRequest = async (method) => {\n        try {\n            const response = await this.helpers.httpRequest(url, {\n                method: method,\n                headers: headers\n            });\n            \n\n            if (response.status === 404) {\n                return \"\";\n            }\n            return response.url; \n        } catch (e) {\n            return \"\";\n        }\n    };\n    let finalUrl = await tryRequest(\"HEAD\");\n    if (!finalUrl) {\n        finalUrl = await tryRequest(\"GET\");\n    }\n\n    return finalUrl;\n}\n\nasync function convertGroundingToCitations(groundingChunks, maxItems = 9) {\n    const chunksToProcess = groundingChunks.slice(0, maxItems);\n    const citationPromises = chunksToProcess.map(async (chunk, index) => {\n        const webInfo = chunk.web || {};\n        const originalUrl = webInfo.uri || \"\";\n        const title = webInfo.title || \"Unknown Source\";\n        if (originalUrl) {\n            const finalUrl = await fetchFinalUrl(originalUrl);\n            if (finalUrl) {\n                return {\n                    index: index + 1,\n                    source_url: finalUrl,\n                    title: title,\n                };\n            }\n        }\n        return null;\n    });\n    const results = await Promise.all(citationPromises);\n    return results.filter(citation => citation !== null);\n}\n\nreturn convertGroundingToCitations($input.all())\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1040,
+        -32
+      ],
+      "id": "aadf6896-9021-4080-9a45-41174064d8d9",
+      "name": "Code in JavaScript"
+    },
+    {
+      "parameters": {
+        "language": "python",
+        "pythonCode": "import asyncio\nimport aiohttp\nimport ssl\nasync def convert_grounding_to_citations(\n    grounding_chunks: list[dict]\n) -> list[dict]:\n    \n    headers = {\n        \"Content-Type\": \"application/json\",\n        \"User-Agent\": \"Tomi/1.0.1 (https://tomi.dev.lspm.io)\",\n    }\n    \n    async with aiohttp.ClientSession(headers=headers) as session:\n        \n        async def _fetch_url_once(url: str, method: str) -> str:\n            print(f\"fetch {url}\")\n            timeout = aiohttp.ClientTimeout(total=2)\n            try:\n                #print(f\"fetch {url}\")\n                request = session.head if method == \"HEAD\" else session.get\n                async with request(\n                    url, allow_redirects=True, timeout=timeout\n                ) as response:\n                    if response.status == 404:\n                        return \"404\"\n                    return str(response.url)\n            except Exception as e:\n                return None\n\n        async def fetch_final_url(url: str) -> str:\n            #print(f\"fetch {url}\")\n            final_url = await _fetch_url_once(url, \"HEAD\")\n            if not final_url:\n                final_url = await _fetch_url_once(url, \"GET\")\n            return final_url\n\n        async def process_chunk(idx, chunk):\n            web_info = chunk\n            original_url = web_info.get(\"uri\", \"\")\n            title = web_info.get(\"title\", \"Unknown Source\")\n            if not original_url:\n                return None\n            #print(f\"fetch {chunk}\")\n            final_url = await fetch_final_url(original_url)\n            \n            if final_url:\n                return {\n                    \"index\": idx,\n                    \"source_url\": final_url,\n                    \"title\": title,\n                }\n            return {\n              \"index\": idx,\n              \"source_url\": title\n            }\n\n        tasks = [\n            process_chunk(idx, chunk) \n            for idx, chunk in enumerate(grounding_chunks)\n        ]\n        \n        results = await asyncio.gather(*tasks)\n        #print(f\"result : {results}\")\n    return [res for res in results]\n\ninput_data = []\nfor item in _input.all():\n  data = {\n    \"uri\" : item.json.web.uri,\n    \"title\": item.json.web.title\n  }\n  input_data.append(data)\noutput = await convert_grounding_to_citations(input_data)\nreturn {\n  \"output\": output\n}\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1040,
+        112
+      ],
+      "id": "ef09bc5a-a617-4b22-95d9-324ee20153ab",
+      "name": "fetch_uri",
+      "alwaysOutputData": false
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "3b152e18-f3aa-4342-bd5b-274107684bb8",
+              "name": "result",
+              "value": "={{ $('extract_chunks').first().json.result }}",
+              "type": "string"
+            },
+            {
+              "id": "f1ba5b4a-33bc-4d98-87b4-b630323ab008",
+              "name": "searched_chunks",
+              "value": "={{ $('extract_chunks').first().json.groundingSupport }}",
+              "type": "array"
+            },
+            {
+              "id": "1992a947-8e44-4c7e-8a77-14666da0438c",
+              "name": "source_url_indices",
+              "value": "={{ $('fetch_uri').first().json.output }}",
+              "type": "array"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1184,
+        112
+      ],
+      "id": "7cf65898-9d2b-40e9-ba23-513640eff54f",
+      "name": "combine_result"
+    },
+    {
+      "parameters": {
+        "modelId": {
+          "__rl": true,
+          "value": "models",
+          "mode": "id"
+        },
+        "messages": {
+          "values": [
+            {}
+          ]
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.googleGemini",
+      "typeVersion": 1,
+      "position": [
+        640,
+        -64
+      ],
+      "id": "7c0d1163-779e-4370-afa1-8f639def52ea",
+      "name": "Message a model",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "rQbku0bzkqB5T3tq",
+          "name": "gemini_k2"
+        }
+      }
     }
   ],
   "pinData": {
@@ -362,6 +495,6 @@
   "staticData": null,
   "tags": [],
   "triggerCount": 0,
-  "updatedAt": "2025-11-04T15:28:57.758Z",
-  "versionId": "3444883c-332c-4893-ab3e-1de063262fcf"
+  "updatedAt": "2025-11-04T18:07:25.611Z",
+  "versionId": "bd927738-b7f2-470c-8564-cecd2f932524"
 }
