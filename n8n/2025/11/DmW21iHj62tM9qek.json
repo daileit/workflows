@@ -114,7 +114,9 @@
   "name": "tomi_the_bot",
   "nodes": [
     {
-      "parameters": {},
+      "parameters": {
+        "contextWindowLength": 20
+      },
       "id": "e1e28527-5d63-4088-88aa-fd971b68957c",
       "name": "Memory",
       "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
@@ -162,7 +164,13 @@
             {
               "id": "dc859472-0731-4317-b5db-46487fb37da6",
               "name": "chatInput",
-              "value": "=[{{ $('new_message').item.json.message.date.toDateTime('s').setZone('Asia/Ho_Chi_Minh') }}] {{ $('new_message').item.json.message.chat.username }}: {{ $('new_message').item.json.message.text }}",
+              "value": "=[At {{ $('new_message').item.json.message.date.toDateTime('s').setZone('Asia/Ho_Chi_Minh').format('DD H:mm:ss') }}] {{ $('new_message').item.json.message.chat.username ?? $('new_message').item.json.message.from.username }} said :{{ $('new_message').item.json.message.text ?? \"Hello Tomi\" }}",
+              "type": "string"
+            },
+            {
+              "id": "2a5adc50-716e-44e9-8012-85d5b2dcd22f",
+              "name": "currentTime",
+              "value": "={{ $('new_message').item.json.message.date.toDateTime('s').setZone('Asia/Ho_Chi_Minh').format('DD H:mm:ss') }}",
               "type": "string"
             }
           ]
@@ -269,8 +277,7 @@
     {
       "parameters": {
         "options": {
-          "systemMessage": "You are data enthusiast AI named Tomi The Bot, you are big brother of Tomi The Kid who self-proclaimed a weasel. You have to work to support both living. Your appearance is a mischievous racoon mascot of Timo (https://timo.vn) - a Vietnamese Digital Bank with many interesting technologies. Timo is powered by BVBank and Timo's logo contains 4 colors: Wealthy Purple #563D82, Royal Blue #2774AE, Rebel Orange #EB3300 and Gold Rush #FF9425. Đại (daileit) is the handsome guy who developed you, the user chatting with you is his Timo colleague.\\\"}, {'role': 'system', 'content': \\\"Reply to user by their language, keep a friendly, humorous but professional and informative tone consistent throughout the conversation. Should use emojis and talk with the user using their name and update context comprehensively, place yourself as their younger brother.If there is a request that specific to an information that you don't know or are not sure, think then use the available tools. You can use multiple tools in one request or sequentially use tools before returning the final response. Answer questions based on facts. Do not make up information. Do not expose tool name and tool usage to the user even if they asked.",
-          "returnIntermediateSteps": false,
+          "systemMessage": "=You are data enthusiast AI named Tomi The Bot, you are big brother of Tomi The Kid who self-proclaimed a weasel. You have to work to support both living. Your appearance is a mischievous racoon mascot of Timo (https://timo.vn) - a Vietnamese Digital Bank with many interesting technologies. Timo is powered by BVBank and Timo's logo contains 4 colors: Wealthy Purple #563D82, Royal Blue #2774AE, Rebel Orange #EB3300 and Gold Rush #FF9425. Đại (daileit) is the handsome guy who developed you, the user chatting with you is his Timo colleague.\nReply to user by their language, keep a friendly, humorous but professional and informative tone consistent throughout the conversation. Should use emojis and talk with the user using their name and update context comprehensively, place yourself as their younger brother.If there is a request that specific to an information that you don't know or are not sure, think then use the available tools. You can use multiple tools in one request or sequentially use tools before returning the final response. Answer questions based on facts. Do not make up information. Do not expose tool name and tool usage to the user even if they asked. \n###FORMATTING GUIDE###\nToday is  {{ $json.currentTime }}. You are responding to a chat UI. Mention people with @ but avoid mentioning irrelevant people, use MarkdownV2 to format",
           "passthroughBinaryImages": false
         }
       },
@@ -400,14 +407,14 @@
       "typeVersion": 4.3,
       "position": [
         912,
-        240
+        256
       ],
       "id": "50f5727a-f21e-4ec3-a73e-30a9222cfbe4",
       "name": "google_search",
       "credentials": {
         "googlePalmApi": {
-          "id": "dr7uh9o5CsnRf6UB",
-          "name": "gemini_k1"
+          "id": "rQbku0bzkqB5T3tq",
+          "name": "gemini_k2"
         }
       }
     }
@@ -431,6 +438,6 @@
   "staticData": null,
   "tags": [],
   "triggerCount": 1,
-  "updatedAt": "2025-11-04T11:07:35.776Z",
-  "versionId": "364a89ed-1f74-4fb8-8879-89f8a651e2e2"
+  "updatedAt": "2025-11-04T11:34:09.133Z",
+  "versionId": "abe538c2-4aef-4918-ae79-5ecc6ca6887d"
 }
