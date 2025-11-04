@@ -1,22 +1,11 @@
 {
-  "active": true,
+  "active": false,
   "connections": {
-    "Telegram Trigger": {
-      "main": [
-        [
-          {
-            "node": "Edit Fields",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
     "Memory": {
       "ai_memory": [
         [
           {
-            "node": "AI Agent",
+            "node": "Routing Agent",
             "type": "ai_memory",
             "index": 0
           }
@@ -27,7 +16,7 @@
       "ai_languageModel": [
         [
           {
-            "node": "AI Agent",
+            "node": "Routing Agent",
             "type": "ai_languageModel",
             "index": 0
           }
@@ -38,18 +27,7 @@
       "main": [
         [
           {
-            "node": "AI Agent",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "AI Agent": {
-      "main": [
-        [
-          {
-            "node": "Switch",
+            "node": "Routing Agent",
             "type": "main",
             "index": 0
           }
@@ -71,6 +49,50 @@
       "main": [
         []
       ]
+    },
+    "Routing Agent": {
+      "main": [
+        [
+          {
+            "node": "Switch",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "search_google": {
+      "ai_tool": [
+        [
+          {
+            "node": "Routing Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Data": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "new_message": {
+      "main": [
+        [
+          {
+            "node": "Get Data",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     }
   },
   "createdAt": "2025-11-04T08:47:31.432Z",
@@ -82,52 +104,13 @@
   "name": "tomi_the_bot",
   "nodes": [
     {
-      "parameters": {
-        "updates": [
-          "message"
-        ],
-        "additionalFields": {}
-      },
-      "type": "n8n-nodes-base.telegramTrigger",
-      "typeVersion": 1.2,
-      "position": [
-        0,
-        0
-      ],
-      "id": "03779b48-68b8-407c-bf92-afb77c36f3b8",
-      "name": "Telegram Trigger",
-      "webhookId": "011a591b-dcf5-4ef7-b6ed-874500f67daf",
-      "credentials": {
-        "telegramApi": {
-          "id": "so2GV8mNcWCky4eY",
-          "name": "tomi_the_bot"
-        }
-      }
-    },
-    {
-      "parameters": {
-        "options": {
-          "systemMessage": "You are a helpful assistant",
-          "passthroughBinaryImages": true
-        }
-      },
-      "id": "4824d5df-6979-4137-ad4f-15cc9ff4422b",
-      "name": "AI Agent",
-      "type": "@n8n/n8n-nodes-langchain.agent",
-      "position": [
-        464,
-        0
-      ],
-      "typeVersion": 1.8
-    },
-    {
       "parameters": {},
       "id": "e1e28527-5d63-4088-88aa-fd971b68957c",
       "name": "Memory",
       "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
       "position": [
-        608,
-        224
+        656,
+        256
       ],
       "typeVersion": 1.3
     },
@@ -135,9 +118,9 @@
       "parameters": {
         "model": {
           "__rl": true,
-          "value": "groq/compound-mini",
+          "value": "apac.anthropic.claude-sonnet-4-20250514-v1:0",
           "mode": "list",
-          "cachedResultName": "groq/compound-mini"
+          "cachedResultName": "apac.anthropic.claude-sonnet-4-20250514-v1:0"
         },
         "options": {}
       },
@@ -145,14 +128,14 @@
       "name": "Al Model",
       "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
       "position": [
-        432,
-        224
+        512,
+        240
       ],
       "typeVersion": 1.2,
       "credentials": {
         "openAiApi": {
-          "id": "AK30dMCwrhg3myvP",
-          "name": "Groq OpenAPI"
+          "id": "pVKHFWiRKfdhvgtu",
+          "name": "aws_bedrock_model"
         }
       }
     },
@@ -163,13 +146,13 @@
             {
               "id": "967e2e9b-f1f7-430e-8a27-d55be5685ee1",
               "name": "sessionId",
-              "value": "={{ $json.message.chat.id }}",
+              "value": "={{ $('new_message').item.json.message.chat.id }}",
               "type": "string"
             },
             {
               "id": "dc859472-0731-4317-b5db-46487fb37da6",
               "name": "chatInput",
-              "value": "={{ $json.message.text }}",
+              "value": "=[{{ $('new_message').item.json.message.date.toDateTime('s').setZone('Asia/Ho_Chi_Minh') }}] {{ $('new_message').item.json.message.chat.username }}: {{ $('new_message').item.json.message.text }}",
               "type": "string"
             }
           ]
@@ -180,7 +163,7 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        208,
+        432,
         0
       ],
       "id": "e053f1b7-8a30-412d-88f3-19c44ecfcca3",
@@ -243,7 +226,7 @@
       "type": "n8n-nodes-base.switch",
       "typeVersion": 3.3,
       "position": [
-        816,
+        1024,
         0
       ],
       "id": "39a340c0-96e1-4fe4-b511-371b5081ff41",
@@ -252,7 +235,7 @@
     {
       "parameters": {
         "chatId": "={{ $('Edit Fields').item.json.sessionId }}",
-        "text": "={{ $('AI Agent').item.json.output }}",
+        "text": "={{ $('Routing Agent').item.json.output }}",
         "additionalFields": {
           "appendAttribution": false
         }
@@ -260,12 +243,94 @@
       "type": "n8n-nodes-base.telegram",
       "typeVersion": 1.2,
       "position": [
-        1024,
+        1232,
         -96
       ],
       "id": "e8b81f71-e19f-4281-baa0-ab52705cf8e5",
       "name": "Send a text message",
       "webhookId": "dd3b74a6-6ef3-4697-ba59-96c8fb5101c7",
+      "credentials": {
+        "telegramApi": {
+          "id": "so2GV8mNcWCky4eY",
+          "name": "tomi_the_bot"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {
+          "systemMessage": "You are data enthusiast AI named Tomi The Bot, you are big brother of Tomi The Kid who self-proclaimed a weasel. You have to work to support both living. Your appearance is a mischievous racoon mascot of Timo (https://timo.vn) - a Vietnamese Digital Bank with many interesting technologies. Timo is powered by BVBank and Timo's logo contains 4 colors: Wealthy Purple #563D82, Royal Blue #2774AE, Rebel Orange #EB3300 and Gold Rush #FF9425. Đại (daileit) is the handsome guy who developed you, the user chatting with you is his Timo colleague.\\\"}, {'role': 'system', 'content': \\\"Reply to user by their language, keep a friendly, humorous but professional and informative tone consistent throughout the conversation. Should use emojis and talk with the user using their name and update context comprehensively, place yourself as their younger brother.If there is a request that specific to an information that you don't know or are not sure, think then use the available tools. You can use multiple tools in one request or sequentially use tools before returning the final response. Answer questions based on facts. Do not make up information. Do not expose tool name and tool usage to the user even if they asked.",
+          "returnIntermediateSteps": false,
+          "passthroughBinaryImages": false
+        }
+      },
+      "id": "4824d5df-6979-4137-ad4f-15cc9ff4422b",
+      "name": "Routing Agent",
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "position": [
+        672,
+        0
+      ],
+      "typeVersion": 1.8
+    },
+    {
+      "parameters": {
+        "description": "=Retrieves the external information from internet using two complementary searches for comprehensive results and citations.\nOnly use this tool if you can not find the answer by your own or user requested to search for internet latest update. Do not use for casual chat.\nThe input should be the search query in user's language focusing on factual information",
+        "language": "python",
+        "pythonCode": "# Example: convert the incoming query to uppercase and return it\nimport random\nimport aiohttp\n\nsearch_url = {{ $('Get Data').item.json.search_url }}\nsearch_k1 = {{ $('Get Data').item.json.search_k1 }}\ngem_models = [\n    \"gemini-2.0-flash\",\n    \"gemini-2.0-flash\",\n    \"gemini-2.0-flash\",\n    \"gemini-2.5-flash-preview-04-17\",\n]\nkeys = []\nkeys.append(search_k1)\n\nasync with aiohttp.ClientSession() as session:\n    async with session.post(\n        f\"{search_url}/v1beta/models/{random.choice(gem_models)}:generateContent\",\n        params={\"key\": random.choice(keys)},\n        headers={\n            \"Content-Type\": \"application/json\",\n            \"User-Agent\": \"Apifox/1.0.0 (https://apifox.com)\",\n        },\n        json={\n            \"contents\": [\n                {\n                    \"parts\": [\n                        {\"text\": primary_query + \" with the source links\"}\n                    ]\n                }\n            ],\n            \"tools\": [{\"googleSearch\": {}}],\n        },\n    ) as response:\n        result = await response.json()\n        self.logger.info(f\"Primary Query: {primary_query}\")\n        if \"candidates\" in result and len(result[\"candidates\"]) > 0:\n            text = \"\".join(\n                part[\"text\"]\n                for part in result[\"candidates\"][0][\"content\"][\"parts\"]\n            )\n            results.append(\n                f\"Primary Query: {primary_query}? \\n Primary Answer:{text}\"\n            )\n            self.logger.info(f\"Primary Result: {text}\")\n        if \"groundingMetadata\" in result[\"candidates\"][0]:\n            groundingChunks = result[\"candidates\"][0][\"groundingMetadata\"][\n                \"groundingChunks\"\n            ]\n            citations = await self.__convert_grounding_to_citations__(\n                groundingChunks\n            )\n            results.append(f\"\\n Citations: {citations}\")\n            self.logger.info(f\"Citations: {citations}\")\nreturn query.upper()"
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolCode",
+      "typeVersion": 1.3,
+      "position": [
+        912,
+        256
+      ],
+      "id": "58c650ee-4656-4ced-8720-65b8a229c211",
+      "name": "search_google"
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "dataTableId": {
+          "__rl": true,
+          "value": "Aw7IZNKQXSUZBugz",
+          "mode": "list",
+          "cachedResultName": "Init",
+          "cachedResultUrl": "/projects/TgT7sbikPaxzUZlq/datatables/Aw7IZNKQXSUZBugz"
+        },
+        "filters": {
+          "conditions": [
+            {
+              "keyValue": "1"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1,
+      "position": [
+        208,
+        0
+      ],
+      "id": "4a9e19f8-e311-4372-a68d-5b3f21827831",
+      "name": "Get Data"
+    },
+    {
+      "parameters": {
+        "updates": [
+          "message"
+        ],
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegramTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        0,
+        0
+      ],
+      "id": "03779b48-68b8-407c-bf92-afb77c36f3b8",
+      "name": "new_message",
+      "webhookId": "011a591b-dcf5-4ef7-b6ed-874500f67daf",
       "credentials": {
         "telegramApi": {
           "id": "so2GV8mNcWCky4eY",
@@ -292,7 +357,7 @@
   ],
   "staticData": null,
   "tags": [],
-  "triggerCount": 0,
-  "updatedAt": "2025-11-04T09:09:53.919Z",
-  "versionId": "6149460d-fcc1-4ae9-9bcf-aace13202356"
+  "triggerCount": 1,
+  "updatedAt": "2025-11-04T10:03:13.722Z",
+  "versionId": "6b68c0bd-0f44-44a0-89d0-990c0cc1fabd"
 }
