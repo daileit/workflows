@@ -1,13 +1,349 @@
 {
   "active": false,
-  "connections": {},
+  "connections": {
+    "prepare_data": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "get_data": {
+      "main": [
+        [
+          {
+            "node": "prepare_data",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "trigger": {
+      "main": [
+        [
+          {
+            "node": "get_data",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "request_ai_1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "request_ai_2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "request_ai_2": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "request_ai_1": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
   "createdAt": "2025-11-04T15:03:40.657Z",
   "id": "ddZ4jrrH0SA3K6aL",
   "isArchived": false,
-  "meta": null,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
   "name": "google_ai_search",
-  "nodes": [],
-  "pinData": {},
+  "nodes": [
+    {
+      "parameters": {
+        "toolDescription": "Use this tool to search for external information from internet using one complementary search for comprehensive results and citations.\nOnly use this tool if you can not find the answer by your own or user requested to search for internet latest update. Do not use for casual chat.",
+        "method": "POST",
+        "url": "={{ $('prepare_data').item.json.search_url }}/v1beta/models/gemini-2.0-flash:generateContent",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "googlePalmApi",
+        "sendHeaders": true,
+        "specifyHeaders": "json",
+        "jsonHeaders": "{\n\"Content-Type\": \"application/json\",\n\"User-Agent\": \"Apifox/1.0.0 (https://apifox.com)\"\n}",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"contents\": [\n    {\n        \"parts\": [\n            {\"text\": \"{{ $fromAI('query', `The input should be the search query in user's language focusing on factual information`, 'string', 'find some news') }} with the source links\"}\n        ]\n    }\n],\n\"tools\": [{\"googleSearch\": {}}]\n}",
+        "options": {},
+        "optimizeResponse": true,
+        "fieldsToInclude": "selected",
+        "fields": "candidates[0].content.parts[0].text ,candidates[0].groundingMetadata.groundingSupports, candidates[0].groundingMetadata.groundingChunks"
+      },
+      "type": "n8n-nodes-base.httpRequestTool",
+      "typeVersion": 4.3,
+      "position": [
+        128,
+        -272
+      ],
+      "id": "5f94ae56-905f-470c-9f77-aedb171b9663",
+      "name": "google_search",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "rQbku0bzkqB5T3tq",
+          "name": "gemini_k2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "0a2621a0-b8e2-4cfd-80cd-54941cf9129f",
+              "name": "search_url",
+              "value": "={{ $json.search_url }}",
+              "type": "string"
+            },
+            {
+              "id": "2c61d614-0aa7-4852-8b08-f365844362c9",
+              "name": "query",
+              "value": "={{ $('trigger').item.json.query }}",
+              "type": "string"
+            },
+            {
+              "id": "f7ca36da-4651-405f-b87f-d37db1deec83",
+              "name": "path",
+              "value": "={{ parseInt(Math.random()*2) }} ",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        0,
+        -16
+      ],
+      "id": "532afdd5-aea0-4630-8851-97cc27c571a8",
+      "name": "prepare_data"
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "dataTableId": {
+          "__rl": true,
+          "value": "Aw7IZNKQXSUZBugz",
+          "mode": "list",
+          "cachedResultName": "Init",
+          "cachedResultUrl": "/projects/TgT7sbikPaxzUZlq/datatables/Aw7IZNKQXSUZBugz"
+        },
+        "filters": {
+          "conditions": [
+            {
+              "keyValue": "1"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1,
+      "position": [
+        -208,
+        -16
+      ],
+      "id": "d0649f5a-5686-4fbc-bf98-01ec993bcd13",
+      "name": "get_data"
+    },
+    {
+      "parameters": {
+        "workflowInputs": {
+          "values": [
+            {
+              "name": "query"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        -448,
+        -16
+      ],
+      "id": "620ee725-10c1-4876-a06a-2e31b8f4b043",
+      "name": "trigger"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "f3c35b7a-d1e6-4c37-ab68-339ea10bb952",
+              "leftValue": "={{ $json.path }}",
+              "rightValue": 0,
+              "operator": {
+                "type": "number",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "looseTypeValidation": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        192,
+        -16
+      ],
+      "id": "48e03b22-0678-4cf8-ae61-d2be84cd9f4f",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $('prepare_data').item.json.search_url }}/v1beta/models/gemini-2.0-flash:generateContent",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "googlePalmApi",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            },
+            {
+              "name": "User-Agent",
+              "value": "Apifox/1.0.0 (https://apifox.com)"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"contents\": [\n    {\n        \"parts\": [\n            {\"text\": \"{{ $('prepare_data').item.json.query ?? 'find some news' }} with the source links\"}\n        ]\n    }\n],\n\"tools\": [{\"googleSearch\": {}}]\n}",
+        "options": {
+          "response": {
+            "response": {
+              "responseFormat": "json"
+            }
+          }
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        448,
+        -32
+      ],
+      "id": "4718370d-b5c9-453d-82be-9f4e710928a3",
+      "name": "request_ai_1",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "dr7uh9o5CsnRf6UB",
+          "name": "gemini_k1"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $('prepare_data').item.json.search_url }}/v1beta/models/gemini-2.0-flash:generateContent",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "googlePalmApi",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            },
+            {
+              "name": "User-Agent",
+              "value": "Apifox/1.0.0 (https://apifox.com)"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"contents\": [\n    {\n        \"parts\": [\n            {\"text\": \"{{ $('prepare_data').item.json.query ?? 'find some news' }} with the source links\"}\n        ]\n    }\n],\n\"tools\": [{\"googleSearch\": {}}]\n}",
+        "options": {
+          "response": {
+            "response": {
+              "responseFormat": "json"
+            }
+          }
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        448,
+        112
+      ],
+      "id": "a13d64a0-c98d-46d2-b16c-47ba9db8c09b",
+      "name": "request_ai_2",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "rQbku0bzkqB5T3tq",
+          "name": "gemini_k2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        656,
+        112
+      ],
+      "id": "4d653a33-eaaf-45df-b5c7-c724d59bec85",
+      "name": "Edit Fields"
+    }
+  ],
+  "pinData": {
+    "trigger": [
+      {
+        "json": {
+          "query": "ai là kiện tướng cờ vua lớn nhất Việt Nam"
+        }
+      }
+    ]
+  },
   "repo_name": "workflows",
   "repo_owner": "daileit",
   "repo_path": "n8n/",
@@ -26,6 +362,6 @@
   "staticData": null,
   "tags": [],
   "triggerCount": 0,
-  "updatedAt": "2025-11-04T15:03:40.657Z",
-  "versionId": "882d2711-3f9d-4855-a191-ac5fdbb1b75e"
+  "updatedAt": "2025-11-04T15:28:57.758Z",
+  "versionId": "3444883c-332c-4893-ab3e-1de063262fcf"
 }
