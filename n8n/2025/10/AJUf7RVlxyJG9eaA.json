@@ -812,7 +812,7 @@
     {
       "parameters": {
         "chatId": "-870986299",
-        "text": "={{ $json.message ?? $('reformat').item }}",
+        "text": "={{ $json.content ?? $json.message.content }}",
         "additionalFields": {
           "appendAttribution": false
         }
@@ -989,7 +989,7 @@
           "assignments": [
             {
               "id": "a97febce-a8a1-4d8f-bb77-030715e97f00",
-              "name": "message",
+              "name": "content",
               "value": "=✅ *N8n Github Backup has completed: {{ $('merge').first().json.data.length }} workflows have been processed.* Changes ({{ $('merge').first().json.data.filter(item => item.changed.trim() !== 'same').length }}):{{ $('merge').first().json.data.filter(item => item.changed.trim() !== \"same\" ).map(item => `\\n • ${item.changed.trim().toTitleCase()}d [${item.flowName.trim()}](${item.fileUrl.trim()}) *(${item.fileName})*`) }} Ignored ({{ $('merge').first().json.data.filter(item => item.changed.trim() === 'same').length }}): `{{ $('merge').first().json.data.filter(item => item.changed.trim() === \"same\").map(item => ` ${item.flowName.trim().replaceAll('_','\\_')}`) }}` \\n||_test|| <code><\\code>",
               "type": "string"
             }
@@ -1070,6 +1070,6 @@
   },
   "tags": [],
   "triggerCount": 1,
-  "updatedAt": "2025-11-05T10:29:07.309Z",
-  "versionId": "e7db9ed1-2989-41b2-b104-334b42295584"
+  "updatedAt": "2025-11-05T10:35:46.868Z",
+  "versionId": "ee14f7c4-c108-418d-aed7-f8e2a817e2bd"
 }
