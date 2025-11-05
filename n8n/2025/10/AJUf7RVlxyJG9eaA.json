@@ -1021,7 +1021,7 @@
               "role": "system"
             },
             {
-              "content": "=Original message: \"{{ $json.content }}\""
+              "content": "=Original message: \"{{ $('message').item.json.content }}\""
             }
           ]
         },
@@ -1070,6 +1070,6 @@
   },
   "tags": [],
   "triggerCount": 1,
-  "updatedAt": "2025-11-05T10:36:39.936Z",
-  "versionId": "b8c59462-486e-4e84-99f4-0a45675bf4cb"
+  "updatedAt": "2025-11-05T10:37:41.155Z",
+  "versionId": "553288bc-343e-4b4a-b5af-d8c2cf2e7371"
 }
