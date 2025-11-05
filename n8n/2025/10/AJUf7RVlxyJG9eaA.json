@@ -1010,9 +1010,9 @@
       "parameters": {
         "modelId": {
           "__rl": true,
-          "value": "openai/gpt-oss-20b",
+          "value": "apac.anthropic.claude-sonnet-4-20250514-v1:0",
           "mode": "list",
-          "cachedResultName": "OPENAI/GPT-OSS-20B"
+          "cachedResultName": "APAC.ANTHROPIC.CLAUDE-SONNET-4-20250514-V1:0"
         },
         "messages": {
           "values": [
@@ -1037,8 +1037,8 @@
       "name": "reformat",
       "credentials": {
         "openAiApi": {
-          "id": "AK30dMCwrhg3myvP",
-          "name": "groq_openapi"
+          "id": "wXOpvtRZJrJcNEjI",
+          "name": "timo_llm_inference"
         }
       }
     }
@@ -1069,6 +1069,6 @@
   },
   "tags": [],
   "triggerCount": 1,
-  "updatedAt": "2025-11-05T10:42:18.796Z",
-  "versionId": "a2131825-e1a5-4e62-af0b-c4452ce68a40"
+  "updatedAt": "2025-11-05T10:43:07.296Z",
+  "versionId": "bd1bc260-c238-42e6-9fde-e4fc85d9612f"
 }
