@@ -288,7 +288,7 @@
         [],
         [
           {
-            "node": "formatting",
+            "node": "fix_formatting",
             "type": "main",
             "index": 0
           }
@@ -966,8 +966,8 @@
       "type": "@n8n/n8n-nodes-langchain.openAi",
       "typeVersion": 2,
       "position": [
-        1888,
-        16
+        1824,
+        -16
       ],
       "id": "92f8dbd5-71a1-4ef6-8a22-2da62cd3fc85",
       "name": "fix_formatting",
@@ -995,44 +995,11 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        1680,
+        1664,
         -192
       ],
       "id": "9546af92-598e-43c5-b78e-8781e28e0beb",
       "name": "message"
-    },
-    {
-      "parameters": {
-        "modelId": {
-          "__rl": true,
-          "value": "apac.anthropic.claude-sonnet-4-20250514-v1:0",
-          "mode": "list",
-          "cachedResultName": "APAC.ANTHROPIC.CLAUDE-SONNET-4-20250514-V1:0"
-        },
-        "responses": {
-          "values": [
-            {
-              "content": "=Original message: \"{{ $json.message.toJsonString() }}\""
-            }
-          ]
-        },
-        "builtInTools": {},
-        "options": {}
-      },
-      "type": "@n8n/n8n-nodes-langchain.openAi",
-      "typeVersion": 2,
-      "position": [
-        2112,
-        -128
-      ],
-      "id": "aadba72f-381c-4515-9eaf-86cdacdaa732",
-      "name": "formatting",
-      "credentials": {
-        "openAiApi": {
-          "id": "wXOpvtRZJrJcNEjI",
-          "name": "timo_llm_inference"
-        }
-      }
     }
   ],
   "pinData": {},
@@ -1061,6 +1028,6 @@
   },
   "tags": [],
   "triggerCount": 1,
-  "updatedAt": "2025-11-05T10:15:44.956Z",
-  "versionId": "86128389-d242-4f8f-a996-50ed606c4724"
+  "updatedAt": "2025-11-05T10:16:41.224Z",
+  "versionId": "6a049530-fac1-4bc0-96cb-9eb08fc11946"
 }
