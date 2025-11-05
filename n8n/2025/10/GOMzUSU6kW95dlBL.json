@@ -180,6 +180,7 @@
       ],
       "id": "c23aea9e-de87-4c19-a3d6-2005d1994d7f",
       "name": "Generate title",
+      "retryOnFail": true,
       "credentials": {
         "openAiApi": {
           "id": "wXOpvtRZJrJcNEjI",
@@ -603,6 +604,6 @@
   },
   "tags": [],
   "triggerCount": 1,
-  "updatedAt": "2025-11-05T07:16:30.704Z",
-  "versionId": "9267649b-b120-4e16-8c8c-e3ac124519c3"
+  "updatedAt": "2025-11-05T10:30:17.435Z",
+  "versionId": "5a0ed0d1-1af3-4cb5-af02-653f3206e996"
 }
