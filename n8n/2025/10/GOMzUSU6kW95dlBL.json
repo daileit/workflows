@@ -169,8 +169,7 @@
         },
         "jsonOutput": true,
         "options": {
-          "temperature": 1,
-          "topP": 0.7
+          "temperature": 1
         }
       },
       "type": "@n8n/n8n-nodes-langchain.openAi",
@@ -445,7 +444,7 @@
           "responseFormDescription": "=I'm about to write and publish a post titled: \"{{ $('Generate title').item.json.message.content.title }}\" to CloudyEZ.com",
           "limitWaitTime": {
             "values": {
-              "resumeAmount": 3,
+              "resumeAmount": 2,
               "resumeUnit": "days"
             }
           },
@@ -604,6 +603,6 @@
   },
   "tags": [],
   "triggerCount": 1,
-  "updatedAt": "2025-11-04T15:03:15.132Z",
-  "versionId": "45afe159-f528-42b7-8c9f-f7f8c8217d56"
+  "updatedAt": "2025-11-05T07:16:30.704Z",
+  "versionId": "9267649b-b120-4e16-8c8c-e3ac124519c3"
 }
