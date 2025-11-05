@@ -773,7 +773,7 @@
     {
       "parameters": {
         "chatId": "-870986299",
-        "text": "=✅ *N8n Github Backup has completed: {{ $('merge').first().json.data.length }} workflows have been processed.*\nChanges:{{ $('merge').first().json.data.filter(item => item.changed.trim() !== \"same\" ).map(item => `\\n - ${item.changed.trim().toTitleCase()}d [${item.flowName.trim()}](${item.fileUrl.trim()}) *(${item.fileName})*`) }}\nIgnored {{ $('merge').first().json.data.filter(item => item.changed.trim() === 'same').length }}: {{ $('merge').first().json.data.filter(item => item.changed.trim() === \"same\").map(item => `\\n - ${item.flowName.trim()}`) }}",
+        "text": "=✅ *N8n Github Backup has completed: {{ $('merge').first().json.data.length }} workflows have been processed.*\nChanges:{{ $('merge').first().json.data.filter(item => item.changed.trim() !== \"same\" ).map(item => `\\n - ${item.changed.trim().toTitleCase()}d [${item.flowName.trim()}](${item.fileUrl.trim()}) *(${item.fileName})*`) }}\nIgnored {{ $('merge').first().json.data.filter(item => item.changed.trim() === 'same').length }}: {{ $('merge').first().json.data.filter(item => item.changed.trim() === \"same\").map(item => `\\n - *${item.flowName.trim()}*`) }} ",
         "additionalFields": {
           "appendAttribution": false
         }
@@ -931,6 +931,6 @@
   },
   "tags": [],
   "triggerCount": 1,
-  "updatedAt": "2025-11-04T19:32:20.734Z",
-  "versionId": "01dcb539-f436-4639-ac7f-4794adf4fbc0"
+  "updatedAt": "2025-11-05T07:25:01.890Z",
+  "versionId": "309712d5-4f5d-4819-96e1-a27a51d3e68f"
 }
