@@ -48,13 +48,7 @@
     "Send a text message": {
       "main": [
         [],
-        [
-          {
-            "node": "fix_formatting",
-            "type": "main",
-            "index": 0
-          }
-        ]
+        []
       ]
     },
     "Routing Agent": {
@@ -101,17 +95,6 @@
           {
             "node": "Routing Agent",
             "type": "ai_tool",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "fix_formatting": {
-      "main": [
-        [
-          {
-            "node": "Send a text message",
-            "type": "main",
             "index": 0
           }
         ]
@@ -285,8 +268,7 @@
           "id": "so2GV8mNcWCky4eY",
           "name": "tomi_the_bot"
         }
-      },
-      "onError": "continueErrorOutput"
+      }
     },
     {
       "parameters": {
@@ -429,43 +411,6 @@
       ],
       "id": "5846c8c2-ede7-4e0d-aba4-28bee73d01e8",
       "name": "Call 'google_ai_search'"
-    },
-    {
-      "parameters": {
-        "modelId": {
-          "__rl": true,
-          "value": "groq/compound",
-          "mode": "list",
-          "cachedResultName": "GROQ/COMPOUND"
-        },
-        "responses": {
-          "values": [
-            {
-              "role": "system",
-              "content": "=You are a professional Telegram chatbot. You have deep understanding about telegram text message formatting via API. \nYou will receive a text message that failed to send to telegram api because of error: {{ $json.error }}\nReformat that message but keep the original content."
-            },
-            {
-              "content": "=\"\""
-            }
-          ]
-        },
-        "builtInTools": {},
-        "options": {}
-      },
-      "type": "@n8n/n8n-nodes-langchain.openAi",
-      "typeVersion": 2,
-      "position": [
-        1504,
-        0
-      ],
-      "id": "685f28b8-6b67-425a-875d-0122087cd0be",
-      "name": "fix_formatting",
-      "credentials": {
-        "openAiApi": {
-          "id": "AK30dMCwrhg3myvP",
-          "name": "groq_openapi"
-        }
-      }
     }
   ],
   "pinData": {},
@@ -487,6 +432,6 @@
   "staticData": null,
   "tags": [],
   "triggerCount": 1,
-  "updatedAt": "2025-11-05T09:49:40.078Z",
-  "versionId": "ed22fce0-db49-4469-8172-c0b22b9d06b1"
+  "updatedAt": "2025-11-05T10:23:11.054Z",
+  "versionId": "105ec664-877a-4741-8f63-54dad27e7781"
 }
