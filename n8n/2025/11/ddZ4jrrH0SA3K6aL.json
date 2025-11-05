@@ -89,23 +89,34 @@
       "main": [
         [
           {
-            "node": "Code in JavaScript",
+            "node": "fetch_uri_js",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "Code in JavaScript": {
+    "fetch_uri_py": {
       "main": [
         []
       ]
     },
-    "fetch_uri": {
+    "fetch_uri_js": {
       "main": [
         [
           {
             "node": "combine_result",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Message a model": {
+      "main": [
+        [
+          {
+            "node": "fetch_uri_py",
             "type": "main",
             "index": 0
           }
@@ -377,52 +388,30 @@
     },
     {
       "parameters": {
-        "jsCode": "const axios = require('axios');\n\nasync function convertGroundingToCitations(groundingChunks) {\n  const headers = {\n    \"Content-Type\": \"application/json\",\n    \"User-Agent\": \"Tomi/1.0.1 (https://tomi.dev.lspm.io)\",\n  };\n\n  async function fetchUrlOnce(url, method) {\n    try {\n      console.log(`fetch ${url}`);\n      const response = await axios({\n        method: method,\n        url: url,\n        headers: headers,\n        timeout: 2000,\n      });\n\n      if (response.status === 404) {\n        return \"404\";\n      }\n      return response.request.res.responseUrl;\n    } catch (error) {\n      return null;\n    }\n  }\n\n  async function fetchFinalUrl(url) {\n    let finalUrl = await fetchUrlOnce(url, 'HEAD');\n    if (!finalUrl) {\n      finalUrl = await fetchUrlOnce(url, 'GET');\n    }\n    return finalUrl;\n  }\n\n  async function processChunk(idx, chunk) {\n    const webInfo = chunk.json.web;\n    const originalUrl = webInfo.uri || '';\n    const title = webInfo.title || 'Unknown Source';\n\n    if (!originalUrl) {\n      return null;\n    }\n\n    const finalUrl = await fetchFinalUrl(originalUrl);\n\n    if (finalUrl) {\n      return {\n        index: idx,\n        source_url: finalUrl,\n        title: title,\n      };\n    }\n\n    return {\n      index: idx,\n      source_url: title,\n    };\n  }\n\n  const tasks = groundingChunks.map((chunk, idx) => processChunk(idx, chunk));\n  const results = await Promise.all(tasks);\n  console.log(\"result: \" + JSON.stringify(results));\n  return results.filter((res) => res);\n}\n\nconst final = convertGroundingToCitations($input.all())\nreturn final\n"
-      },
-      "type": "n8n-nodes-base.code",
-      "typeVersion": 2,
-      "position": [
-        1024,
-        -208
-      ],
-      "id": "aadf6896-9021-4080-9a45-41174064d8d9",
-      "name": "Code in JavaScript"
-    },
-    {
-      "parameters": {
-        "language": "python",
-        "pythonCode": "import asyncio\nimport aiohttp\nimport ssl\nasync def convert_grounding_to_citations(\n    grounding_chunks: list[dict]\n) -> list[dict]:\n    \n    headers = {\n        \"Content-Type\": \"application/json\",\n        \"User-Agent\": \"Tomi/1.0.1 (https://tomi.dev.lspm.io)\",\n    }\n    \n    async with aiohttp.ClientSession(headers=headers) as session:\n        \n        async def _fetch_url_once(url: str, method: str) -> str:\n            print(f\"fetch {url}\")\n            timeout = aiohttp.ClientTimeout(total=2)\n            try:\n                #print(f\"fetch {url}\")\n                request = session.head if method == \"HEAD\" else session.get\n                async with request(\n                    url, allow_redirects=True, timeout=timeout\n                ) as response:\n                    if response.status == 404:\n                        return \"404\"\n                    return str(response.url)\n            except Exception as e:\n                return None\n\n        async def fetch_final_url(url: str) -> str:\n            #print(f\"fetch {url}\")\n            final_url = await _fetch_url_once(url, \"HEAD\")\n            if not final_url:\n                final_url = await _fetch_url_once(url, \"GET\")\n            return final_url\n\n        async def process_chunk(idx, chunk):\n            web_info = chunk\n            original_url = web_info.get(\"uri\", \"\")\n            title = web_info.get(\"title\", \"Unknown Source\")\n            if not original_url:\n                return None\n            #print(f\"fetch {chunk}\")\n            final_url = await fetch_final_url(original_url)\n            \n            if final_url:\n                return {\n                    \"index\": idx,\n                    \"source_url\": final_url,\n                    \"title\": title,\n                }\n            return {\n              \"index\": idx,\n              \"source_url\": title\n            }\n\n        tasks = [\n            process_chunk(idx, chunk) \n            for idx, chunk in enumerate(grounding_chunks)\n        ]\n        \n        results = await asyncio.gather(*tasks)\n        #print(f\"result : {results}\")\n    return [res for res in results]\n\ninput_data = []\nfor item in _input.all():\n  data = {\n    \"uri\" : item.json.web.uri,\n    \"title\": item.json.web.title\n  }\n  input_data.append(data)\noutput = await convert_grounding_to_citations(input_data)\nreturn {\n  \"output\": output\n}\n"
-      },
-      "type": "n8n-nodes-base.code",
-      "typeVersion": 2,
-      "position": [
-        1040,
-        112
-      ],
-      "id": "ef09bc5a-a617-4b22-95d9-324ee20153ab",
-      "name": "fetch_uri",
-      "alwaysOutputData": false
-    },
-    {
-      "parameters": {
         "assignments": {
           "assignments": [
             {
+              "id": "69865319-eca8-480e-8467-7bcd1f2a131a",
+              "name": "instructions",
+              "value": "Should cite the source url of the result's chunks using citations_urls.",
+              "type": "string"
+            },
+            {
               "id": "3b152e18-f3aa-4342-bd5b-274107684bb8",
-              "name": "result",
+              "name": "searched_result",
               "value": "={{ $('extract_chunks').first().json.result }}",
               "type": "string"
             },
             {
               "id": "f1ba5b4a-33bc-4d98-87b4-b630323ab008",
               "name": "searched_chunks",
-              "value": "={{ $('extract_chunks').first().json.groundingSupport }}",
+              "value": "={{ $('extract_chunks').first().json.groundingSupport.map(chunk => ({ segment: chunk.segment, citation_indices: chunk.groundingChunkIndices, })) }}",
               "type": "array"
             },
             {
               "id": "1992a947-8e44-4c7e-8a77-14666da0438c",
-              "name": "source_url_indices",
-              "value": "={{ $('fetch_uri').first().json.output }}",
+              "name": "citation_urls",
+              "value": "={{ $('fetch_uri_js').first().json.output }}",
               "type": "array"
             }
           ]
@@ -466,6 +455,34 @@
           "name": "gemini_k2"
         }
       }
+    },
+    {
+      "parameters": {
+        "language": "python",
+        "pythonCode": "import asyncio\nimport aiohttp\nimport ssl\nasync def convert_grounding_to_citations(\n    grounding_chunks: list[dict]\n) -> list[dict]:\n    \n    headers = {\n        \"Content-Type\": \"application/json\",\n        \"User-Agent\": \"Tomi/1.0.1 (https://tomi.dev.lspm.io)\",\n    }\n    \n    async with aiohttp.ClientSession(headers=headers) as session:\n        \n        async def _fetch_url_once(url: str, method: str) -> str:\n            print(f\"fetch {url}\")\n            timeout = aiohttp.ClientTimeout(total=2)\n            try:\n                #print(f\"fetch {url}\")\n                request = session.head if method == \"HEAD\" else session.get\n                async with request(\n                    url, allow_redirects=True, timeout=timeout\n                ) as response:\n                    if response.status == 404:\n                        return \"404\"\n                    return str(response.url)\n            except Exception as e:\n                return None\n\n        async def fetch_final_url(url: str) -> str:\n            #print(f\"fetch {url}\")\n            final_url = await _fetch_url_once(url, \"HEAD\")\n            if not final_url:\n                final_url = await _fetch_url_once(url, \"GET\")\n            return final_url\n\n        async def process_chunk(idx, chunk):\n            web_info = chunk\n            original_url = web_info.get(\"uri\", \"\")\n            title = web_info.get(\"title\", \"Unknown Source\")\n            if not original_url:\n                return None\n            #print(f\"fetch {chunk}\")\n            final_url = await fetch_final_url(original_url)\n            \n            if final_url:\n                return {\n                    \"index\": idx,\n                    \"source_url\": final_url,\n                    \"title\": title,\n                }\n            return {\n              \"index\": idx,\n              \"source_url\": title\n            }\n\n        tasks = [\n            process_chunk(idx, chunk) \n            for idx, chunk in enumerate(grounding_chunks)\n        ]\n        \n        results = await asyncio.gather(*tasks)\n        #print(f\"result : {results}\")\n    return [res for res in results]\n\ninput_data = []\nfor item in _input.all():\n  data = {\n    \"uri\" : item.json.web.uri,\n    \"title\": item.json.web.title\n  }\n  input_data.append(data)\noutput = await convert_grounding_to_citations(input_data)\nreturn {\n  \"output\": output\n}\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        944,
+        -64
+      ],
+      "id": "ef09bc5a-a617-4b22-95d9-324ee20153ab",
+      "name": "fetch_uri_py",
+      "alwaysOutputData": false
+    },
+    {
+      "parameters": {
+        "jsCode": "const axios = require('axios');\n\nasync function convertGroundingToCitations(groundingChunks) {\n  const headers = {\n    \"Content-Type\": \"application/json\",\n    \"User-Agent\": \"Tomi/1.0.1 (https://tomi.dev.lspm.io)\",\n  };\n\n  async function fetchUrlOnce(url, method) {\n    try {\n      //console.log(`fetch ${url}`);\n      const response = await axios({\n        method: method,\n        url: url,\n        headers: headers,\n        timeout: 2000,\n      });\n\n      if (response.status === 404) {\n        return \"404\";\n      }\n      return response.request.res.responseUrl;\n    } catch (error) {\n      return null;\n    }\n  }\n\n  async function fetchFinalUrl(url) {\n    let finalUrl = await fetchUrlOnce(url, 'HEAD');\n    if (!finalUrl) {\n      finalUrl = await fetchUrlOnce(url, 'GET');\n    }\n    return finalUrl;\n  }\n\n  async function processChunk(idx, chunk) {\n    const webInfo = chunk.json.web;\n    const originalUrl = webInfo.uri || '';\n    const title = webInfo.title || 'Unknown Source';\n\n    if (!originalUrl) {\n      return null;\n    }\n\n    const finalUrl = await fetchFinalUrl(originalUrl);\n\n    if (finalUrl) {\n      return {\n        citation_index: idx,\n        citation_url: finalUrl,\n        citation_title: title,\n      };\n    }\n\n    return {\n      citation_index: idx,\n      citation_url: title,\n    };\n  }\n\n  const tasks = groundingChunks.map((chunk, idx) => processChunk(idx, chunk));\n  const results = await Promise.all(tasks);\n  //console.log(\"result: \" + JSON.stringify(results));\n  return results.filter((res) => res);\n}\n\nconst final = await convertGroundingToCitations($input.all())\nreturn {\n  output : final\n};\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1024,
+        112
+      ],
+      "id": "aadf6896-9021-4080-9a45-41174064d8d9",
+      "name": "fetch_uri_js"
     }
   ],
   "pinData": {
@@ -495,6 +512,6 @@
   "staticData": null,
   "tags": [],
   "triggerCount": 0,
-  "updatedAt": "2025-11-05T09:01:38.372Z",
-  "versionId": "3cf49bec-2675-4573-88db-a954d18ecda6"
+  "updatedAt": "2025-11-05T09:52:24.956Z",
+  "versionId": "5fd96eea-a4a0-4644-9b6b-436188a406f4"
 }
