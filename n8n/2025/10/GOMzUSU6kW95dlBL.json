@@ -260,7 +260,7 @@
         "title": "={{ $('Generate title').item.json.message.content.title }}",
         "additionalFields": {
           "content": "={{ $json.message.content.replace('\\n','<br>') }}",
-          "status": "draft",
+          "status": "=draft",
           "categories": "={{ $('Pick top Categories').item.json.output }}",
           "tags": [
             43,
@@ -436,6 +436,25 @@
             {
               "fieldLabel": "Command",
               "placeholder": "Do it better"
+            },
+            {
+              "fieldLabel": "Publish",
+              "fieldType": "dropdown",
+              "fieldOptions": {
+                "values": [
+                  {
+                    "option": "Yes"
+                  },
+                  {
+                    "option": "No"
+                  }
+                ]
+              }
+            },
+            {
+              "fieldName": "Original",
+              "fieldType": "hiddenField",
+              "fieldValue": "={{ $('Generate title').item.json.message.content.title }}"
             }
           ]
         },
@@ -604,6 +623,6 @@
   },
   "tags": [],
   "triggerCount": 1,
-  "updatedAt": "2025-11-05T10:30:17.435Z",
-  "versionId": "5a0ed0d1-1af3-4cb5-af02-653f3206e996"
+  "updatedAt": "2025-11-05T11:01:54.259Z",
+  "versionId": "89d5bf8b-e090-45fa-a070-2bea796cb673"
 }
