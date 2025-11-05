@@ -812,7 +812,7 @@
     {
       "parameters": {
         "chatId": "-870986299",
-        "text": "={{ $json.message ?? $('fix_formatting').item }}",
+        "text": "={{ $json.message ?? $('reformat').item }}",
         "additionalFields": {
           "appendAttribution": false
         }
@@ -1010,14 +1010,14 @@
       "parameters": {
         "modelId": {
           "__rl": true,
-          "value": "apac.anthropic.claude-sonnet-4-20250514-v1:0",
+          "value": "openai/gpt-oss-120b",
           "mode": "list",
-          "cachedResultName": "APAC.ANTHROPIC.CLAUDE-SONNET-4-20250514-V1:0"
+          "cachedResultName": "OPENAI/GPT-OSS-120B"
         },
         "messages": {
           "values": [
             {
-              "content": "You are a professional Telegram chatbot. You have deep understanding about telegram text message formatting via API. \nYou will receive a text message that failed to send to telegram api because of error: {{ $json.error.toJsonString() }}\nReformat that message but keep the original content.",
+              "content": "=You are a professional Telegram chatbot. You have deep understanding about telegram text message formatting via API. \nYou will receive a text message that failed to send to telegram api because of error: {{ $json.error.toJsonString() }}\nReformat that message but keep the original content.",
               "role": "system"
             },
             {
@@ -1038,8 +1038,8 @@
       "name": "reformat",
       "credentials": {
         "openAiApi": {
-          "id": "wXOpvtRZJrJcNEjI",
-          "name": "timo_llm_inference"
+          "id": "AK30dMCwrhg3myvP",
+          "name": "groq_openapi"
         }
       }
     }
@@ -1070,6 +1070,6 @@
   },
   "tags": [],
   "triggerCount": 1,
-  "updatedAt": "2025-11-05T10:26:54.345Z",
-  "versionId": "995f5c34-9ea6-495f-958f-a3553e78f68c"
+  "updatedAt": "2025-11-05T10:29:07.309Z",
+  "versionId": "e7db9ed1-2989-41b2-b104-334b42295584"
 }
