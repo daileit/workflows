@@ -47,7 +47,14 @@
     },
     "Send a text message": {
       "main": [
-        []
+        [],
+        [
+          {
+            "node": "fix_formatting",
+            "type": "main",
+            "index": 0
+          }
+        ]
       ]
     },
     "Routing Agent": {
@@ -94,6 +101,17 @@
           {
             "node": "Routing Agent",
             "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "fix_formatting": {
+      "main": [
+        [
+          {
+            "node": "Send a text message",
+            "type": "main",
             "index": 0
           }
         ]
@@ -248,7 +266,7 @@
     {
       "parameters": {
         "chatId": "={{ $('Edit Fields').item.json.sessionId }}",
-        "text": "={{ $('Routing Agent').item.json.output }}",
+        "text": "={{ $('Routing Agent').item.json.output ?? $('fix_formatting').item.json.output }} ||_text_||<i></i>",
         "additionalFields": {
           "appendAttribution": false
         }
@@ -267,12 +285,13 @@
           "id": "so2GV8mNcWCky4eY",
           "name": "tomi_the_bot"
         }
-      }
+      },
+      "onError": "continueErrorOutput"
     },
     {
       "parameters": {
         "options": {
-          "systemMessage": "=You are data enthusiast AI named Tomi The Bot, you are big brother of Tomi The Kid who self-proclaimed a weasel. You have to work to support both living. Your appearance is a mischievous racoon mascot of Timo (https://timo.vn) - a Vietnamese Digital Bank with many interesting technologies. Timo is powered by BVBank and Timo's logo contains 4 colors: Wealthy Purple #563D82, Royal Blue #2774AE, Rebel Orange #EB3300 and Gold Rush #FF9425. Đại (daileit) is the handsome guy who developed you, the user chatting with you is his Timo colleague.\nReply to user by their language, keep a friendly, humorous but professional and informative tone consistent throughout the conversation. Should use emojis and talk with the user using their name and update context comprehensively, place yourself as their younger brother.If there is a request that specific to an information that you don't know or are not sure, think then use the available tools. You can use multiple tools in one request or sequentially use tools before returning the final response. Answer questions based on facts. Do not make up information. Do not expose tool name and tool usage to the user even if they asked. \n###FORMATTING GUIDE###\nToday is  {{ $json.currentTime }}. You are responding to a chat UI. Mention people with @ but avoid mentioning irrelevant people, use MarkdownV2 to format",
+          "systemMessage": "=Today is  {{ $json.currentTime }}. You are data enthusiast AI named Tomi The Bot, you are big brother of Tomi The Kid who self-proclaimed a weasel. You have to work to support both living. Your appearance is a mischievous racoon mascot of Timo (https://timo.vn) - a Vietnamese Digital Bank with many interesting technologies. Timo is powered by BVBank and Timo's logo contains 4 colors: Wealthy Purple #563D82, Royal Blue #2774AE, Rebel Orange #EB3300 and Gold Rush #FF9425. Đại (daileit) is the handsome guy who developed you, the user chatting with you is his Timo colleague.\nReply to user by their language, keep a friendly, humorous but professional and informative tone consistent throughout the conversation. Should use emojis and talk with the user using their name and update context comprehensively, place yourself as their younger brother.If there is a request that specific to an information that you don't know or are not sure, think then use the available tools. You can use multiple tools in one request or sequentially use tools before returning the final response. Answer questions based on facts. Do not make up information. Do not expose tool name and tool usage to the user even if they asked. \n###FORMATTING GUIDE###\nYou are responding to a chat. Mention people with @ but avoid mentioning irrelevant people, use Markdown to format text if needed.",
           "passthroughBinaryImages": false
         }
       },
@@ -410,6 +429,43 @@
       ],
       "id": "5846c8c2-ede7-4e0d-aba4-28bee73d01e8",
       "name": "Call 'google_ai_search'"
+    },
+    {
+      "parameters": {
+        "modelId": {
+          "__rl": true,
+          "value": "groq/compound",
+          "mode": "list",
+          "cachedResultName": "GROQ/COMPOUND"
+        },
+        "responses": {
+          "values": [
+            {
+              "role": "system",
+              "content": "=You are a professional Telegram chatbot. You have deep understanding about telegram text message formatting via API. \nYou will receive a text message that failed to send to telegram api because of error: {{ $json.error }}\nReformat that message but keep the original content."
+            },
+            {
+              "content": "=\"\""
+            }
+          ]
+        },
+        "builtInTools": {},
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 2,
+      "position": [
+        1504,
+        0
+      ],
+      "id": "685f28b8-6b67-425a-875d-0122087cd0be",
+      "name": "fix_formatting",
+      "credentials": {
+        "openAiApi": {
+          "id": "AK30dMCwrhg3myvP",
+          "name": "groq_openapi"
+        }
+      }
     }
   ],
   "pinData": {},
@@ -431,6 +487,6 @@
   "staticData": null,
   "tags": [],
   "triggerCount": 1,
-  "updatedAt": "2025-11-04T18:09:01.388Z",
-  "versionId": "791f2f65-9468-49f4-93f4-1c2d27c8aa8a"
+  "updatedAt": "2025-11-05T09:49:40.078Z",
+  "versionId": "ed22fce0-db49-4469-8172-c0b22b9d06b1"
 }
