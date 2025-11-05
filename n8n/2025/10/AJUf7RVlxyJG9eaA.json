@@ -282,6 +282,29 @@
           }
         ]
       ]
+    },
+    "Notify Success": {
+      "main": [
+        [],
+        [
+          {
+            "node": "fix_formatting",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "fix_formatting": {
+      "main": [
+        [
+          {
+            "node": "Notify Success",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     }
   },
   "createdAt": "2025-10-30T12:00:50.373Z",
@@ -340,7 +363,7 @@
       "name": "n8n",
       "type": "n8n-nodes-base.n8n",
       "position": [
-        960,
+        928,
         -48
       ],
       "typeVersion": 1,
@@ -617,7 +640,7 @@
       "name": "Loop Over Items",
       "type": "n8n-nodes-base.splitInBatches",
       "position": [
-        1168,
+        1104,
         -48
       ],
       "typeVersion": 3
@@ -773,7 +796,7 @@
     {
       "parameters": {
         "chatId": "-870986299",
-        "text": "=✅ *N8n Github Backup has completed: {{ $('merge').first().json.data.length }} workflows have been processed.*\nChanges ({{ $('merge').first().json.data.filter(item => item.changed.trim() !== 'same').length }}):{{ $('merge').first().json.data.filter(item => item.changed.trim() !== \"same\" ).map(item => `\\n • ${item.changed.trim().toTitleCase()}d [${item.flowName.trim()}](${item.fileUrl.trim()}) *(${item.fileName})*`) }}\nIgnored ({{ $('merge').first().json.data.filter(item => item.changed.trim() === 'same').length }}): {{ $('merge').first().json.data.filter(item => item.changed.trim() === \"same\").map(item => ` ${item.flowName.trim().replaceAll('_','\\\\_')}`) }}",
+        "text": "=✅ *N8n Github Backup has completed: {{ $('merge').first().json.data.length }} workflows have been processed.*\nChanges ({{ $('merge').first().json.data.filter(item => item.changed.trim() !== 'same').length }}):{{ $('merge').first().json.data.filter(item => item.changed.trim() !== \"same\" ).map(item => `\\n • ${item.changed.trim().toTitleCase()}d [${item.flowName.trim()}](${item.fileUrl.trim()}) *(${item.fileName})*`) }}\nIgnored ({{ $('merge').first().json.data.filter(item => item.changed.trim() === 'same').length }}): `{{ $('merge').first().json.data.filter(item => item.changed.trim() === \"same\").map(item => ` ${item.flowName.trim().replaceAll('_','\\\\_')}`) }}`",
         "additionalFields": {
           "appendAttribution": false
         }
@@ -781,8 +804,8 @@
       "type": "n8n-nodes-base.telegram",
       "typeVersion": 1.2,
       "position": [
-        1920,
-        -192
+        1808,
+        -176
       ],
       "id": "a77aad6f-ca5a-48fa-a925-8ae921e9cb57",
       "name": "Notify Success",
@@ -792,7 +815,8 @@
           "id": "RHYciMpF31QQslz5",
           "name": "desert_eagle_bot"
         }
-      }
+      },
+      "onError": "continueErrorOutput"
     },
     {
       "parameters": {
@@ -802,7 +826,7 @@
       "type": "n8n-nodes-base.aggregate",
       "typeVersion": 1,
       "position": [
-        1440,
+        1328,
         -176
       ],
       "id": "022b564c-1ba7-4888-ac1a-c001d062df2c",
@@ -830,7 +854,7 @@
       "type": "n8n-nodes-base.executeWorkflow",
       "typeVersion": 1.3,
       "position": [
-        1440,
+        1328,
         -32
       ],
       "id": "1a82afbc-0e56-450c-ac31-8f60bf2ac5a6",
@@ -848,7 +872,7 @@
       "type": "n8n-nodes-base.telegram",
       "typeVersion": 1.2,
       "position": [
-        1680,
+        1536,
         -16
       ],
       "id": "c91475ae-4237-49ae-a0d7-c9f612d77af6",
@@ -898,11 +922,48 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.2,
       "position": [
-        1680,
+        1536,
         -176
       ],
       "id": "c0d777b7-bcf1-475d-8579-1fa7acd0c8e2",
       "name": "If"
+    },
+    {
+      "parameters": {
+        "modelId": {
+          "__rl": true,
+          "value": "groq/compound",
+          "mode": "list",
+          "cachedResultName": "GROQ/COMPOUND"
+        },
+        "responses": {
+          "values": [
+            {
+              "role": "system",
+              "content": "=You are a professional Telegram chatbot. You have deep understanding about telegram text message formatting via API. \nYou will receive a text message that failed to send to telegram api because of error: {{ $json.error }}\nReformat that message but keep the original content."
+            },
+            {
+              "content": "=\"\""
+            }
+          ]
+        },
+        "builtInTools": {},
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 2,
+      "position": [
+        1856,
+        -16
+      ],
+      "id": "92f8dbd5-71a1-4ef6-8a22-2da62cd3fc85",
+      "name": "fix_formatting",
+      "credentials": {
+        "openAiApi": {
+          "id": "AK30dMCwrhg3myvP",
+          "name": "groq_openapi"
+        }
+      }
     }
   ],
   "pinData": {},
@@ -931,6 +992,6 @@
   },
   "tags": [],
   "triggerCount": 1,
-  "updatedAt": "2025-11-05T07:37:48.366Z",
-  "versionId": "5c41d089-42a0-430b-a315-854a6610288c"
+  "updatedAt": "2025-11-05T09:59:54.436Z",
+  "versionId": "8dbba10f-162a-4919-ab84-8f78717fe16b"
 }
