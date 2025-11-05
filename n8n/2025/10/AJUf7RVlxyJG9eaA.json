@@ -1010,14 +1010,14 @@
       "parameters": {
         "modelId": {
           "__rl": true,
-          "value": "openai/gpt-oss-120b",
+          "value": "openai/gpt-oss-20b",
           "mode": "list",
-          "cachedResultName": "OPENAI/GPT-OSS-120B"
+          "cachedResultName": "OPENAI/GPT-OSS-20B"
         },
         "messages": {
           "values": [
             {
-              "content": "=You are a professional Telegram chatbot. You have deep understanding about telegram text message formatting via API. \nYou will receive a text message that failed to send to telegram api because of error: {{ $json.error.toJsonString() }}\nReformat that message but keep the original content.",
+              "content": "=You are a professional Telegram chatbot. You have deep understanding about telegram text message formatting via API. \nYou will receive a text message that failed to send to telegram api because of error: {{ $json.error.toJsonString() }}\nReformat that message using Markdown but keep the original content.",
               "role": "system"
             },
             {
@@ -1070,6 +1070,6 @@
   },
   "tags": [],
   "triggerCount": 1,
-  "updatedAt": "2025-11-05T10:37:41.155Z",
-  "versionId": "553288bc-343e-4b4a-b5af-d8c2cf2e7371"
+  "updatedAt": "2025-11-05T10:38:52.621Z",
+  "versionId": "1f55ed3b-cf7c-4786-8608-ea13743091ad"
 }
