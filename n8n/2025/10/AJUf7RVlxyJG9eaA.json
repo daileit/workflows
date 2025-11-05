@@ -1017,7 +1017,7 @@
         "messages": {
           "values": [
             {
-              "content": "=You are a professional Telegram chatbot. You have deep understanding about telegram text message formatting via API. \nYou will receive a text message that failed to send to telegram api because of error: {{ $json.error.toJsonString() }}\nReformat that message using Markdown but keep the original content.",
+              "content": "=You are a professional Telegram chatbot. You have deep understanding about telegram text message formatting via API. \nYou will receive a text message that failed to send to telegram api because of error: {{ $json.error.toJsonString() }}\nReformat that message using Markdown but keep the original content. Return text only.",
               "role": "system"
             },
             {
@@ -1025,7 +1025,6 @@
             }
           ]
         },
-        "jsonOutput": true,
         "options": {}
       },
       "type": "@n8n/n8n-nodes-langchain.openAi",
@@ -1070,6 +1069,6 @@
   },
   "tags": [],
   "triggerCount": 1,
-  "updatedAt": "2025-11-05T10:38:52.621Z",
-  "versionId": "1f55ed3b-cf7c-4786-8608-ea13743091ad"
+  "updatedAt": "2025-11-05T10:42:18.796Z",
+  "versionId": "a2131825-e1a5-4e62-af0b-c4452ce68a40"
 }
