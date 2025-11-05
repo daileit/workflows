@@ -796,7 +796,7 @@
     {
       "parameters": {
         "chatId": "-870986299",
-        "text": "=✅ *N8n Github Backup has completed: {{ $('merge').first().json.data.length }} workflows have been processed.*\nChanges ({{ $('merge').first().json.data.filter(item => item.changed.trim() !== 'same').length }}):{{ $('merge').first().json.data.filter(item => item.changed.trim() !== \"same\" ).map(item => `\\n • ${item.changed.trim().toTitleCase()}d [${item.flowName.trim()}](${item.fileUrl.trim()}) *(${item.fileName})*`) }}\nIgnored ({{ $('merge').first().json.data.filter(item => item.changed.trim() === 'same').length }}): `{{ $('merge').first().json.data.filter(item => item.changed.trim() === \"same\").map(item => ` ${item.flowName.trim().replaceAll('_','\\_')}`) }}` ||test||",
+        "text": "=✅ *N8n Github Backup has completed: {{ $('merge').first().json.data.length }} workflows have been processed.*\nChanges ({{ $('merge').first().json.data.filter(item => item.changed.trim() !== 'same').length }}):{{ $('merge').first().json.data.filter(item => item.changed.trim() !== \"same\" ).map(item => `\\n • ${item.changed.trim().toTitleCase()}d [${item.flowName.trim()}](${item.fileUrl.trim()}) *(${item.fileName})*`) }}\nIgnored ({{ $('merge').first().json.data.filter(item => item.changed.trim() === 'same').length }}): `{{ $('merge').first().json.data.filter(item => item.changed.trim() === \"same\").map(item => ` ${item.flowName.trim().replaceAll('_','\\_')}`) }}` \\n||_test|| <code><\\code>",
         "additionalFields": {
           "appendAttribution": false
         }
@@ -992,6 +992,6 @@
   },
   "tags": [],
   "triggerCount": 1,
-  "updatedAt": "2025-11-05T10:00:49.538Z",
-  "versionId": "5f6547ee-24ba-4ee0-99e7-c406c0c39052"
+  "updatedAt": "2025-11-05T10:01:42.350Z",
+  "versionId": "03c4d72a-22c5-483a-8fad-3bd73a84c1c1"
 }
