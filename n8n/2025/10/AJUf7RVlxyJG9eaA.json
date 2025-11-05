@@ -295,11 +295,6 @@
         ]
       ]
     },
-    "fix_formatting": {
-      "main": [
-        []
-      ]
-    },
     "message": {
       "main": [
         [
@@ -947,44 +942,6 @@
     },
     {
       "parameters": {
-        "modelId": {
-          "__rl": true,
-          "value": "groq/compound",
-          "mode": "list",
-          "cachedResultName": "GROQ/COMPOUND"
-        },
-        "responses": {
-          "values": [
-            {
-              "role": "system",
-              "content": "=You are a professional Telegram chatbot. You have deep understanding about telegram text message formatting via API. \nYou will receive a text message that failed to send to telegram api because of error: {{ $json.error.toJsonString() }}\nReformat that message but keep the original content."
-            },
-            {
-              "content": "=Original message: \"{{ $json.message.toJsonString() }}\""
-            }
-          ]
-        },
-        "simplify": false,
-        "builtInTools": {},
-        "options": {}
-      },
-      "type": "@n8n/n8n-nodes-langchain.openAi",
-      "typeVersion": 2,
-      "position": [
-        2176,
-        -128
-      ],
-      "id": "92f8dbd5-71a1-4ef6-8a22-2da62cd3fc85",
-      "name": "fix_formatting",
-      "credentials": {
-        "openAiApi": {
-          "id": "AK30dMCwrhg3myvP",
-          "name": "groq_openapi"
-        }
-      }
-    },
-    {
-      "parameters": {
         "assignments": {
           "assignments": [
             {
@@ -1017,11 +974,11 @@
         "messages": {
           "values": [
             {
-              "content": "=You are a professional Telegram chatbot. You have deep understanding about telegram text message formatting via API. \nYou will receive a text message that failed to send to telegram api because of error: {{ $json.error.toJsonString() }}\nReformat that message using Markdown but keep the original content. Return text only.",
+              "content": "=You are a professional Telegram chatbot. You have deep understanding about telegram text message formatting via API. \nYou will receive a text message that failed to send to telegram api because of error: {{ $json.error.toJsonString() }}\nReformat that message using Markdown or remove special characters to make it works for telegram. Must keep the original semantic content. Return text only.",
               "role": "system"
             },
             {
-              "content": "=Original message: \"{{ $('message').item.json.content }}\""
+              "content": "=Original message: \"{{ $json.message?.content ?? $json.content }}\""
             }
           ]
         },
@@ -1069,6 +1026,6 @@
   },
   "tags": [],
   "triggerCount": 1,
-  "updatedAt": "2025-11-05T10:43:07.296Z",
-  "versionId": "bd1bc260-c238-42e6-9fde-e4fc85d9612f"
+  "updatedAt": "2025-11-05T10:47:36.351Z",
+  "versionId": "aecfda8d-b29e-40ef-bc2d-f22fc399d401"
 }
