@@ -249,7 +249,7 @@
     {
       "parameters": {
         "chatId": "={{ $('Edit Fields').item.json.sessionId }}",
-        "text": "={{ $('Routing Agent').item.json.output ?? $('fix_formatting').item.json.output }} ||_text_||<i></i>",
+        "text": "={{ $('Routing Agent').item.json.output ?? $('fix_formatting').item.json.output }}",
         "additionalFields": {
           "appendAttribution": false
         }
@@ -432,6 +432,6 @@
   "staticData": null,
   "tags": [],
   "triggerCount": 1,
-  "updatedAt": "2025-11-05T10:23:11.054Z",
-  "versionId": "105ec664-877a-4741-8f63-54dad27e7781"
+  "updatedAt": "2025-11-05T10:53:44.421Z",
+  "versionId": "6da80e5c-e71d-453b-8b5d-9fefdd4828af"
 }
