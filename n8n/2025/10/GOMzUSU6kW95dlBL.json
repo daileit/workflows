@@ -160,10 +160,10 @@
               "role": "system"
             },
             {
-              "content": "=Must use this as Main category instruction: {{ $json.data?.Command ?? $('Merge to list').first().json.categories.randomItem().toJsonString() }}\nThen choose some related extra supporting categories from this list: {{ $('Merge to list').first().json.categories.toJsonString() }}"
+              "content": "=Must use this as Main category instruction: {{ $json.data?.Command ?  $json.data.Original + \" & \" + $json.data.Command : $('Merge to list').first().json.categories.randomItem().toJsonString() }}\nThen choose some related extra supporting categories from this list: {{ $('Merge to list').first().json.categories.toJsonString() }}"
             },
             {
-              "content": "=Must use this instruction to do your task: {{ $json.data?.Command ?? 'be creative' }} "
+              "content": "={{ $json.data?.Original ? \"Initial idea: \" + $json.data.Original : '' }}\n{{ $json.data?.Command ? \"You must change it to the new title following this instruction: \" + $json.data.Command : 'Be creative and find a cool blog post Title' }} "
             }
           ]
         },
@@ -260,7 +260,7 @@
         "title": "={{ $('Generate title').item.json.message.content.title }}",
         "additionalFields": {
           "content": "={{ $json.message.content.replace('\\n','<br>') }}",
-          "status": "=draft",
+          "status": "={{ $('Get Permission').item.json.data.Publish === \"Yes\" ? 'publish' : 'draft' }}",
           "categories": "={{ $('Pick top Categories').item.json.output }}",
           "tags": [
             43,
@@ -366,7 +366,7 @@
     {
       "parameters": {
         "chatId": "-870986299",
-        "text": "=The post was uploaded [{{ $json.title.raw }}](https://cloudyez.com/{{ $json.generated_slug }})",
+        "text": "=The post was {{ $('Get Permission').item.json.data.Publish === \"Yes\" ? 'published' : 'uploaded as draft' }} [{{ $json.title.raw }}](https://cloudyez.com/{{ $json.generated_slug }})",
         "additionalFields": {
           "appendAttribution": false
         }
@@ -623,6 +623,6 @@
   },
   "tags": [],
   "triggerCount": 1,
-  "updatedAt": "2025-11-05T11:01:54.259Z",
-  "versionId": "89d5bf8b-e090-45fa-a070-2bea796cb673"
+  "updatedAt": "2025-11-05T11:50:20.194Z",
+  "versionId": "039cd597-a931-4470-9dbd-3d513b88c1cc"
 }
