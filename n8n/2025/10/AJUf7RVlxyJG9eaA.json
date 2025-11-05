@@ -947,7 +947,7 @@
             {
               "id": "a97febce-a8a1-4d8f-bb77-030715e97f00",
               "name": "content",
-              "value": "=✅ *N8n Github Backup has completed: {{ $('merge').first().json.data.length }} workflows have been processed.*\nChanges ({{ $('merge').first().json.data.filter(item => item.changed.trim() !== 'same').length }}):{{ $('merge').first().json.data.filter(item => item.changed.trim() !== \"same\" ).map(item => `\\n • ${item.changed.trim().toTitleCase()}d [${item.flowName.trim()}](${item.fileUrl.trim()}) *(${item.fileName})*`) }}\nIgnored ({{ $('merge').first().json.data.filter(item => item.changed.trim() === 'same').length }}):\n`{{ $('merge').first().json.data.filter(item => item.changed.trim() === \"same\").map(item => ` ${item.flowName.trim()}`) }}`",
+              "value": "=✅ *N8n Github Backup has completed: {{ $('merge').first().json.data.length }} workflows have been processed.*\nChanges ({{ $('merge').first().json.data.filter(item => item.changed.trim() !== 'same').length }}):{{ $('merge').first().json.data.filter(item => item.changed.trim() !== \"same\" ).map(item => `\\n • ${item.changed.trim().toTitleCase()}d [${item.flowName.trim()}](${item.fileUrl.trim()}) *(${item.fileName})*`) }}\nIgnored ({{ $('merge').first().json.data.filter(item => item.changed.trim() === 'same').length }}):\n`{{ $('merge').first().json.data.filter(item => item.changed.trim() === \"same\").map(item => `${item.flowName.trim()} `) }}`",
               "type": "string"
             }
           ]
@@ -1026,6 +1026,6 @@
   },
   "tags": [],
   "triggerCount": 1,
-  "updatedAt": "2025-11-05T10:51:13.191Z",
-  "versionId": "685c9976-3a35-41ab-9997-5326f1a262f2"
+  "updatedAt": "2025-11-05T10:51:58.971Z",
+  "versionId": "2a65dddb-fb9f-4274-8fea-947fee974bbc"
 }
