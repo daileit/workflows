@@ -89,7 +89,7 @@
       "main": [
         [
           {
-            "node": "fetch_uri",
+            "node": "Code in JavaScript",
             "type": "main",
             "index": 0
           }
@@ -377,13 +377,13 @@
     },
     {
       "parameters": {
-        "jsCode": "async function fetchFinalUrl(url) {\n    const headers = {\n        \"Content-Type\": \"application/json\",\n        \"User-Agent\": \"Tomi/1.0.1 (https://tomi.dev.lspm.io)\",\n    };\n\n    const tryRequest = async (method) => {\n        try {\n            const response = await this.helpers.httpRequest(url, {\n                method: method,\n                headers: headers\n            });\n            \n\n            if (response.status === 404) {\n                return \"\";\n            }\n            return response.url; \n        } catch (e) {\n            return \"\";\n        }\n    };\n    let finalUrl = await tryRequest(\"HEAD\");\n    if (!finalUrl) {\n        finalUrl = await tryRequest(\"GET\");\n    }\n\n    return finalUrl;\n}\n\nasync function convertGroundingToCitations(groundingChunks, maxItems = 9) {\n    const chunksToProcess = groundingChunks.slice(0, maxItems);\n    const citationPromises = chunksToProcess.map(async (chunk, index) => {\n        const webInfo = chunk.web || {};\n        const originalUrl = webInfo.uri || \"\";\n        const title = webInfo.title || \"Unknown Source\";\n        if (originalUrl) {\n            const finalUrl = await fetchFinalUrl(originalUrl);\n            if (finalUrl) {\n                return {\n                    index: index + 1,\n                    source_url: finalUrl,\n                    title: title,\n                };\n            }\n        }\n        return null;\n    });\n    const results = await Promise.all(citationPromises);\n    return results.filter(citation => citation !== null);\n}\n\nreturn convertGroundingToCitations($input.all())\n"
+        "jsCode": "const axios = require('axios');\n\nasync function convertGroundingToCitations(groundingChunks) {\n  const headers = {\n    \"Content-Type\": \"application/json\",\n    \"User-Agent\": \"Tomi/1.0.1 (https://tomi.dev.lspm.io)\",\n  };\n\n  async function fetchUrlOnce(url, method) {\n    try {\n      console.log(`fetch ${url}`);\n      const response = await axios({\n        method: method,\n        url: url,\n        headers: headers,\n        timeout: 2000,\n      });\n\n      if (response.status === 404) {\n        return \"404\";\n      }\n      return response.request.res.responseUrl;\n    } catch (error) {\n      return null;\n    }\n  }\n\n  async function fetchFinalUrl(url) {\n    let finalUrl = await fetchUrlOnce(url, 'HEAD');\n    if (!finalUrl) {\n      finalUrl = await fetchUrlOnce(url, 'GET');\n    }\n    return finalUrl;\n  }\n\n  async function processChunk(idx, chunk) {\n    const webInfo = chunk.json.web;\n    const originalUrl = webInfo.uri || '';\n    const title = webInfo.title || 'Unknown Source';\n\n    if (!originalUrl) {\n      return null;\n    }\n\n    const finalUrl = await fetchFinalUrl(originalUrl);\n\n    if (finalUrl) {\n      return {\n        index: idx,\n        source_url: finalUrl,\n        title: title,\n      };\n    }\n\n    return {\n      index: idx,\n      source_url: title,\n    };\n  }\n\n  const tasks = groundingChunks.map((chunk, idx) => processChunk(idx, chunk));\n  const results = await Promise.all(tasks);\n  console.log(\"result: \" + JSON.stringify(results));\n  return results.filter((res) => res);\n}\n\nconst final = convertGroundingToCitations($input.all())\nreturn final\n"
       },
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        1040,
-        -32
+        1024,
+        -208
       ],
       "id": "aadf6896-9021-4080-9a45-41174064d8d9",
       "name": "Code in JavaScript"
@@ -495,6 +495,6 @@
   "staticData": null,
   "tags": [],
   "triggerCount": 0,
-  "updatedAt": "2025-11-04T18:07:25.611Z",
-  "versionId": "bd927738-b7f2-470c-8564-cecd2f932524"
+  "updatedAt": "2025-11-05T09:01:38.372Z",
+  "versionId": "3cf49bec-2675-4573-88db-a954d18ecda6"
 }
