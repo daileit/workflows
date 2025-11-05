@@ -821,7 +821,7 @@
       "id": "a77aad6f-ca5a-48fa-a925-8ae921e9cb57",
       "name": "Notify Success",
       "webhookId": "868eda86-564a-45b2-9814-7d86067d9b4f",
-      "alwaysOutputData": true,
+      "alwaysOutputData": false,
       "credentials": {
         "telegramApi": {
           "id": "RHYciMpF31QQslz5",
@@ -955,7 +955,7 @@
               "content": "=You are a professional Telegram chatbot. You have deep understanding about telegram text message formatting via API. \nYou will receive a text message that failed to send to telegram api because of error: {{ $json.error }}\nReformat that message but keep the original content."
             },
             {
-              "content": "={{ $json.message }}"
+              "content": "=Original message: \"{{ $json.message }}\""
             }
           ]
         },
@@ -1027,6 +1027,6 @@
   },
   "tags": [],
   "triggerCount": 1,
-  "updatedAt": "2025-11-05T10:08:25.837Z",
-  "versionId": "e5476e0f-463d-4a41-b162-bb8e5af67fa9"
+  "updatedAt": "2025-11-05T10:11:30.088Z",
+  "versionId": "4f4967ba-4ada-4137-8720-487dc3200310"
 }
