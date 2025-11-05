@@ -1012,10 +1012,6 @@
         "responses": {
           "values": [
             {
-              "role": "system",
-              "content": "=You are a professional Telegram chatbot. You have deep understanding about telegram text message formatting via API. \nYou will receive a text message that failed to send to telegram api because of error: {{ $json.error.toJsonString() }}\nReformat that message but keep the original content."
-            },
-            {
               "content": "=Original message: \"{{ $json.message.toJsonString() }}\""
             }
           ]
@@ -1065,6 +1061,6 @@
   },
   "tags": [],
   "triggerCount": 1,
-  "updatedAt": "2025-11-05T10:15:06.200Z",
-  "versionId": "9d618641-3cc1-42ec-922c-ec3be6b25467"
+  "updatedAt": "2025-11-05T10:15:44.956Z",
+  "versionId": "86128389-d242-4f8f-a996-50ed606c4724"
 }
