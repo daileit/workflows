@@ -288,7 +288,7 @@
         [],
         [
           {
-            "node": "fix_formatting",
+            "node": "reformat",
             "type": "main",
             "index": 0
           }
@@ -296,6 +296,11 @@
       ]
     },
     "fix_formatting": {
+      "main": [
+        []
+      ]
+    },
+    "message": {
       "main": [
         [
           {
@@ -306,7 +311,7 @@
         ]
       ]
     },
-    "message": {
+    "reformat": {
       "main": [
         [
           {
@@ -815,7 +820,7 @@
       "type": "n8n-nodes-base.telegram",
       "typeVersion": 1.2,
       "position": [
-        1824,
+        1840,
         -192
       ],
       "id": "a77aad6f-ca5a-48fa-a925-8ae921e9cb57",
@@ -966,8 +971,8 @@
       "type": "@n8n/n8n-nodes-langchain.openAi",
       "typeVersion": 2,
       "position": [
-        1824,
-        -16
+        2176,
+        -128
       ],
       "id": "92f8dbd5-71a1-4ef6-8a22-2da62cd3fc85",
       "name": "fix_formatting",
@@ -1000,6 +1005,43 @@
       ],
       "id": "9546af92-598e-43c5-b78e-8781e28e0beb",
       "name": "message"
+    },
+    {
+      "parameters": {
+        "modelId": {
+          "__rl": true,
+          "value": "apac.anthropic.claude-sonnet-4-20250514-v1:0",
+          "mode": "list",
+          "cachedResultName": "APAC.ANTHROPIC.CLAUDE-SONNET-4-20250514-V1:0"
+        },
+        "messages": {
+          "values": [
+            {
+              "content": "You are a professional Telegram chatbot. You have deep understanding about telegram text message formatting via API. \nYou will receive a text message that failed to send to telegram api because of error: {{ $json.error.toJsonString() }}\nReformat that message but keep the original content.",
+              "role": "system"
+            },
+            {
+              "content": "=Original message: \"{{ $json.message.toJsonString() }}\""
+            }
+          ]
+        },
+        "jsonOutput": true,
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1.8,
+      "position": [
+        1840,
+        0
+      ],
+      "id": "2ebf3a64-d3a4-4d0b-bdab-9f22b4e20cdf",
+      "name": "reformat",
+      "credentials": {
+        "openAiApi": {
+          "id": "wXOpvtRZJrJcNEjI",
+          "name": "timo_llm_inference"
+        }
+      }
     }
   ],
   "pinData": {},
@@ -1028,6 +1070,6 @@
   },
   "tags": [],
   "triggerCount": 1,
-  "updatedAt": "2025-11-05T10:16:41.224Z",
-  "versionId": "6a049530-fac1-4bc0-96cb-9eb08fc11946"
+  "updatedAt": "2025-11-05T10:26:54.345Z",
+  "versionId": "995f5c34-9ea6-495f-958f-a3553e78f68c"
 }
