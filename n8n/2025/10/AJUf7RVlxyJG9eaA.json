@@ -955,7 +955,7 @@
               "content": "=You are a professional Telegram chatbot. You have deep understanding about telegram text message formatting via API. \nYou will receive a text message that failed to send to telegram api because of error: {{ $json.error }}\nReformat that message but keep the original content."
             },
             {
-              "content": "=✅ *N8n Github Backup has completed: {{ $('merge').first().json.data.length }} workflows have been processed.*\nChanges ({{ $('merge').first().json.data.filter(item => item.changed.trim() !== 'same').length }}):{{ $('merge').first().json.data.filter(item => item.changed.trim() !== \"same\" ).map(item => `\\n • ${item.changed.trim().toTitleCase()}d [${item.flowName.trim()}](${item.fileUrl.trim()}) *(${item.fileName})*`) }}\nIgnored ({{ $('merge').first().json.data.filter(item => item.changed.trim() === 'same').length }}): `{{ $('merge').first().json.data.filter(item => item.changed.trim() === \"same\").map(item => ` ${item.flowName.trim().replaceAll('_','\\_')}`) }}` \\n||_test|| <code><\\code>"
+              "content": "={{ $json.message }}"
             }
           ]
         },
@@ -972,8 +972,8 @@
       "name": "fix_formatting",
       "credentials": {
         "openAiApi": {
-          "id": "pVKHFWiRKfdhvgtu",
-          "name": "aws_bedrock_model"
+          "id": "wXOpvtRZJrJcNEjI",
+          "name": "timo_llm_inference"
         }
       }
     },
@@ -1027,6 +1027,6 @@
   },
   "tags": [],
   "triggerCount": 1,
-  "updatedAt": "2025-11-05T10:06:44.689Z",
-  "versionId": "9c5375e2-1b8b-4c88-ad8e-aac8f4b81d4b"
+  "updatedAt": "2025-11-05T10:08:25.837Z",
+  "versionId": "e5476e0f-463d-4a41-b162-bb8e5af67fa9"
 }
