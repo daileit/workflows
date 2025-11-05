@@ -276,7 +276,7 @@
       "main": [
         [
           {
-            "node": "Notify Success",
+            "node": "message",
             "type": "main",
             "index": 0
           }
@@ -296,6 +296,17 @@
       ]
     },
     "fix_formatting": {
+      "main": [
+        [
+          {
+            "node": "Notify Success",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "message": {
       "main": [
         [
           {
@@ -363,7 +374,7 @@
       "name": "n8n",
       "type": "n8n-nodes-base.n8n",
       "position": [
-        928,
+        912,
         -48
       ],
       "typeVersion": 1,
@@ -640,7 +651,7 @@
       "name": "Loop Over Items",
       "type": "n8n-nodes-base.splitInBatches",
       "position": [
-        1104,
+        1072,
         -48
       ],
       "typeVersion": 3
@@ -796,7 +807,7 @@
     {
       "parameters": {
         "chatId": "-870986299",
-        "text": "=✅ *N8n Github Backup has completed: {{ $('merge').first().json.data.length }} workflows have been processed.*\nChanges ({{ $('merge').first().json.data.filter(item => item.changed.trim() !== 'same').length }}):{{ $('merge').first().json.data.filter(item => item.changed.trim() !== \"same\" ).map(item => `\\n • ${item.changed.trim().toTitleCase()}d [${item.flowName.trim()}](${item.fileUrl.trim()}) *(${item.fileName})*`) }}\nIgnored ({{ $('merge').first().json.data.filter(item => item.changed.trim() === 'same').length }}): `{{ $('merge').first().json.data.filter(item => item.changed.trim() === \"same\").map(item => ` ${item.flowName.trim().replaceAll('_','\\_')}`) }}` \\n||_test|| <code><\\code>",
+        "text": "={{ $json.message ?? $('fix_formatting').item }}",
         "additionalFields": {
           "appendAttribution": false
         }
@@ -804,12 +815,13 @@
       "type": "n8n-nodes-base.telegram",
       "typeVersion": 1.2,
       "position": [
-        1808,
-        -176
+        1824,
+        -192
       ],
       "id": "a77aad6f-ca5a-48fa-a925-8ae921e9cb57",
       "name": "Notify Success",
       "webhookId": "868eda86-564a-45b2-9814-7d86067d9b4f",
+      "alwaysOutputData": true,
       "credentials": {
         "telegramApi": {
           "id": "RHYciMpF31QQslz5",
@@ -826,7 +838,7 @@
       "type": "n8n-nodes-base.aggregate",
       "typeVersion": 1,
       "position": [
-        1328,
+        1264,
         -176
       ],
       "id": "022b564c-1ba7-4888-ac1a-c001d062df2c",
@@ -854,7 +866,7 @@
       "type": "n8n-nodes-base.executeWorkflow",
       "typeVersion": 1.3,
       "position": [
-        1328,
+        1264,
         -32
       ],
       "id": "1a82afbc-0e56-450c-ac31-8f60bf2ac5a6",
@@ -872,7 +884,7 @@
       "type": "n8n-nodes-base.telegram",
       "typeVersion": 1.2,
       "position": [
-        1536,
+        1440,
         -16
       ],
       "id": "c91475ae-4237-49ae-a0d7-c9f612d77af6",
@@ -922,7 +934,7 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.2,
       "position": [
-        1536,
+        1456,
         -176
       ],
       "id": "c0d777b7-bcf1-475d-8579-1fa7acd0c8e2",
@@ -932,9 +944,9 @@
       "parameters": {
         "modelId": {
           "__rl": true,
-          "value": "groq/compound",
+          "value": "apac.anthropic.claude-sonnet-4-20250514-v1:0",
           "mode": "list",
-          "cachedResultName": "GROQ/COMPOUND"
+          "cachedResultName": "APAC.ANTHROPIC.CLAUDE-SONNET-4-20250514-V1:0"
         },
         "responses": {
           "values": [
@@ -943,7 +955,7 @@
               "content": "=You are a professional Telegram chatbot. You have deep understanding about telegram text message formatting via API. \nYou will receive a text message that failed to send to telegram api because of error: {{ $json.error }}\nReformat that message but keep the original content."
             },
             {
-              "content": "=\"\""
+              "content": "=✅ *N8n Github Backup has completed: {{ $('merge').first().json.data.length }} workflows have been processed.*\nChanges ({{ $('merge').first().json.data.filter(item => item.changed.trim() !== 'same').length }}):{{ $('merge').first().json.data.filter(item => item.changed.trim() !== \"same\" ).map(item => `\\n • ${item.changed.trim().toTitleCase()}d [${item.flowName.trim()}](${item.fileUrl.trim()}) *(${item.fileName})*`) }}\nIgnored ({{ $('merge').first().json.data.filter(item => item.changed.trim() === 'same').length }}): `{{ $('merge').first().json.data.filter(item => item.changed.trim() === \"same\").map(item => ` ${item.flowName.trim().replaceAll('_','\\_')}`) }}` \\n||_test|| <code><\\code>"
             }
           ]
         },
@@ -960,10 +972,33 @@
       "name": "fix_formatting",
       "credentials": {
         "openAiApi": {
-          "id": "AK30dMCwrhg3myvP",
-          "name": "groq_openapi"
+          "id": "pVKHFWiRKfdhvgtu",
+          "name": "aws_bedrock_model"
         }
       }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "a97febce-a8a1-4d8f-bb77-030715e97f00",
+              "name": "message",
+              "value": "=✅ *N8n Github Backup has completed: {{ $('merge').first().json.data.length }} workflows have been processed.* Changes ({{ $('merge').first().json.data.filter(item => item.changed.trim() !== 'same').length }}):{{ $('merge').first().json.data.filter(item => item.changed.trim() !== \"same\" ).map(item => `\\n • ${item.changed.trim().toTitleCase()}d [${item.flowName.trim()}](${item.fileUrl.trim()}) *(${item.fileName})*`) }} Ignored ({{ $('merge').first().json.data.filter(item => item.changed.trim() === 'same').length }}): `{{ $('merge').first().json.data.filter(item => item.changed.trim() === \"same\").map(item => ` ${item.flowName.trim().replaceAll('_','\\_')}`) }}` \\n||_test|| <code><\\code>",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1680,
+        -192
+      ],
+      "id": "9546af92-598e-43c5-b78e-8781e28e0beb",
+      "name": "message"
     }
   ],
   "pinData": {},
@@ -992,6 +1027,6 @@
   },
   "tags": [],
   "triggerCount": 1,
-  "updatedAt": "2025-11-05T10:01:42.350Z",
-  "versionId": "03c4d72a-22c5-483a-8fad-3bd73a84c1c1"
+  "updatedAt": "2025-11-05T10:06:44.689Z",
+  "versionId": "9c5375e2-1b8b-4c88-ad8e-aac8f4b81d4b"
 }
