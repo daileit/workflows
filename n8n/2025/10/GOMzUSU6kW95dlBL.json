@@ -418,7 +418,7 @@
     {
       "parameters": {
         "chatId": "-870986299",
-        "text": "=The post was {{ $('Get Permission').item.json.data.Publish === \"Yes\" ? 'published' : 'uploaded as draft' }} [{{ $json.title.raw }}](https://cloudyez.com/{{ $json.generated_slug }})",
+        "text": "=The post was {{ $('Get Permission').last().json.data.Publish === \"Yes\" ? 'published' : 'uploaded as draft' }} [{{ $json.title.raw }}](https://cloudyez.com/{{ $json.generated_slug }})",
         "additionalFields": {
           "appendAttribution": false
         }
@@ -773,6 +773,6 @@
   },
   "tags": [],
   "triggerCount": 1,
-  "updatedAt": "2025-11-06T10:34:59.450Z",
-  "versionId": "8c733c3d-c550-4a53-a751-399b843fe210"
+  "updatedAt": "2025-11-06T11:58:30.141Z",
+  "versionId": "2e512791-0fa9-4003-a5a7-629216c16a68"
 }
