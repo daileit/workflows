@@ -151,7 +151,7 @@
             {
               "id": "f7ca36da-4651-405f-b87f-d37db1deec83",
               "name": "path",
-              "value": "={{ parseInt(Math.random()*2) }} ",
+              "value": "={{ parseInt(Math.random()*100) }} ",
               "type": "string"
             }
           ]
@@ -226,10 +226,10 @@
             {
               "id": "f3c35b7a-d1e6-4c37-ab68-339ea10bb952",
               "leftValue": "={{ $json.path }}",
-              "rightValue": 0,
+              "rightValue": 50,
               "operator": {
                 "type": "number",
-                "operation": "equals"
+                "operation": "gt"
               }
             }
           ],
@@ -250,7 +250,7 @@
     {
       "parameters": {
         "method": "POST",
-        "url": "={{ $('prepare_data').item.json.search_url }}/v1beta/models/{{  parseInt(Math.random()*2) === 0 ? \"gemini-2.0-flash\" : \"gemini-2.5-flash-lite\" }}:generateContent",
+        "url": "={{ $('prepare_data').item.json.search_url }}/v1beta/models/{{  parseInt(Math.random()*10) > 5 ? \"gemini-2.0-flash\" : \"gemini-2.5-flash-lite\" }}:generateContent",
         "authentication": "predefinedCredentialType",
         "nodeCredentialType": "googlePalmApi",
         "sendHeaders": true,
@@ -295,7 +295,7 @@
     {
       "parameters": {
         "method": "POST",
-        "url": "={{ $('prepare_data').item.json.search_url }}/v1beta/models/{{ parseInt(Math.random()*2) === 0 ? \"gemini-2.0-flash\" : \"gemini-2.5-flash-lite\" }}:generateContent",
+        "url": "={{ $('prepare_data').item.json.search_url }}/v1beta/models/{{ parseInt(Math.random()*10) > 5 ? \"gemini-2.0-flash\" : \"gemini-2.5-flash-lite\" }}:generateContent",
         "authentication": "predefinedCredentialType",
         "nodeCredentialType": "googlePalmApi",
         "sendHeaders": true,
@@ -473,7 +473,7 @@
     },
     {
       "parameters": {
-        "jsCode": "const axios = require('axios');\n\nasync function convertGroundingToCitations(groundingChunks) {\n  const headers = {\n    \"Content-Type\": \"application/json\",\n    \"User-Agent\": \"Tomi/1.0.1 (https://tomi.dev.lspm.io)\",\n  };\n\n  async function fetchUrlOnce(url, method) {\n    try {\n      //console.log(`fetch ${url}`);\n      const response = await axios({\n        method: method,\n        url: url,\n        headers: headers,\n        timeout: 2000,\n      });\n\n      if (response.status === 404) {\n        return \"404\";\n      }\n      return response.request.res.responseUrl;\n    } catch (error) {\n      return null;\n    }\n  }\n\n  async function fetchFinalUrl(url) {\n    let finalUrl = await fetchUrlOnce(url, 'HEAD');\n    if (!finalUrl) {\n      finalUrl = await fetchUrlOnce(url, 'GET');\n    }\n    return finalUrl;\n  }\n\n  async function processChunk(idx, chunk) {\n    const webInfo = chunk.json.web;\n    const originalUrl = webInfo.uri || '';\n    const title = webInfo.title || 'Unknown Source';\n\n    if (!originalUrl) {\n      return null;\n    }\n\n    const finalUrl = await fetchFinalUrl(originalUrl);\n\n    if (finalUrl) {\n      return {\n        citation_index: idx,\n        citation_url: finalUrl,\n        citation_title: title,\n      };\n    }\n\n    return {\n      citation_index: idx,\n      citation_url: title,\n    };\n  }\n\n  const tasks = groundingChunks.map((chunk, idx) => processChunk(idx, chunk));\n  const results = await Promise.all(tasks);\n  //console.log(\"result: \" + JSON.stringify(results));\n  return results.filter((res) => res);\n}\n\nconst final = await convertGroundingToCitations($input.all())\nreturn {\n  output : final\n};\n"
+        "jsCode": "const axios = require('axios');\n\nasync function convertGroundingToCitations(groundingChunks) {\n  const headers = {\n    \"Content-Type\": \"application/json\",\n    \"User-Agent\": \"Tomi/1.0.1 (https://tomi.dev.lspm.io)\",\n  };\n\n  async function fetchUrlOnce(url, method) {\n    try {\n      //console.log(`fetch ${url}`);\n      const response = await axios({\n        method: method,\n        url: url,\n        headers: headers,\n        timeout: 2000,\n      });\n\n      if (response.status === 404) {\n        return null;\n      }\n      return response.request.res.responseUrl;\n    } catch (error) {\n      return null;\n    }\n  }\n\n  async function fetchFinalUrl(url) {\n    let finalUrl = await fetchUrlOnce(url, 'HEAD');\n    if (!finalUrl) {\n      finalUrl = await fetchUrlOnce(url, 'GET');\n    }\n    return finalUrl;\n  }\n\n  async function processChunk(idx, chunk) {\n    const webInfo = chunk.json.web;\n    const originalUrl = webInfo.uri || '';\n    const title = webInfo.title || 'Unknown Source';\n\n    if (!originalUrl) {\n      return null;\n    }\n\n    const finalUrl = await fetchFinalUrl(originalUrl);\n\n    if (finalUrl) {\n      return {\n        citation_index: idx,\n        citation_url: finalUrl,\n        citation_title: title,\n      };\n    }\n\n    return {\n      citation_index: idx,\n      citation_url: title,\n    };\n  }\n\n  const tasks = groundingChunks.map((chunk, idx) => processChunk(idx, chunk));\n  const results = await Promise.all(tasks);\n  //console.log(\"result: \" + JSON.stringify(results));\n  return results.filter((res) => res);\n}\n\nconst final = await convertGroundingToCitations($input.all())\nreturn {\n  output : final\n};\n"
       },
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -512,6 +512,6 @@
   "staticData": null,
   "tags": [],
   "triggerCount": 0,
-  "updatedAt": "2025-11-06T10:14:47.963Z",
-  "versionId": "8234bfa1-6d6b-47a1-993d-93a8a62a7124"
+  "updatedAt": "2025-11-06T10:45:19.737Z",
+  "versionId": "490a8b29-92ac-469a-8bed-9ef6cab3ae5b"
 }
