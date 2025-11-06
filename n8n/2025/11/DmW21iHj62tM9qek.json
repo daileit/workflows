@@ -130,7 +130,9 @@
           "mode": "list",
           "cachedResultName": "apac.anthropic.claude-sonnet-4-20250514-v1:0"
         },
-        "options": {}
+        "options": {
+          "maxTokens": 8000
+        }
       },
       "id": "d96f5ee6-be3b-4d88-b3f6-73f298cebd4d",
       "name": "Al Model",
@@ -357,8 +359,8 @@
       "type": "n8n-nodes-base.httpRequestTool",
       "typeVersion": 4.3,
       "position": [
-        1088,
-        240
+        1104,
+        256
       ],
       "id": "50f5727a-f21e-4ec3-a73e-30a9222cfbe4",
       "name": "google_search",
@@ -407,7 +409,7 @@
       "typeVersion": 2.2,
       "position": [
         912,
-        240
+        256
       ],
       "id": "5846c8c2-ede7-4e0d-aba4-28bee73d01e8",
       "name": "Call 'google_ai_search'"
@@ -432,6 +434,6 @@
   "staticData": null,
   "tags": [],
   "triggerCount": 1,
-  "updatedAt": "2025-11-05T10:53:44.421Z",
-  "versionId": "6da80e5c-e71d-453b-8b5d-9fefdd4828af"
+  "updatedAt": "2025-11-06T07:19:56.849Z",
+  "versionId": "59a85fc1-0a48-4ee8-bcb5-877ca91c792b"
 }
