@@ -238,7 +238,9 @@
             }
           ]
         },
-        "options": {}
+        "options": {
+          "maxTokens": 4096
+        }
       },
       "type": "@n8n/n8n-nodes-langchain.openAi",
       "typeVersion": 1.8,
@@ -623,6 +625,6 @@
   },
   "tags": [],
   "triggerCount": 1,
-  "updatedAt": "2025-11-05T11:50:20.194Z",
-  "versionId": "039cd597-a931-4470-9dbd-3d513b88c1cc"
+  "updatedAt": "2025-11-06T08:51:30.405Z",
+  "versionId": "e040ef72-6e36-459d-9796-2374706dcca5"
 }
