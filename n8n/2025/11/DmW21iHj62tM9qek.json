@@ -51,22 +51,11 @@
         ]
       ]
     },
-    "Get Data": {
-      "main": [
-        [
-          {
-            "node": "Edit Fields",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
     "new_message": {
       "main": [
         [
           {
-            "node": "Get Data",
+            "node": "Edit Fields",
             "type": "main",
             "index": 0
           }
@@ -102,13 +91,7 @@
     },
     "test_trigger": {
       "main": [
-        [
-          {
-            "node": "routing",
-            "type": "main",
-            "index": 0
-          }
-        ]
+        []
       ]
     },
     "routing": {
@@ -250,33 +233,6 @@
     },
     {
       "parameters": {
-        "operation": "get",
-        "dataTableId": {
-          "__rl": true,
-          "value": "Aw7IZNKQXSUZBugz",
-          "mode": "list",
-          "cachedResultName": "Init",
-          "cachedResultUrl": "/projects/TgT7sbikPaxzUZlq/datatables/Aw7IZNKQXSUZBugz"
-        },
-        "filters": {
-          "conditions": [
-            {
-              "keyValue": "1"
-            }
-          ]
-        }
-      },
-      "type": "n8n-nodes-base.dataTable",
-      "typeVersion": 1,
-      "position": [
-        208,
-        0
-      ],
-      "id": "4a9e19f8-e311-4372-a68d-5b3f21827831",
-      "name": "Get Data"
-    },
-    {
-      "parameters": {
         "updates": [
           "message"
         ],
@@ -285,7 +241,7 @@
       "type": "n8n-nodes-base.telegramTrigger",
       "typeVersion": 1.2,
       "position": [
-        0,
+        240,
         0
       ],
       "id": "03779b48-68b8-407c-bf92-afb77c36f3b8",
@@ -490,6 +446,6 @@
   "staticData": null,
   "tags": [],
   "triggerCount": 1,
-  "updatedAt": "2025-11-06T09:04:22.167Z",
-  "versionId": "3620b161-b776-4617-a4f7-2d132a5488b2"
+  "updatedAt": "2025-11-06T10:59:05.024Z",
+  "versionId": "5e0dd5ca-d98f-49d0-93c7-9e73bbbae1cb"
 }
