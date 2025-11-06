@@ -210,7 +210,7 @@
               "role": "system"
             },
             {
-              "content": "=Must use this as Main category instruction: {{ $json.data?.Command ?  $json.data.Original + \" & \" + $json.data.Command : $('Merge to list').first().json.categories.randomItem().toJsonString() }}\nThen choose some related extra supporting categories from this list: {{ $('Merge to list').first().json.categories.toJsonString() }}"
+              "content": "=Must choose one Main category based on this instruction: {{ $json.data?.Command ?  $json.data.Original + \" & \" + $json.data.Command : $('Merge to list').first().json.categories.randomItem().name + \" topic\"}}\nThen choose max three related extra supporting categories from this list: {{ $('Merge to list').first().json.categories.toJsonString() }}"
             },
             {
               "content": "={{ $json.data?.Original ? \"Initial idea: \" + $json.data.Original : '' }}\n{{ $json.data?.Command ? \"You must change it to the new title following this instruction: \" + $json.data.Command : 'Be creative and find a cool blog post Title' }} "
@@ -654,7 +654,7 @@
         "promptType": "define",
         "text": "=Bạn tên daileit, Viết một bài blog tràn đầy thông tin hữu ích nhưng với giọng văn pha một chút hài hước về chủ đề: {{ $json.data.Original }}.\nNội dung cần chi tiết, dài hơn 700 từ.",
         "options": {
-          "systemMessage": "You are a Vietnamese senior content writer named daileit. You are working for a tech blog wordpress website. You mastered the content writring with excellent SEO skills. Given you a topic and you will generate the perfect blog post instantly with SEO keywords at the end.\n### FORMATTING GUIDE ###\nFormat the post as a wordpress post's html block, no need to add title. First start with an excerpt inside <p> block, then write the rest of the content with proper headings and html formmatting, place the SEO keywords at the end. Should have at least one external resource link was inline embedded.\nCan use google_ai_search tool for references or knowledge update.\nYou should always response one blog post content. No css styling, no explaination, no code or json format."
+          "systemMessage": "You are a Vietnamese senior content writer named daileit. You are working for a tech blog wordpress website. You mastered the content writring with excellent SEO skills. Given you a topic and you will generate the perfect blog post instantly with SEO keywords at the end.\n### FORMATTING GUIDE ###\nFormat the post as a wordpress post's html block, no need to add title. First start with an excerpt inside <p> block, then write the rest of the content with proper headings and html formmatting, place the SEO keywords at the end. Should have at least one external resource link was inline embedded.\nCan use google_ai_search tool to search and find references or updates for one or more small portions of your post.\nYou should always response one blog post content. No css styling, no explaination, no code or json format."
         }
       },
       "type": "@n8n/n8n-nodes-langchain.agent",
@@ -668,7 +668,7 @@
     },
     {
       "parameters": {
-        "description": "Use this tool to search for external information from internet using one complementary search for comprehensive results and citations.\nOnly use this tool if you can not find the answer by your own or user requested to search for internet latest update. Do not use for casual chat.",
+        "description": "Use this tool to search for external information from internet using one specific query for updated results and citations.\nOnly use this tool if you need a specific piece of information and you do not trust your knowledge.\nDo not ask for a full research or wide topic question.",
         "workflowId": {
           "__rl": true,
           "value": "ddZ4jrrH0SA3K6aL",
@@ -679,7 +679,7 @@
         "workflowInputs": {
           "mappingMode": "defineBelow",
           "value": {
-            "query": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('query', `The input should be a search query in user's language focusing on factual information`, 'string') }}"
+            "query": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('query', `The input should be a specific search query focusing on factual information`, 'string') }}"
           },
           "matchingColumns": [
             "query"
@@ -718,7 +718,7 @@
           "cachedResultName": "apac.anthropic.claude-sonnet-4-20250514-v1:0"
         },
         "options": {
-          "maxTokens": 4096
+          "maxTokens": 8000
         }
       },
       "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
@@ -773,6 +773,6 @@
   },
   "tags": [],
   "triggerCount": 1,
-  "updatedAt": "2025-11-06T10:02:57.994Z",
-  "versionId": "2bf04a9c-fab9-487f-be20-6c6292b57f08"
+  "updatedAt": "2025-11-06T10:34:59.450Z",
+  "versionId": "8c733c3d-c550-4a53-a751-399b843fe210"
 }
