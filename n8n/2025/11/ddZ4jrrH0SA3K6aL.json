@@ -250,7 +250,7 @@
     {
       "parameters": {
         "method": "POST",
-        "url": "={{ $('prepare_data').item.json.search_url }}/v1beta/models/{{ $('prepare_data').item.json.path.toNumber() === 0 ? \"gemini-2.0-flash\" : \"gemini-2.5-flash-lite\" }}:generateContent",
+        "url": "={{ $('prepare_data').item.json.search_url }}/v1beta/models/{{  parseInt(Math.random()*2) === 0 ? \"gemini-2.0-flash\" : \"gemini-2.5-flash-lite\" }}:generateContent",
         "authentication": "predefinedCredentialType",
         "nodeCredentialType": "googlePalmApi",
         "sendHeaders": true,
@@ -295,7 +295,7 @@
     {
       "parameters": {
         "method": "POST",
-        "url": "={{ $('prepare_data').item.json.search_url }}/v1beta/models/{{ $('prepare_data').item.json.path.toNumber() === 0 ? \"gemini-2.0-flash\" : \"gemini-2.5-flash-lite\" }}:generateContent",
+        "url": "={{ $('prepare_data').item.json.search_url }}/v1beta/models/{{ parseInt(Math.random()*2) === 0 ? \"gemini-2.0-flash\" : \"gemini-2.5-flash-lite\" }}:generateContent",
         "authentication": "predefinedCredentialType",
         "nodeCredentialType": "googlePalmApi",
         "sendHeaders": true,
@@ -512,6 +512,6 @@
   "staticData": null,
   "tags": [],
   "triggerCount": 0,
-  "updatedAt": "2025-11-05T09:52:24.956Z",
-  "versionId": "5fd96eea-a4a0-4644-9b6b-436188a406f4"
+  "updatedAt": "2025-11-06T10:14:47.963Z",
+  "versionId": "8234bfa1-6d6b-47a1-993d-93a8a62a7124"
 }
