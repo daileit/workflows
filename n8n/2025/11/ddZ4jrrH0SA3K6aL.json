@@ -74,26 +74,9 @@
         ]
       ]
     },
-    "extract_chunks": {
-      "main": [
-        [
-          {
-            "node": "Split Out",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
     "Split Out": {
       "main": [
-        [
-          {
-            "node": "fetch_uri_js",
-            "type": "main",
-            "index": 0
-          }
-        ]
+        []
       ]
     },
     "fetch_uri_py": {
@@ -122,6 +105,51 @@
           }
         ]
       ]
+    },
+    "combine_result": {
+      "main": [
+        []
+      ]
+    },
+    "retry_switch": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "check_result": {
+      "main": [
+        [
+          {
+            "node": "Split Out",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "retry_switch",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "extract_chunks": {
+      "main": [
+        [
+          {
+            "node": "check_result",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     }
   },
   "createdAt": "2025-11-04T15:03:40.657Z",
@@ -145,7 +173,7 @@
             {
               "id": "2c61d614-0aa7-4852-8b08-f365844362c9",
               "name": "query",
-              "value": "={{ $('trigger').item.json.query }}",
+              "value": "={{ $('trigger').item.json.query.replaceAll\n('\"','\\'') }}",
               "type": "string"
             },
             {
@@ -226,7 +254,7 @@
             {
               "id": "f3c35b7a-d1e6-4c37-ab68-339ea10bb952",
               "leftValue": "={{ $json.path }}",
-              "rightValue": 50,
+              "rightValue": 90,
               "operator": {
                 "type": "number",
                 "operation": "gt"
@@ -326,7 +354,7 @@
       "typeVersion": 4.3,
       "position": [
         448,
-        112
+        128
       ],
       "id": "a13d64a0-c98d-46d2-b16c-47ba9db8c09b",
       "name": "request_ai_2",
@@ -339,49 +367,14 @@
     },
     {
       "parameters": {
-        "assignments": {
-          "assignments": [
-            {
-              "id": "3449c8ef-88ee-4ae6-a36a-03f32c789b00",
-              "name": "result",
-              "value": "={{ $json.candidates[0].content.parts[0].text }}",
-              "type": "string"
-            },
-            {
-              "id": "455a8011-530a-4c0f-90c9-aeaaa97fab14",
-              "name": "groundingSupport",
-              "value": "={{ $json.candidates[0].groundingMetadata.groundingSupports }}",
-              "type": "array"
-            },
-            {
-              "id": "0807c05a-dff2-4bd9-999a-4e80a1ec726d",
-              "name": "groundingChunks",
-              "value": "={{ $json.candidates[0].groundingMetadata.groundingChunks }}",
-              "type": "array"
-            }
-          ]
-        },
-        "options": {}
-      },
-      "type": "n8n-nodes-base.set",
-      "typeVersion": 3.4,
-      "position": [
-        656,
-        112
-      ],
-      "id": "4d653a33-eaaf-45df-b5c7-c724d59bec85",
-      "name": "extract_chunks"
-    },
-    {
-      "parameters": {
         "fieldToSplitOut": "groundingChunks",
         "options": {}
       },
       "type": "n8n-nodes-base.splitOut",
       "typeVersion": 1,
       "position": [
-        864,
-        112
+        1040,
+        128
       ],
       "id": "76f7e21e-9cc5-4dae-aafb-8452a2ac5c3f",
       "name": "Split Out"
@@ -421,8 +414,8 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        1184,
-        112
+        1408,
+        128
       ],
       "id": "7cf65898-9d2b-40e9-ba23-513640eff54f",
       "name": "combine_result"
@@ -478,18 +471,122 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        1024,
-        112
+        1232,
+        128
       ],
       "id": "aadf6896-9021-4080-9a45-41174064d8d9",
       "name": "fetch_uri_js"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "3333c599-110e-4e3c-9568-b936f9db3077",
+              "name": "search_url",
+              "value": "={{ $('prepare_data').last().json.search_url }}",
+              "type": "string"
+            },
+            {
+              "id": "706be599-266d-4a5a-9729-def42ac5e914",
+              "name": "query",
+              "value": "={{ $('prepare_data').last().json.query }}",
+              "type": "string"
+            },
+            {
+              "id": "e2c420bb-e3f0-4f85-9cd1-3297a84d1884",
+              "name": "path",
+              "value": "={{ Math.abs(100 - parseInt($('prepare_data').last().json.path)) }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1040,
+        272
+      ],
+      "id": "d39b172c-baab-4608-be4c-a1de2b9cc4a2",
+      "name": "retry_switch"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "b183c042-91fa-41ac-9ac3-95563ae1c7d8",
+              "leftValue": "={{ $json.result }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "notEmpty",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        832,
+        128
+      ],
+      "id": "6bfb8b70-8eff-4b44-8b34-bf1f9068787c",
+      "name": "check_result"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "3449c8ef-88ee-4ae6-a36a-03f32c789b00",
+              "name": "result",
+              "value": "={{ $json.candidates[0].content.parts[0].text ?? \"\" }}",
+              "type": "string"
+            },
+            {
+              "id": "455a8011-530a-4c0f-90c9-aeaaa97fab14",
+              "name": "groundingSupport",
+              "value": "={{ $json.candidates[0].groundingMetadata?.groundingSupports ?? [] }}",
+              "type": "array"
+            },
+            {
+              "id": "0807c05a-dff2-4bd9-999a-4e80a1ec726d",
+              "name": "groundingChunks",
+              "value": "={{ $json.candidates[0].groundingMetadata?.groundingChunks ?? [] }}",
+              "type": "array"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        640,
+        128
+      ],
+      "id": "f55f20f8-296e-4f96-a3f5-559424527dc7",
+      "name": "extract_chunks"
     }
   ],
   "pinData": {
     "trigger": [
       {
         "json": {
-          "query": "ai là kiện tướng cờ vua lớn nhất Việt Nam"
+          "query": "Lê Quang Liên Là ai?"
         }
       }
     ]
@@ -512,6 +609,6 @@
   "staticData": null,
   "tags": [],
   "triggerCount": 0,
-  "updatedAt": "2025-11-07T08:48:21.670Z",
-  "versionId": "b3f71e07-2a51-47d9-9bc4-d93e5d90ace8"
+  "updatedAt": "2025-11-07T10:08:42.522Z",
+  "versionId": "4687b41e-2b05-4dbf-ac91-444204f9798b"
 }
