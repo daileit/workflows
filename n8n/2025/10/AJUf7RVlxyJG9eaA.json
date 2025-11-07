@@ -448,8 +448,8 @@
       "name": "Get File",
       "type": "n8n-nodes-base.httpRequest",
       "position": [
-        944,
-        352
+        912,
+        368
       ],
       "typeVersion": 4.2
     },
@@ -579,7 +579,7 @@
       "type": "n8n-nodes-base.noOp",
       "position": [
         1520,
-        800
+        784
       ],
       "typeVersion": 1
     },
@@ -605,7 +605,7 @@
       "type": "n8n-nodes-base.github",
       "position": [
         1744,
-        800
+        784
       ],
       "typeVersion": 1,
       "webhookId": "73954522-b7e3-4182-a009-2cd2b3f4652b",
@@ -858,7 +858,7 @@
           "value": "AJUf7RVlxyJG9eaA",
           "mode": "list",
           "cachedResultUrl": "/workflow/AJUf7RVlxyJG9eaA",
-          "cachedResultName": "github-sync"
+          "cachedResultName": "github_sync"
         },
         "workflowInputs": {
           "mappingMode": "defineBelow",
@@ -1033,6 +1033,6 @@
   },
   "tags": [],
   "triggerCount": 1,
-  "updatedAt": "2025-11-07T10:34:56.051Z",
-  "versionId": "205fd76e-7db6-4c52-b74c-7ee365457541"
+  "updatedAt": "2025-11-07T11:05:03.127Z",
+  "versionId": "70cd61eb-d961-48c2-970b-e543cc4e6c00"
 }
