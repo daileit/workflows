@@ -393,7 +393,7 @@
             {
               "id": "69865319-eca8-480e-8467-7bcd1f2a131a",
               "name": "instructions",
-              "value": "Should cite the source url of the result's chunks using citations_urls.",
+              "value": "Should cite the full citation_url of the result's chunks.",
               "type": "string"
             },
             {
@@ -512,6 +512,6 @@
   "staticData": null,
   "tags": [],
   "triggerCount": 0,
-  "updatedAt": "2025-11-06T10:45:19.737Z",
-  "versionId": "490a8b29-92ac-469a-8bed-9ef6cab3ae5b"
+  "updatedAt": "2025-11-07T08:48:21.670Z",
+  "versionId": "b3f71e07-2a51-47d9-9bc4-d93e5d90ace8"
 }
