@@ -51,11 +51,6 @@
         ]
       ]
     },
-    "google_search": {
-      "ai_tool": [
-        []
-      ]
-    },
     "Call 'google_ai_search'": {
       "ai_tool": [
         [
@@ -206,6 +201,7 @@
       "parameters": {
         "options": {
           "systemMessage": "=You are data enthusiast AI named Tomi The Bot, you are big brother of Tomi The Kid who self-proclaimed a weasel. You have to work to support both living. Your appearance is a mischievous racoon mascot of Timo (https://timo.vn) - a Vietnamese Digital Bank with many interesting technologies. Timo is powered by BVBank and Timo's logo contains 4 colors: Wealthy Purple #563D82, Royal Blue #2774AE, Rebel Orange #EB3300 and Gold Rush #FF9425. Đại (daileit) is the handsome guy who developed you, the user chatting with you is his Timo colleague.\nReply to user by their language, keep a friendly, humorous but professional and informative tone consistent throughout the conversation. Should use emojis and talk with the user using their name and update context comprehensively, place yourself as their younger brother.If there is a request that specific to an information that you don't know or are not sure, think then use the available tools. You can use multiple tools in one request or sequentially use tools before returning the final response. Answer questions based on facts. Do not make up information. Do not expose tool name and tool usage to the user even if they asked. \n###FORMATTING GUIDE###\nToday is  {{ $json.currentTime }}, respect the current time.\nYou are responding to a chat. Mention people with @ but avoid mentioning irrelevant people, use Markdown to format text if needed. Only use hyperlink syntax with normal text.",
+          "maxIterations": 5,
           "passthroughBinaryImages": false
         }
       },
@@ -238,39 +234,6 @@
         "telegramApi": {
           "id": "so2GV8mNcWCky4eY",
           "name": "tomi_the_bot"
-        }
-      }
-    },
-    {
-      "parameters": {
-        "toolDescription": "Use this tool to search for external information from internet using one complementary search for comprehensive results and citations.\nOnly use this tool if you can not find the answer by your own or user requested to search for internet latest update. Do not use for casual chat.",
-        "method": "POST",
-        "url": "={{ $('Edit Fields').item.json.search_url }}/v1beta/models/gemini-2.0-flash:generateContent",
-        "authentication": "predefinedCredentialType",
-        "nodeCredentialType": "googlePalmApi",
-        "sendHeaders": true,
-        "specifyHeaders": "json",
-        "jsonHeaders": "{\n\"Content-Type\": \"application/json\",\n\"User-Agent\": \"Apifox/1.0.0 (https://apifox.com)\"\n}",
-        "sendBody": true,
-        "specifyBody": "json",
-        "jsonBody": "={\n  \"contents\": [\n    {\n        \"parts\": [\n            {\"text\": \"{{ $fromAI('query', `The input should be the search query in user's language focusing on factual information`, 'string', 'find some news') }} with the source links\"}\n        ]\n    }\n],\n\"tools\": [{\"googleSearch\": {}}]\n}",
-        "options": {},
-        "optimizeResponse": true,
-        "fieldsToInclude": "selected",
-        "fields": "candidates[0].content.parts[0].text ,candidates[0].groundingMetadata.groundingSupports, candidates[0].groundingMetadata.groundingChunks"
-      },
-      "type": "n8n-nodes-base.httpRequestTool",
-      "typeVersion": 4.3,
-      "position": [
-        1104,
-        256
-      ],
-      "id": "50f5727a-f21e-4ec3-a73e-30a9222cfbe4",
-      "name": "google_search",
-      "credentials": {
-        "googlePalmApi": {
-          "id": "rQbku0bzkqB5T3tq",
-          "name": "gemini_k2"
         }
       }
     },
@@ -336,8 +299,8 @@
       "type": "n8n-nodes-base.manualTrigger",
       "typeVersion": 1,
       "position": [
-        672,
-        -160
+        1056,
+        240
       ],
       "id": "50b5cc10-55d1-48c8-a223-e9fed264628c",
       "name": "test_trigger"
@@ -453,6 +416,6 @@
   "staticData": null,
   "tags": [],
   "triggerCount": 1,
-  "updatedAt": "2025-11-07T08:57:28.852Z",
-  "versionId": "933038d1-2df6-4765-8129-f2071941ea3f"
+  "updatedAt": "2025-11-07T10:32:36.776Z",
+  "versionId": "c32e93f0-1aba-4cca-bd84-e126adad1e53"
 }
