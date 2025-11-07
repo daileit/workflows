@@ -325,7 +325,7 @@
       "typeVersion": 1,
       "position": [
         1824,
-        -16
+        0
       ],
       "id": "26fd2528-43ce-4719-ac3b-57f241424b1b",
       "name": "Post to CloudyEz @daileit",
@@ -427,7 +427,7 @@
       "typeVersion": 1.2,
       "position": [
         2000,
-        -16
+        0
       ],
       "id": "9c45ded7-2e8a-455b-adf5-a0f8b17ae08b",
       "name": "Notify result",
@@ -725,14 +725,14 @@
       "typeVersion": 1.2,
       "position": [
         1504,
-        16
+        0
       ],
       "id": "2f9cf1af-7b0e-46fd-8c07-d01f9d66bb18",
       "name": "AI Model",
       "credentials": {
         "openAiApi": {
-          "id": "wXOpvtRZJrJcNEjI",
-          "name": "timo_llm_inference"
+          "id": "llPlN9eNVOLo6jYZ",
+          "name": "timo_llm_bag"
         }
       }
     },
@@ -773,6 +773,6 @@
   },
   "tags": [],
   "triggerCount": 1,
-  "updatedAt": "2025-11-06T11:58:30.141Z",
-  "versionId": "2e512791-0fa9-4003-a5a7-629216c16a68"
+  "updatedAt": "2025-11-07T08:00:54.329Z",
+  "versionId": "ec3439f8-ca90-44fb-a088-74ba7e3afeae"
 }
