@@ -302,7 +302,7 @@
         },
         "sendBody": true,
         "specifyBody": "json",
-        "jsonBody": "={\n  \"contents\": [\n    {\n        \"parts\": [\n            {\"text\": \"{{ $('prepare_data').item.json.query ?? 'find some news' }} with the source links\"}\n        ]\n    }\n],\n\"tools\": [{\"googleSearch\": {}}]\n}",
+        "jsonBody": "={\n  \"contents\": [\n    {\n        \"parts\": [\n            {\"text\": \"{{ $('prepare_data').last().json.query ?? 'find some news' }} with the source links\"}\n        ]\n    }\n],\n\"tools\": [{\"googleSearch\": {}}]\n}",
         "options": {
           "response": {
             "response": {
@@ -347,7 +347,7 @@
         },
         "sendBody": true,
         "specifyBody": "json",
-        "jsonBody": "={\n  \"contents\": [\n    {\n        \"parts\": [\n            {\"text\": \"{{ $('prepare_data').item.json.query ?? 'find some news' }} with the source links\"}\n        ]\n    }\n],\n\"tools\": [{\"googleSearch\": {}}]\n}",
+        "jsonBody": "={\n  \"contents\": [\n    {\n        \"parts\": [\n            {\"text\": \"{{ $('prepare_data').last().json.query ?? 'find some news' }} with the source links\"}\n        ]\n    }\n],\n\"tools\": [{\"googleSearch\": {}}]\n}",
         "options": {
           "response": {
             "response": {
@@ -615,6 +615,6 @@
   "staticData": null,
   "tags": [],
   "triggerCount": 0,
-  "updatedAt": "2025-11-07T10:22:31.715Z",
-  "versionId": "6c9e1e45-ca6f-438f-864f-615965db74d1"
+  "updatedAt": "2025-11-07T11:06:14.066Z",
+  "versionId": "cb7fed20-86b4-4ae2-b1bd-d46fe9dc7bb2"
 }
