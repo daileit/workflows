@@ -5,7 +5,7 @@
       "main": [
         [
           {
-            "node": "If",
+            "node": "routing",
             "type": "main",
             "index": 0
           }
@@ -34,29 +34,18 @@
         ]
       ]
     },
-    "If": {
+    "request_ai_2": {
       "main": [
         [
           {
-            "node": "request_ai_1",
+            "node": "extract_chunks",
             "type": "main",
             "index": 0
           }
         ],
         [
           {
-            "node": "request_ai_2",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "request_ai_2": {
-      "main": [
-        [
-          {
-            "node": "extract_chunks",
+            "node": "retry_switch",
             "type": "main",
             "index": 0
           }
@@ -71,7 +60,8 @@
             "type": "main",
             "index": 0
           }
-        ]
+        ],
+        []
       ]
     },
     "Split Out": {
@@ -121,7 +111,7 @@
       "main": [
         [
           {
-            "node": "If",
+            "node": "routing",
             "type": "main",
             "index": 0
           }
@@ -151,6 +141,24 @@
         [
           {
             "node": "check_result",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "routing": {
+      "main": [
+        [
+          {
+            "node": "request_ai_1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "request_ai_2",
             "type": "main",
             "index": 0
           }
@@ -249,40 +257,6 @@
     },
     {
       "parameters": {
-        "conditions": {
-          "options": {
-            "caseSensitive": true,
-            "leftValue": "",
-            "typeValidation": "loose",
-            "version": 2
-          },
-          "conditions": [
-            {
-              "id": "f3c35b7a-d1e6-4c37-ab68-339ea10bb952",
-              "leftValue": "={{ $json.path }}",
-              "rightValue": 65,
-              "operator": {
-                "type": "number",
-                "operation": "gt"
-              }
-            }
-          ],
-          "combinator": "and"
-        },
-        "looseTypeValidation": true,
-        "options": {}
-      },
-      "type": "n8n-nodes-base.if",
-      "typeVersion": 2.2,
-      "position": [
-        192,
-        -16
-      ],
-      "id": "48e03b22-0678-4cf8-ae61-d2be84cd9f4f",
-      "name": "If"
-    },
-    {
-      "parameters": {
         "method": "POST",
         "url": "={{ $json.search_url }}/v1beta/models/{{  parseInt(Math.random()*10) > 5 ? \"gemini-2.0-flash\" : \"gemini-2.5-flash-lite\" }}:generateContent",
         "authentication": "predefinedCredentialType",
@@ -302,7 +276,7 @@
         },
         "sendBody": true,
         "specifyBody": "json",
-        "jsonBody": "={\n  \"contents\": [\n    {\n        \"parts\": [\n            {\"text\": \"{{ $('prepare_data').last().json.query ?? 'find some news' }} with the source links\"}\n        ]\n    }\n],\n\"tools\": [{\"googleSearch\": {}}]\n}",
+        "jsonBody": "={\n  \"contents\": [\n    {\n        \"parts\": [\n            {\"text\": \"{{ $('prepare_data').item.json.query ?? 'find some news' }} with the source links\"}\n        ]\n    }\n],\n\"tools\": [{\"googleSearch\": {}}]\n}",
         "options": {
           "response": {
             "response": {
@@ -319,6 +293,9 @@
       ],
       "id": "4718370d-b5c9-453d-82be-9f4e710928a3",
       "name": "request_ai_1",
+      "retryOnFail": true,
+      "maxTries": 2,
+      "waitBetweenTries": 5000,
       "credentials": {
         "googlePalmApi": {
           "id": "dr7uh9o5CsnRf6UB",
@@ -364,12 +341,16 @@
       ],
       "id": "a13d64a0-c98d-46d2-b16c-47ba9db8c09b",
       "name": "request_ai_2",
+      "retryOnFail": true,
+      "waitBetweenTries": 5000,
+      "maxTries": 2,
       "credentials": {
         "googlePalmApi": {
           "id": "rQbku0bzkqB5T3tq",
           "name": "gemini_k2"
         }
-      }
+      },
+      "onError": "continueErrorOutput"
     },
     {
       "parameters": {
@@ -379,7 +360,7 @@
       "type": "n8n-nodes-base.splitOut",
       "typeVersion": 1,
       "position": [
-        1040,
+        1152,
         128
       ],
       "id": "76f7e21e-9cc5-4dae-aafb-8452a2ac5c3f",
@@ -398,19 +379,19 @@
             {
               "id": "3b152e18-f3aa-4342-bd5b-274107684bb8",
               "name": "searched_result",
-              "value": "={{ $('extract_chunks').first().json.result }}",
+              "value": "={{ $('extract_chunks').last().json.result }}",
               "type": "string"
             },
             {
               "id": "f1ba5b4a-33bc-4d98-87b4-b630323ab008",
               "name": "searched_chunks",
-              "value": "={{ $('extract_chunks').first().json.groundingSupport.map(chunk => ({ segment: chunk.segment, citation_indices: chunk.groundingChunkIndices, })) }}",
+              "value": "={{ $('extract_chunks').last().json.groundingSupport.map(chunk => ({ segment: chunk.segment, citation_indices: chunk.groundingChunkIndices, })) }}",
               "type": "array"
             },
             {
               "id": "1992a947-8e44-4c7e-8a77-14666da0438c",
               "name": "citation_urls",
-              "value": "={{ $('fetch_uri_js').first().json.output }}",
+              "value": "={{ $('fetch_uri_js').last().json.output }}",
               "type": "array"
             }
           ]
@@ -420,7 +401,7 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        1408,
+        1520,
         128
       ],
       "id": "7cf65898-9d2b-40e9-ba23-513640eff54f",
@@ -477,7 +458,7 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        1232,
+        1344,
         128
       ],
       "id": "aadf6896-9021-4080-9a45-41174064d8d9",
@@ -490,20 +471,26 @@
             {
               "id": "3333c599-110e-4e3c-9568-b936f9db3077",
               "name": "search_url",
-              "value": "={{ $('prepare_data').last().json.search_url }}",
+              "value": "={{ $('prepare_data').item.json.search_url }}",
               "type": "string"
             },
             {
               "id": "706be599-266d-4a5a-9729-def42ac5e914",
               "name": "query",
-              "value": "={{ $('prepare_data').last().json.query }}",
+              "value": "={{ $('prepare_data').item.json.query }}",
               "type": "string"
             },
             {
               "id": "e2c420bb-e3f0-4f85-9cd1-3297a84d1884",
               "name": "path",
-              "value": "={{ Math.abs(100 - parseInt($('prepare_data').last().json.path)) }}",
+              "value": "={{ Math.abs(100 - parseInt($('routing').item.json.path)) }}",
               "type": "string"
+            },
+            {
+              "id": "a657b369-ee0b-4742-b0fd-a7fc5513c83f",
+              "name": "retried",
+              "value": true,
+              "type": "boolean"
             }
           ]
         },
@@ -512,8 +499,8 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        1040,
-        272
+        1152,
+        320
       ],
       "id": "d39b172c-baab-4608-be4c-a1de2b9cc4a2",
       "name": "retry_switch"
@@ -537,16 +524,26 @@
                 "operation": "notEmpty",
                 "singleValue": true
               }
+            },
+            {
+              "id": "6dd3b76c-afcd-47a8-b4b5-ea653779f44b",
+              "leftValue": "={{ $('routing').item.json.retried  }}",
+              "rightValue": true,
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
             }
           ],
-          "combinator": "and"
+          "combinator": "or"
         },
         "options": {}
       },
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.2,
       "position": [
-        832,
+        944,
         128
       ],
       "id": "6bfb8b70-8eff-4b44-8b34-bf1f9068787c",
@@ -581,11 +578,45 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        640,
+        768,
         128
       ],
       "id": "f55f20f8-296e-4f96-a3f5-559424527dc7",
       "name": "extract_chunks"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "f3c35b7a-d1e6-4c37-ab68-339ea10bb952",
+              "leftValue": "={{ $json.path }}",
+              "rightValue": 55,
+              "operator": {
+                "type": "number",
+                "operation": "gt"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "looseTypeValidation": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        192,
+        -16
+      ],
+      "id": "48e03b22-0678-4cf8-ae61-d2be84cd9f4f",
+      "name": "routing"
     }
   ],
   "pinData": {
@@ -615,6 +646,6 @@
   "staticData": null,
   "tags": [],
   "triggerCount": 0,
-  "updatedAt": "2025-11-07T11:06:14.066Z",
-  "versionId": "cb7fed20-86b4-4ae2-b1bd-d46fe9dc7bb2"
+  "updatedAt": "2025-11-07T11:40:16.752Z",
+  "versionId": "e3d56cba-7540-494a-9559-631e5887b551"
 }
