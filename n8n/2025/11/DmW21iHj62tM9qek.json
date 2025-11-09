@@ -402,7 +402,10 @@
   "repo_owner": "daileit",
   "repo_path": "n8n/",
   "settings": {
-    "executionOrder": "v1"
+    "executionOrder": "v1",
+    "callerPolicy": "workflowsFromSameOwner",
+    "executionTimeout": 600,
+    "availableInMCP": false
   },
   "shared": [
     {
@@ -416,6 +419,6 @@
   "staticData": null,
   "tags": [],
   "triggerCount": 1,
-  "updatedAt": "2025-11-07T10:32:36.776Z",
-  "versionId": "c32e93f0-1aba-4cca-bd84-e126adad1e53"
+  "updatedAt": "2025-11-09T17:15:57.564Z",
+  "versionId": "5c692388-1968-4c4a-b45e-a83e3a92f5c7"
 }
