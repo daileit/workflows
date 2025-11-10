@@ -1,0 +1,102 @@
+{
+  "active": true,
+  "connections": {
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "bedrock_sonnet_check",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2025-11-10T08:28:55.082Z",
+  "id": "VZnCNDhCTbfP9QOQ",
+  "isArchived": false,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "name": "central_health_check",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "minutes",
+              "minutesInterval": 30
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        0,
+        0
+      ],
+      "id": "97877175-1d65-4f17-aada-b2fe9f7f21bf",
+      "name": "Schedule Trigger"
+    },
+    {
+      "parameters": {
+        "modelId": {
+          "__rl": true,
+          "value": "apac.anthropic.claude-sonnet-4-20250514-v1:0",
+          "mode": "list",
+          "cachedResultName": "APAC.ANTHROPIC.CLAUDE-SONNET-4-20250514-V1:0"
+        },
+        "messages": {
+          "values": [
+            {
+              "content": "=Is 1 plus 1 equal 2? Just reply one word"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1.8,
+      "position": [
+        208,
+        0
+      ],
+      "id": "fa7a96f0-2ce1-4dcf-a834-90293aa4f8a9",
+      "name": "bedrock_sonnet_check",
+      "credentials": {
+        "openAiApi": {
+          "id": "llPlN9eNVOLo6jYZ",
+          "name": "timo_llm_bag"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "repo_name": "workflows",
+  "repo_owner": "daileit",
+  "repo_path": "n8n/",
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "shared": [
+    {
+      "updatedAt": "2025-11-10T08:28:55.082Z",
+      "createdAt": "2025-11-10T08:28:55.082Z",
+      "role": "workflow:owner",
+      "workflowId": "VZnCNDhCTbfP9QOQ",
+      "projectId": "TgT7sbikPaxzUZlq"
+    }
+  ],
+  "staticData": {
+    "node:Schedule Trigger": {
+      "recurrenceRules": []
+    }
+  },
+  "tags": [],
+  "triggerCount": 1,
+  "updatedAt": "2025-11-10T08:48:18.969Z",
+  "versionId": "a242d9c0-4f7e-458d-9b22-405cb9012599"
+}
