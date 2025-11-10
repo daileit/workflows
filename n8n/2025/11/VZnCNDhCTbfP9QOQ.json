@@ -74,7 +74,7 @@
         "messages": {
           "values": [
             {
-              "content": "=Is 1 plus 1 equal 2? Just reply one word"
+              "content": "=Is {{ parseInt(Math.random()*5) }} + {{ parseInt(Math.random()*5) }} < {{ parseInt(Math.random()*10) }}? Reply one word"
             }
           ]
         },
@@ -210,6 +210,6 @@
   },
   "tags": [],
   "triggerCount": 1,
-  "updatedAt": "2025-11-10T10:09:08.466Z",
-  "versionId": "dd77df40-eb10-42b7-950d-a211ee32d4c0"
+  "updatedAt": "2025-11-10T16:17:01.906Z",
+  "versionId": "1ec94a29-9fa7-40ff-89a5-410bd237554e"
 }
