@@ -350,7 +350,7 @@
       "name": "On clicking 'execute'",
       "type": "n8n-nodes-base.manualTrigger",
       "position": [
-        736,
+        720,
         -144
       ],
       "typeVersion": 1
@@ -669,7 +669,7 @@
       "name": "Loop Over Items",
       "type": "n8n-nodes-base.splitInBatches",
       "position": [
-        1232,
+        1216,
         -48
       ],
       "typeVersion": 3
@@ -689,7 +689,7 @@
       "name": "Schedule Trigger",
       "type": "n8n-nodes-base.scheduleTrigger",
       "position": [
-        736,
+        720,
         64
       ],
       "typeVersion": 1.2
@@ -722,7 +722,7 @@
       "parameters": {
         "content": "## Backup to GitHub \nThis workflow will backup all instance workflows to GitHub every 24 hours.\n\nThe files are saved into folders using `YYYY/MM/` for the directory path and `ID.json` for the filename.\n\nThe Repo Owner, Repo Name and Main folder are set using the **Variables** feature but can be replaced with the `Config` node in the subworkflow. \n\nThe workflow runs calls itself to help reduce memory usage, Once the workflow has completed it will send an optional notification to Slack.\n\n### Time to Run\nTested with 1423 workflows on `1.44.1` it took under 30 minutes for the first run and under 12 minutes once the initial run is complete.",
         "height": 417,
-        "width": 385,
+        "width": 369,
         "color": 4
       },
       "id": "12500c10-954f-4037-83ac-b2fe3f3bce07",
@@ -738,14 +738,14 @@
       "parameters": {
         "content": "## Main workflow loop",
         "height": 416,
-        "width": 1481,
+        "width": 1497,
         "color": 7
       },
       "id": "5cd8d3ef-1e9f-4ddf-a376-a2e989264565",
       "name": "Sticky Note2",
       "type": "n8n-nodes-base.stickyNote",
       "position": [
-        704,
+        688,
         -224
       ],
       "typeVersion": 1
@@ -902,7 +902,7 @@
       "type": "n8n-nodes-base.telegram",
       "typeVersion": 1.2,
       "position": [
-        1568,
+        1584,
         -16
       ],
       "id": "c91475ae-4237-49ae-a0d7-c9f612d77af6",
@@ -952,7 +952,7 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.2,
       "position": [
-        1568,
+        1584,
         -176
       ],
       "id": "c0d777b7-bcf1-475d-8579-1fa7acd0c8e2",
@@ -1086,6 +1086,6 @@
   },
   "tags": [],
   "triggerCount": 1,
-  "updatedAt": "2025-11-10T19:48:06.218Z",
-  "versionId": "a6a9e6ad-5cc3-4c81-a72e-3947626fe002"
+  "updatedAt": "2025-11-10T19:49:28.890Z",
+  "versionId": "1b820350-eed9-4adb-b5b0-a3231535a8cd"
 }
