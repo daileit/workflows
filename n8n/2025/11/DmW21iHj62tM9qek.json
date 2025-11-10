@@ -16,7 +16,7 @@
       "main": [
         [
           {
-            "node": "Switch",
+            "node": "type_switch",
             "type": "main",
             "index": 0
           }
@@ -100,7 +100,32 @@
         ]
       ]
     },
-    "Switch": {
+    "command_switch": {
+      "main": [
+        [
+          {
+            "node": "clear_memory",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "add_memory",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "add_memory",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "type_switch": {
       "main": [
         [
           {
@@ -115,43 +140,55 @@
             "type": "main",
             "index": 0
           }
+        ],
+        []
+      ]
+    },
+    "clear_memory": {
+      "main": [
+        [
+          {
+            "node": "command_message",
+            "type": "main",
+            "index": 0
+          }
         ]
       ]
     },
-    "Redis Chat Memory": {
+    "redis_clear": {
       "ai_memory": [
         [
           {
-            "node": "Chat Memory Manager",
+            "node": "clear_memory",
             "type": "ai_memory",
             "index": 0
           }
         ]
       ]
     },
-    "command_switch": {
+    "redis_add": {
+      "ai_memory": [
+        [
+          {
+            "node": "add_memory",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "add_memory": {
       "main": [
         [
           {
-            "node": "Chat Memory Manager",
+            "node": "command_message",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "Chat Memory Manager": {
-      "main": [
-        [
-          {
-            "node": "add_message",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "add_message": {
+    "command_message": {
       "main": [
         [
           {
@@ -188,8 +225,8 @@
       "name": "Al Model",
       "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
       "position": [
-        928,
-        256
+        1152,
+        240
       ],
       "typeVersion": 1.2,
       "credentials": {
@@ -224,7 +261,7 @@
             {
               "id": "59a5c21f-c7ef-45bf-be86-98674195cca1",
               "name": "messageType",
-              "value": "={{ $json.message.entities?.type ?? \"simple\" }}",
+              "value": "={{ $json.message.entities?.first().type ?? \"simple\" }}",
               "type": "string"
             }
           ]
@@ -252,8 +289,8 @@
       "type": "n8n-nodes-base.telegram",
       "typeVersion": 1.2,
       "position": [
-        1808,
-        -16
+        2128,
+        -32
       ],
       "id": "e8b81f71-e19f-4281-baa0-ab52705cf8e5",
       "name": "Send a text message",
@@ -277,8 +314,8 @@
       "name": "Routing Agent",
       "type": "@n8n/n8n-nodes-langchain.agent",
       "position": [
-        1088,
-        0
+        1312,
+        -16
       ],
       "typeVersion": 1.8
     },
@@ -342,8 +379,8 @@
       "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
       "typeVersion": 2.2,
       "position": [
-        1328,
-        256
+        1552,
+        240
       ],
       "id": "5846c8c2-ede7-4e0d-aba4-28bee73d01e8",
       "name": "Call 'google_ai_search'"
@@ -356,8 +393,8 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        1648,
-        -16
+        1872,
+        -32
       ],
       "id": "e0c8b7cd-d419-4180-980c-758e691ee9c0",
       "name": "split_text"
@@ -367,8 +404,8 @@
       "type": "n8n-nodes-base.manualTrigger",
       "typeVersion": 1,
       "position": [
-        688,
-        240
+        352,
+        -176
       ],
       "id": "50b5cc10-55d1-48c8-a223-e9fed264628c",
       "name": "test_trigger"
@@ -430,8 +467,8 @@
       "type": "n8n-nodes-base.switch",
       "typeVersion": 3.3,
       "position": [
-        1440,
-        0
+        1664,
+        -16
       ],
       "id": "39a340c0-96e1-4fe4-b511-371b5081ff41",
       "name": "routing"
@@ -444,8 +481,8 @@
       "type": "@n8n/n8n-nodes-langchain.memoryRedisChat",
       "typeVersion": 1.5,
       "position": [
-        1088,
-        256
+        1312,
+        240
       ],
       "id": "64c135ad-4e60-4f4d-a62d-b0a08a5cf8ee",
       "name": "redis_cache",
@@ -455,6 +492,91 @@
           "name": "redis_sentinel"
         }
       }
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.message.text.replace('/','').split().first().trim() }}",
+                    "rightValue": "clear",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "b3dfd7a7-0e72-4344-8eec-060df49b273c"
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "6197db3f-435f-4b9c-8333-bf84d155eaea",
+                    "leftValue": "={{ $json.message.text.replace('/','').split(\" \").first().trim() }}",
+                    "rightValue": "remember",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "7b0c59a6-ca76-42fd-8138-a05081d3d0a2",
+                    "leftValue": "={{ $json.message.text.replace('/','').split(\" \").first().trim() }}",
+                    "rightValue": "add",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.3,
+      "position": [
+        1072,
+        -352
+      ],
+      "id": "13287240-e008-454b-89f5-2e3f7a188249",
+      "name": "command_switch"
     },
     {
       "parameters": {
@@ -504,6 +626,29 @@
                 ],
                 "combinator": "and"
               }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "loose",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "bf7e6b6c-3d3e-491e-ac34-5be42ec0dcbf",
+                    "leftValue": "={{ $json.messageType }}",
+                    "rightValue": "image_generation",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
             }
           ]
         },
@@ -514,24 +659,24 @@
       "typeVersion": 3.3,
       "position": [
         688,
-        -16
+        -32
       ],
       "id": "7054e022-33d0-4d1d-8bc7-998c1bf36a1e",
-      "name": "Switch"
+      "name": "type_switch"
     },
     {
       "parameters": {
         "mode": "delete",
-        "deleteMode": "all"
+        "lastMessagesCount": 29
       },
       "type": "@n8n/n8n-nodes-langchain.memoryManager",
       "typeVersion": 1.1,
       "position": [
-        1104,
-        -544
+        1312,
+        -640
       ],
       "id": "677d12d7-1bc4-4531-b3c1-557e2d529ea3",
-      "name": "Chat Memory Manager"
+      "name": "clear_memory"
     },
     {
       "parameters": {
@@ -540,11 +685,11 @@
       "type": "@n8n/n8n-nodes-langchain.memoryRedisChat",
       "typeVersion": 1.5,
       "position": [
-        1104,
-        -720
+        1312,
+        -464
       ],
       "id": "b5ea1961-5a74-4c89-93b3-fac6911150d8",
-      "name": "Redis Chat Memory",
+      "name": "redis_clear",
       "credentials": {
         "redis": {
           "id": "O1O16wyPdPWhsDR5",
@@ -554,42 +699,43 @@
     },
     {
       "parameters": {
-        "rules": {
-          "values": [
+        "contextWindowLength": 30
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryRedisChat",
+      "typeVersion": 1.5,
+      "position": [
+        1312,
+        -160
+      ],
+      "id": "4fb51945-8366-4e33-a5a4-ed3b263ef0e6",
+      "name": "redis_add",
+      "credentials": {
+        "redis": {
+          "id": "O1O16wyPdPWhsDR5",
+          "name": "redis_sentinel"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "mode": "insert",
+        "messages": {
+          "messageValues": [
             {
-              "conditions": {
-                "options": {
-                  "caseSensitive": true,
-                  "leftValue": "",
-                  "typeValidation": "strict",
-                  "version": 2
-                },
-                "conditions": [
-                  {
-                    "leftValue": "={{ $('new_message').item.json.message.text.replace('/','').strip() }}",
-                    "rightValue": "clear",
-                    "operator": {
-                      "type": "string",
-                      "operation": "equals"
-                    },
-                    "id": "b3dfd7a7-0e72-4344-8eec-060df49b273c"
-                  }
-                ],
-                "combinator": "and"
-              }
+              "message": "={{ $json.message.text.replace('/','').trim() }}",
+              "hideFromUI": true
             }
           ]
-        },
-        "options": {}
+        }
       },
-      "type": "n8n-nodes-base.switch",
-      "typeVersion": 3.3,
+      "type": "@n8n/n8n-nodes-langchain.memoryManager",
+      "typeVersion": 1.1,
       "position": [
-        880,
-        -304
+        1312,
+        -336
       ],
-      "id": "13287240-e008-454b-89f5-2e3f7a188249",
-      "name": "command_switch"
+      "id": "d30b193a-0f63-4aad-bf57-0b988074a718",
+      "name": "add_memory"
     },
     {
       "parameters": {
@@ -598,7 +744,7 @@
             {
               "id": "8d9dbba9-e147-4f4b-a2fb-78839e06754e",
               "name": "message",
-              "value": "=Chào @{{$('new_message').item.json.message.from.username}}! 🦝💜\nContext đã clear! Tomi sẵn sàng support với bất kỳ thông tin gì!✨\nEm đang ở đây chờ ạ! 😄",
+              "value": "=Chào @{{$('new_message').item.json.message.from.username}}! 🦝💜\nContext đã {{$('new_message').item.json.message.text.replace('/','').split(\" \").first().trim() }}ed! Tomi sẵn sàng support với bất kỳ thông tin gì!✨ Em đang ở đây chờ ạ! 😄",
               "type": "string"
             }
           ]
@@ -608,11 +754,11 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        1584,
-        -544
+        1648,
+        -640
       ],
       "id": "6be66723-53fe-404f-9de0-9861703f1318",
-      "name": "add_message"
+      "name": "command_message"
     }
   ],
   "pinData": {
@@ -645,6 +791,6 @@
   "staticData": null,
   "tags": [],
   "triggerCount": 1,
-  "updatedAt": "2025-11-10T09:09:37.797Z",
-  "versionId": "d0c0e3b7-29bd-4419-9a86-0190335c4dd6"
+  "updatedAt": "2025-11-10T10:03:27.595Z",
+  "versionId": "0ce95e1f-ef75-452e-887c-9da77324b660"
 }
