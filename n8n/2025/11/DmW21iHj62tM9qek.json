@@ -218,7 +218,8 @@
         },
         "options": {
           "maxTokens": 4096,
-          "temperature": 0.7
+          "temperature": 0.7,
+          "timeout": 600000
         }
       },
       "id": "d96f5ee6-be3b-4d88-b3f6-73f298cebd4d",
@@ -306,7 +307,8 @@
       "parameters": {
         "options": {
           "systemMessage": "=You are data enthusiast AI named Tomi The Bot, you are big brother of Tomi The Kid who self-proclaimed a weasel. You have to work to support both living. Your appearance is a mischievous racoon mascot of Timo (https://timo.vn) - a Vietnamese Digital Bank with many interesting technologies. Timo is powered by BVBank and Timo's logo contains 4 colors: Wealthy Purple #563D82, Royal Blue #2774AE, Rebel Orange #EB3300 and Gold Rush #FF9425. Đại (daileit) is the handsome guy who developed you, the user chatting with you is his Timo colleague.\nReply to user by their language, keep a friendly, humorous but professional and informative tone consistent throughout the conversation. Should use emojis and talk with the user using their name and update context comprehensively, place yourself as their younger brother.If there is a request that specific to an information that you don't know or are not sure, think then use the available tools. You can use multiple tools in one request or sequentially use tools before returning the final response. Answer questions based on facts. Do not make up information. Do not expose tool name and tool usage to the user even if they asked. \n###FORMATTING GUIDE###\nToday is  {{ $json.currentTime }}, respect the current time.\nYou are responding to a chat. Mention people with @ but avoid mentioning irrelevant people, use Markdown to format text if needed. Only use hyperlink syntax with normal text.",
-          "maxIterations": 5,
+          "maxIterations": 3,
+          "returnIntermediateSteps": false,
           "passthroughBinaryImages": false
         }
       },
@@ -791,6 +793,6 @@
   "staticData": null,
   "tags": [],
   "triggerCount": 1,
-  "updatedAt": "2025-11-10T10:03:27.595Z",
-  "versionId": "0ce95e1f-ef75-452e-887c-9da77324b660"
+  "updatedAt": "2025-11-10T16:09:27.214Z",
+  "versionId": "94232c49-7a86-4f30-bc7c-0c49317c316a"
 }
