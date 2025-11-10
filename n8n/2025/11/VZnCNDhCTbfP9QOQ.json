@@ -11,6 +11,28 @@
           }
         ]
       ]
+    },
+    "When clicking ‘Execute workflow’": {
+      "main": [
+        [
+          {
+            "node": "Generate an image",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "xAI Grok Chat Model1": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
     }
   },
   "createdAt": "2025-11-10T08:28:55.082Z",
@@ -66,10 +88,101 @@
       ],
       "id": "fa7a96f0-2ce1-4dcf-a834-90293aa4f8a9",
       "name": "bedrock_sonnet_check",
+      "retryOnFail": true,
+      "waitBetweenTries": 5000,
       "credentials": {
         "openAiApi": {
           "id": "llPlN9eNVOLo6jYZ",
           "name": "timo_llm_bag"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        0,
+        -240
+      ],
+      "id": "cb0a73b6-173b-4f12-9add-7ba86a8dada8",
+      "name": "When clicking ‘Execute workflow’"
+    },
+    {
+      "parameters": {
+        "resource": "image",
+        "modelId": {
+          "__rl": true,
+          "value": "models/gemini-2.0-flash-preview-image-generation",
+          "mode": "list",
+          "cachedResultName": "models/gemini-2.0-flash-preview-image-generation"
+        },
+        "prompt": "a purple weasel cartoon style",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.googleGemini",
+      "typeVersion": 1,
+      "position": [
+        208,
+        -240
+      ],
+      "id": "a3fd7be0-7106-4ee3-b2dc-694df4ea0bd1",
+      "name": "Generate an image",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "rQbku0bzkqB5T3tq",
+          "name": "gemini_k2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatXAiGrok",
+      "typeVersion": 1,
+      "position": [
+        304,
+        112
+      ],
+      "id": "03ab5a75-2ce5-44a9-9246-519cdac52d28",
+      "name": "xAI Grok Chat Model",
+      "credentials": {
+        "xAiApi": {
+          "id": "2knrgWQP4iASwrry",
+          "name": "grok_ai_nl"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3,
+      "position": [
+        560,
+        -272
+      ],
+      "id": "ea5f3759-b716-4f04-9859-9e3000b90b51",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatXAiGrok",
+      "typeVersion": 1,
+      "position": [
+        560,
+        -96
+      ],
+      "id": "b44a6ad6-ea64-4816-b5b5-fb1bda5f85ab",
+      "name": "xAI Grok Chat Model1",
+      "credentials": {
+        "xAiApi": {
+          "id": "2knrgWQP4iASwrry",
+          "name": "grok_ai_nl"
         }
       }
     }
@@ -97,6 +210,6 @@
   },
   "tags": [],
   "triggerCount": 1,
-  "updatedAt": "2025-11-10T08:48:18.969Z",
-  "versionId": "a242d9c0-4f7e-458d-9b22-405cb9012599"
+  "updatedAt": "2025-11-10T10:09:08.466Z",
+  "versionId": "dd77df40-eb10-42b7-950d-a211ee32d4c0"
 }
