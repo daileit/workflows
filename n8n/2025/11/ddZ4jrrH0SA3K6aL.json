@@ -61,7 +61,13 @@
             "index": 0
           }
         ],
-        []
+        [
+          {
+            "node": "retry_switch",
+            "type": "main",
+            "index": 0
+          }
+        ]
       ]
     },
     "Split Out": {
@@ -301,7 +307,8 @@
           "id": "dr7uh9o5CsnRf6UB",
           "name": "gemini_k1"
         }
-      }
+      },
+      "onError": "continueErrorOutput"
     },
     {
       "parameters": {
@@ -646,6 +653,6 @@
   "staticData": null,
   "tags": [],
   "triggerCount": 0,
-  "updatedAt": "2025-11-07T11:40:16.752Z",
-  "versionId": "e3d56cba-7540-494a-9559-631e5887b551"
+  "updatedAt": "2025-11-10T16:02:13.814Z",
+  "versionId": "111e6304-1339-4b6b-ad87-e74e9ac78c35"
 }
