@@ -5,7 +5,7 @@
       "main": [
         [
           {
-            "node": "Loop Over Items",
+            "node": "Filter",
             "type": "main",
             "index": 0
           }
@@ -323,6 +323,17 @@
           }
         ]
       ]
+    },
+    "Filter": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     }
   },
   "createdAt": "2025-10-30T12:00:50.373Z",
@@ -339,7 +350,7 @@
       "name": "On clicking 'execute'",
       "type": "n8n-nodes-base.manualTrigger",
       "position": [
-        752,
+        736,
         -144
       ],
       "typeVersion": 1
@@ -381,7 +392,7 @@
       "name": "n8n",
       "type": "n8n-nodes-base.n8n",
       "position": [
-        912,
+        880,
         -48
       ],
       "typeVersion": 1,
@@ -658,7 +669,7 @@
       "name": "Loop Over Items",
       "type": "n8n-nodes-base.splitInBatches",
       "position": [
-        1072,
+        1216,
         -48
       ],
       "typeVersion": 3
@@ -678,7 +689,7 @@
       "name": "Schedule Trigger",
       "type": "n8n-nodes-base.scheduleTrigger",
       "position": [
-        752,
+        736,
         64
       ],
       "typeVersion": 1.2
@@ -822,7 +833,7 @@
       "type": "n8n-nodes-base.telegram",
       "typeVersion": 1.2,
       "position": [
-        1840,
+        1952,
         -192
       ],
       "id": "a77aad6f-ca5a-48fa-a925-8ae921e9cb57",
@@ -845,7 +856,7 @@
       "type": "n8n-nodes-base.aggregate",
       "typeVersion": 1,
       "position": [
-        1264,
+        1376,
         -176
       ],
       "id": "022b564c-1ba7-4888-ac1a-c001d062df2c",
@@ -873,7 +884,7 @@
       "type": "n8n-nodes-base.executeWorkflow",
       "typeVersion": 1.3,
       "position": [
-        1264,
+        1376,
         -32
       ],
       "id": "1a82afbc-0e56-450c-ac31-8f60bf2ac5a6",
@@ -891,7 +902,7 @@
       "type": "n8n-nodes-base.telegram",
       "typeVersion": 1.2,
       "position": [
-        1440,
+        1552,
         -16
       ],
       "id": "c91475ae-4237-49ae-a0d7-c9f612d77af6",
@@ -941,7 +952,7 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.2,
       "position": [
-        1456,
+        1552,
         -176
       ],
       "id": "c0d777b7-bcf1-475d-8579-1fa7acd0c8e2",
@@ -964,7 +975,7 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        1664,
+        1776,
         -192
       ],
       "id": "9546af92-598e-43c5-b78e-8781e28e0beb",
@@ -994,8 +1005,8 @@
       "type": "@n8n/n8n-nodes-langchain.openAi",
       "typeVersion": 1.8,
       "position": [
-        1840,
-        0
+        1776,
+        -16
       ],
       "id": "2ebf3a64-d3a4-4d0b-bdab-9f22b4e20cdf",
       "name": "reformat",
@@ -1005,6 +1016,48 @@
           "name": "timo_llm_inference"
         }
       }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "9a46a451-f883-4b41-aaba-7834c97cc0f4",
+              "leftValue": "={{ parseInt(Math.abs($json.updatedAt.toDateTime().diffTo($now, 'hours')%6)) }}",
+              "rightValue": 6,
+              "operator": {
+                "type": "number",
+                "operation": "equals"
+              }
+            },
+            {
+              "id": "c96975d7-5fef-404c-9877-636637aa6ab2",
+              "leftValue": "={{ $json.updatedAt.toDateTime().diffTo($now, 'minutes') }}",
+              "rightValue": -60,
+              "operator": {
+                "type": "number",
+                "operation": "gt"
+              }
+            }
+          ],
+          "combinator": "or"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.filter",
+      "typeVersion": 2.2,
+      "position": [
+        1056,
+        -48
+      ],
+      "id": "652931f5-c7de-4061-94d0-9d2724f34a47",
+      "name": "Filter"
     }
   ],
   "pinData": {},
@@ -1033,6 +1086,6 @@
   },
   "tags": [],
   "triggerCount": 1,
-  "updatedAt": "2025-11-07T11:05:03.127Z",
-  "versionId": "70cd61eb-d961-48c2-970b-e543cc4e6c00"
+  "updatedAt": "2025-11-10T19:42:10.666Z",
+  "versionId": "7d386900-e652-4ed7-b0ba-627e052e613e"
 }
