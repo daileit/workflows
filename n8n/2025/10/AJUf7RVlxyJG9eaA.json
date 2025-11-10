@@ -392,7 +392,7 @@
       "name": "n8n",
       "type": "n8n-nodes-base.n8n",
       "position": [
-        880,
+        864,
         -48
       ],
       "typeVersion": 1,
@@ -669,7 +669,7 @@
       "name": "Loop Over Items",
       "type": "n8n-nodes-base.splitInBatches",
       "position": [
-        1216,
+        1232,
         -48
       ],
       "typeVersion": 3
@@ -856,7 +856,7 @@
       "type": "n8n-nodes-base.aggregate",
       "typeVersion": 1,
       "position": [
-        1376,
+        1408,
         -176
       ],
       "id": "022b564c-1ba7-4888-ac1a-c001d062df2c",
@@ -884,7 +884,7 @@
       "type": "n8n-nodes-base.executeWorkflow",
       "typeVersion": 1.3,
       "position": [
-        1376,
+        1408,
         -32
       ],
       "id": "1a82afbc-0e56-450c-ac31-8f60bf2ac5a6",
@@ -902,7 +902,7 @@
       "type": "n8n-nodes-base.telegram",
       "typeVersion": 1.2,
       "position": [
-        1552,
+        1568,
         -16
       ],
       "id": "c91475ae-4237-49ae-a0d7-c9f612d77af6",
@@ -952,7 +952,7 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.2,
       "position": [
-        1552,
+        1568,
         -176
       ],
       "id": "c0d777b7-bcf1-475d-8579-1fa7acd0c8e2",
@@ -965,7 +965,7 @@
             {
               "id": "a97febce-a8a1-4d8f-bb77-030715e97f00",
               "name": "content",
-              "value": "=✅ *N8n Github Backup has completed: {{ $('merge').first().json.data.length }} workflows have been processed.*\nChanges ({{ $('merge').first().json.data.filter(item => item.changed.trim() !== 'same').length }}):{{ $('merge').first().json.data.filter(item => item.changed.trim() !== \"same\" ).map(item => `\\n • ${item.changed.trim().toTitleCase()}d [${item.flowName.trim()}](${item.fileUrl.trim()}) *(${item.fileName})*`) }}\nIgnored ({{ $('merge').first().json.data.filter(item => item.changed.trim() === 'same').length }}):\n`{{ $('merge').first().json.data.filter(item => item.changed.trim() === \"same\").map(item => `${item.flowName.trim()} `) }}`",
+              "value": "=✅ *N8n Github Backup has completed: {{ $('merge').first().json.data.length }} out of {{ $('n8n').all().length }} workflows have been processed.*\nChanges ({{ $('merge').first().json.data.filter(item => item.changed.trim() !== 'same').length }}):{{ $('merge').first().json.data.filter(item => item.changed.trim() !== \"same\" ).map(item => `\\n • ${item.changed.trim().toTitleCase()}d [${item.flowName.trim()}](${item.fileUrl.trim()}) *(${item.fileName})*`) }}",
               "type": "string"
             }
           ]
@@ -1053,7 +1053,7 @@
       "type": "n8n-nodes-base.filter",
       "typeVersion": 2.2,
       "position": [
-        1056,
+        1024,
         -48
       ],
       "id": "652931f5-c7de-4061-94d0-9d2724f34a47",
@@ -1086,6 +1086,6 @@
   },
   "tags": [],
   "triggerCount": 1,
-  "updatedAt": "2025-11-10T19:42:10.666Z",
-  "versionId": "7d386900-e652-4ed7-b0ba-627e052e613e"
+  "updatedAt": "2025-11-10T19:48:06.218Z",
+  "versionId": "a6a9e6ad-5cc3-4c81-a72e-3947626fe002"
 }
