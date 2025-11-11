@@ -319,7 +319,10 @@
         1312,
         -16
       ],
-      "typeVersion": 1.8
+      "typeVersion": 1.8,
+      "retryOnFail": true,
+      "waitBetweenTries": 5000,
+      "maxTries": 2
     },
     {
       "parameters": {
@@ -793,6 +796,6 @@
   "staticData": null,
   "tags": [],
   "triggerCount": 1,
-  "updatedAt": "2025-11-11T06:36:36.408Z",
-  "versionId": "5f936058-5bba-4384-a6cc-18b7ba04c23a"
+  "updatedAt": "2025-11-11T08:58:58.852Z",
+  "versionId": "a64c348c-8e1d-4c16-b558-b8def3a0a7ee"
 }
