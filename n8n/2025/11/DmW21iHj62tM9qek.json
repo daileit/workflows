@@ -219,7 +219,8 @@
         "options": {
           "maxTokens": 4096,
           "temperature": 0.7,
-          "timeout": 600000
+          "timeout": 600000,
+          "maxRetries": 2
         }
       },
       "id": "d96f5ee6-be3b-4d88-b3f6-73f298cebd4d",
@@ -792,6 +793,6 @@
   "staticData": null,
   "tags": [],
   "triggerCount": 1,
-  "updatedAt": "2025-11-10T16:13:20.133Z",
-  "versionId": "63dd5ec4-572d-4af5-a69e-a5ea55877ce6"
+  "updatedAt": "2025-11-11T06:36:36.408Z",
+  "versionId": "5f936058-5bba-4384-a6cc-18b7ba04c23a"
 }
