@@ -1030,7 +1030,7 @@
             {
               "id": "9a46a451-f883-4b41-aaba-7834c97cc0f4",
               "leftValue": "={{ parseInt(Math.abs($json.updatedAt.toDateTime().diffTo($now, 'hours')%6)) }}",
-              "rightValue": 6,
+              "rightValue": 0,
               "operator": {
                 "type": "number",
                 "operation": "equals"
@@ -1086,6 +1086,6 @@
   },
   "tags": [],
   "triggerCount": 1,
-  "updatedAt": "2025-11-10T19:49:28.890Z",
-  "versionId": "1b820350-eed9-4adb-b5b0-a3231535a8cd"
+  "updatedAt": "2025-11-11T08:56:12.856Z",
+  "versionId": "777f1e8c-5df6-42c6-bdbf-386246c526d0"
 }
