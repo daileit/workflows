@@ -931,16 +931,16 @@
               "rightValue": 0,
               "operator": {
                 "type": "number",
-                "operation": "notEquals"
+                "operation": "gt"
               }
             },
             {
               "id": "c675eace-aedd-4172-b0a0-17e788e6564c",
-              "leftValue": "={{ $('merge').first().json.data.filter(item => item.changed.trim() === 'new').length }} ",
+              "leftValue": "={{ $('merge').first().json.data.filter(item => item.changed.trim() === 'create').length }} ",
               "rightValue": 0,
               "operator": {
                 "type": "number",
-                "operation": "notEquals"
+                "operation": "gt"
               }
             }
           ],
@@ -1086,6 +1086,6 @@
   },
   "tags": [],
   "triggerCount": 1,
-  "updatedAt": "2025-11-11T08:56:12.856Z",
-  "versionId": "777f1e8c-5df6-42c6-bdbf-386246c526d0"
+  "updatedAt": "2025-11-12T07:24:49.570Z",
+  "versionId": "0793cf4d-3b31-4e48-9aa4-b9fb7d8165e8"
 }
