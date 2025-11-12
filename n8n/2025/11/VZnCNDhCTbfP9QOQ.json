@@ -333,7 +333,8 @@
                     "rightValue": 0,
                     "operator": {
                       "type": "number",
-                      "operation": "gt"
+                      "operation": "exists",
+                      "singleValue": true
                     },
                     "id": "2b9e71f1-bc63-4584-8bad-e482c56eed4b"
                   }
@@ -600,6 +601,6 @@
   },
   "tags": [],
   "triggerCount": 1,
-  "updatedAt": "2025-11-12T11:48:27.693Z",
-  "versionId": "2df9eee7-57a6-411c-80bd-f7492eb162b8"
+  "updatedAt": "2025-11-12T19:53:46.324Z",
+  "versionId": "f3b82946-9450-4a77-af76-49469e2efcca"
 }
