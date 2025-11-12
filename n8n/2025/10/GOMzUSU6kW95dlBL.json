@@ -217,6 +217,7 @@
             }
           ]
         },
+        "simplify": false,
         "jsonOutput": true,
         "options": {
           "temperature": 1
@@ -773,6 +774,6 @@
   },
   "tags": [],
   "triggerCount": 1,
-  "updatedAt": "2025-11-07T08:00:54.329Z",
-  "versionId": "ec3439f8-ca90-44fb-a088-74ba7e3afeae"
+  "updatedAt": "2025-11-12T10:35:02.966Z",
+  "versionId": "bc1c411a-75a8-413c-8b07-4edb3f216264"
 }
