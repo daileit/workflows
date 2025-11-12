@@ -38,25 +38,14 @@
       "main": [
         [
           {
-            "node": "bedrock_sonnet_check",
+            "node": "get_website_list",
             "type": "main",
             "index": 0
           }
         ],
         [
           {
-            "node": "get_data",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "get_data": {
-      "main": [
-        [
-          {
-            "node": "Loop Over Items",
+            "node": "HTTP Request",
             "type": "main",
             "index": 0
           }
@@ -136,6 +125,28 @@
           }
         ]
       ]
+    },
+    "HTTP Request": {
+      "main": [
+        [
+          {
+            "node": "bedrock_sonnet_check",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "get_website_list": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     }
   },
   "createdAt": "2025-11-10T08:28:55.082Z",
@@ -160,8 +171,8 @@
       "type": "n8n-nodes-base.scheduleTrigger",
       "typeVersion": 1.2,
       "position": [
-        0,
-        0
+        144,
+        128
       ],
       "id": "97877175-1d65-4f17-aada-b2fe9f7f21bf",
       "name": "Schedule Trigger"
@@ -181,13 +192,14 @@
             }
           ]
         },
+        "simplify": false,
         "options": {}
       },
       "type": "@n8n/n8n-nodes-langchain.openAi",
       "typeVersion": 1.8,
       "position": [
-        368,
-        -112
+        784,
+        432
       ],
       "id": "fa7a96f0-2ce1-4dcf-a834-90293aa4f8a9",
       "name": "bedrock_sonnet_check",
@@ -245,8 +257,8 @@
       "type": "@n8n/n8n-nodes-langchain.agent",
       "typeVersion": 3,
       "position": [
-        416,
-        -512
+        432,
+        -384
       ],
       "id": "ea5f3759-b716-4f04-9859-9e3000b90b51",
       "name": "AI Agent"
@@ -258,8 +270,8 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatXAiGrok",
       "typeVersion": 1,
       "position": [
-        416,
-        -288
+        432,
+        -192
       ],
       "id": "b44a6ad6-ea64-4816-b5b5-fb1bda5f85ab",
       "name": "xAI Grok Chat Model1",
@@ -284,28 +296,6 @@
                 },
                 "conditions": [
                   {
-                    "leftValue": "={{ $json.Minute }}",
-                    "rightValue": 0,
-                    "operator": {
-                      "type": "number",
-                      "operation": "gt"
-                    },
-                    "id": "2b9e71f1-bc63-4584-8bad-e482c56eed4b"
-                  }
-                ],
-                "combinator": "and"
-              }
-            },
-            {
-              "conditions": {
-                "options": {
-                  "caseSensitive": true,
-                  "leftValue": "",
-                  "typeValidation": "loose",
-                  "version": 2
-                },
-                "conditions": [
-                  {
                     "id": "21839892-e927-41a7-a18f-fd75db2dd25c",
                     "leftValue": "0",
                     "rightValue": "0",
@@ -317,7 +307,33 @@
                   }
                 ],
                 "combinator": "and"
-              }
+              },
+              "renameOutput": true,
+              "outputKey": "health_check"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "loose",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.Minute }}",
+                    "rightValue": 0,
+                    "operator": {
+                      "type": "number",
+                      "operation": "gt"
+                    },
+                    "id": "2b9e71f1-bc63-4584-8bad-e482c56eed4b"
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "model_check"
             }
           ]
         },
@@ -329,39 +345,11 @@
       "type": "n8n-nodes-base.switch",
       "typeVersion": 3.3,
       "position": [
-        192,
-        0
+        320,
+        128
       ],
       "id": "9fe7eeb2-a6a0-4a7d-8d81-66d4818e5449",
       "name": "Switch"
-    },
-    {
-      "parameters": {
-        "operation": "get",
-        "dataTableId": {
-          "__rl": true,
-          "value": "c0YezzojRaRk5o7C",
-          "mode": "list",
-          "cachedResultName": "monitoring_website_list",
-          "cachedResultUrl": "/projects/TgT7sbikPaxzUZlq/datatables/c0YezzojRaRk5o7C"
-        },
-        "filters": {
-          "conditions": [
-            {
-              "condition": "={{ parseInt(Math.random()*2) === 1 ? \"gte\" : \"lte\" }}",
-              "keyValue": "=6"
-            }
-          ]
-        }
-      },
-      "type": "n8n-nodes-base.dataTable",
-      "typeVersion": 1,
-      "position": [
-        368,
-        112
-      ],
-      "id": "9c04c706-2a1d-4743-94f5-e82193663c07",
-      "name": "get_data"
     },
     {
       "parameters": {
@@ -370,7 +358,7 @@
       "type": "n8n-nodes-base.splitInBatches",
       "typeVersion": 3,
       "position": [
-        576,
+        784,
         112
       ],
       "id": "89e34f8e-31c2-47bf-8220-03d745e1afd0",
@@ -379,7 +367,7 @@
     {
       "parameters": {
         "chatId": "-870986299",
-        "text": "=⛑ **N8n Health Check Alert:\n❌ Failed sites ({{ $json.data.length }}) : {{ $json.data.map(item => `\\n • [${item.address.trim()}](https://${item.address.trim()}/) : ${item.statusCode ?? \"\"} ${item.statusMessage.trim()}`) }}",
+        "text": "=⛑ **N8n Health Check Alert**:\n❌ Failed sites ({{ $json.data.length }}) : {{ $json.data.map(item => `\\n • [${item.address.trim()}](https://${item.address.trim()}/) : ${item.statusCode ?? \"\"} ${item.statusMessage.trim()}`) }}",
         "additionalFields": {
           "appendAttribution": false
         }
@@ -387,7 +375,7 @@
       "type": "n8n-nodes-base.telegram",
       "typeVersion": 1.2,
       "position": [
-        1232,
+        1440,
         0
       ],
       "id": "174a544c-79b9-4df3-8ef4-7459eea5beb5",
@@ -408,7 +396,7 @@
       "type": "n8n-nodes-base.aggregate",
       "typeVersion": 1,
       "position": [
-        1056,
+        1264,
         0
       ],
       "id": "4e584e16-a4ad-4a8e-9841-2098373891d2",
@@ -451,7 +439,7 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.2,
       "position": [
-        832,
+        1040,
         16
       ],
       "id": "299c3682-913f-4aa2-8920-b3e591ea649a",
@@ -464,7 +452,7 @@
             {
               "id": "08e652fc-1176-471f-99df-d63f2f1eceae",
               "name": "statusCode",
-              "value": "={{ $json.statusCode }}",
+              "value": "={{ $json.statusCode ?? $json.error.status }}",
               "type": "number"
             },
             {
@@ -486,7 +474,7 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        1232,
+        1264,
         208
       ],
       "id": "dd86b58e-ea12-4972-b64c-2425934915a8",
@@ -521,7 +509,7 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.3,
       "position": [
-        832,
+        1040,
         208
       ],
       "id": "ec18c176-1b6d-41a3-bb54-46529824aa93",
@@ -529,6 +517,56 @@
       "retryOnFail": true,
       "waitBetweenTries": 5000,
       "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "url": "http://kpbitgo-bag.timo-llm.svc.cluster.local/api/v1/models",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "openAiApi",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        576,
+        432
+      ],
+      "id": "d319b36c-ce88-4cc4-b8b8-bb7ad01d0579",
+      "name": "HTTP Request",
+      "credentials": {
+        "openAiApi": {
+          "id": "pVKHFWiRKfdhvgtu",
+          "name": "aws_bedrock_model"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "dataTableId": {
+          "__rl": true,
+          "value": "c0YezzojRaRk5o7C",
+          "mode": "list",
+          "cachedResultName": "monitoring_website_list",
+          "cachedResultUrl": "/projects/TgT7sbikPaxzUZlq/datatables/c0YezzojRaRk5o7C"
+        },
+        "filters": {
+          "conditions": [
+            {
+              "condition": "={{ parseInt(Math.random()*2) === 1 ? \"gt\" : \"lte\" }}",
+              "keyValue": "=6"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1,
+      "position": [
+        576,
+        112
+      ],
+      "id": "9c04c706-2a1d-4743-94f5-e82193663c07",
+      "name": "get_website_list"
     }
   ],
   "pinData": {},
@@ -554,6 +592,6 @@
   },
   "tags": [],
   "triggerCount": 1,
-  "updatedAt": "2025-11-12T09:58:00.327Z",
-  "versionId": "f2fc50e2-cb26-464f-9278-5e39efd79319"
+  "updatedAt": "2025-11-12T10:48:26.847Z",
+  "versionId": "aaac6882-c75c-42e5-b91d-d51e5efcd131"
 }
