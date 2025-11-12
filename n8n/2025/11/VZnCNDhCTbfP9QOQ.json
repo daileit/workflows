@@ -36,28 +36,16 @@
     },
     "Switch": {
       "main": [
-        [],
         [
           {
-            "node": "get_data",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "HTTP Request": {
-      "main": [
-        [
-          {
-            "node": "Loop Over Items",
+            "node": "bedrock_sonnet_check",
             "type": "main",
             "index": 0
           }
         ],
         [
           {
-            "node": "Loop Over Items",
+            "node": "get_data",
             "type": "main",
             "index": 0
           }
@@ -86,7 +74,63 @@
         ],
         [
           {
-            "node": "HTTP Request",
+            "node": "http_get",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "merge",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "merge": {
+      "main": [
+        [
+          {
+            "node": "notify_result",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "filter": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "bedrock_sonnet_check": {
+      "main": [
+        []
+      ]
+    },
+    "http_get": {
+      "main": [
+        [
+          {
+            "node": "filter",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "filter",
             "type": "main",
             "index": 0
           }
@@ -142,7 +186,7 @@
       "type": "@n8n/n8n-nodes-langchain.openAi",
       "typeVersion": 1.8,
       "position": [
-        400,
+        368,
         -112
       ],
       "id": "fa7a96f0-2ce1-4dcf-a834-90293aa4f8a9",
@@ -161,8 +205,8 @@
       "type": "n8n-nodes-base.manualTrigger",
       "typeVersion": 1,
       "position": [
-        0,
-        -240
+        768,
+        -272
       ],
       "id": "cb0a73b6-173b-4f12-9add-7ba86a8dada8",
       "name": "When clicking ‘Execute workflow’"
@@ -182,8 +226,8 @@
       "type": "@n8n/n8n-nodes-langchain.googleGemini",
       "typeVersion": 1,
       "position": [
-        208,
-        -240
+        976,
+        -272
       ],
       "id": "a3fd7be0-7106-4ee3-b2dc-694df4ea0bd1",
       "name": "Generate an image",
@@ -293,44 +337,6 @@
     },
     {
       "parameters": {
-        "url": "=https://{{ $json.address }}/",
-        "sendQuery": true,
-        "queryParameters": {
-          "parameters": [
-            {
-              "name": "s",
-              "value": "health_check"
-            }
-          ]
-        },
-        "options": {
-          "redirect": {
-            "redirect": {
-              "maxRedirects": 10
-            }
-          },
-          "response": {
-            "response": {
-              "fullResponse": true
-            }
-          },
-          "timeout": 10000
-        }
-      },
-      "type": "n8n-nodes-base.httpRequest",
-      "typeVersion": 4.3,
-      "position": [
-        800,
-        208
-      ],
-      "id": "ec18c176-1b6d-41a3-bb54-46529824aa93",
-      "name": "HTTP Request",
-      "retryOnFail": true,
-      "waitBetweenTries": 5000,
-      "onError": "continueErrorOutput"
-    },
-    {
-      "parameters": {
         "operation": "get",
         "dataTableId": {
           "__rl": true,
@@ -373,7 +379,7 @@
     {
       "parameters": {
         "chatId": "-870986299",
-        "text": "=❌ Failed to health check  : {{ $json.error }}",
+        "text": "=⛑ **N8n Health Check Alert:\n❌ Failed sites ({{ $json.data.length }}) : {{ $json.data.map(item => `\\n • [${item.address.trim()}](https://${item.address.trim()}/) : ${item.statusCode ?? \"\"} ${item.statusMessage.trim()}`) }}",
         "additionalFields": {
           "appendAttribution": false
         }
@@ -381,8 +387,8 @@
       "type": "n8n-nodes-base.telegram",
       "typeVersion": 1.2,
       "position": [
-        944,
-        32
+        1232,
+        0
       ],
       "id": "174a544c-79b9-4df3-8ef4-7459eea5beb5",
       "name": "notify_result",
@@ -396,37 +402,133 @@
     },
     {
       "parameters": {
+        "aggregate": "aggregateAllItemData",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.aggregate",
+      "typeVersion": 1,
+      "position": [
+        1056,
+        0
+      ],
+      "id": "4e584e16-a4ad-4a8e-9841-2098373891d2",
+      "name": "merge"
+    },
+    {
+      "parameters": {
         "conditions": {
           "options": {
             "caseSensitive": true,
             "leftValue": "",
-            "typeValidation": "strict",
+            "typeValidation": "loose",
             "version": 2
           },
           "conditions": [
             {
-              "id": "88f3bdff-bf38-47f4-912c-cfef427388f8",
-              "leftValue": "",
-              "rightValue": "",
+              "id": "d8bd1bef-f63b-474b-8a15-6568a2fc4589",
+              "leftValue": "={{ $json.statusCode }}",
+              "rightValue": 200,
+              "operator": {
+                "type": "number",
+                "operation": "notEquals"
+              }
+            },
+            {
+              "id": "e03f2f63-9820-43c5-8308-0ddddb9e383f",
+              "leftValue": "={{ $json.statusMessage }}",
+              "rightValue": "unable to verify the first certificate",
               "operator": {
                 "type": "string",
-                "operation": "equals",
-                "name": "filter.operator.equals"
+                "operation": "notEquals"
               }
             }
           ],
           "combinator": "and"
         },
+        "looseTypeValidation": true,
         "options": {}
       },
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.2,
       "position": [
-        784,
+        832,
         16
       ],
-      "id": "d6c97cf6-38c2-4d5b-9351-98f7a45ae07d",
+      "id": "299c3682-913f-4aa2-8920-b3e591ea649a",
       "name": "If"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "08e652fc-1176-471f-99df-d63f2f1eceae",
+              "name": "statusCode",
+              "value": "={{ $json.statusCode }}",
+              "type": "number"
+            },
+            {
+              "id": "37216254-a124-47a5-9a06-845a093a97ba",
+              "name": "statusMessage",
+              "value": "={{ $json.error?.message ?? $json.statusMessage }}",
+              "type": "string"
+            },
+            {
+              "id": "9eea3f08-8618-4b18-8d79-edc1c27c904e",
+              "name": "address",
+              "value": "={{ $json.address ?? \"None\" }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1232,
+        208
+      ],
+      "id": "dd86b58e-ea12-4972-b64c-2425934915a8",
+      "name": "filter"
+    },
+    {
+      "parameters": {
+        "url": "=https://{{ $json.address }}/",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "s",
+              "value": "health_check"
+            }
+          ]
+        },
+        "options": {
+          "redirect": {
+            "redirect": {
+              "maxRedirects": 10
+            }
+          },
+          "response": {
+            "response": {
+              "fullResponse": true
+            }
+          },
+          "timeout": 10000
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        832,
+        208
+      ],
+      "id": "ec18c176-1b6d-41a3-bb54-46529824aa93",
+      "name": "http_get",
+      "retryOnFail": true,
+      "waitBetweenTries": 5000,
+      "onError": "continueErrorOutput"
     }
   ],
   "pinData": {},
@@ -452,6 +554,6 @@
   },
   "tags": [],
   "triggerCount": 1,
-  "updatedAt": "2025-11-12T08:48:16.722Z",
-  "versionId": "c9dda398-b44a-49d1-ae0c-581ae683bd3a"
+  "updatedAt": "2025-11-12T09:58:00.327Z",
+  "versionId": "f2fc50e2-cb26-464f-9278-5e39efd79319"
 }
