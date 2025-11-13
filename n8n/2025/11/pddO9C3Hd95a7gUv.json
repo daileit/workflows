@@ -1,0 +1,112 @@
+{
+  "active": false,
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Execute a command",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Execute a command": {
+      "main": [
+        [
+          {
+            "node": "Execute a command1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2025-11-13T20:56:55.974Z",
+  "id": "pddO9C3Hd95a7gUv",
+  "isArchived": false,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "name": "deploy_docker_vpstino3",
+  "nodes": [
+    {
+      "parameters": {
+        "path": "7b8dda38-ca86-489d-b10c-e164be496d77",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "9b7868d6-f0e0-4e99-9b0d-1f9f1a0e7575",
+      "name": "Webhook",
+      "webhookId": "7b8dda38-ca86-489d-b10c-e164be496d77"
+    },
+    {
+      "parameters": {
+        "authentication": "privateKey",
+        "command": "=sudo docker pull lanhlungbang/smart-system-operator:{{ $json.query.tag }}"
+      },
+      "type": "n8n-nodes-base.ssh",
+      "typeVersion": 1,
+      "position": [
+        208,
+        0
+      ],
+      "id": "d2830e51-4b03-44b6-9548-9fa91db7bcb8",
+      "name": "Execute a command",
+      "credentials": {
+        "sshPrivateKey": {
+          "id": "6h6r0zgvqYXl5khi",
+          "name": "vpstino3_sealdesign_net"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "authentication": "privateKey",
+        "command": "=docker run -d --name smart-system-operator -p 8080:8080 lanhlungbang/smart-system-operator:{{ $('Webhook').item.json.query.tag }}"
+      },
+      "type": "n8n-nodes-base.ssh",
+      "typeVersion": 1,
+      "position": [
+        416,
+        0
+      ],
+      "id": "8a01278b-102b-4ec3-882b-11e590c4c580",
+      "name": "Execute a command1",
+      "credentials": {
+        "sshPrivateKey": {
+          "id": "6h6r0zgvqYXl5khi",
+          "name": "vpstino3_sealdesign_net"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "repo_name": "workflows",
+  "repo_owner": "daileit",
+  "repo_path": "n8n/",
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "shared": [
+    {
+      "updatedAt": "2025-11-13T20:56:55.974Z",
+      "createdAt": "2025-11-13T20:56:55.974Z",
+      "role": "workflow:owner",
+      "workflowId": "pddO9C3Hd95a7gUv",
+      "projectId": "TgT7sbikPaxzUZlq"
+    }
+  ],
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 0,
+  "updatedAt": "2025-11-13T21:10:49.204Z",
+  "versionId": "b692d4ab-4745-4ded-8be1-30c75da02875"
+}
