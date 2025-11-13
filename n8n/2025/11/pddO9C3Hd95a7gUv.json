@@ -5,18 +5,102 @@
       "main": [
         [
           {
-            "node": "Execute a command",
+            "node": "check_input",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "Execute a command": {
+    "docker_pull": {
       "main": [
         [
           {
-            "node": "Execute a command1",
+            "node": "docker_ps",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "docker_stop": {
+      "main": [
+        [
+          {
+            "node": "Get row(s)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "docker_ps": {
+      "main": [
+        [
+          {
+            "node": "check_container",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "check_container": {
+      "main": [
+        [
+          {
+            "node": "Get row(s)",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "docker_stop",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "check_input": {
+      "main": [
+        [
+          {
+            "node": "docker_pull",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get row(s)": {
+      "main": [
+        [
+          {
+            "node": "Aggregate",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Aggregate": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "docker_run",
             "type": "main",
             "index": 0
           }
@@ -40,7 +124,7 @@
       "type": "n8n-nodes-base.webhook",
       "typeVersion": 2.1,
       "position": [
-        0,
+        -320,
         0
       ],
       "id": "9b7868d6-f0e0-4e99-9b0d-1f9f1a0e7575",
@@ -50,16 +134,16 @@
     {
       "parameters": {
         "authentication": "privateKey",
-        "command": "=sudo docker pull lanhlungbang/smart-system-operator:{{ $json.query.tag }}"
+        "command": "=sudo docker run {{ $json.env }}-d --name {{ $('Webhook').item.json.query.name }} -p 8080:8080 {{ $('Webhook').item.json.query.repo }}/{{ $('Webhook').item.json.query.name }}:{{ $('Webhook').item.json.query.tag }} "
       },
       "type": "n8n-nodes-base.ssh",
       "typeVersion": 1,
       "position": [
-        208,
-        0
+        1280,
+        -32
       ],
-      "id": "d2830e51-4b03-44b6-9548-9fa91db7bcb8",
-      "name": "Execute a command",
+      "id": "8a01278b-102b-4ec3-882b-11e590c4c580",
+      "name": "docker_run",
       "credentials": {
         "sshPrivateKey": {
           "id": "6h6r0zgvqYXl5khi",
@@ -70,22 +154,218 @@
     {
       "parameters": {
         "authentication": "privateKey",
-        "command": "=docker run -d --name smart-system-operator -p 8080:8080 lanhlungbang/smart-system-operator:{{ $('Webhook').item.json.query.tag }}"
+        "command": "=sudo docker pull {{ $json.query.repo.trim() }}/{{ $json.query.name.trim() }}:{{ $json.query.tag.trim() }}"
       },
       "type": "n8n-nodes-base.ssh",
       "typeVersion": 1,
       "position": [
-        416,
-        0
+        128,
+        -16
       ],
-      "id": "8a01278b-102b-4ec3-882b-11e590c4c580",
-      "name": "Execute a command1",
+      "id": "d2830e51-4b03-44b6-9548-9fa91db7bcb8",
+      "name": "docker_pull",
       "credentials": {
         "sshPrivateKey": {
           "id": "6h6r0zgvqYXl5khi",
           "name": "vpstino3_sealdesign_net"
         }
       }
+    },
+    {
+      "parameters": {
+        "authentication": "privateKey",
+        "command": "=sudo docker stop {{ $('Webhook').item.json.query.name }} && sudo docker rm {{ $('Webhook').item.json.query.name }}"
+      },
+      "type": "n8n-nodes-base.ssh",
+      "typeVersion": 1,
+      "position": [
+        912,
+        160
+      ],
+      "id": "ff93823d-b64e-4aa0-8d23-794cafab516c",
+      "name": "docker_stop",
+      "credentials": {
+        "sshPrivateKey": {
+          "id": "6h6r0zgvqYXl5khi",
+          "name": "vpstino3_sealdesign_net"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "authentication": "privateKey",
+        "command": "=sudo docker ps -a | grep {{ $('Webhook').item.json.query.name }}"
+      },
+      "type": "n8n-nodes-base.ssh",
+      "typeVersion": 1,
+      "position": [
+        320,
+        -16
+      ],
+      "id": "9f9058db-8a3c-4089-a209-090c8a02db79",
+      "name": "docker_ps",
+      "credentials": {
+        "sshPrivateKey": {
+          "id": "6h6r0zgvqYXl5khi",
+          "name": "vpstino3_sealdesign_net"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "88509c02-721c-45e5-85c8-becd5b0c003e",
+              "leftValue": "={{ $json.stdout }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "empty",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        512,
+        -16
+      ],
+      "id": "9c9cb5d5-7cab-42d4-b92e-d7aafa119112",
+      "name": "check_container"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "8816060d-ebdb-41dc-8368-9954491cae88",
+              "leftValue": "={{ $json.query.repo }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "exists",
+                "singleValue": true
+              }
+            },
+            {
+              "id": "9b69ce9b-828c-4fb8-9f17-01d531954e15",
+              "leftValue": "={{ $json.query.name }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "exists",
+                "singleValue": true
+              }
+            },
+            {
+              "id": "0222e765-95aa-429c-8913-d42895b1f690",
+              "leftValue": "={{ $json.query.tag }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "exists",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "looseTypeValidation": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -112,
+        0
+      ],
+      "id": "c7e86c44-f3a7-48ab-a34c-b474a55a3f88",
+      "name": "check_input"
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "dataTableId": {
+          "__rl": true,
+          "value": "joX4I7KfXaYvsR0s",
+          "mode": "list",
+          "cachedResultName": "smart_system_env",
+          "cachedResultUrl": "/projects/TgT7sbikPaxzUZlq/datatables/joX4I7KfXaYvsR0s"
+        },
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "Key",
+              "condition": "isNotEmpty"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1,
+      "position": [
+        736,
+        -32
+      ],
+      "id": "272f77a3-adff-42b8-b101-c2da81e333d9",
+      "name": "Get row(s)"
+    },
+    {
+      "parameters": {
+        "aggregate": "aggregateAllItemData",
+        "include": "specifiedFields",
+        "fieldsToInclude": "Key,Value",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.aggregate",
+      "typeVersion": 1,
+      "position": [
+        912,
+        -32
+      ],
+      "id": "30257dcc-8d7f-4416-804c-565a618c0936",
+      "name": "Aggregate"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "f65a54db-19eb-4176-8f2e-bba256e9240d",
+              "name": "env",
+              "value": "={{ $json.data.map(item => `-e ${item.Key}=${item.Value} `).join('') }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1104,
+        -32
+      ],
+      "id": "9015fd8c-32f9-40e6-b5c7-575e4bcb6a81",
+      "name": "Edit Fields"
     }
   ],
   "pinData": {},
@@ -107,6 +387,6 @@
   "staticData": null,
   "tags": [],
   "triggerCount": 0,
-  "updatedAt": "2025-11-13T21:10:49.204Z",
-  "versionId": "b692d4ab-4745-4ded-8be1-30c75da02875"
+  "updatedAt": "2025-11-13T21:53:15.929Z",
+  "versionId": "90e9af04-466e-4d6f-a71f-b37568e63b31"
 }
