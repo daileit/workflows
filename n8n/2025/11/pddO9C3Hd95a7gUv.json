@@ -1,5 +1,5 @@
 {
-  "active": false,
+  "active": true,
   "connections": {
     "Webhook": {
       "main": [
@@ -134,7 +134,7 @@
     {
       "parameters": {
         "authentication": "privateKey",
-        "command": "=sudo docker run {{ $json.env }}-d --name {{ $('Webhook').item.json.query.name }} -p 8080:8080 {{ $('Webhook').item.json.query.repo }}/{{ $('Webhook').item.json.query.name }}:{{ $('Webhook').item.json.query.tag }} "
+        "command": "=sudo docker run -e APP_VERSION={{ $('Webhook').item.json.query.tag }} {{ $json.env }}-d --name {{ $('Webhook').item.json.query.name }} -p 8080:8080 {{ $('Webhook').item.json.query.repo }}/{{ $('Webhook').item.json.query.name }}:{{ $('Webhook').item.json.query.tag }} "
       },
       "type": "n8n-nodes-base.ssh",
       "typeVersion": 1,
@@ -386,7 +386,7 @@
   ],
   "staticData": null,
   "tags": [],
-  "triggerCount": 0,
-  "updatedAt": "2025-11-13T21:53:15.929Z",
-  "versionId": "90e9af04-466e-4d6f-a71f-b37568e63b31"
+  "triggerCount": 1,
+  "updatedAt": "2025-11-13T22:34:36.975Z",
+  "versionId": "c910ba9c-1b23-4bc3-861c-f5ab15fa4a6e"
 }
