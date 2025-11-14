@@ -106,6 +106,17 @@
           }
         ]
       ]
+    },
+    "docker_run": {
+      "main": [
+        [
+          {
+            "node": "docker_images_clean",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     }
   },
   "createdAt": "2025-11-13T20:56:55.974Z",
@@ -366,6 +377,26 @@
       ],
       "id": "9015fd8c-32f9-40e6-b5c7-575e4bcb6a81",
       "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "authentication": "privateKey",
+        "command": "=sudo docker images --format \"{{'{{.ID}'}}} {{'{{.CreatedAt}'}}} {{'{{.Repository}'}}}\" | grep {{ $('Webhook').item.json.query.name }} | sort -k2,2 | head -n -3 | awk '{print $1}') | xargs -r docker rmi || true"
+      },
+      "type": "n8n-nodes-base.ssh",
+      "typeVersion": 1,
+      "position": [
+        1456,
+        -32
+      ],
+      "id": "2a51f067-5c88-4e46-96dc-3357c96ccfca",
+      "name": "docker_images_clean",
+      "credentials": {
+        "sshPrivateKey": {
+          "id": "6h6r0zgvqYXl5khi",
+          "name": "vpstino3_sealdesign_net"
+        }
+      }
     }
   ],
   "pinData": {},
@@ -387,6 +418,6 @@
   "staticData": null,
   "tags": [],
   "triggerCount": 1,
-  "updatedAt": "2025-11-14T11:22:02.737Z",
-  "versionId": "4abd0375-b069-4048-9ac0-c2bff3bbd61e"
+  "updatedAt": "2025-11-14T22:02:44.447Z",
+  "versionId": "21f7299b-1254-4086-bf1a-ef03dd331f77"
 }
