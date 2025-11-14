@@ -351,7 +351,7 @@
             {
               "id": "f65a54db-19eb-4176-8f2e-bba256e9240d",
               "name": "env",
-              "value": "={{ $json.data.map(item => `-e ${item.Key}=${item.Value} `).join('') }} -e APP_DEPLOY_TIME=\"{{ $now.setZone('Asia/Ho_Chi_Minh').format('LLL dd, yyyy H:mm:ss') }}\"",
+              "value": "=-e APP_DEPLOY_TIME=\"{{ $now.setZone('Asia/Ho_Chi_Minh').format('LLL dd, yyyy H:mm:ss') }}\" {{ $json.data.map(item => `-e ${item.Key}=${item.Value} `).join('') }}",
               "type": "string"
             }
           ]
@@ -387,6 +387,6 @@
   "staticData": null,
   "tags": [],
   "triggerCount": 1,
-  "updatedAt": "2025-11-14T10:57:13.951Z",
-  "versionId": "b7e2ceb0-4814-42c7-94c5-337dfd5c0818"
+  "updatedAt": "2025-11-14T11:22:02.737Z",
+  "versionId": "4abd0375-b069-4048-9ac0-c2bff3bbd61e"
 }
