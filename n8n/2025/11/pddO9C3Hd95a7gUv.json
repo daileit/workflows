@@ -134,7 +134,7 @@
     {
       "parameters": {
         "authentication": "privateKey",
-        "command": "=sudo docker run -e APP_VERSION={{ $('Webhook').item.json.query.tag }} {{ $json.env }}-d --name {{ $('Webhook').item.json.query.name }} -p 8080:8080 {{ $('Webhook').item.json.query.repo }}/{{ $('Webhook').item.json.query.name }}:{{ $('Webhook').item.json.query.tag }} "
+        "command": "=sudo docker run -e APP_VERSION={{ $('Webhook').item.json.query.tag }} {{ $json.env }}-d --add-host=host.docker.internal:host-gateway --name {{ $('Webhook').item.json.query.name }} -p 8080:8080 {{ $('Webhook').item.json.query.repo }}/{{ $('Webhook').item.json.query.name }}:{{ $('Webhook').item.json.query.tag }} "
       },
       "type": "n8n-nodes-base.ssh",
       "typeVersion": 1,
@@ -387,6 +387,6 @@
   "staticData": null,
   "tags": [],
   "triggerCount": 1,
-  "updatedAt": "2025-11-13T22:34:36.975Z",
-  "versionId": "c910ba9c-1b23-4bc3-861c-f5ab15fa4a6e"
+  "updatedAt": "2025-11-14T09:06:40.921Z",
+  "versionId": "7263d6d1-4b73-4b64-8e85-9a315222d531"
 }
