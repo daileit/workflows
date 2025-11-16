@@ -381,7 +381,7 @@
     {
       "parameters": {
         "authentication": "privateKey",
-        "command": "=sudo docker images --format \"{{'{{.ID}'}}} {{'{{.CreatedAt}'}}} {{'{{.Repository}'}}}\" | grep {{ $('Webhook').item.json.query.name }} | sort -k2,2 | head -n -3 | awk '{print $1}' | xargs -r docker rmi || true"
+        "command": "=sudo docker images --format \"{{'{{.ID}'}}} {{'{{.CreatedAt}'}}} {{'{{.Repository}'}}}\" | grep {{ $('Webhook').item.json.query.name }} | sort -k2,2 | head -n -3 | awk '{print $1}' | xargs -r sudo docker rmi || true"
       },
       "type": "n8n-nodes-base.ssh",
       "typeVersion": 1,
@@ -418,6 +418,6 @@
   "staticData": null,
   "tags": [],
   "triggerCount": 1,
-  "updatedAt": "2025-11-16T18:44:43.725Z",
-  "versionId": "9cbef99b-a416-4dee-89cf-e50395eb85dd"
+  "updatedAt": "2025-11-16T20:01:11.663Z",
+  "versionId": "34c87303-7c91-4ec0-aab0-507c80313895"
 }
