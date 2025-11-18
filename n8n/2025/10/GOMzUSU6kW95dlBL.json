@@ -259,7 +259,7 @@
     {
       "parameters": {
         "language": "python",
-        "pythonCode": "# Loop over input items and add a new field called 'myNewField' to the JSON of each one\noutput = []\nfor item in _input.first().json.message.content.categories_ids:\n  output.append(int(item))\nprint(output)\nreturn {\"output\": output}"
+        "pythonCode": "# Loop over input items and add a new field called 'myNewField' to the JSON of each one\ncategories = []\nfor item in _input.first().json.choices[0].message.content.categories_ids:\n  categories.append(int(item))\nprint(categories)\nreturn {\n  \"output\":\n  {\n    \"categories\": categories,\n    \"title\": _input.first().json.choices[0].message.content.title\n  }\n       }"
       },
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -310,11 +310,11 @@
     },
     {
       "parameters": {
-        "title": "={{ $('Generate title').last().json.message.content.title }}",
+        "title": "={{ $('Pick top Categories').last().json.output.title }}",
         "additionalFields": {
           "content": "={{ $json.message?.content.replace('\\n','<br>') ?? $json.output.replace('\\n','<br>') }}",
           "status": "={{ $('Get Permission').last().json.data.Publish\n=== \"Yes\" ? 'publish' : 'draft' }}",
-          "categories": "={{ $('Pick top Categories').last().json.output }}",
+          "categories": "={{ $('Pick top Categories').last().json.output.categories }}",
           "tags": [
             43,
             36,
@@ -464,7 +464,7 @@
       "parameters": {
         "operation": "sendAndWait",
         "chatId": "-870986299",
-        "message": "=Hi master!\nI'm asking you the permission to write and publish a post titled: *\"{{ $('Generate title').item.json.message.content.title }}\"* to [CloudyEZ.com](https://cloudyez.com) as @daileit",
+        "message": "=Hi master!\nI'm asking you the permission to write and publish a post titled: *\"{{ $json.output.title }}\"* to [CloudyEZ.com](https://cloudyez.com) as @daileit",
         "responseType": "customForm",
         "formFields": {
           "values": [
@@ -507,14 +507,14 @@
             {
               "fieldName": "Original",
               "fieldType": "hiddenField",
-              "fieldValue": "={{ $('Generate title').item.json.message.content.title }}"
+              "fieldValue": "={{ $json.output.title }}"
             }
           ]
         },
         "options": {
           "messageButtonLabel": "✅ Respond",
           "responseFormTitle": "=Hi master! I'm asking you the permission",
-          "responseFormDescription": "=I'm about to write and publish a post titled: \"{{ $('Generate title').item.json.message.content.title }}\" to CloudyEZ.com",
+          "responseFormDescription": "=I'm about to write and publish a post titled: \"{{ $json.output.title }}\" to CloudyEZ.com",
           "limitWaitTime": {
             "values": {
               "resumeAmount": 2,
@@ -653,7 +653,7 @@
     {
       "parameters": {
         "promptType": "define",
-        "text": "=Bạn tên daileit, Viết một bài blog tràn đầy thông tin hữu ích nhưng với giọng văn pha một chút hài hước về chủ đề: {{ $json.data.Original }}.\nNội dung cần chi tiết, dài hơn 700 từ.",
+        "text": "=Hôm nay là ngày {{ $now.setZone('Asia/Ho_Chi_Minh').format('MMM dd, yyyy') }}.\nBạn tên daileit, Viết một bài blog tràn đầy thông tin hữu ích nhưng với giọng văn pha một chút hài hước về chủ đề: {{ $json.data.Original }}.\nNội dung cần chi tiết, dài hơn 700 từ.",
         "options": {
           "systemMessage": "You are a Vietnamese senior content writer named daileit. You are working for a tech blog wordpress website. You mastered the content writring with excellent SEO skills. Given you a topic and you will generate the perfect blog post instantly with SEO keywords at the end.\n### FORMATTING GUIDE ###\nFormat the post as a wordpress post's html block, no need to add title. First start with an excerpt inside <p> block, then write the rest of the content with proper headings and html formmatting, place the SEO keywords at the end. Should have at least one external resource link was inline embedded.\nCan use google_ai_search tool to search and find references or updates for one or more small portions of your post.\nYou should always response one blog post content. No css styling, no explaination, no code or json format."
         }
@@ -774,6 +774,6 @@
   },
   "tags": [],
   "triggerCount": 1,
-  "updatedAt": "2025-11-12T10:35:02.966Z",
-  "versionId": "bc1c411a-75a8-413c-8b07-4edb3f216264"
+  "updatedAt": "2025-11-18T09:00:19.923Z",
+  "versionId": "e1d6b5bf-756d-45bb-b894-6d38ecfd1a45"
 }
