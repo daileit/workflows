@@ -148,7 +148,14 @@
             "index": 0
           }
         ],
-        []
+        [],
+        [
+          {
+            "node": "Routing Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
       ]
     },
     "clear_memory": {
@@ -684,6 +691,29 @@
                 ],
                 "combinator": "and"
               }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "loose",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "c02117d5-680c-4f36-87b1-b97ff467ebd6",
+                    "leftValue": "={{ $json.messageType }}",
+                    "rightValue": "url",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
             }
           ]
         },
@@ -826,6 +856,6 @@
   "staticData": null,
   "tags": [],
   "triggerCount": 1,
-  "updatedAt": "2025-11-13T11:31:57.221Z",
-  "versionId": "1bb6361f-2d9f-41ae-8039-ca86693b31b6"
+  "updatedAt": "2025-11-20T09:17:57.456Z",
+  "versionId": "2f559928-45ae-4734-83ad-330c9807d1d5"
 }
