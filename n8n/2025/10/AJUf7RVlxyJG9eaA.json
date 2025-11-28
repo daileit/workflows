@@ -108,7 +108,7 @@
       "main": [
         [
           {
-            "node": "If file too large",
+            "node": "If error",
             "type": "main",
             "index": 0
           }
@@ -171,24 +171,6 @@
         [
           {
             "node": "Edit existing file",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "If file too large": {
-      "main": [
-        [
-          {
-            "node": "Get File",
-            "type": "main",
-            "index": 0
-          }
-        ],
-        [
-          {
-            "node": "Merge Items",
             "type": "main",
             "index": 0
           }
@@ -334,6 +316,42 @@
           }
         ]
       ]
+    },
+    "If error": {
+      "main": [
+        [
+          {
+            "node": "If not downloadable",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Merge Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If not downloadable": {
+      "main": [
+        [
+          {
+            "node": "Return",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Get File",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     }
   },
   "createdAt": "2025-10-30T12:00:50.373Z",
@@ -459,54 +477,10 @@
       "name": "Get File",
       "type": "n8n-nodes-base.httpRequest",
       "position": [
-        912,
-        368
+        1104,
+        416
       ],
       "typeVersion": 4.2
-    },
-    {
-      "parameters": {
-        "conditions": {
-          "options": {
-            "caseSensitive": true,
-            "leftValue": "",
-            "typeValidation": "strict",
-            "version": 1
-          },
-          "conditions": [
-            {
-              "id": "45ce825e-9fa6-430c-8931-9aaf22c42585",
-              "operator": {
-                "type": "string",
-                "operation": "empty",
-                "singleValue": true
-              },
-              "leftValue": "={{ $json.content }}",
-              "rightValue": ""
-            },
-            {
-              "id": "9619a55f-7fb1-4f24-b1a7-7aeb82365806",
-              "operator": {
-                "type": "string",
-                "operation": "notExists",
-                "singleValue": true
-              },
-              "leftValue": "={{ $json.error }}",
-              "rightValue": ""
-            }
-          ],
-          "combinator": "and"
-        },
-        "options": {}
-      },
-      "id": "bb8f2afb-c3eb-4469-b337-3c5c66c19d0f",
-      "name": "If file too large",
-      "type": "n8n-nodes-base.if",
-      "position": [
-        704,
-        352
-      ],
-      "typeVersion": 2
     },
     {
       "parameters": {},
@@ -773,7 +747,7 @@
       "type": "n8n-nodes-base.github",
       "position": [
         512,
-        352
+        320
       ],
       "typeVersion": 1,
       "alwaysOutputData": true,
@@ -1058,6 +1032,84 @@
       ],
       "id": "652931f5-c7de-4061-94d0-9d2724f34a47",
       "name": "Filter"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 1
+          },
+          "conditions": [
+            {
+              "id": "9619a55f-7fb1-4f24-b1a7-7aeb82365806",
+              "operator": {
+                "type": "string",
+                "operation": "exists",
+                "singleValue": true
+              },
+              "leftValue": "={{ $json.error }}",
+              "rightValue": ""
+            },
+            {
+              "id": "aedaf111-4e4c-40a2-8840-f86826930a46",
+              "leftValue": "={{ $json.content }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "empty",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "or"
+        },
+        "options": {}
+      },
+      "id": "bb8f2afb-c3eb-4469-b337-3c5c66c19d0f",
+      "name": "If error",
+      "type": "n8n-nodes-base.if",
+      "position": [
+        704,
+        320
+      ],
+      "typeVersion": 2
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 1
+          },
+          "conditions": [
+            {
+              "id": "45ce825e-9fa6-430c-8931-9aaf22c42585",
+              "operator": {
+                "type": "number",
+                "operation": "notExists",
+                "singleValue": true
+              },
+              "leftValue": "={{ $json.download_url }}",
+              "rightValue": ""
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "1ae1ad7f-8ef2-48c1-8770-4778350a7956",
+      "name": "If not downloadable",
+      "type": "n8n-nodes-base.if",
+      "position": [
+        912,
+        320
+      ],
+      "typeVersion": 2
     }
   ],
   "pinData": {},
@@ -1086,6 +1138,6 @@
   },
   "tags": [],
   "triggerCount": 1,
-  "updatedAt": "2025-11-12T07:24:49.570Z",
-  "versionId": "0793cf4d-3b31-4e48-9aa4-b9fb7d8165e8"
+  "updatedAt": "2025-11-28T09:36:56.528Z",
+  "versionId": "4911cc62-c240-44e9-b4c6-70204ac68742"
 }
