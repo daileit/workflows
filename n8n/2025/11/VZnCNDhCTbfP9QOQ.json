@@ -16,7 +16,7 @@
       "main": [
         [
           {
-            "node": "Generate an image",
+            "node": "http_test",
             "type": "main",
             "index": 0
           }
@@ -154,6 +154,17 @@
           }
         ]
       ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Generate an image",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     }
   },
   "createdAt": "2025-11-10T08:28:55.082Z",
@@ -225,8 +236,8 @@
       "type": "n8n-nodes-base.manualTrigger",
       "typeVersion": 1,
       "position": [
-        768,
-        -272
+        1008,
+        -384
       ],
       "id": "cb0a73b6-173b-4f12-9add-7ba86a8dada8",
       "name": "When clicking ‘Execute workflow’"
@@ -246,8 +257,8 @@
       "type": "@n8n/n8n-nodes-langchain.googleGemini",
       "typeVersion": 1,
       "position": [
-        976,
-        -272
+        752,
+        -384
       ],
       "id": "a3fd7be0-7106-4ee3-b2dc-694df4ea0bd1",
       "name": "Generate an image",
@@ -576,6 +587,20 @@
       ],
       "id": "9c04c706-2a1d-4743-94f5-e82193663c07",
       "name": "get_website_list"
+    },
+    {
+      "parameters": {
+        "url": "http://yensaosapilenest.com/",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        1168,
+        -384
+      ],
+      "id": "ceb78e21-4aab-459c-b591-24a80ac7c71a",
+      "name": "http_test"
     }
   ],
   "pinData": {},
@@ -601,6 +626,6 @@
   },
   "tags": [],
   "triggerCount": 1,
-  "updatedAt": "2025-11-12T19:53:46.324Z",
-  "versionId": "f3b82946-9450-4a77-af76-49469e2efcca"
+  "updatedAt": "2025-11-28T08:38:10.532Z",
+  "versionId": "60fd6b75-39bc-49ad-a86e-716b8b58ad84"
 }
