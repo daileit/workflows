@@ -89,7 +89,7 @@
       "main": [
         [
           {
-            "node": "Notify Success",
+            "node": "merge",
             "type": "main",
             "index": 0
           }
@@ -153,6 +153,17 @@
           }
         ],
         []
+      ]
+    },
+    "merge": {
+      "main": [
+        [
+          {
+            "node": "Notify Success",
+            "type": "main",
+            "index": 0
+          }
+        ]
       ]
     }
   },
@@ -394,7 +405,7 @@
     {
       "parameters": {
         "authentication": "privateKey",
-        "command": "=rsync -avz -e 'ssh -p 8888' ./{{ $json.file }} vpstino1@apm.cloudyez.com:{{ $('get_source').item.json.destination_folder }}/{{ $('get_source').item.json.server }}/{{ $('Schedule Trigger').item.json.timestamp.split('T').first() }}/",
+        "command": "=rsync -avz -e 'ssh -p 22332' ./{{ $json.file }} vpstino1@apm.cloudyez.com:{{ $('get_source').item.json.destination_folder }}/{{ $('get_source').item.json.server }}/{{ $('Schedule Trigger').item.json.timestamp.split('T').first() }}/",
         "cwd": "={{ $('get_source').item.json.location }}"
       },
       "type": "n8n-nodes-base.ssh",
@@ -437,8 +448,8 @@
       "type": "n8n-nodes-base.telegram",
       "typeVersion": 1.2,
       "position": [
-        1616,
-        -192
+        1872,
+        -96
       ],
       "id": "d1cff263-0c5f-40cc-82f0-06b876b9d6ff",
       "name": "Notify Success",
@@ -527,6 +538,20 @@
           "name": "apm_sealdesign_net"
         }
       }
+    },
+    {
+      "parameters": {
+        "aggregate": "aggregateAllItemData",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.aggregate",
+      "typeVersion": 1,
+      "position": [
+        1616,
+        -192
+      ],
+      "id": "50da61ff-5657-4775-9ba4-9036f3392c6d",
+      "name": "merge"
     }
   ],
   "pinData": {},
@@ -551,6 +576,6 @@
   "staticData": null,
   "tags": [],
   "triggerCount": 0,
-  "updatedAt": "2025-12-02T20:10:46.328Z",
-  "versionId": "9c874436-974b-406b-9287-3d47017b1777"
+  "updatedAt": "2025-12-02T20:17:25.160Z",
+  "versionId": "a2887cdf-c4d0-4f33-a7ee-105b417a5f38"
 }
