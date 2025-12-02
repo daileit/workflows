@@ -1,0 +1,90 @@
+{
+  "active": false,
+  "connections": {
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "Execute a command",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2025-12-02T16:59:52.098Z",
+  "id": "D9k8ndLE92pbk7Pc",
+  "isArchived": false,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "name": "sync-backup-files",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "triggerAtHour": 5,
+              "triggerAtMinute": 30
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.3,
+      "position": [
+        0,
+        0
+      ],
+      "id": "cd698f05-e07a-4037-9180-ac720bfb8fa2",
+      "name": "Schedule Trigger"
+    },
+    {
+      "parameters": {
+        "authentication": "privateKey",
+        "command": "ls *.tar.gz",
+        "cwd": "/home/admin/admin_backups"
+      },
+      "type": "n8n-nodes-base.ssh",
+      "typeVersion": 1,
+      "position": [
+        208,
+        0
+      ],
+      "id": "50ab5dff-3faf-426b-9a74-b8b0927ee913",
+      "name": "Execute a command",
+      "credentials": {
+        "sshPrivateKey": {
+          "id": "6h6r0zgvqYXl5khi",
+          "name": "vpstino3_sealdesign_net"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "repo_name": "workflows",
+  "repo_owner": "daileit",
+  "repo_path": "n8n/",
+  "settings": {
+    "executionOrder": "v1",
+    "timezone": "Asia/Ho_Chi_Minh",
+    "callerPolicy": "workflowsFromSameOwner",
+    "availableInMCP": false
+  },
+  "shared": [
+    {
+      "updatedAt": "2025-12-02T16:59:52.098Z",
+      "createdAt": "2025-12-02T16:59:52.098Z",
+      "role": "workflow:owner",
+      "workflowId": "D9k8ndLE92pbk7Pc",
+      "projectId": "TgT7sbikPaxzUZlq"
+    }
+  ],
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 0,
+  "updatedAt": "2025-12-02T17:02:55.404Z",
+  "versionId": "8085ac9e-dac2-45d7-ad2a-bbe80c049150"
+}
