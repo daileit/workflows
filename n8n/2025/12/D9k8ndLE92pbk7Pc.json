@@ -107,7 +107,7 @@
       "main": [
         [
           {
-            "node": "Loop Over Items",
+            "node": "if_synced",
             "type": "main",
             "index": 0
           }
@@ -156,6 +156,46 @@
       ]
     },
     "merge": {
+      "main": [
+        [
+          {
+            "node": "message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "if_synced": {
+      "main": [
+        [
+          {
+            "node": "delete_source",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "delete_source": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "message": {
       "main": [
         [
           {
@@ -448,8 +488,8 @@
       "type": "n8n-nodes-base.telegram",
       "typeVersion": 1.2,
       "position": [
-        1872,
-        -96
+        2080,
+        -192
       ],
       "id": "d1cff263-0c5f-40cc-82f0-06b876b9d6ff",
       "name": "Notify Success",
@@ -521,7 +561,7 @@
     {
       "parameters": {
         "authentication": "privateKey",
-        "command": "sudo ls -t1d [0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9] | tail -n +4 | xargs echo",
+        "command": "sudo ls -t1d [0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9] | tail -n +6 | xargs echo",
         "cwd": "={{ $('get_source').item.json.destination_folder }}/{{ $('get_source').item.json.server }}"
       },
       "type": "n8n-nodes-base.ssh",
@@ -552,6 +592,94 @@
       ],
       "id": "50da61ff-5657-4775-9ba4-9036f3392c6d",
       "name": "merge"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "79f07df4-4ea1-4c2c-8c95-cf0bdca79079",
+              "leftValue": "={{ $json.code }}",
+              "rightValue": 0,
+              "operator": {
+                "type": "number",
+                "operation": "equals"
+              }
+            },
+            {
+              "id": "aa3d4312-cd9b-4a24-ad77-fcfed567fc7a",
+              "leftValue": "={{ $json.stderr }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "empty",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "looseTypeValidation": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        1840,
+        0
+      ],
+      "id": "6f10924c-e37c-4231-8cc1-1c781aefcb5c",
+      "name": "if_synced"
+    },
+    {
+      "parameters": {
+        "authentication": "privateKey",
+        "command": "=rm -f ./{{ $('Loop Over Items').item.json.file }} && echo \"{{ $('Loop Over Items').item.json.file }}:{{ $json.stdout.split(\" \")[15] }}\"",
+        "cwd": "={{ $('get_source').item.json.location }}"
+      },
+      "type": "n8n-nodes-base.ssh",
+      "typeVersion": 1,
+      "position": [
+        2080,
+        80
+      ],
+      "id": "b258ae1d-a4e8-443e-95c8-cb27836d4d1c",
+      "name": "delete_source",
+      "credentials": {
+        "sshPrivateKey": {
+          "id": "ug12hgqgIt7Vb8ke",
+          "name": "vpstino1_sealdesign_net"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "a97febce-a8a1-4d8f-bb77-030715e97f00",
+              "name": "content",
+              "value": "=💾 * Server Backup Sync has completed: {{ $('merge').first().json.data.filter(item => item.code == 0).length }}/{{ $('merge').first().json.data.length }} websites have been synced.*\n✅ Success ({{ $('merge').first().json.data.filter(item => item.code == 0).length }}): {{ $('merge').first().json.data.filter(item => item.code == 0 ).map(item => `\\n • *${item.stdout.trim().split('.')[2]}* (${item.stdout.trim().split(':')[1]} bytes)`) }}\n{{ $('merge').first().json.data.filter(item => item.code != 0).length != 0 ? \"❌ Failed: \" : \"\" }} {{ $('merge').first().json.data.filter(item => item.code != 0 ).map(item => `\\n • ${item.stderr.trim()}`) }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1840,
+        -192
+      ],
+      "id": "ec44c1ce-d91a-4dc5-831c-7fe04a592831",
+      "name": "message"
     }
   ],
   "pinData": {},
@@ -576,6 +704,6 @@
   "staticData": null,
   "tags": [],
   "triggerCount": 0,
-  "updatedAt": "2025-12-02T20:17:25.160Z",
-  "versionId": "a2887cdf-c4d0-4f33-a7ee-105b417a5f38"
+  "updatedAt": "2025-12-02T23:05:08.730Z",
+  "versionId": "8edb9186-e910-4495-851a-59c98f7bc21f"
 }
