@@ -5,7 +5,91 @@
       "main": [
         [
           {
+            "node": "get_source",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch": {
+      "main": [
+        [
+          {
             "node": "Execute a command",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "list_files",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "get_source": {
+      "main": [
+        [
+          {
+            "node": "Switch",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "split_list": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "list_files": {
+      "main": [
+        [
+          {
+            "node": "split_list",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Split Out",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Split Out": {
+      "main": [
+        [
+          {
+            "node": "Download a file",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Download a file": {
+      "main": [
+        [
+          {
+            "node": "Upload a file",
             "type": "main",
             "index": 0
           }
@@ -19,7 +103,7 @@
   "meta": {
     "templateCredsSetupCompleted": true
   },
-  "name": "sync-backup-files",
+  "name": "sync_backup_files",
   "nodes": [
     {
       "parameters": {
@@ -43,22 +127,255 @@
     },
     {
       "parameters": {
-        "authentication": "privateKey",
-        "command": "ls *.tar.gz",
-        "cwd": "/home/admin/admin_backups"
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "8e1824d3-3c8c-4374-b7ab-365c9c191040",
+                    "leftValue": "={{ $json.destination }}",
+                    "rightValue": "",
+                    "operator": {
+                      "type": "string",
+                      "operation": "exists",
+                      "singleValue": true
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "apm"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.server }}",
+                    "rightValue": "tino1",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "1a2aba8a-30f4-4c80-b5e1-70ff32169522"
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "tino1"
+            }
+          ]
+        },
+        "options": {
+          "allMatchingOutputs": true
+        }
       },
-      "type": "n8n-nodes-base.ssh",
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.3,
+      "position": [
+        416,
+        0
+      ],
+      "id": "4a6b4ff9-2100-472a-95bb-9814bd8cab3f",
+      "name": "Switch"
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "dataTableId": {
+          "__rl": true,
+          "value": "PjL6uPDTw477YFzH",
+          "mode": "list",
+          "cachedResultName": "website_backup_locations",
+          "cachedResultUrl": "/projects/TgT7sbikPaxzUZlq/datatables/PjL6uPDTw477YFzH"
+        },
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "location",
+              "condition": "isNotEmpty"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1,
       "position": [
         208,
         0
       ],
-      "id": "50ab5dff-3faf-426b-9a74-b8b0927ee913",
+      "id": "ec23d85e-a18c-4c7f-8791-e8056c0df71f",
+      "name": "get_source"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "3472a952-603e-4a7a-b7f9-d28b827da922",
+              "name": "file",
+              "value": "={{ $json.stdout.split('\\n') }}",
+              "type": "array"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        832,
+        16
+      ],
+      "id": "fb4db3e6-46a6-4d7b-a102-359d7eab5ecb",
+      "name": "split_list"
+    },
+    {
+      "parameters": {
+        "authentication": "privateKey",
+        "command": "=sudo ls | grep tar.gz",
+        "cwd": "={{ $json.location }}"
+      },
+      "type": "n8n-nodes-base.ssh",
+      "typeVersion": 1,
+      "position": [
+        656,
+        16
+      ],
+      "id": "6b254bba-1305-480a-bb89-80fa99175a5b",
+      "name": "list_files",
+      "credentials": {
+        "sshPrivateKey": {
+          "id": "ug12hgqgIt7Vb8ke",
+          "name": "vpstino1_sealdesign_net"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "fieldToSplitOut": "file",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitOut",
+      "typeVersion": 1,
+      "position": [
+        1216,
+        -192
+      ],
+      "id": "bf6df65b-52c3-4a60-ba15-bda35e751764",
+      "name": "Split Out"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "80ada1c7-31cf-45b6-a519-37f1faf3860a",
+              "leftValue": "={{ $json.file.length }}",
+              "rightValue": 0,
+              "operator": {
+                "type": "number",
+                "operation": "gt"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        992,
+        16
+      ],
+      "id": "5977025d-0f64-41d8-851c-c3dd2960ab0d",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "authentication": "privateKey",
+        "command": "=sudo mkdir -p {{ $('get_source').item.json.destination_folder }}/{{ $json.server }}/{{ $('Schedule Trigger').item.json.timestamp.split('T').first() }}"
+      },
+      "type": "n8n-nodes-base.ssh",
+      "typeVersion": 1,
+      "position": [
+        656,
+        -208
+      ],
+      "id": "a6ed7628-7228-4a4e-a24d-704f6c2fc685",
       "name": "Execute a command",
       "credentials": {
         "sshPrivateKey": {
-          "id": "6h6r0zgvqYXl5khi",
-          "name": "vpstino3_sealdesign_net"
+          "id": "3iS4XAZKorQ6ztoN",
+          "name": "apm_sealdesign_net"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "authentication": "privateKey",
+        "resource": "file",
+        "operation": "download",
+        "path": "={{ $('get_source').item.json.location }}/{{ $json.file }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.ssh",
+      "typeVersion": 1,
+      "position": [
+        1424,
+        -192
+      ],
+      "id": "6eb996fa-5700-45a3-8c90-0832876904ca",
+      "name": "Download a file",
+      "credentials": {
+        "sshPrivateKey": {
+          "id": "ug12hgqgIt7Vb8ke",
+          "name": "vpstino1_sealdesign_net"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "authentication": "privateKey",
+        "resource": "file",
+        "path": "={{ $('get_source').item.json.destination_folder }}",
+        "options": {
+          "fileName": "={{ $('Split Out').item.json.file }}"
+        }
+      },
+      "type": "n8n-nodes-base.ssh",
+      "typeVersion": 1,
+      "position": [
+        1632,
+        -192
+      ],
+      "id": "ce43ae99-b373-45b1-971e-fc92117070e1",
+      "name": "Upload a file",
+      "credentials": {
+        "sshPrivateKey": {
+          "id": "3iS4XAZKorQ6ztoN",
+          "name": "apm_sealdesign_net"
         }
       }
     }
@@ -85,6 +402,6 @@
   "staticData": null,
   "tags": [],
   "triggerCount": 0,
-  "updatedAt": "2025-12-02T17:02:55.404Z",
-  "versionId": "8085ac9e-dac2-45d7-ad2a-bbe80c049150"
+  "updatedAt": "2025-12-02T17:55:17.700Z",
+  "versionId": "7a5af63e-e4e2-4132-9c9c-cb68314f20f4"
 }
