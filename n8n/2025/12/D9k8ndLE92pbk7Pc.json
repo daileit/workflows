@@ -247,7 +247,7 @@
     {
       "parameters": {
         "authentication": "privateKey",
-        "command": "=sudo ls | grep tar.gz",
+        "command": "=sudo ls | grep tar.gz ",
         "cwd": "={{ $json.location }}"
       },
       "type": "n8n-nodes-base.ssh",
@@ -321,7 +321,7 @@
       "typeVersion": 1,
       "position": [
         656,
-        -208
+        -240
       ],
       "id": "a6ed7628-7228-4a4e-a24d-704f6c2fc685",
       "name": "Execute a command",
@@ -402,6 +402,6 @@
   "staticData": null,
   "tags": [],
   "triggerCount": 0,
-  "updatedAt": "2025-12-02T17:55:17.700Z",
-  "versionId": "7a5af63e-e4e2-4132-9c9c-cb68314f20f4"
+  "updatedAt": "2025-12-02T18:37:46.643Z",
+  "versionId": "178e9a51-6285-493f-ae15-1c1ec9ce496d"
 }
