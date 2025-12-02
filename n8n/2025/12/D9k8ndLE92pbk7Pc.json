@@ -16,7 +16,7 @@
       "main": [
         [
           {
-            "node": "Execute a command",
+            "node": "prepare",
             "type": "main",
             "index": 0
           }
@@ -78,22 +78,81 @@
       "main": [
         [
           {
-            "node": "Download a file",
+            "node": "Loop Over Items",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "Download a file": {
+    "Loop Over Items": {
       "main": [
         [
           {
-            "node": "Upload a file",
+            "node": "Notify Success",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "sync",
             "type": "main",
             "index": 0
           }
         ]
+      ]
+    },
+    "sync": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "prepare": {
+      "main": [
+        [
+          {
+            "node": "check_retentions",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "check_retentions": {
+      "main": [
+        [
+          {
+            "node": "conditions",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "conditions": {
+      "main": [
+        [
+          {
+            "node": "delete",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        []
       ]
     }
   },
@@ -247,7 +306,7 @@
     {
       "parameters": {
         "authentication": "privateKey",
-        "command": "=sudo ls | grep tar.gz ",
+        "command": "=sudo ls | grep tar.gz | grep user",
         "cwd": "={{ $json.location }}"
       },
       "type": "n8n-nodes-base.ssh",
@@ -274,7 +333,7 @@
       "typeVersion": 1,
       "position": [
         1216,
-        -192
+        -80
       ],
       "id": "bf6df65b-52c3-4a60-ba15-bda35e751764",
       "name": "Split Out"
@@ -324,7 +383,7 @@
         -240
       ],
       "id": "a6ed7628-7228-4a4e-a24d-704f6c2fc685",
-      "name": "Execute a command",
+      "name": "prepare",
       "credentials": {
         "sshPrivateKey": {
           "id": "3iS4XAZKorQ6ztoN",
@@ -335,43 +394,133 @@
     {
       "parameters": {
         "authentication": "privateKey",
-        "resource": "file",
-        "operation": "download",
-        "path": "={{ $('get_source').item.json.location }}/{{ $json.file }}",
-        "options": {}
+        "command": "=rsync -avz -e 'ssh -p 8888' ./{{ $json.file }} vpstino1@apm.cloudyez.com:{{ $('get_source').item.json.destination_folder }}/{{ $('get_source').item.json.server }}/{{ $('Schedule Trigger').item.json.timestamp.split('T').first() }}/",
+        "cwd": "={{ $('get_source').item.json.location }}"
       },
       "type": "n8n-nodes-base.ssh",
       "typeVersion": 1,
       "position": [
-        1424,
-        -192
+        1616,
+        0
       ],
-      "id": "6eb996fa-5700-45a3-8c90-0832876904ca",
-      "name": "Download a file",
+      "id": "d49e732f-df65-4d47-a1cc-ef9a3022c079",
+      "name": "sync",
       "credentials": {
         "sshPrivateKey": {
           "id": "ug12hgqgIt7Vb8ke",
           "name": "vpstino1_sealdesign_net"
         }
-      }
+      },
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        1408,
+        -80
+      ],
+      "id": "252dc503-0698-4f08-858a-9d06716a58dc",
+      "name": "Loop Over Items"
+    },
+    {
+      "parameters": {
+        "chatId": "-870986299",
+        "text": "={{ $json.content ?? $json.message.content }}",
+        "additionalFields": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        1616,
+        -192
+      ],
+      "id": "d1cff263-0c5f-40cc-82f0-06b876b9d6ff",
+      "name": "Notify Success",
+      "webhookId": "868eda86-564a-45b2-9814-7d86067d9b4f",
+      "alwaysOutputData": false,
+      "credentials": {
+        "telegramApi": {
+          "id": "RHYciMpF31QQslz5",
+          "name": "desert_eagle_bot"
+        }
+      },
+      "onError": "continueErrorOutput"
     },
     {
       "parameters": {
         "authentication": "privateKey",
-        "resource": "file",
-        "path": "={{ $('get_source').item.json.destination_folder }}",
-        "options": {
-          "fileName": "={{ $('Split Out').item.json.file }}"
-        }
+        "command": "=sudo ls | wc -l",
+        "cwd": "={{ $('get_source').item.json.destination_folder }}/{{ $('get_source').item.json.server }}"
       },
       "type": "n8n-nodes-base.ssh",
       "typeVersion": 1,
       "position": [
-        1632,
-        -192
+        848,
+        -240
       ],
-      "id": "ce43ae99-b373-45b1-971e-fc92117070e1",
-      "name": "Upload a file",
+      "id": "2e54f790-f81e-43d2-9380-50db0a4d2355",
+      "name": "check_retentions",
+      "credentials": {
+        "sshPrivateKey": {
+          "id": "3iS4XAZKorQ6ztoN",
+          "name": "apm_sealdesign_net"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "a86c366e-ba31-4a36-89e5-5544701c2bb7",
+              "leftValue": "={{ $json.stdout }}",
+              "rightValue": 4,
+              "operator": {
+                "type": "number",
+                "operation": "gte"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "looseTypeValidation": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        1040,
+        -240
+      ],
+      "id": "a292ce68-adf6-482d-a2ef-56ba1c441480",
+      "name": "conditions"
+    },
+    {
+      "parameters": {
+        "authentication": "privateKey",
+        "command": "sudo ls -t1d [0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9] | tail -n +4 | xargs echo",
+        "cwd": "={{ $('get_source').item.json.destination_folder }}/{{ $('get_source').item.json.server }}"
+      },
+      "type": "n8n-nodes-base.ssh",
+      "typeVersion": 1,
+      "position": [
+        1264,
+        -400
+      ],
+      "id": "3392ae97-815c-4cc6-8a76-004743de487a",
+      "name": "delete",
       "credentials": {
         "sshPrivateKey": {
           "id": "3iS4XAZKorQ6ztoN",
@@ -402,6 +551,6 @@
   "staticData": null,
   "tags": [],
   "triggerCount": 0,
-  "updatedAt": "2025-12-02T18:37:46.643Z",
-  "versionId": "178e9a51-6285-493f-ae15-1c1ec9ce496d"
+  "updatedAt": "2025-12-02T20:10:46.328Z",
+  "versionId": "9c874436-974b-406b-9287-3d47017b1777"
 }
