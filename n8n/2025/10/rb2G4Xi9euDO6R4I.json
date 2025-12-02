@@ -72,7 +72,7 @@
       "credentials": {
         "openAiApi": {
           "id": "AK30dMCwrhg3myvP",
-          "name": "Groq OpenAPI"
+          "name": "groq_openapi"
         }
       }
     },
@@ -132,6 +132,6 @@
   "staticData": null,
   "tags": [],
   "triggerCount": 0,
-  "updatedAt": "2025-11-04T15:01:14.843Z",
-  "versionId": "01a74dcf-8c6f-4049-9ce0-f092eb08e8a6"
+  "updatedAt": "2025-12-02T16:27:27.793Z",
+  "versionId": "8652fc67-3f11-447c-abcf-574fb1104494"
 }
