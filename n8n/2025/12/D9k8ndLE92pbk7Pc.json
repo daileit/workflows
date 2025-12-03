@@ -1,5 +1,5 @@
 {
-  "active": false,
+  "active": true,
   "connections": {
     "Schedule Trigger": {
       "main": [
@@ -147,7 +147,7 @@
       "main": [
         [
           {
-            "node": "delete",
+            "node": "delete_retentions",
             "type": "main",
             "index": 0
           }
@@ -325,7 +325,7 @@
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1,
       "position": [
-        208,
+        192,
         0
       ],
       "id": "ec23d85e-a18c-4c7f-8791-e8056c0df71f",
@@ -348,7 +348,7 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        832,
+        848,
         16
       ],
       "id": "fb4db3e6-46a6-4d7b-a102-359d7eab5ecb",
@@ -384,7 +384,7 @@
       "typeVersion": 1,
       "position": [
         1216,
-        -80
+        -112
       ],
       "id": "bf6df65b-52c3-4a60-ba15-bda35e751764",
       "name": "Split Out"
@@ -407,6 +407,15 @@
                 "type": "number",
                 "operation": "gt"
               }
+            },
+            {
+              "id": "4b8728d0-0406-4e68-a7a1-9759774ea3a5",
+              "leftValue": "={{ $('list_files').item.json.code }}",
+              "rightValue": 0,
+              "operator": {
+                "type": "number",
+                "operation": "equals"
+              }
             }
           ],
           "combinator": "and"
@@ -416,7 +425,7 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.2,
       "position": [
-        992,
+        1040,
         16
       ],
       "id": "5977025d-0f64-41d8-851c-c3dd2960ab0d",
@@ -425,7 +434,7 @@
     {
       "parameters": {
         "authentication": "privateKey",
-        "command": "=sudo mkdir -p {{ $('get_source').item.json.destination_folder }}/{{ $json.server }}/{{ $('Schedule Trigger').item.json.timestamp.split('T').first() }}"
+        "command": "=sudo mkdir -p {{ $('get_source').item.json.destination_folder }}/{{ $json.server }}/{{ $('Schedule Trigger').item.json.timestamp.toDateTime().format('yyyy-MM') }}"
       },
       "type": "n8n-nodes-base.ssh",
       "typeVersion": 1,
@@ -445,7 +454,7 @@
     {
       "parameters": {
         "authentication": "privateKey",
-        "command": "=rsync -avz -e 'ssh -p 22332' ./{{ $json.file }} vpstino1@apm.cloudyez.com:{{ $('get_source').item.json.destination_folder }}/{{ $('get_source').item.json.server }}/{{ $('Schedule Trigger').item.json.timestamp.split('T').first() }}/",
+        "command": "=rsync -avz -e 'ssh -p 22332' ./{{ $json.file }} vpstino1@apm.cloudyez.com:{{ $('get_source').item.json.destination_folder }}/{{ $('get_source').item.json.server }}/{{ $('Schedule Trigger').item.json.timestamp.toDateTime().format('yyyy-MM')  }}/",
         "cwd": "={{ $('get_source').item.json.location }}"
       },
       "type": "n8n-nodes-base.ssh",
@@ -472,7 +481,7 @@
       "typeVersion": 3,
       "position": [
         1408,
-        -80
+        -112
       ],
       "id": "252dc503-0698-4f08-858a-9d06716a58dc",
       "name": "Loop Over Items"
@@ -488,8 +497,8 @@
       "type": "n8n-nodes-base.telegram",
       "typeVersion": 1.2,
       "position": [
-        2080,
-        -192
+        2032,
+        -224
       ],
       "id": "d1cff263-0c5f-40cc-82f0-06b876b9d6ff",
       "name": "Notify Success",
@@ -537,10 +546,19 @@
             {
               "id": "a86c366e-ba31-4a36-89e5-5544701c2bb7",
               "leftValue": "={{ $json.stdout }}",
-              "rightValue": 4,
+              "rightValue": 6,
               "operator": {
                 "type": "number",
                 "operation": "gte"
+              }
+            },
+            {
+              "id": "9145868a-c035-4ba6-ae89-2c33726bd639",
+              "leftValue": "={{ $json.code }}",
+              "rightValue": 0,
+              "operator": {
+                "type": "number",
+                "operation": "equals"
               }
             }
           ],
@@ -560,27 +578,6 @@
     },
     {
       "parameters": {
-        "authentication": "privateKey",
-        "command": "sudo ls -t1d [0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9] | tail -n +6 | xargs echo",
-        "cwd": "={{ $('get_source').item.json.destination_folder }}/{{ $('get_source').item.json.server }}"
-      },
-      "type": "n8n-nodes-base.ssh",
-      "typeVersion": 1,
-      "position": [
-        1264,
-        -400
-      ],
-      "id": "3392ae97-815c-4cc6-8a76-004743de487a",
-      "name": "delete",
-      "credentials": {
-        "sshPrivateKey": {
-          "id": "3iS4XAZKorQ6ztoN",
-          "name": "apm_sealdesign_net"
-        }
-      }
-    },
-    {
-      "parameters": {
         "aggregate": "aggregateAllItemData",
         "options": {}
       },
@@ -588,7 +585,7 @@
       "typeVersion": 1,
       "position": [
         1616,
-        -192
+        -224
       ],
       "id": "50da61ff-5657-4775-9ba4-9036f3392c6d",
       "name": "merge"
@@ -631,7 +628,7 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.2,
       "position": [
-        1840,
+        1824,
         0
       ],
       "id": "6f10924c-e37c-4231-8cc1-1c781aefcb5c",
@@ -646,8 +643,8 @@
       "type": "n8n-nodes-base.ssh",
       "typeVersion": 1,
       "position": [
-        2080,
-        80
+        2032,
+        0
       ],
       "id": "b258ae1d-a4e8-443e-95c8-cb27836d4d1c",
       "name": "delete_source",
@@ -675,11 +672,32 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        1840,
-        -192
+        1824,
+        -224
       ],
       "id": "ec44c1ce-d91a-4dc5-831c-7fe04a592831",
       "name": "message"
+    },
+    {
+      "parameters": {
+        "authentication": "privateKey",
+        "command": "sudo ls -t1d [0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9] | tail -n +6 | xargs echo",
+        "cwd": "={{ $('get_source').item.json.destination_folder }}/{{ $('get_source').item.json.server }}"
+      },
+      "type": "n8n-nodes-base.ssh",
+      "typeVersion": 1,
+      "position": [
+        1408,
+        -256
+      ],
+      "id": "3392ae97-815c-4cc6-8a76-004743de487a",
+      "name": "delete_retentions",
+      "credentials": {
+        "sshPrivateKey": {
+          "id": "3iS4XAZKorQ6ztoN",
+          "name": "apm_sealdesign_net"
+        }
+      }
     }
   ],
   "pinData": {},
@@ -701,9 +719,13 @@
       "projectId": "TgT7sbikPaxzUZlq"
     }
   ],
-  "staticData": null,
+  "staticData": {
+    "node:Schedule Trigger": {
+      "recurrenceRules": []
+    }
+  },
   "tags": [],
-  "triggerCount": 0,
-  "updatedAt": "2025-12-02T23:05:08.730Z",
-  "versionId": "8edb9186-e910-4495-851a-59c98f7bc21f"
+  "triggerCount": 1,
+  "updatedAt": "2025-12-03T00:01:29.092Z",
+  "versionId": "672f5eaa-d784-4e94-bb17-ea831263e90e"
 }
