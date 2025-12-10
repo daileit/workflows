@@ -145,7 +145,7 @@
     {
       "parameters": {
         "authentication": "privateKey",
-        "command": "=sudo docker run -e APP_VERSION={{ $('Webhook').item.json.query.tag }} {{ $json.env }}-d --add-host=host.docker.internal:host-gateway --name {{ $('Webhook').item.json.query.name }} -p 127.0.0.1:{{ $json.port.trim() }}:{{ $json.port.trim() }} {{ $('Webhook').item.json.query.repo }}/{{ $('Webhook').item.json.query.name }}:{{ $('Webhook').item.json.query.tag }} "
+        "command": "=sudo docker run -e APP_VERSION={{ $('Webhook').item.json.query.tag }} {{ $json.env }}-d --add-host=host.docker.internal:host-gateway --name {{ $('Webhook').item.json.query.name }} -p {{ $json.port.trim() }} {{ $('Webhook').item.json.query.repo }}/{{ $('Webhook').item.json.query.name }}:{{ $('Webhook').item.json.query.tag }} "
       },
       "type": "n8n-nodes-base.ssh",
       "typeVersion": 1,
@@ -373,7 +373,7 @@
             {
               "id": "9adce40d-7019-4a7a-83a5-2cba363be0c1",
               "name": "port",
-              "value": "={{ $json.data.find(item => item.Key === 'APP_PORT')?.Value ?? '8080'}}",
+              "value": "={{ $json.data.find(item => item.Key === 'APP_LISTEN')?.Value ?? '127.0.0.1:'}}{{ $json.data.find(item => item.Key === 'APP_PORT')?.Value ?? '8080'}}:{{ $json.data.find(item => item.Key === 'APP_PORT')?.Value ?? '8080'}}",
               "type": "string"
             }
           ]
@@ -429,6 +429,6 @@
   "staticData": null,
   "tags": [],
   "triggerCount": 1,
-  "updatedAt": "2025-12-10T12:03:38.637Z",
-  "versionId": "da4182e4-a359-43b5-ba11-5b73a26c6f19"
+  "updatedAt": "2025-12-10T12:23:54.907Z",
+  "versionId": "dfc16a24-244f-481b-bccd-861a8915642c"
 }
