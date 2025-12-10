@@ -321,11 +321,16 @@
           "cachedResultName": "smart_system_env",
           "cachedResultUrl": "/projects/TgT7sbikPaxzUZlq/datatables/joX4I7KfXaYvsR0s"
         },
+        "matchType": "allConditions",
         "filters": {
           "conditions": [
             {
               "keyName": "Key",
               "condition": "isNotEmpty"
+            },
+            {
+              "keyName": "Scope",
+              "keyValue": "={{ $('Webhook').item.json.query.name }}"
             }
           ]
         }
@@ -381,7 +386,7 @@
     {
       "parameters": {
         "authentication": "privateKey",
-        "command": "=sudo docker images --format \"{{'{{.ID}'}}} {{'{{.CreatedAt}'}}} {{'{{.Repository}'}}}\" | grep {{ $('Webhook').item.json.query.name }} | sort -k2,2 | tail -n +4 | awk '{print $1}' | xargs -r sudo docker rmi || true"
+        "command": "=sudo docker images --format \"{{'{{.ID}'}}} {{'{{.CreatedAt}'}}} {{'{{.Repository}'}}}\" | grep {{ $('Webhook').item.json.query.name }} | sort -k2,2 | head -n -4 | awk '{print $1}' | xargs -r sudo docker rmi || true"
       },
       "type": "n8n-nodes-base.ssh",
       "typeVersion": 1,
@@ -418,6 +423,6 @@
   "staticData": null,
   "tags": [],
   "triggerCount": 1,
-  "updatedAt": "2025-11-16T20:20:23.505Z",
-  "versionId": "a1d3c118-6fd9-4cdd-b955-c8f61ab3a6e1"
+  "updatedAt": "2025-12-10T11:07:25.483Z",
+  "versionId": "ffea73d4-bd11-4e76-96bf-895ed9869f0f"
 }
