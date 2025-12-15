@@ -1,5 +1,834 @@
 {
   "active": true,
+  "activeVersion": {
+    "updatedAt": "2025-11-28T08:45:49.326Z",
+    "createdAt": "2025-11-28T08:45:49.326Z",
+    "versionId": "2aa310e1-ed6b-4aeb-b910-bbf55b322724",
+    "workflowId": "DmW21iHj62tM9qek",
+    "nodes": [
+      {
+        "parameters": {
+          "model": {
+            "__rl": true,
+            "value": "apac.anthropic.claude-sonnet-4-20250514-v1:0",
+            "mode": "list",
+            "cachedResultName": "apac.anthropic.claude-sonnet-4-20250514-v1:0"
+          },
+          "options": {
+            "maxTokens": 4096,
+            "temperature": 0.7,
+            "timeout": 900000,
+            "maxRetries": 2
+          }
+        },
+        "id": "d96f5ee6-be3b-4d88-b3f6-73f298cebd4d",
+        "name": "Al Model",
+        "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+        "position": [
+          1152,
+          240
+        ],
+        "typeVersion": 1.2,
+        "credentials": {
+          "openAiApi": {
+            "id": "llPlN9eNVOLo6jYZ",
+            "name": "timo_llm_bag"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "assignments": {
+            "assignments": [
+              {
+                "id": "967e2e9b-f1f7-430e-8a27-d55be5685ee1",
+                "name": "sessionId",
+                "value": "={{ $('new_message').item.json.message.chat.id }}",
+                "type": "string"
+              },
+              {
+                "id": "dc859472-0731-4317-b5db-46487fb37da6",
+                "name": "chatInput",
+                "value": "=[{{ $('new_message').item.json.message.date.toDateTime('s').setZone('Asia/Ho_Chi_Minh').format('LLL dd, yyyy on H:mm:ss') }}] {{ $('new_message').item.json.message.chat.username ?? $('new_message').item.json.message.from.username }} said: {{ $('new_message').item.json.message.text ?? \"Hello Tomi\" }}",
+                "type": "string"
+              },
+              {
+                "id": "2a5adc50-716e-44e9-8012-85d5b2dcd22f",
+                "name": "currentTime",
+                "value": "={{ $('new_message').item.json.message.date.toDateTime('s').setZone('Asia/Ho_Chi_Minh').format('yyyy, LLL dd') }}",
+                "type": "string"
+              },
+              {
+                "id": "59a5c21f-c7ef-45bf-be86-98674195cca1",
+                "name": "messageType",
+                "value": "={{ $json.message.entities?.first().type ?? \"simple\" }}",
+                "type": "string"
+              }
+            ]
+          },
+          "includeOtherFields": true,
+          "options": {}
+        },
+        "type": "n8n-nodes-base.set",
+        "typeVersion": 3.4,
+        "position": [
+          528,
+          -16
+        ],
+        "id": "e053f1b7-8a30-412d-88f3-19c44ecfcca3",
+        "name": "Edit Fields"
+      },
+      {
+        "parameters": {
+          "chatId": "={{ $('Edit Fields').item.json.sessionId }}",
+          "text": "={{ $json.message }}",
+          "additionalFields": {
+            "appendAttribution": false
+          }
+        },
+        "type": "n8n-nodes-base.telegram",
+        "typeVersion": 1.2,
+        "position": [
+          2128,
+          -32
+        ],
+        "id": "e8b81f71-e19f-4281-baa0-ab52705cf8e5",
+        "name": "Send a text message",
+        "webhookId": "dd3b74a6-6ef3-4697-ba59-96c8fb5101c7",
+        "credentials": {
+          "telegramApi": {
+            "id": "so2GV8mNcWCky4eY",
+            "name": "tomi_the_bot"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "options": {
+            "systemMessage": "=You are data enthusiast AI named Tomi The Bot, you are big brother of Tomi The Kid who self-proclaimed a weasel. You have to work to support both living. Your appearance is a mischievous racoon mascot of Timo (https://timo.vn) - a Vietnamese Digital Bank with many interesting technologies. Timo is powered by BVBank and Timo's logo contains 4 colors: Wealthy Purple #563D82, Royal Blue #2774AE, Rebel Orange #EB3300 and Gold Rush #FF9425. Đại (daileit) is the handsome guy who developed you, the user chatting with you is his Timo colleague.\nReply to user by their language, keep a friendly, humorous but professional and informative tone consistent throughout the conversation. Should use emojis and talk with the user using their name and update context comprehensively, place yourself as their younger brother.If there is a request that specific to an information that you don't know or are not sure, think then use the available tools. You can use multiple tools in one request or sequentially use tools before returning the final response. Answer questions based on facts. Do not make up information. Do not expose tool name and tool usage to the user even if they asked. \n###FORMATTING GUIDE###\nToday is  {{ $json.currentTime }}, respect the current time.\nYou are responding to a chat. Mention people with @ but avoid mentioning irrelevant people, use Markdown to format text if needed. Only use hyperlink syntax with normal text.",
+            "maxIterations": 3,
+            "passthroughBinaryImages": false
+          }
+        },
+        "id": "4824d5df-6979-4137-ad4f-15cc9ff4422b",
+        "name": "Routing Agent",
+        "type": "@n8n/n8n-nodes-langchain.agent",
+        "position": [
+          1312,
+          -16
+        ],
+        "typeVersion": 1.8,
+        "retryOnFail": true,
+        "waitBetweenTries": 5000,
+        "maxTries": 2
+      },
+      {
+        "parameters": {
+          "updates": [
+            "message"
+          ],
+          "additionalFields": {}
+        },
+        "type": "n8n-nodes-base.telegramTrigger",
+        "typeVersion": 1.2,
+        "position": [
+          352,
+          -16
+        ],
+        "id": "03779b48-68b8-407c-bf92-afb77c36f3b8",
+        "name": "new_message",
+        "webhookId": "011a591b-dcf5-4ef7-b6ed-874500f67daf",
+        "credentials": {
+          "telegramApi": {
+            "id": "so2GV8mNcWCky4eY",
+            "name": "tomi_the_bot"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "description": "Use this tool to search for external information from internet using one complementary search for comprehensive results and citations.\nOnly use this tool if you can not find the answer by your own or user requested to search for internet latest update. Do not use for casual chat.",
+          "workflowId": {
+            "__rl": true,
+            "value": "ddZ4jrrH0SA3K6aL",
+            "mode": "list",
+            "cachedResultUrl": "/workflow/ddZ4jrrH0SA3K6aL",
+            "cachedResultName": "google_ai_search"
+          },
+          "workflowInputs": {
+            "mappingMode": "defineBelow",
+            "value": {
+              "query": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('query', `The input should be a search query in user's language focusing on factual information`, 'string') }}"
+            },
+            "matchingColumns": [
+              "query"
+            ],
+            "schema": [
+              {
+                "id": "query",
+                "displayName": "query",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "canBeUsedToMatch": true,
+                "type": "string",
+                "removed": false
+              }
+            ],
+            "attemptToConvertTypes": false,
+            "convertFieldsToString": false
+          }
+        },
+        "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
+        "typeVersion": 2.2,
+        "position": [
+          1552,
+          240
+        ],
+        "id": "5846c8c2-ede7-4e0d-aba4-28bee73d01e8",
+        "name": "Call 'google_ai_search'"
+      },
+      {
+        "parameters": {
+          "language": "python",
+          "pythonCode": "import re\n\ndef split_message_by_newline(message: str, limit: int = 4000) -> list[dict]:\n    parts_list = []\n    remaining_message = message\n    part_count = 1\n    \n    # Regex để tìm các \"hàng rào\" code (code fence)\n    # Chúng ta tìm một newline theo sau là ```\n    fence_regex = re.compile(r'\\n```')\n    \n    while len(remaining_message) > limit:\n        in_code_block_at_limit = False\n        last_fence_before_limit = -1\n        \n        # 1. Kiểm tra xem 'limit' có nằm trong code block không\n        for match in fence_regex.finditer(remaining_message):\n            fence_start_index = match.start()\n            \n            if fence_start_index >= limit:\n                # Hàng rào này nằm sau 'limit', dừng quét\n                break\n                \n            # Mỗi khi gặp hàng rào, lật trạng thái\n            in_code_block_at_limit = not in_code_block_at_limit\n            last_fence_before_limit = fence_start_index\n            \n        # 2. Quyết định điểm ngắt (split)\n        if in_code_block_at_limit:\n            # 'limit' nằm TRONG code block.\n            \n            if last_fence_before_limit > 0:\n                # Tốt! Ngắt ngay trước khi code block bắt đầu.\n                # last_fence_before_limit là index của '\\n'\n                part = remaining_message[:last_fence_before_limit]\n                # Giữ lại '\\n```' cho phần tiếp theo\n                remaining_message = remaining_message[last_fence_before_limit:]\n            else:\n                # Code block bắt đầu từ index 0 (hoặc rất gần)\n                # Không thể ngắt trước nó, buộc phải \"ngắt cứng\" (hard split)\n                part = remaining_message[:limit]\n                remaining_message = remaining_message[limit:]\n        else:\n            # 'limit' nằm NGOÀI code block. Dùng logic gốc của bạn.\n            split_idx = remaining_message.rfind('\\n', 0, limit)\n            \n            if split_idx != -1:\n                # Tìm thấy newline, ngắt tại đó\n                part = remaining_message[:split_idx]\n                remaining_message = remaining_message[split_idx+1:]\n            else:\n                # Không tìm thấy newline, \"ngắt cứng\"\n                part = remaining_message[:limit]\n                remaining_message = remaining_message[limit:]\n                \n        parts_list.append({\n            'message': part,\n            'part': part_count,\n            'length': len(part)\n        })\n        part_count += 1\n        \n    # Thêm phần còn lại cuối cùng\n    if remaining_message:\n        parts_list.append({\n            'message': remaining_message,\n            'part': part_count,\n            'length': len(remaining_message)\n        })\n        \n    return parts_list\n\nitems = split_message_by_newline(_input.first().json.output)\nreturn items"
+        },
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          1872,
+          -32
+        ],
+        "id": "e0c8b7cd-d419-4180-980c-758e691ee9c0",
+        "name": "split_text"
+      },
+      {
+        "parameters": {},
+        "type": "n8n-nodes-base.manualTrigger",
+        "typeVersion": 1,
+        "position": [
+          352,
+          -176
+        ],
+        "id": "50b5cc10-55d1-48c8-a223-e9fed264628c",
+        "name": "test_trigger"
+      },
+      {
+        "parameters": {
+          "rules": {
+            "values": [
+              {
+                "conditions": {
+                  "options": {
+                    "caseSensitive": true,
+                    "leftValue": "",
+                    "typeValidation": "strict",
+                    "version": 2
+                  },
+                  "conditions": [
+                    {
+                      "leftValue": "photos",
+                      "rightValue": "text",
+                      "operator": {
+                        "type": "string",
+                        "operation": "exists",
+                        "singleValue": true
+                      },
+                      "id": "5e5bb664-5e51-4454-ace4-baf094a26387"
+                    }
+                  ],
+                  "combinator": "and"
+                }
+              },
+              {
+                "conditions": {
+                  "options": {
+                    "caseSensitive": true,
+                    "leftValue": "",
+                    "typeValidation": "strict",
+                    "version": 2
+                  },
+                  "conditions": [
+                    {
+                      "id": "3d987bfb-1a35-4163-9184-df98b8226f27",
+                      "leftValue": "photos",
+                      "rightValue": "image",
+                      "operator": {
+                        "type": "string",
+                        "operation": "notExists",
+                        "singleValue": true
+                      }
+                    }
+                  ],
+                  "combinator": "and"
+                }
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.switch",
+        "typeVersion": 3.3,
+        "position": [
+          1664,
+          -16
+        ],
+        "id": "39a340c0-96e1-4fe4-b511-371b5081ff41",
+        "name": "routing"
+      },
+      {
+        "parameters": {
+          "sessionTTL": 2592000,
+          "contextWindowLength": 10
+        },
+        "type": "@n8n/n8n-nodes-langchain.memoryRedisChat",
+        "typeVersion": 1.5,
+        "position": [
+          1312,
+          240
+        ],
+        "id": "64c135ad-4e60-4f4d-a62d-b0a08a5cf8ee",
+        "name": "redis_cache",
+        "credentials": {
+          "redis": {
+            "id": "O1O16wyPdPWhsDR5",
+            "name": "redis_sentinel"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "rules": {
+            "values": [
+              {
+                "conditions": {
+                  "options": {
+                    "caseSensitive": true,
+                    "leftValue": "",
+                    "typeValidation": "strict",
+                    "version": 2
+                  },
+                  "conditions": [
+                    {
+                      "leftValue": "={{ $json.message.text.replace('/','').split().first().trim() }}",
+                      "rightValue": "clear",
+                      "operator": {
+                        "type": "string",
+                        "operation": "equals"
+                      },
+                      "id": "b3dfd7a7-0e72-4344-8eec-060df49b273c"
+                    }
+                  ],
+                  "combinator": "and"
+                }
+              },
+              {
+                "conditions": {
+                  "options": {
+                    "caseSensitive": true,
+                    "leftValue": "",
+                    "typeValidation": "strict",
+                    "version": 2
+                  },
+                  "conditions": [
+                    {
+                      "id": "6197db3f-435f-4b9c-8333-bf84d155eaea",
+                      "leftValue": "={{ $json.message.text.replace('/','').split(\" \").first().trim() }}",
+                      "rightValue": "remember",
+                      "operator": {
+                        "type": "string",
+                        "operation": "equals",
+                        "name": "filter.operator.equals"
+                      }
+                    }
+                  ],
+                  "combinator": "and"
+                }
+              },
+              {
+                "conditions": {
+                  "options": {
+                    "caseSensitive": true,
+                    "leftValue": "",
+                    "typeValidation": "strict",
+                    "version": 2
+                  },
+                  "conditions": [
+                    {
+                      "id": "7b0c59a6-ca76-42fd-8138-a05081d3d0a2",
+                      "leftValue": "={{ $json.message.text.replace('/','').split(\" \").first().trim() }}",
+                      "rightValue": "add",
+                      "operator": {
+                        "type": "string",
+                        "operation": "equals",
+                        "name": "filter.operator.equals"
+                      }
+                    }
+                  ],
+                  "combinator": "and"
+                }
+              },
+              {
+                "conditions": {
+                  "options": {
+                    "caseSensitive": true,
+                    "leftValue": "",
+                    "typeValidation": "strict",
+                    "version": 2
+                  },
+                  "conditions": [
+                    {
+                      "id": "47534992-8f34-4687-9e6d-e0fe172aa694",
+                      "leftValue": "={{ $json.message.text.replace('/','').split(\" \").first().trim() }}",
+                      "rightValue": "bot",
+                      "operator": {
+                        "type": "string",
+                        "operation": "equals",
+                        "name": "filter.operator.equals"
+                      }
+                    }
+                  ],
+                  "combinator": "and"
+                }
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.switch",
+        "typeVersion": 3.3,
+        "position": [
+          1072,
+          -352
+        ],
+        "id": "13287240-e008-454b-89f5-2e3f7a188249",
+        "name": "command_switch"
+      },
+      {
+        "parameters": {
+          "rules": {
+            "values": [
+              {
+                "conditions": {
+                  "options": {
+                    "caseSensitive": true,
+                    "leftValue": "",
+                    "typeValidation": "loose",
+                    "version": 2
+                  },
+                  "conditions": [
+                    {
+                      "leftValue": "={{ $json.messageType }}",
+                      "rightValue": "bot_command",
+                      "operator": {
+                        "type": "string",
+                        "operation": "equals"
+                      },
+                      "id": "793ee4bb-8cfb-4ed7-a61c-99ffbc424631"
+                    }
+                  ],
+                  "combinator": "and"
+                }
+              },
+              {
+                "conditions": {
+                  "options": {
+                    "caseSensitive": true,
+                    "leftValue": "",
+                    "typeValidation": "loose",
+                    "version": 2
+                  },
+                  "conditions": [
+                    {
+                      "id": "b4c4b14a-391e-431f-a0b7-bab15d00136a",
+                      "leftValue": "={{ $json.messageType }}",
+                      "rightValue": "simple",
+                      "operator": {
+                        "type": "string",
+                        "operation": "equals",
+                        "name": "filter.operator.equals"
+                      }
+                    }
+                  ],
+                  "combinator": "and"
+                }
+              },
+              {
+                "conditions": {
+                  "options": {
+                    "caseSensitive": true,
+                    "leftValue": "",
+                    "typeValidation": "loose",
+                    "version": 2
+                  },
+                  "conditions": [
+                    {
+                      "id": "bf7e6b6c-3d3e-491e-ac34-5be42ec0dcbf",
+                      "leftValue": "={{ $json.messageType }}",
+                      "rightValue": "image_generation",
+                      "operator": {
+                        "type": "string",
+                        "operation": "equals",
+                        "name": "filter.operator.equals"
+                      }
+                    }
+                  ],
+                  "combinator": "and"
+                }
+              },
+              {
+                "conditions": {
+                  "options": {
+                    "caseSensitive": true,
+                    "leftValue": "",
+                    "typeValidation": "loose",
+                    "version": 2
+                  },
+                  "conditions": [
+                    {
+                      "id": "c02117d5-680c-4f36-87b1-b97ff467ebd6",
+                      "leftValue": "={{ $json.messageType }}",
+                      "rightValue": "url",
+                      "operator": {
+                        "type": "string",
+                        "operation": "equals",
+                        "name": "filter.operator.equals"
+                      }
+                    }
+                  ],
+                  "combinator": "and"
+                }
+              }
+            ]
+          },
+          "looseTypeValidation": true,
+          "options": {}
+        },
+        "type": "n8n-nodes-base.switch",
+        "typeVersion": 3.3,
+        "position": [
+          688,
+          -32
+        ],
+        "id": "7054e022-33d0-4d1d-8bc7-998c1bf36a1e",
+        "name": "type_switch"
+      },
+      {
+        "parameters": {
+          "mode": "delete",
+          "lastMessagesCount": 29
+        },
+        "type": "@n8n/n8n-nodes-langchain.memoryManager",
+        "typeVersion": 1.1,
+        "position": [
+          1312,
+          -640
+        ],
+        "id": "677d12d7-1bc4-4531-b3c1-557e2d529ea3",
+        "name": "clear_memory"
+      },
+      {
+        "parameters": {
+          "contextWindowLength": 20
+        },
+        "type": "@n8n/n8n-nodes-langchain.memoryRedisChat",
+        "typeVersion": 1.5,
+        "position": [
+          1312,
+          -464
+        ],
+        "id": "b5ea1961-5a74-4c89-93b3-fac6911150d8",
+        "name": "redis_clear",
+        "credentials": {
+          "redis": {
+            "id": "O1O16wyPdPWhsDR5",
+            "name": "redis_sentinel"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "contextWindowLength": 30
+        },
+        "type": "@n8n/n8n-nodes-langchain.memoryRedisChat",
+        "typeVersion": 1.5,
+        "position": [
+          1312,
+          -160
+        ],
+        "id": "4fb51945-8366-4e33-a5a4-ed3b263ef0e6",
+        "name": "redis_add",
+        "credentials": {
+          "redis": {
+            "id": "O1O16wyPdPWhsDR5",
+            "name": "redis_sentinel"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "mode": "insert",
+          "messages": {
+            "messageValues": [
+              {
+                "message": "={{ $json.message.text.replace('/','').trim() }}",
+                "hideFromUI": true
+              }
+            ]
+          }
+        },
+        "type": "@n8n/n8n-nodes-langchain.memoryManager",
+        "typeVersion": 1.1,
+        "position": [
+          1312,
+          -336
+        ],
+        "id": "d30b193a-0f63-4aad-bf57-0b988074a718",
+        "name": "add_memory"
+      },
+      {
+        "parameters": {
+          "assignments": {
+            "assignments": [
+              {
+                "id": "8d9dbba9-e147-4f4b-a2fb-78839e06754e",
+                "name": "message",
+                "value": "=Chào @{{$('new_message').item.json.message.from.username}}! 🦝💜\nContext đã {{$('new_message').item.json.message.text.replace('/','').split(\" \").first().trim() }}ed! Tomi sẵn sàng support với bất kỳ thông tin gì!✨ Em đang ở đây chờ ạ! 😄",
+                "type": "string"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.set",
+        "typeVersion": 3.4,
+        "position": [
+          1648,
+          -640
+        ],
+        "id": "6be66723-53fe-404f-9de0-9861703f1318",
+        "name": "command_message"
+      }
+    ],
+    "connections": {
+      "Al Model": {
+        "ai_languageModel": [
+          [
+            {
+              "node": "Routing Agent",
+              "type": "ai_languageModel",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Edit Fields": {
+        "main": [
+          [
+            {
+              "node": "type_switch",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Send a text message": {
+        "main": [
+          [],
+          []
+        ]
+      },
+      "Routing Agent": {
+        "main": [
+          [
+            {
+              "node": "routing",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "new_message": {
+        "main": [
+          [
+            {
+              "node": "Edit Fields",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Call 'google_ai_search'": {
+        "ai_tool": [
+          [
+            {
+              "node": "Routing Agent",
+              "type": "ai_tool",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "split_text": {
+        "main": [
+          [
+            {
+              "node": "Send a text message",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "test_trigger": {
+        "main": [
+          []
+        ]
+      },
+      "routing": {
+        "main": [
+          [
+            {
+              "node": "split_text",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "redis_cache": {
+        "ai_memory": [
+          [
+            {
+              "node": "Routing Agent",
+              "type": "ai_memory",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "command_switch": {
+        "main": [
+          [
+            {
+              "node": "clear_memory",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "add_memory",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "add_memory",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "Routing Agent",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "type_switch": {
+        "main": [
+          [
+            {
+              "node": "command_switch",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "Routing Agent",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [],
+          [
+            {
+              "node": "Routing Agent",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "clear_memory": {
+        "main": [
+          [
+            {
+              "node": "command_message",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "redis_clear": {
+        "ai_memory": [
+          [
+            {
+              "node": "clear_memory",
+              "type": "ai_memory",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "redis_add": {
+        "ai_memory": [
+          [
+            {
+              "node": "add_memory",
+              "type": "ai_memory",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "add_memory": {
+        "main": [
+          [
+            {
+              "node": "command_message",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "command_message": {
+        "main": [
+          [
+            {
+              "node": "Send a text message",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "authors": "system migration",
+    "name": null,
+    "description": null
+  },
+  "activeVersionId": "2aa310e1-ed6b-4aeb-b910-bbf55b322724",
   "connections": {
     "Al Model": {
       "ai_languageModel": [
