@@ -1,9 +1,9 @@
 {
   "active": true,
   "activeVersion": {
-    "updatedAt": "2025-11-28T08:45:49.326Z",
-    "createdAt": "2025-11-28T08:45:49.326Z",
-    "versionId": "e1d6b5bf-756d-45bb-b894-6d38ecfd1a45",
+    "updatedAt": "2025-12-19T10:53:13.386Z",
+    "createdAt": "2025-12-19T10:53:13.386Z",
+    "versionId": "d0520696-3726-4be5-9959-8f821e189858",
     "workflowId": "GOMzUSU6kW95dlBL",
     "nodes": [
       {
@@ -476,7 +476,8 @@
           -192
         ],
         "id": "4f152055-b2e5-40b6-8804-dd5d7fce9acf",
-        "name": "writer_agent"
+        "name": "writer_agent",
+        "retryOnFail": true
       },
       {
         "parameters": {
@@ -747,11 +748,11 @@
         ]
       }
     },
-    "authors": "system migration",
+    "authors": "Dai Le",
     "name": null,
     "description": null
   },
-  "activeVersionId": "e1d6b5bf-756d-45bb-b894-6d38ecfd1a45",
+  "activeVersionId": "d0520696-3726-4be5-9959-8f821e189858",
   "connections": {
     "Generate title": {
       "main": [
@@ -1417,7 +1418,8 @@
         -192
       ],
       "id": "4f152055-b2e5-40b6-8804-dd5d7fce9acf",
-      "name": "writer_agent"
+      "name": "writer_agent",
+      "retryOnFail": true
     },
     {
       "parameters": {
@@ -1501,7 +1503,28 @@
       "name": "When clicking ‘Execute workflow’"
     }
   ],
-  "pinData": {},
+  "pinData": {
+    "Schedule Trigger": [
+      {
+        "json": {
+          "timestamp": "2025-12-19T13:25:27.017+07:00",
+          "Readable date": "December 19th 2025, 1:25:27 pm",
+          "Readable time": "1:25:27 pm",
+          "Day of week": "Friday",
+          "Year": "2025",
+          "Month": "December",
+          "Day of month": "19",
+          "Hour": "13",
+          "Minute": "25",
+          "Second": "27",
+          "Timezone": "Asia/Ho_Chi_Minh (UTC+07:00)"
+        },
+        "pairedItem": {
+          "item": 0
+        }
+      }
+    ]
+  },
   "repo_name": "workflows",
   "repo_owner": "daileit",
   "repo_path": "n8n/",
@@ -1526,6 +1549,6 @@
   },
   "tags": [],
   "triggerCount": 1,
-  "updatedAt": "2025-11-18T09:00:19.923Z",
-  "versionId": "e1d6b5bf-756d-45bb-b894-6d38ecfd1a45"
+  "updatedAt": "2025-12-19T10:53:13.382Z",
+  "versionId": "d0520696-3726-4be5-9959-8f821e189858"
 }
