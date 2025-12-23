@@ -1,0 +1,33 @@
+{
+  "active": false,
+  "activeVersion": null,
+  "activeVersionId": null,
+  "connections": {},
+  "createdAt": "2025-12-23T08:35:21.050Z",
+  "id": "Gf647J4oPFJg45yb",
+  "isArchived": false,
+  "meta": null,
+  "name": "image_generator",
+  "nodes": [],
+  "pinData": {},
+  "repo_name": "workflows",
+  "repo_owner": "daileit",
+  "repo_path": "n8n/",
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "shared": [
+    {
+      "updatedAt": "2025-12-23T08:35:21.050Z",
+      "createdAt": "2025-12-23T08:35:21.050Z",
+      "role": "workflow:owner",
+      "workflowId": "Gf647J4oPFJg45yb",
+      "projectId": "TgT7sbikPaxzUZlq"
+    }
+  ],
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 0,
+  "updatedAt": "2025-12-23T08:35:25.392Z",
+  "versionId": "946df855-818f-495c-8f42-428804f8893c"
+}
