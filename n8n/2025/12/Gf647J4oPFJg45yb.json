@@ -2,13 +2,262 @@
   "active": false,
   "activeVersion": null,
   "activeVersionId": null,
-  "connections": {},
+  "connections": {
+    "execution": {
+      "main": [
+        [
+          {
+            "node": "prepare",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "check_api": {
+      "main": [
+        [
+          {
+            "node": "generate",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "generate": {
+      "main": [
+        [
+          {
+            "node": "Read/Write Files from Disk",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "prepare": {
+      "main": [
+        [
+          {
+            "node": "check_api",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Read/Write Files from Disk": {
+      "main": [
+        [
+          {
+            "node": "return",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
   "createdAt": "2025-12-23T08:35:21.050Z",
   "id": "Gf647J4oPFJg45yb",
   "isArchived": false,
   "meta": null,
   "name": "image_generator",
-  "nodes": [],
+  "nodes": [
+    {
+      "parameters": {
+        "workflowInputs": {
+          "values": [
+            {
+              "name": "prompt"
+            },
+            {
+              "name": "negative_prompt"
+            },
+            {
+              "name": "height",
+              "type": "number"
+            },
+            {
+              "name": "width",
+              "type": "number"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "de843d3d-60f4-4b6a-8f4a-229326f3894f",
+      "name": "execution"
+    },
+    {
+      "parameters": {
+        "url": "https://api.cloudflare.com/client/v4/accounts",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "cloudflareApi",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        416,
+        0
+      ],
+      "id": "8753d0ed-8152-4d38-ae37-e24cef7339f0",
+      "name": "check_api",
+      "credentials": {
+        "cloudflareApi": {
+          "id": "LXevzihyc0JjoYdN",
+          "name": "cloudflare_workers_ai"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://api.cloudflare.com/client/v4/accounts/{{ $json.result[0].id }}/ai/run/@cf/bytedance/stable-diffusion-xl-lightning",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "cloudflareApi",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "prompt",
+              "value": "={{ $('execution').item.json.prompt ?? \"A picture of a modern database server, high resolution, realistic\" }}"
+            },
+            {
+              "name": "=negative_prompt",
+              "value": "={{ $('execution').item.json.negative_prompt ?? \"text, numbers, watermark, blurry, broken rubble, messy, abstract, surreal\" }}"
+            },
+            {
+              "name": "guidance",
+              "value": "={{100}}"
+            },
+            {
+              "name": "width",
+              "value": "={{ $('execution').item.json.width ?? 1600 }}"
+            },
+            {
+              "name": "height",
+              "value": "={{ $('execution').item.json.height ?? 1200 }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        624,
+        0
+      ],
+      "id": "ff42a07c-df71-4ca9-b3f1-9580ac07f733",
+      "name": "generate",
+      "credentials": {
+        "cloudflareApi": {
+          "id": "LXevzihyc0JjoYdN",
+          "name": "cloudflare_workers_ai"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "write",
+        "fileName": "=/tmp/{{ $('prepare').first().json.filename }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.readWriteFile",
+      "typeVersion": 1,
+      "position": [
+        832,
+        0
+      ],
+      "id": "8c31ceab-32d9-4003-b119-0a09c3246822",
+      "name": "Read/Write Files from Disk",
+      "alwaysOutputData": false
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "adb5c202-ca5e-4c64-b8b2-9adf41b4bb2a",
+              "name": "prompt",
+              "value": "={{ $json.prompt }}",
+              "type": "string"
+            },
+            {
+              "id": "2b4421c1-e135-4ee3-b4b7-ce9256db6f10",
+              "name": "negative_prompt",
+              "value": "={{ $json.negative_prompt }}",
+              "type": "string"
+            },
+            {
+              "id": "c807c3ee-0855-4b3a-a8a6-f754a511c712",
+              "name": "height",
+              "value": "={{ $json.height }}",
+              "type": "string"
+            },
+            {
+              "id": "43bb1be0-683c-4f23-8ee7-df575ef2669e",
+              "name": "width",
+              "value": "={{ $json.width }}",
+              "type": "string"
+            },
+            {
+              "id": "5cc6658b-e873-4381-8263-a2b853b7b9fc",
+              "name": "filename",
+              "value": "={{ Math.random().toString(36).substring(2, 12) }}.png",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        208,
+        0
+      ],
+      "id": "cafc0af3-9b97-4c9d-a297-4d4761f066ca",
+      "name": "prepare"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "8fef9ac2-5599-4c5b-9902-ec50b6226876",
+              "name": "success",
+              "value": true,
+              "type": "boolean"
+            },
+            {
+              "id": "4e0bbf4e-7e67-4763-93a7-21b08d1ad426",
+              "name": "file",
+              "value": "={{ $json.fileName }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1040,
+        0
+      ],
+      "id": "48fbf55d-ee19-4381-9e3f-84bae0df35ab",
+      "name": "return"
+    }
+  ],
   "pinData": {},
   "repo_name": "workflows",
   "repo_owner": "daileit",
@@ -28,6 +277,6 @@
   "staticData": null,
   "tags": [],
   "triggerCount": 0,
-  "updatedAt": "2025-12-23T08:35:25.392Z",
-  "versionId": "946df855-818f-495c-8f42-428804f8893c"
+  "updatedAt": "2025-12-23T10:05:40.253Z",
+  "versionId": "6a997a6e-920d-44b9-b0d0-6489159ea3d4"
 }
