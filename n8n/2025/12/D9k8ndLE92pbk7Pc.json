@@ -1,9 +1,9 @@
 {
   "active": true,
   "activeVersion": {
-    "updatedAt": "2026-01-03T17:09:28.656Z",
-    "createdAt": "2026-01-03T17:09:28.656Z",
-    "versionId": "1ce47a6b-807e-4698-969f-468dcb23ed18",
+    "updatedAt": "2026-01-03T17:17:40.416Z",
+    "createdAt": "2026-01-03T17:17:40.416Z",
+    "versionId": "76986093-062b-4252-beb0-09c7f43d23a0",
     "workflowId": "D9k8ndLE92pbk7Pc",
     "nodes": [
       {
@@ -224,7 +224,7 @@
       {
         "parameters": {
           "authentication": "privateKey",
-          "command": "=sudo mkdir -o {{ $('get_source').item.json.user }} -p {{ $('get_source').item.json.destination_folder }}/{{ $json.server }}/{{ $('Schedule Trigger').item.json.timestamp.toDateTime().format('yyyy-MM') }} "
+          "command": "=sudo mkdir -p {{ $('get_source').item.json.destination_folder }}/{{ $json.server }}/{{ $('Schedule Trigger').item.json.timestamp.toDateTime().format('yyyy-MM') }} && sudo chown {{ $('get_source').item.json.user }}:root {{ $('get_source').item.json.destination_folder }}/{{ $json.server }}/{{ $('Schedule Trigger').item.json.timestamp.toDateTime().format('yyyy-MM') }}"
         },
         "type": "n8n-nodes-base.ssh",
         "typeVersion": 1,
@@ -701,7 +701,7 @@
     "name": null,
     "description": null
   },
-  "activeVersionId": "1ce47a6b-807e-4698-969f-468dcb23ed18",
+  "activeVersionId": "76986093-062b-4252-beb0-09c7f43d23a0",
   "connections": {
     "Schedule Trigger": {
       "main": [
@@ -1135,7 +1135,7 @@
     {
       "parameters": {
         "authentication": "privateKey",
-        "command": "=sudo mkdir -o {{ $('get_source').item.json.user }} -p {{ $('get_source').item.json.destination_folder }}/{{ $json.server }}/{{ $('Schedule Trigger').item.json.timestamp.toDateTime().format('yyyy-MM') }} "
+        "command": "=sudo mkdir -p {{ $('get_source').item.json.destination_folder }}/{{ $json.server }}/{{ $('Schedule Trigger').item.json.timestamp.toDateTime().format('yyyy-MM') }} && sudo chown {{ $('get_source').item.json.user }}:root {{ $('get_source').item.json.destination_folder }}/{{ $json.server }}/{{ $('Schedule Trigger').item.json.timestamp.toDateTime().format('yyyy-MM') }}"
       },
       "type": "n8n-nodes-base.ssh",
       "typeVersion": 1,
@@ -1427,6 +1427,6 @@
   },
   "tags": [],
   "triggerCount": 1,
-  "updatedAt": "2026-01-03T17:09:28.650Z",
-  "versionId": "1ce47a6b-807e-4698-969f-468dcb23ed18"
+  "updatedAt": "2026-01-03T17:17:40.414Z",
+  "versionId": "76986093-062b-4252-beb0-09c7f43d23a0"
 }
