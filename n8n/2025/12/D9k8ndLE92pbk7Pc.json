@@ -1,9 +1,9 @@
 {
   "active": true,
   "activeVersion": {
-    "updatedAt": "2026-01-03T17:17:40.416Z",
-    "createdAt": "2026-01-03T17:17:40.416Z",
-    "versionId": "76986093-062b-4252-beb0-09c7f43d23a0",
+    "updatedAt": "2026-01-07T10:39:43.136Z",
+    "createdAt": "2026-01-07T10:39:43.136Z",
+    "versionId": "4d67bc55-c173-4412-b99d-fdedd9f14099",
     "workflowId": "D9k8ndLE92pbk7Pc",
     "nodes": [
       {
@@ -205,6 +205,16 @@
                 "operator": {
                   "type": "number",
                   "operation": "equals"
+                }
+              },
+              {
+                "id": "2a0f5e14-dbb1-41bf-8454-8762b05d5331",
+                "leftValue": "={{ $('list_files').item.json.stdout  }}",
+                "rightValue": "",
+                "operator": {
+                  "type": "string",
+                  "operation": "notEmpty",
+                  "singleValue": true
                 }
               }
             ],
@@ -701,7 +711,7 @@
     "name": null,
     "description": null
   },
-  "activeVersionId": "76986093-062b-4252-beb0-09c7f43d23a0",
+  "activeVersionId": "4d67bc55-c173-4412-b99d-fdedd9f14099",
   "connections": {
     "Schedule Trigger": {
       "main": [
@@ -1117,6 +1127,16 @@
                 "type": "number",
                 "operation": "equals"
               }
+            },
+            {
+              "id": "2a0f5e14-dbb1-41bf-8454-8762b05d5331",
+              "leftValue": "={{ $('list_files').item.json.stdout  }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "notEmpty",
+                "singleValue": true
+              }
             }
           ],
           "combinator": "and"
@@ -1427,6 +1447,6 @@
   },
   "tags": [],
   "triggerCount": 1,
-  "updatedAt": "2026-01-03T17:17:40.414Z",
-  "versionId": "76986093-062b-4252-beb0-09c7f43d23a0"
+  "updatedAt": "2026-01-07T10:39:43.133Z",
+  "versionId": "4d67bc55-c173-4412-b99d-fdedd9f14099"
 }
