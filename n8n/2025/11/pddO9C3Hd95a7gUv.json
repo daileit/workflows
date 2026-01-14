@@ -1,9 +1,9 @@
 {
   "active": true,
   "activeVersion": {
-    "updatedAt": "2025-12-10T12:23:54.915Z",
-    "createdAt": "2025-12-10T12:23:54.915Z",
-    "versionId": "dfc16a24-244f-481b-bccd-861a8915642c",
+    "updatedAt": "2026-01-14T10:42:27.371Z",
+    "createdAt": "2026-01-14T10:42:27.371Z",
+    "versionId": "3065b92a-33c6-4add-94b6-75793add7a0f",
     "workflowId": "pddO9C3Hd95a7gUv",
     "nodes": [
       {
@@ -412,7 +412,7 @@
     "name": null,
     "description": null
   },
-  "activeVersionId": "dfc16a24-244f-481b-bccd-861a8915642c",
+  "activeVersionId": "3065b92a-33c6-4add-94b6-75793add7a0f",
   "connections": {
     "Webhook": {
       "main": [
@@ -842,6 +842,6 @@
   "staticData": null,
   "tags": [],
   "triggerCount": 1,
-  "updatedAt": "2025-12-10T12:23:54.907Z",
-  "versionId": "dfc16a24-244f-481b-bccd-861a8915642c"
+  "updatedAt": "2026-01-14T10:42:27.368Z",
+  "versionId": "3065b92a-33c6-4add-94b6-75793add7a0f"
 }
