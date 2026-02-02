@@ -1,9 +1,9 @@
 {
   "active": true,
   "activeVersion": {
-    "updatedAt": "2025-12-23T10:17:23.551Z",
-    "createdAt": "2025-12-23T10:17:23.551Z",
-    "versionId": "2e3674f9-a110-4a68-a4a6-aa00d82a2ccc",
+    "updatedAt": "2026-02-02T10:12:45.825Z",
+    "createdAt": "2026-02-02T10:12:45.825Z",
+    "versionId": "f73dcc86-4da2-42f6-9ceb-073fb23fc71d",
     "workflowId": "GOMzUSU6kW95dlBL",
     "nodes": [
       {
@@ -21,7 +21,7 @@
                 "role": "system"
               },
               {
-                "content": "=Must choose one Main category based on this instruction: {{ $json.data?.Command ?  $json.data.Original + \" & \" + $json.data.Command : $('Merge to list').first().json.categories.randomItem().name + \" topic\"}}\nThen choose max three related extra supporting categories from this list: {{ $('Merge to list').first().json.categories.toJsonString() }}"
+                "content": "=Must choose one Main category based on this instruction: {{ $json.data?.Command ?  $json.data.Original + \" & \" + $json.data.Command : $('Merge to list').first().json.categories.randomItem().name + \" topic\"}}\nThen choose max three related extra supporting categories from this list: {{ $('Merge to list').first().json.categories.sort(()=> Math.random() - 0.5).toJsonString() }}"
               },
               {
                 "content": "={{ $json.data?.Original ? \"Initial idea: \" + $json.data.Original : '' }}\n{{ $json.data?.Command ? \"You must change it to the new title following this instruction: \" + $json.data.Command : 'Be creative and find a cool blog post Title' }} "
@@ -752,7 +752,7 @@
     "name": null,
     "description": null
   },
-  "activeVersionId": "2e3674f9-a110-4a68-a4a6-aa00d82a2ccc",
+  "activeVersionId": "f73dcc86-4da2-42f6-9ceb-073fb23fc71d",
   "connections": {
     "Generate title": {
       "main": [
@@ -963,7 +963,7 @@
               "role": "system"
             },
             {
-              "content": "=Must choose one Main category based on this instruction: {{ $json.data?.Command ?  $json.data.Original + \" & \" + $json.data.Command : $('Merge to list').first().json.categories.randomItem().name + \" topic\"}}\nThen choose max three related extra supporting categories from this list: {{ $('Merge to list').first().json.categories.toJsonString() }}"
+              "content": "=Must choose one Main category based on this instruction: {{ $json.data?.Command ?  $json.data.Original + \" & \" + $json.data.Command : $('Merge to list').first().json.categories.randomItem().name + \" topic\"}}\nThen choose max three related extra supporting categories from this list: {{ $('Merge to list').first().json.categories.sort(()=> Math.random() - 0.5).toJsonString() }}"
             },
             {
               "content": "={{ $json.data?.Original ? \"Initial idea: \" + $json.data.Original : '' }}\n{{ $json.data?.Command ? \"You must change it to the new title following this instruction: \" + $json.data.Command : 'Be creative and find a cool blog post Title' }} "
@@ -1549,6 +1549,6 @@
   },
   "tags": [],
   "triggerCount": 1,
-  "updatedAt": "2025-12-23T10:17:23.548Z",
-  "versionId": "2e3674f9-a110-4a68-a4a6-aa00d82a2ccc"
+  "updatedAt": "2026-02-02T10:12:45.821Z",
+  "versionId": "f73dcc86-4da2-42f6-9ceb-073fb23fc71d"
 }
