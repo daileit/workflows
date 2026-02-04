@@ -1,9 +1,9 @@
 {
   "active": true,
   "activeVersion": {
-    "updatedAt": "2026-01-14T10:42:27.371Z",
-    "createdAt": "2026-01-14T10:42:27.371Z",
-    "versionId": "3065b92a-33c6-4add-94b6-75793add7a0f",
+    "updatedAt": "2026-02-04T20:10:09.703Z",
+    "createdAt": "2026-02-04T20:10:09.703Z",
+    "versionId": "aa013df0-689f-4161-86e9-a8d182fa63ec",
     "workflowId": "pddO9C3Hd95a7gUv",
     "nodes": [
       {
@@ -24,7 +24,7 @@
       {
         "parameters": {
           "authentication": "privateKey",
-          "command": "=sudo docker run -e APP_VERSION={{ $('Webhook').item.json.query.tag }} {{ $json.env }}-d --add-host=host.docker.internal:host-gateway --name {{ $('Webhook').item.json.query.name }} -p {{ $json.port.trim() }} {{ $('Webhook').item.json.query.repo }}/{{ $('Webhook').item.json.query.name }}:{{ $('Webhook').item.json.query.tag }} "
+          "command": "=sudo docker run -e APP_VERSION={{ $('Webhook').item.json.query.tag }} {{ $json.env }}-d --add-host=host.docker.internal:host-gateway --name {{ $('Webhook').item.json.query.name }} {{ $json.network.trim() ? `--network=${$json.network}` : \"\"}} -p {{ $json.port.trim() }} {{ $('Webhook').item.json.query.repo }}/{{ $('Webhook').item.json.query.name }}:{{ $('Webhook').item.json.query.tag }} "
         },
         "type": "n8n-nodes-base.ssh",
         "typeVersion": 1,
@@ -254,6 +254,12 @@
                 "name": "port",
                 "value": "={{ $json.data.find(item => item.Key === 'APP_LISTEN')?.Value ?? '127.0.0.1:'}}{{ $json.data.find(item => item.Key === 'APP_PORT')?.Value ?? '8080'}}:{{ $json.data.find(item => item.Key === 'APP_PORT')?.Value ?? '8080'}}",
                 "type": "string"
+              },
+              {
+                "id": "6ee6d36e-e50c-40b6-9d18-467ed018c92c",
+                "name": "network",
+                "value": "={{ $json.data.find(item => item.Key === 'APP_NETWORK')?.Value ?? ''}}",
+                "type": "string"
               }
             ]
           },
@@ -412,7 +418,7 @@
     "name": null,
     "description": null
   },
-  "activeVersionId": "3065b92a-33c6-4add-94b6-75793add7a0f",
+  "activeVersionId": "aa013df0-689f-4161-86e9-a8d182fa63ec",
   "connections": {
     "Webhook": {
       "main": [
@@ -558,7 +564,7 @@
     {
       "parameters": {
         "authentication": "privateKey",
-        "command": "=sudo docker run -e APP_VERSION={{ $('Webhook').item.json.query.tag }} {{ $json.env }}-d --add-host=host.docker.internal:host-gateway --name {{ $('Webhook').item.json.query.name }} -p {{ $json.port.trim() }} {{ $('Webhook').item.json.query.repo }}/{{ $('Webhook').item.json.query.name }}:{{ $('Webhook').item.json.query.tag }} "
+        "command": "=sudo docker run -e APP_VERSION={{ $('Webhook').item.json.query.tag }} {{ $json.env }}-d --add-host=host.docker.internal:host-gateway --name {{ $('Webhook').item.json.query.name }} {{ $json.network.trim() ? `--network=${$json.network}` : \"\"}} -p {{ $json.port.trim() }} {{ $('Webhook').item.json.query.repo }}/{{ $('Webhook').item.json.query.name }}:{{ $('Webhook').item.json.query.tag }} "
       },
       "type": "n8n-nodes-base.ssh",
       "typeVersion": 1,
@@ -788,6 +794,12 @@
               "name": "port",
               "value": "={{ $json.data.find(item => item.Key === 'APP_LISTEN')?.Value ?? '127.0.0.1:'}}{{ $json.data.find(item => item.Key === 'APP_PORT')?.Value ?? '8080'}}:{{ $json.data.find(item => item.Key === 'APP_PORT')?.Value ?? '8080'}}",
               "type": "string"
+            },
+            {
+              "id": "6ee6d36e-e50c-40b6-9d18-467ed018c92c",
+              "name": "network",
+              "value": "={{ $json.data.find(item => item.Key === 'APP_NETWORK')?.Value ?? ''}}",
+              "type": "string"
             }
           ]
         },
@@ -842,6 +854,6 @@
   "staticData": null,
   "tags": [],
   "triggerCount": 1,
-  "updatedAt": "2026-01-14T10:42:27.368Z",
-  "versionId": "3065b92a-33c6-4add-94b6-75793add7a0f"
+  "updatedAt": "2026-02-04T20:10:09.700Z",
+  "versionId": "aa013df0-689f-4161-86e9-a8d182fa63ec"
 }
