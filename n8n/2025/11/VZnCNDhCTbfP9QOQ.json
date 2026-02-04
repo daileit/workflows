@@ -1,9 +1,9 @@
 {
   "active": true,
   "activeVersion": {
-    "updatedAt": "2025-11-28T08:38:10.554Z",
-    "createdAt": "2025-11-28T08:38:10.554Z",
-    "versionId": "60fd6b75-39bc-49ad-a86e-716b8b58ad84",
+    "updatedAt": "2026-02-04T08:35:44.412Z",
+    "createdAt": "2026-02-04T08:35:44.412Z",
+    "versionId": "d66818a5-f1ad-4701-baae-edbd83013d42",
     "workflowId": "VZnCNDhCTbfP9QOQ",
     "nodes": [
       {
@@ -406,6 +406,10 @@
               {
                 "condition": "={{ parseInt(Math.random()*2) === 1 ? \"gt\" : \"lte\" }}",
                 "keyValue": "=6"
+              },
+              {
+                "keyName": "active",
+                "condition": "isTrue"
               }
             ]
           }
@@ -605,7 +609,7 @@
     "name": null,
     "description": null
   },
-  "activeVersionId": "60fd6b75-39bc-49ad-a86e-716b8b58ad84",
+  "activeVersionId": "d66818a5-f1ad-4701-baae-edbd83013d42",
   "connections": {
     "Schedule Trigger": {
       "main": [
@@ -1181,6 +1185,10 @@
             {
               "condition": "={{ parseInt(Math.random()*2) === 1 ? \"gt\" : \"lte\" }}",
               "keyValue": "=6"
+            },
+            {
+              "keyName": "active",
+              "condition": "isTrue"
             }
           ]
         }
@@ -1232,6 +1240,6 @@
   },
   "tags": [],
   "triggerCount": 1,
-  "updatedAt": "2025-11-28T08:38:10.532Z",
-  "versionId": "60fd6b75-39bc-49ad-a86e-716b8b58ad84"
+  "updatedAt": "2026-02-04T08:35:44.407Z",
+  "versionId": "d66818a5-f1ad-4701-baae-edbd83013d42"
 }
