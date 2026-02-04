@@ -1,9 +1,9 @@
 {
   "active": true,
   "activeVersion": {
-    "updatedAt": "2026-02-04T08:35:44.412Z",
-    "createdAt": "2026-02-04T08:35:44.412Z",
-    "versionId": "d66818a5-f1ad-4701-baae-edbd83013d42",
+    "updatedAt": "2026-02-04T09:44:07.015Z",
+    "createdAt": "2026-02-04T09:44:07.015Z",
+    "versionId": "ac4edc5e-decf-46e5-a3d1-4a9e1bd15871",
     "workflowId": "VZnCNDhCTbfP9QOQ",
     "nodes": [
       {
@@ -401,6 +401,7 @@
             "cachedResultName": "monitoring_website_list",
             "cachedResultUrl": "/projects/TgT7sbikPaxzUZlq/datatables/c0YezzojRaRk5o7C"
           },
+          "matchType": "allConditions",
           "filters": {
             "conditions": [
               {
@@ -609,7 +610,7 @@
     "name": null,
     "description": null
   },
-  "activeVersionId": "d66818a5-f1ad-4701-baae-edbd83013d42",
+  "activeVersionId": "ac4edc5e-decf-46e5-a3d1-4a9e1bd15871",
   "connections": {
     "Schedule Trigger": {
       "main": [
@@ -1180,6 +1181,7 @@
           "cachedResultName": "monitoring_website_list",
           "cachedResultUrl": "/projects/TgT7sbikPaxzUZlq/datatables/c0YezzojRaRk5o7C"
         },
+        "matchType": "allConditions",
         "filters": {
           "conditions": [
             {
@@ -1240,6 +1242,6 @@
   },
   "tags": [],
   "triggerCount": 1,
-  "updatedAt": "2026-02-04T08:35:44.407Z",
-  "versionId": "d66818a5-f1ad-4701-baae-edbd83013d42"
+  "updatedAt": "2026-02-04T09:44:07.011Z",
+  "versionId": "ac4edc5e-decf-46e5-a3d1-4a9e1bd15871"
 }
