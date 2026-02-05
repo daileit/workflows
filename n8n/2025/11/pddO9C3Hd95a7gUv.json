@@ -1,9 +1,9 @@
 {
   "active": true,
   "activeVersion": {
-    "updatedAt": "2026-02-04T20:10:09.703Z",
-    "createdAt": "2026-02-04T20:10:09.703Z",
-    "versionId": "aa013df0-689f-4161-86e9-a8d182fa63ec",
+    "updatedAt": "2026-02-05T09:29:44.776Z",
+    "createdAt": "2026-02-05T09:29:44.776Z",
+    "versionId": "2c031915-9c14-4fe7-b036-38fc1da7e7ec",
     "workflowId": "pddO9C3Hd95a7gUv",
     "nodes": [
       {
@@ -34,6 +34,7 @@
         ],
         "id": "8a01278b-102b-4ec3-882b-11e590c4c580",
         "name": "docker_run",
+        "retryOnFail": true,
         "credentials": {
           "sshPrivateKey": {
             "id": "6h6r0zgvqYXl5khi",
@@ -277,7 +278,7 @@
       {
         "parameters": {
           "authentication": "privateKey",
-          "command": "=sudo docker images --format \"{{'{{.ID}'}}} {{'{{.CreatedAt}'}}} {{'{{.Repository}'}}}\" | grep {{ $('Webhook').item.json.query.name }} | sort -k2,2 | tail -n +4 | awk '{print $1}' | xargs -r sudo docker rmi || true"
+          "command": "=sudo docker images --format \"{{'{{.ID}'}}} {{'{{.CreatedAt}'}}} {{'{{.Repository}'}}}\" | grep {{ $('Webhook').item.json.query.name }} | sort -rk2,3 | tail -n +4 | awk '{print $1}' | xargs -r sudo docker rmi || true"
         },
         "type": "n8n-nodes-base.ssh",
         "typeVersion": 1,
@@ -418,7 +419,7 @@
     "name": null,
     "description": null
   },
-  "activeVersionId": "aa013df0-689f-4161-86e9-a8d182fa63ec",
+  "activeVersionId": "2c031915-9c14-4fe7-b036-38fc1da7e7ec",
   "connections": {
     "Webhook": {
       "main": [
@@ -574,6 +575,7 @@
       ],
       "id": "8a01278b-102b-4ec3-882b-11e590c4c580",
       "name": "docker_run",
+      "retryOnFail": true,
       "credentials": {
         "sshPrivateKey": {
           "id": "6h6r0zgvqYXl5khi",
@@ -817,7 +819,7 @@
     {
       "parameters": {
         "authentication": "privateKey",
-        "command": "=sudo docker images --format \"{{'{{.ID}'}}} {{'{{.CreatedAt}'}}} {{'{{.Repository}'}}}\" | grep {{ $('Webhook').item.json.query.name }} | sort -k2,2 | tail -n +4 | awk '{print $1}' | xargs -r sudo docker rmi || true"
+        "command": "=sudo docker images --format \"{{'{{.ID}'}}} {{'{{.CreatedAt}'}}} {{'{{.Repository}'}}}\" | grep {{ $('Webhook').item.json.query.name }} | sort -rk2,3 | tail -n +4 | awk '{print $1}' | xargs -r sudo docker rmi || true"
       },
       "type": "n8n-nodes-base.ssh",
       "typeVersion": 1,
@@ -854,6 +856,6 @@
   "staticData": null,
   "tags": [],
   "triggerCount": 1,
-  "updatedAt": "2026-02-04T20:10:09.700Z",
-  "versionId": "aa013df0-689f-4161-86e9-a8d182fa63ec"
+  "updatedAt": "2026-02-05T09:29:44.773Z",
+  "versionId": "2c031915-9c14-4fe7-b036-38fc1da7e7ec"
 }
