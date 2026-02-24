@@ -1,9 +1,9 @@
 {
   "active": true,
   "activeVersion": {
-    "updatedAt": "2026-02-02T10:12:45.825Z",
-    "createdAt": "2026-02-02T10:12:45.825Z",
-    "versionId": "f73dcc86-4da2-42f6-9ceb-073fb23fc71d",
+    "updatedAt": "2026-02-24T09:40:57.596Z",
+    "createdAt": "2026-02-24T09:40:57.596Z",
+    "versionId": "e2c6277e-b815-41f8-b8c1-e58d1d623d02",
     "workflowId": "GOMzUSU6kW95dlBL",
     "nodes": [
       {
@@ -345,6 +345,7 @@
         "name": "Get Permission",
         "webhookId": "efd6b9f2-a2f1-479d-9d8b-8de44648fb95",
         "alwaysOutputData": false,
+        "retryOnFail": true,
         "credentials": {
           "telegramApi": {
             "id": "RHYciMpF31QQslz5",
@@ -752,7 +753,7 @@
     "name": null,
     "description": null
   },
-  "activeVersionId": "f73dcc86-4da2-42f6-9ceb-073fb23fc71d",
+  "activeVersionId": "e2c6277e-b815-41f8-b8c1-e58d1d623d02",
   "connections": {
     "Generate title": {
       "main": [
@@ -1287,6 +1288,7 @@
       "name": "Get Permission",
       "webhookId": "efd6b9f2-a2f1-479d-9d8b-8de44648fb95",
       "alwaysOutputData": false,
+      "retryOnFail": true,
       "credentials": {
         "telegramApi": {
           "id": "RHYciMpF31QQslz5",
@@ -1549,6 +1551,6 @@
   },
   "tags": [],
   "triggerCount": 1,
-  "updatedAt": "2026-02-02T10:12:45.821Z",
-  "versionId": "f73dcc86-4da2-42f6-9ceb-073fb23fc71d"
+  "updatedAt": "2026-02-24T09:40:57.591Z",
+  "versionId": "e2c6277e-b815-41f8-b8c1-e58d1d623d02"
 }
