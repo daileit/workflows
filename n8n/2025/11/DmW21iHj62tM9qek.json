@@ -1,9 +1,9 @@
 {
   "active": true,
   "activeVersion": {
-    "updatedAt": "2025-11-28T08:45:49.326Z",
-    "createdAt": "2025-11-28T08:45:49.326Z",
-    "versionId": "2aa310e1-ed6b-4aeb-b910-bbf55b322724",
+    "updatedAt": "2026-02-26T08:41:01.365Z",
+    "createdAt": "2026-02-26T08:41:01.365Z",
+    "versionId": "22eec753-cea6-4099-b523-bf7904026992",
     "workflowId": "DmW21iHj62tM9qek",
     "nodes": [
       {
@@ -418,6 +418,29 @@
                   },
                   "conditions": [
                     {
+                      "id": "2ad52820-9267-4c71-a053-4c209ba325ed",
+                      "leftValue": "={{ $json.message.chat.text ?? \"\" }}",
+                      "rightValue": "false",
+                      "operator": {
+                        "type": "string",
+                        "operation": "empty",
+                        "singleValue": true
+                      }
+                    }
+                  ],
+                  "combinator": "and"
+                }
+              },
+              {
+                "conditions": {
+                  "options": {
+                    "caseSensitive": true,
+                    "leftValue": "",
+                    "typeValidation": "loose",
+                    "version": 2
+                  },
+                  "conditions": [
+                    {
                       "leftValue": "={{ $json.messageType }}",
                       "rightValue": "bot_command",
                       "operator": {
@@ -442,11 +465,10 @@
                     {
                       "id": "b4c4b14a-391e-431f-a0b7-bab15d00136a",
                       "leftValue": "={{ $json.messageType }}",
-                      "rightValue": "simple",
+                      "rightValue": "simple||private",
                       "operator": {
                         "type": "string",
-                        "operation": "equals",
-                        "name": "filter.operator.equals"
+                        "operation": "regex"
                       }
                     }
                   ],
@@ -744,6 +766,7 @@
       },
       "type_switch": {
         "main": [
+          [],
           [
             {
               "node": "command_switch",
@@ -824,11 +847,11 @@
         ]
       }
     },
-    "authors": "system migration",
+    "authors": "Dai Le",
     "name": null,
     "description": null
   },
-  "activeVersionId": "2aa310e1-ed6b-4aeb-b910-bbf55b322724",
+  "activeVersionId": "22eec753-cea6-4099-b523-bf7904026992",
   "connections": {
     "Al Model": {
       "ai_languageModel": [
@@ -963,6 +986,7 @@
     },
     "type_switch": {
       "main": [
+        [],
         [
           {
             "node": "command_switch",
@@ -1463,6 +1487,29 @@
                 },
                 "conditions": [
                   {
+                    "id": "2ad52820-9267-4c71-a053-4c209ba325ed",
+                    "leftValue": "={{ $json.message.chat.text ?? \"\" }}",
+                    "rightValue": "false",
+                    "operator": {
+                      "type": "string",
+                      "operation": "empty",
+                      "singleValue": true
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "loose",
+                  "version": 2
+                },
+                "conditions": [
+                  {
                     "leftValue": "={{ $json.messageType }}",
                     "rightValue": "bot_command",
                     "operator": {
@@ -1487,11 +1534,10 @@
                   {
                     "id": "b4c4b14a-391e-431f-a0b7-bab15d00136a",
                     "leftValue": "={{ $json.messageType }}",
-                    "rightValue": "simple",
+                    "rightValue": "simple||private",
                     "operator": {
                       "type": "string",
-                      "operation": "equals",
-                      "name": "filter.operator.equals"
+                      "operation": "regex"
                     }
                   }
                 ],
@@ -1685,6 +1731,6 @@
   "staticData": null,
   "tags": [],
   "triggerCount": 1,
-  "updatedAt": "2025-11-24T08:12:35.933Z",
-  "versionId": "2aa310e1-ed6b-4aeb-b910-bbf55b322724"
+  "updatedAt": "2026-02-26T08:41:01.362Z",
+  "versionId": "22eec753-cea6-4099-b523-bf7904026992"
 }
