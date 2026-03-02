@@ -1,9 +1,9 @@
 {
   "active": true,
   "activeVersion": {
-    "updatedAt": "2026-02-26T08:41:01.365Z",
-    "createdAt": "2026-02-26T08:41:01.365Z",
-    "versionId": "22eec753-cea6-4099-b523-bf7904026992",
+    "updatedAt": "2026-03-02T09:23:19.777Z",
+    "createdAt": "2026-03-02T09:23:19.777Z",
+    "versionId": "6d9fa1e4-460f-438a-9d4c-a5636e5ce687",
     "workflowId": "DmW21iHj62tM9qek",
     "nodes": [
       {
@@ -419,7 +419,7 @@
                   "conditions": [
                     {
                       "id": "2ad52820-9267-4c71-a053-4c209ba325ed",
-                      "leftValue": "={{ $json.message.chat.text ?? \"\" }}",
+                      "leftValue": "={{ $json.message.text ?? \"\" }}",
                       "rightValue": "false",
                       "operator": {
                         "type": "string",
@@ -851,7 +851,7 @@
     "name": null,
     "description": null
   },
-  "activeVersionId": "22eec753-cea6-4099-b523-bf7904026992",
+  "activeVersionId": "6d9fa1e4-460f-438a-9d4c-a5636e5ce687",
   "connections": {
     "Al Model": {
       "ai_languageModel": [
@@ -1488,7 +1488,7 @@
                 "conditions": [
                   {
                     "id": "2ad52820-9267-4c71-a053-4c209ba325ed",
-                    "leftValue": "={{ $json.message.chat.text ?? \"\" }}",
+                    "leftValue": "={{ $json.message.text ?? \"\" }}",
                     "rightValue": "false",
                     "operator": {
                       "type": "string",
@@ -1731,6 +1731,6 @@
   "staticData": null,
   "tags": [],
   "triggerCount": 1,
-  "updatedAt": "2026-02-26T08:41:01.362Z",
-  "versionId": "22eec753-cea6-4099-b523-bf7904026992"
+  "updatedAt": "2026-03-02T09:23:19.771Z",
+  "versionId": "6d9fa1e4-460f-438a-9d4c-a5636e5ce687"
 }
