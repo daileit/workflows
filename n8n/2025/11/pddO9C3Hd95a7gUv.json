@@ -1,9 +1,9 @@
 {
   "active": true,
   "activeVersion": {
-    "updatedAt": "2026-02-05T09:29:44.776Z",
-    "createdAt": "2026-02-05T09:29:44.776Z",
-    "versionId": "2c031915-9c14-4fe7-b036-38fc1da7e7ec",
+    "updatedAt": "2026-03-16T12:42:17.022Z",
+    "createdAt": "2026-03-16T12:42:17.022Z",
+    "versionId": "2a0c9607-dbb7-402c-9013-dbfc022aee02",
     "workflowId": "pddO9C3Hd95a7gUv",
     "nodes": [
       {
@@ -24,7 +24,7 @@
       {
         "parameters": {
           "authentication": "privateKey",
-          "command": "=sudo docker run -e APP_VERSION={{ $('Webhook').item.json.query.tag }} {{ $json.env }}-d --add-host=host.docker.internal:host-gateway --name {{ $('Webhook').item.json.query.name }} {{ $json.network.trim() ? `--network=${$json.network}` : \"\"}} -p {{ $json.port.trim() }} {{ $('Webhook').item.json.query.repo }}/{{ $('Webhook').item.json.query.name }}:{{ $('Webhook').item.json.query.tag }} "
+          "command": "=sudo docker run -e APP_VERSION={{ $('Webhook').item.json.query.tag }} {{ $json.env }}-d --add-host=host.docker.internal:host-gateway --name {{ $('Webhook').item.json.query.name }} {{ $json.network.trim() ? `--network=${$json.network}` : \"\"}} -p {{ $json.port.trim() }} {{ $json.misc.trim() }} {{ $('Webhook').item.json.query.repo }}/{{ $('Webhook').item.json.query.name }}:{{ $('Webhook').item.json.query.tag }}"
         },
         "type": "n8n-nodes-base.ssh",
         "typeVersion": 1,
@@ -253,13 +253,19 @@
               {
                 "id": "9adce40d-7019-4a7a-83a5-2cba363be0c1",
                 "name": "port",
-                "value": "={{ $json.data.find(item => item.Key === 'APP_LISTEN')?.Value ?? '127.0.0.1:'}}{{ $json.data.find(item => item.Key === 'APP_PORT')?.Value ?? '8080'}}:{{ $json.data.find(item => item.Key === 'APP_PORT')?.Value ?? '8080'}}",
+                "value": "={{ $json.data.find(item => item.Key === 'DOCKER_LISTEN')?.Value ?? '127.0.0.1'}}:{{ $json.data.find(item => item.Key === 'APP_PORT')?.Value ?? '8080'}}:{{ $json.data.find(item => item.Key === 'APP_PORT')?.Value ?? '8080'}}",
                 "type": "string"
               },
               {
                 "id": "6ee6d36e-e50c-40b6-9d18-467ed018c92c",
                 "name": "network",
                 "value": "={{ $json.data.find(item => item.Key === 'APP_NETWORK')?.Value ?? ''}}",
+                "type": "string"
+              },
+              {
+                "id": "d71e5f8a-819e-48a8-ab62-017d9d237635",
+                "name": "misc",
+                "value": "={{ $json.data.find(item => item.Key === 'DOCKER_MISC')?.Value ?? ''}}",
                 "type": "string"
               }
             ]
@@ -419,7 +425,7 @@
     "name": null,
     "description": null
   },
-  "activeVersionId": "2c031915-9c14-4fe7-b036-38fc1da7e7ec",
+  "activeVersionId": "2a0c9607-dbb7-402c-9013-dbfc022aee02",
   "connections": {
     "Webhook": {
       "main": [
@@ -565,7 +571,7 @@
     {
       "parameters": {
         "authentication": "privateKey",
-        "command": "=sudo docker run -e APP_VERSION={{ $('Webhook').item.json.query.tag }} {{ $json.env }}-d --add-host=host.docker.internal:host-gateway --name {{ $('Webhook').item.json.query.name }} {{ $json.network.trim() ? `--network=${$json.network}` : \"\"}} -p {{ $json.port.trim() }} {{ $('Webhook').item.json.query.repo }}/{{ $('Webhook').item.json.query.name }}:{{ $('Webhook').item.json.query.tag }} "
+        "command": "=sudo docker run -e APP_VERSION={{ $('Webhook').item.json.query.tag }} {{ $json.env }}-d --add-host=host.docker.internal:host-gateway --name {{ $('Webhook').item.json.query.name }} {{ $json.network.trim() ? `--network=${$json.network}` : \"\"}} -p {{ $json.port.trim() }} {{ $json.misc.trim() }} {{ $('Webhook').item.json.query.repo }}/{{ $('Webhook').item.json.query.name }}:{{ $('Webhook').item.json.query.tag }}"
       },
       "type": "n8n-nodes-base.ssh",
       "typeVersion": 1,
@@ -794,13 +800,19 @@
             {
               "id": "9adce40d-7019-4a7a-83a5-2cba363be0c1",
               "name": "port",
-              "value": "={{ $json.data.find(item => item.Key === 'APP_LISTEN')?.Value ?? '127.0.0.1:'}}{{ $json.data.find(item => item.Key === 'APP_PORT')?.Value ?? '8080'}}:{{ $json.data.find(item => item.Key === 'APP_PORT')?.Value ?? '8080'}}",
+              "value": "={{ $json.data.find(item => item.Key === 'DOCKER_LISTEN')?.Value ?? '127.0.0.1'}}:{{ $json.data.find(item => item.Key === 'APP_PORT')?.Value ?? '8080'}}:{{ $json.data.find(item => item.Key === 'APP_PORT')?.Value ?? '8080'}}",
               "type": "string"
             },
             {
               "id": "6ee6d36e-e50c-40b6-9d18-467ed018c92c",
               "name": "network",
               "value": "={{ $json.data.find(item => item.Key === 'APP_NETWORK')?.Value ?? ''}}",
+              "type": "string"
+            },
+            {
+              "id": "d71e5f8a-819e-48a8-ab62-017d9d237635",
+              "name": "misc",
+              "value": "={{ $json.data.find(item => item.Key === 'DOCKER_MISC')?.Value ?? ''}}",
               "type": "string"
             }
           ]
@@ -856,6 +868,6 @@
   "staticData": null,
   "tags": [],
   "triggerCount": 1,
-  "updatedAt": "2026-02-05T09:29:44.773Z",
-  "versionId": "2c031915-9c14-4fe7-b036-38fc1da7e7ec"
+  "updatedAt": "2026-03-16T12:42:17.019Z",
+  "versionId": "2a0c9607-dbb7-402c-9013-dbfc022aee02"
 }
