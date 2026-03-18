@@ -1,9 +1,9 @@
 {
   "active": true,
   "activeVersion": {
-    "updatedAt": "2026-03-17T18:22:07.656Z",
-    "createdAt": "2026-03-17T18:22:07.656Z",
-    "versionId": "576e088c-1938-4c79-ad3b-48be383ffde3",
+    "updatedAt": "2026-03-18T17:52:21.113Z",
+    "createdAt": "2026-03-18T17:52:21.113Z",
+    "versionId": "77fdacf6-1a12-40a3-a72f-30e69f3ab5b6",
     "workflowId": "hi9PRe05IlZiZ3Pd",
     "nodes": [
       {
@@ -247,7 +247,7 @@
               {
                 "id": "f65a54db-19eb-4176-8f2e-bba256e9240d",
                 "name": "env",
-                "value": "=-e APP_DEPLOY_TIME=\"{{ $now.setZone('Asia/Ho_Chi_Minh').format('LLL dd, yyyy H:mm:ss') }}\" {{ $json.data .filter(item => item.Key && !item.Key.trim().startsWith('DOCKER')) .map(item => `-e ${item.Key.trim()}=${item.Value} `) .join('') }}",
+                "value": "=-e APP_DEPLOY_TIME=\"{{ $now.setZone('Asia/Ho_Chi_Minh').format('LLL dd, yyyy H:mm:ss') }}\" -e TZ={{ $json.data.find(item => item.Key === 'DOCKER_TZ')?.Value ?? 'Asia/Ho_Chi_Minh'}} {{ $json.data .filter(item => item.Key && !item.Key.trim().startsWith('DOCKER')) .map(item => `-e ${item.Key.trim()}=${item.Value} `) .join('') }}",
                 "type": "string"
               },
               {
@@ -425,7 +425,7 @@
     "name": null,
     "description": null
   },
-  "activeVersionId": "576e088c-1938-4c79-ad3b-48be383ffde3",
+  "activeVersionId": "77fdacf6-1a12-40a3-a72f-30e69f3ab5b6",
   "connections": {
     "Webhook": {
       "main": [
@@ -794,7 +794,7 @@
             {
               "id": "f65a54db-19eb-4176-8f2e-bba256e9240d",
               "name": "env",
-              "value": "=-e APP_DEPLOY_TIME=\"{{ $now.setZone('Asia/Ho_Chi_Minh').format('LLL dd, yyyy H:mm:ss') }}\" {{ $json.data .filter(item => item.Key && !item.Key.trim().startsWith('DOCKER')) .map(item => `-e ${item.Key.trim()}=${item.Value} `) .join('') }}",
+              "value": "=-e APP_DEPLOY_TIME=\"{{ $now.setZone('Asia/Ho_Chi_Minh').format('LLL dd, yyyy H:mm:ss') }}\" -e TZ={{ $json.data.find(item => item.Key === 'DOCKER_TZ')?.Value ?? 'Asia/Ho_Chi_Minh'}} {{ $json.data .filter(item => item.Key && !item.Key.trim().startsWith('DOCKER')) .map(item => `-e ${item.Key.trim()}=${item.Value} `) .join('') }}",
               "type": "string"
             },
             {
@@ -868,6 +868,6 @@
   "staticData": null,
   "tags": [],
   "triggerCount": 1,
-  "updatedAt": "2026-03-17T18:22:07.654Z",
-  "versionId": "576e088c-1938-4c79-ad3b-48be383ffde3"
+  "updatedAt": "2026-03-18T17:52:21.111Z",
+  "versionId": "77fdacf6-1a12-40a3-a72f-30e69f3ab5b6"
 }
