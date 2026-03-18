@@ -1,9 +1,9 @@
 {
   "active": true,
   "activeVersion": {
-    "updatedAt": "2026-03-17T18:21:43.392Z",
-    "createdAt": "2026-03-17T18:21:43.392Z",
-    "versionId": "73cd54da-e925-4b74-939b-a320dfa58072",
+    "updatedAt": "2026-03-18T17:52:47.271Z",
+    "createdAt": "2026-03-18T17:52:47.271Z",
+    "versionId": "8921147a-dcaa-4f29-9aa1-d7c59cbc278e",
     "workflowId": "pddO9C3Hd95a7gUv",
     "nodes": [
       {
@@ -247,7 +247,7 @@
               {
                 "id": "f65a54db-19eb-4176-8f2e-bba256e9240d",
                 "name": "env",
-                "value": "=-e APP_DEPLOY_TIME=\"{{ $now.setZone('Asia/Ho_Chi_Minh').format('LLL dd, yyyy H:mm:ss') }}\" {{ $json.data.map(item => `-e ${item.Key}=${item.Value} `).join('') }}",
+                "value": "=-e APP_DEPLOY_TIME=\"{{ $now.setZone('Asia/Ho_Chi_Minh').format('LLL dd, yyyy H:mm:ss') }}\" -e TZ={{ $json.data.find(item => item.Key === 'DOCKER_TZ')?.Value ?? 'Asia/Ho_Chi_Minh'}} {{ $json.data.map(item => `-e ${item.Key}=${item.Value} `).join('') }}",
                 "type": "string"
               },
               {
@@ -425,7 +425,7 @@
     "name": null,
     "description": null
   },
-  "activeVersionId": "73cd54da-e925-4b74-939b-a320dfa58072",
+  "activeVersionId": "8921147a-dcaa-4f29-9aa1-d7c59cbc278e",
   "connections": {
     "Webhook": {
       "main": [
@@ -794,7 +794,7 @@
             {
               "id": "f65a54db-19eb-4176-8f2e-bba256e9240d",
               "name": "env",
-              "value": "=-e APP_DEPLOY_TIME=\"{{ $now.setZone('Asia/Ho_Chi_Minh').format('LLL dd, yyyy H:mm:ss') }}\" {{ $json.data.map(item => `-e ${item.Key}=${item.Value} `).join('') }}",
+              "value": "=-e APP_DEPLOY_TIME=\"{{ $now.setZone('Asia/Ho_Chi_Minh').format('LLL dd, yyyy H:mm:ss') }}\" -e TZ={{ $json.data.find(item => item.Key === 'DOCKER_TZ')?.Value ?? 'Asia/Ho_Chi_Minh'}} {{ $json.data.map(item => `-e ${item.Key}=${item.Value} `).join('') }}",
               "type": "string"
             },
             {
@@ -868,6 +868,6 @@
   "staticData": null,
   "tags": [],
   "triggerCount": 1,
-  "updatedAt": "2026-03-17T18:21:43.390Z",
-  "versionId": "73cd54da-e925-4b74-939b-a320dfa58072"
+  "updatedAt": "2026-03-18T17:52:47.269Z",
+  "versionId": "8921147a-dcaa-4f29-9aa1-d7c59cbc278e"
 }
