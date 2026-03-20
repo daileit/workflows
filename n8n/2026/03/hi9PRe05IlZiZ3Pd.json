@@ -1,9 +1,9 @@
 {
   "active": true,
   "activeVersion": {
-    "updatedAt": "2026-03-18T17:52:21.113Z",
-    "createdAt": "2026-03-18T17:52:21.113Z",
-    "versionId": "77fdacf6-1a12-40a3-a72f-30e69f3ab5b6",
+    "updatedAt": "2026-03-20T10:23:31.244Z",
+    "createdAt": "2026-03-20T10:23:31.244Z",
+    "versionId": "61e9c43c-eba4-4e72-9d6c-ffdc2dd3519a",
     "workflowId": "hi9PRe05IlZiZ3Pd",
     "nodes": [
       {
@@ -24,7 +24,7 @@
       {
         "parameters": {
           "authentication": "privateKey",
-          "command": "=sudo docker run -e APP_VERSION={{ $('Webhook').item.json.query.tag }} {{ $json.env }}-d --add-host=host.docker.internal:host-gateway --name {{ $('Webhook').item.json.query.name }} {{ $json.network.trim() ? `--network=${$json.network}` : \"\"}} --restart=on-failure:5 -p {{ $json.port.trim() }} {{ $json.misc.trim() }} {{ $('Webhook').item.json.query.repo }}/{{ $('Webhook').item.json.query.name }}:{{ $('Webhook').item.json.query.tag }}"
+          "command": "=sudo docker run -e APP_VERSION={{ $('Webhook').item.json.query.tag }} {{ $json.env }}-d --add-host=host.docker.internal:host-gateway --name {{ $('Webhook').item.json.query.name }} {{ $json.network.trim() ? `--network=${$json.network}` : \"\"}} --restart=always -p {{ $json.port.trim() }} {{ $json.misc.trim() }} {{ $('Webhook').item.json.query.repo }}/{{ $('Webhook').item.json.query.name }}:{{ $('Webhook').item.json.query.tag }}"
         },
         "type": "n8n-nodes-base.ssh",
         "typeVersion": 1,
@@ -425,7 +425,7 @@
     "name": null,
     "description": null
   },
-  "activeVersionId": "77fdacf6-1a12-40a3-a72f-30e69f3ab5b6",
+  "activeVersionId": "61e9c43c-eba4-4e72-9d6c-ffdc2dd3519a",
   "connections": {
     "Webhook": {
       "main": [
@@ -571,7 +571,7 @@
     {
       "parameters": {
         "authentication": "privateKey",
-        "command": "=sudo docker run -e APP_VERSION={{ $('Webhook').item.json.query.tag }} {{ $json.env }}-d --add-host=host.docker.internal:host-gateway --name {{ $('Webhook').item.json.query.name }} {{ $json.network.trim() ? `--network=${$json.network}` : \"\"}} --restart=on-failure:5 -p {{ $json.port.trim() }} {{ $json.misc.trim() }} {{ $('Webhook').item.json.query.repo }}/{{ $('Webhook').item.json.query.name }}:{{ $('Webhook').item.json.query.tag }}"
+        "command": "=sudo docker run -e APP_VERSION={{ $('Webhook').item.json.query.tag }} {{ $json.env }}-d --add-host=host.docker.internal:host-gateway --name {{ $('Webhook').item.json.query.name }} {{ $json.network.trim() ? `--network=${$json.network}` : \"\"}} --restart=always -p {{ $json.port.trim() }} {{ $json.misc.trim() }} {{ $('Webhook').item.json.query.repo }}/{{ $('Webhook').item.json.query.name }}:{{ $('Webhook').item.json.query.tag }}"
       },
       "type": "n8n-nodes-base.ssh",
       "typeVersion": 1,
@@ -868,6 +868,6 @@
   "staticData": null,
   "tags": [],
   "triggerCount": 1,
-  "updatedAt": "2026-03-18T17:52:21.111Z",
-  "versionId": "77fdacf6-1a12-40a3-a72f-30e69f3ab5b6"
+  "updatedAt": "2026-03-20T10:23:31.240Z",
+  "versionId": "61e9c43c-eba4-4e72-9d6c-ffdc2dd3519a"
 }
