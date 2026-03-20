@@ -1,9 +1,9 @@
 {
   "active": true,
   "activeVersion": {
-    "updatedAt": "2026-03-02T09:23:19.777Z",
-    "createdAt": "2026-03-02T09:23:19.777Z",
-    "versionId": "6d9fa1e4-460f-438a-9d4c-a5636e5ce687",
+    "updatedAt": "2026-03-20T19:36:43.482Z",
+    "createdAt": "2026-03-20T19:36:43.482Z",
+    "versionId": "28197f83-a415-44ec-b67b-a3d905dd1373",
     "workflowId": "DmW21iHj62tM9qek",
     "nodes": [
       {
@@ -851,7 +851,7 @@
     "name": null,
     "description": null
   },
-  "activeVersionId": "6d9fa1e4-460f-438a-9d4c-a5636e5ce687",
+  "activeVersionId": "28197f83-a415-44ec-b67b-a3d905dd1373",
   "connections": {
     "Al Model": {
       "ai_languageModel": [
@@ -1731,6 +1731,6 @@
   "staticData": null,
   "tags": [],
   "triggerCount": 1,
-  "updatedAt": "2026-03-02T09:23:19.771Z",
-  "versionId": "6d9fa1e4-460f-438a-9d4c-a5636e5ce687"
+  "updatedAt": "2026-03-20T19:36:43.480Z",
+  "versionId": "28197f83-a415-44ec-b67b-a3d905dd1373"
 }
