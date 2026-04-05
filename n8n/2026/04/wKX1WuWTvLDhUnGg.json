@@ -12,6 +12,13 @@
       "main": [
         [
           {
+            "node": "return",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
             "node": "Get row(s)",
             "type": "main",
             "index": 0
@@ -20,6 +27,13 @@
         [
           {
             "node": "Switch1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "return",
             "type": "main",
             "index": 0
           }
@@ -99,6 +113,28 @@
                 },
                 "conditions": [
                   {
+                    "id": "e2c71efa-89ff-4706-812e-db779e0b992b",
+                    "leftValue": "commander",
+                    "rightValue": "daileit",
+                    "operator": {
+                      "type": "string",
+                      "operation": "notEquals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
                     "leftValue": "={{ $json.type }}",
                     "rightValue": "get",
                     "operator": {
@@ -133,6 +169,29 @@
                 ],
                 "combinator": "and"
               }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "d2bb97c9-ea52-44cb-8b2f-6a45034e7b79",
+                    "leftValue": "={{ $json.type }}",
+                    "rightValue": "",
+                    "operator": {
+                      "type": "string",
+                      "operation": "notEmpty",
+                      "singleValue": true
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
             }
           ]
         },
@@ -162,7 +221,7 @@
       "typeVersion": 1,
       "position": [
         624,
-        -160
+        -48
       ],
       "id": "895a464b-8863-4d39-ab2b-c73632965a3b",
       "name": "Get row(s)"
@@ -320,6 +379,9 @@
             },
             {
               "name": "server_name"
+            },
+            {
+              "name": "commander"
             }
           ]
         }
@@ -401,7 +463,7 @@
       "typeVersion": 1,
       "position": [
         1104,
-        576
+        560
       ],
       "id": "1fe90094-981c-4ac2-bc95-72bd2e757b51",
       "name": "Execute a command3",
@@ -421,7 +483,7 @@
       "typeVersion": 1,
       "position": [
         1104,
-        752
+        720
       ],
       "id": "db4ba68b-1af4-421e-bc73-fbc2a6c2f4a6",
       "name": "Execute a command4",
@@ -431,6 +493,29 @@
           "name": "apm_sealdesign_net"
         }
       }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "ecda79a6-cee7-46ed-8383-31cab815e88e",
+              "name": "result",
+              "value": "fuckoff bro, i'm only follow daileit valid commands, check your commander username",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        624,
+        -192
+      ],
+      "id": "b9167b43-322a-4253-92cd-629e843e774d",
+      "name": "return"
     }
   ],
   "pinData": {},
@@ -452,6 +537,6 @@
   "staticData": null,
   "tags": [],
   "triggerCount": 0,
-  "updatedAt": "2026-04-05T06:03:51.852Z",
-  "versionId": "f0af8a53-c574-4ee6-bdb4-ee7d1cc3e5e3"
+  "updatedAt": "2026-04-05T06:42:45.736Z",
+  "versionId": "a8380185-37b2-46b8-bf80-fdbbab87f4d3"
 }
