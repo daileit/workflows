@@ -57,12 +57,25 @@
           }
         ]
       ]
+    },
+    "return": {
+      "main": [
+        [
+          {
+            "node": "Analyze an image",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     }
   },
   "createdAt": "2025-12-23T08:35:21.050Z",
   "id": "Gf647J4oPFJg45yb",
   "isArchived": false,
-  "meta": null,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
   "name": "image_generator",
   "nodes": [
     {
@@ -256,6 +269,34 @@
       ],
       "id": "48fbf55d-ee19-4381-9e3f-84bae0df35ab",
       "name": "return"
+    },
+    {
+      "parameters": {
+        "resource": "image",
+        "operation": "analyze",
+        "modelId": {
+          "__rl": true,
+          "value": "models/gemini-2.5-flash",
+          "mode": "list",
+          "cachedResultName": "models/gemini-2.5-flash"
+        },
+        "imageUrls": "https://timo.vn/wp-content/uploads/img-personal-finance-empowerment.jpg",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.googleGemini",
+      "typeVersion": 1,
+      "position": [
+        1264,
+        0
+      ],
+      "id": "c151deed-93ac-4d5b-9436-8998d255071c",
+      "name": "Analyze an image",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "dr7uh9o5CsnRf6UB",
+          "name": "gemini_k1"
+        }
+      }
     }
   ],
   "pinData": {},
@@ -277,6 +318,6 @@
   "staticData": null,
   "tags": [],
   "triggerCount": 0,
-  "updatedAt": "2025-12-23T10:05:40.253Z",
-  "versionId": "6a997a6e-920d-44b9-b0d0-6489159ea3d4"
+  "updatedAt": "2026-04-05T12:06:06.220Z",
+  "versionId": "6041493c-1cb0-43cf-911d-3c1ae234c1d8"
 }
