@@ -286,15 +286,15 @@
       "type": "@n8n/n8n-nodes-langchain.googleGemini",
       "typeVersion": 1,
       "position": [
-        1264,
-        0
+        1104,
+        -192
       ],
       "id": "c151deed-93ac-4d5b-9436-8998d255071c",
       "name": "Analyze an image",
       "credentials": {
         "googlePalmApi": {
-          "id": "dr7uh9o5CsnRf6UB",
-          "name": "gemini_k1"
+          "id": "pKh4EWaxNGmWJFE0",
+          "name": "gemini_seal_k1"
         }
       }
     }
@@ -318,6 +318,6 @@
   "staticData": null,
   "tags": [],
   "triggerCount": 0,
-  "updatedAt": "2026-04-05T12:06:06.220Z",
-  "versionId": "6041493c-1cb0-43cf-911d-3c1ae234c1d8"
+  "updatedAt": "2026-04-05T12:25:46.031Z",
+  "versionId": "4a4b2980-faf2-4a85-b3f8-71995a29db76"
 }
