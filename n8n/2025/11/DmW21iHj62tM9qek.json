@@ -1,9 +1,9 @@
 {
   "active": true,
   "activeVersion": {
-    "updatedAt": "2026-03-20T19:36:43.482Z",
-    "createdAt": "2026-03-20T19:36:43.482Z",
-    "versionId": "28197f83-a415-44ec-b67b-a3d905dd1373",
+    "updatedAt": "2026-04-05T06:09:49.982Z",
+    "createdAt": "2026-04-05T06:09:49.982Z",
+    "versionId": "83e30520-f9bf-4311-94ce-ba908ca7f6ec",
     "workflowId": "DmW21iHj62tM9qek",
     "nodes": [
       {
@@ -630,6 +630,68 @@
         ],
         "id": "6be66723-53fe-404f-9de0-9861703f1318",
         "name": "command_message"
+      },
+      {
+        "parameters": {
+          "workflowId": {
+            "__rl": true,
+            "value": "wKX1WuWTvLDhUnGg",
+            "mode": "list",
+            "cachedResultUrl": "/workflow/wKX1WuWTvLDhUnGg",
+            "cachedResultName": "manage_servers"
+          },
+          "workflowInputs": {
+            "mappingMode": "defineBelow",
+            "value": {
+              "type": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('type', `input \"get\" to get one or all the available servers, \"execute\" for executing actions`, 'string') }}",
+              "action": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('action', `only supported \"reboot\" action for now`, 'string') }}",
+              "server_name": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('server_name', `the name of the server to execute command, use blank for all`, 'string') }}"
+            },
+            "matchingColumns": [],
+            "schema": [
+              {
+                "id": "type",
+                "displayName": "type",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "canBeUsedToMatch": true,
+                "type": "string",
+                "removed": false
+              },
+              {
+                "id": "action",
+                "displayName": "action",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "canBeUsedToMatch": true,
+                "type": "string",
+                "removed": false
+              },
+              {
+                "id": "server_name",
+                "displayName": "server_name",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "canBeUsedToMatch": true,
+                "type": "string",
+                "removed": false
+              }
+            ],
+            "attemptToConvertTypes": false,
+            "convertFieldsToString": false
+          }
+        },
+        "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
+        "typeVersion": 2.2,
+        "position": [
+          1712,
+          240
+        ],
+        "id": "4d5bdc57-3265-450d-a762-f9c674c6bdd0",
+        "name": "Call 'manage_servers'"
       }
     ],
     "connections": {
@@ -845,13 +907,24 @@
             }
           ]
         ]
+      },
+      "Call 'manage_servers'": {
+        "ai_tool": [
+          [
+            {
+              "node": "Routing Agent",
+              "type": "ai_tool",
+              "index": 0
+            }
+          ]
+        ]
       }
     },
     "authors": "Dai Le",
     "name": null,
     "description": null
   },
-  "activeVersionId": "28197f83-a415-44ec-b67b-a3d905dd1373",
+  "activeVersionId": "83e30520-f9bf-4311-94ce-ba908ca7f6ec",
   "connections": {
     "Al Model": {
       "ai_languageModel": [
@@ -1061,6 +1134,17 @@
           {
             "node": "Send a text message",
             "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Call 'manage_servers'": {
+      "ai_tool": [
+        [
+          {
+            "node": "Routing Agent",
+            "type": "ai_tool",
             "index": 0
           }
         ]
@@ -1699,6 +1783,68 @@
       ],
       "id": "6be66723-53fe-404f-9de0-9861703f1318",
       "name": "command_message"
+    },
+    {
+      "parameters": {
+        "workflowId": {
+          "__rl": true,
+          "value": "wKX1WuWTvLDhUnGg",
+          "mode": "list",
+          "cachedResultUrl": "/workflow/wKX1WuWTvLDhUnGg",
+          "cachedResultName": "manage_servers"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "type": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('type', `input \"get\" to get one or all the available servers, \"execute\" for executing actions`, 'string') }}",
+            "action": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('action', `only supported \"reboot\" action for now`, 'string') }}",
+            "server_name": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('server_name', `the name of the server to execute command, use blank for all`, 'string') }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "type",
+              "displayName": "type",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            },
+            {
+              "id": "action",
+              "displayName": "action",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            },
+            {
+              "id": "server_name",
+              "displayName": "server_name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
+      "typeVersion": 2.2,
+      "position": [
+        1712,
+        240
+      ],
+      "id": "4d5bdc57-3265-450d-a762-f9c674c6bdd0",
+      "name": "Call 'manage_servers'"
     }
   ],
   "pinData": {
@@ -1731,6 +1877,6 @@
   "staticData": null,
   "tags": [],
   "triggerCount": 1,
-  "updatedAt": "2026-03-20T19:36:43.480Z",
-  "versionId": "28197f83-a415-44ec-b67b-a3d905dd1373"
+  "updatedAt": "2026-04-05T06:09:49.980Z",
+  "versionId": "83e30520-f9bf-4311-94ce-ba908ca7f6ec"
 }
