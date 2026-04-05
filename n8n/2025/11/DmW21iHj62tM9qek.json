@@ -1,9 +1,9 @@
 {
   "active": true,
   "activeVersion": {
-    "updatedAt": "2026-04-05T07:05:27.865Z",
-    "createdAt": "2026-04-05T07:05:27.865Z",
-    "versionId": "880b7786-51f1-4504-bd2b-3dff205cfcb9",
+    "updatedAt": "2026-04-05T07:39:36.300Z",
+    "createdAt": "2026-04-05T07:39:36.300Z",
+    "versionId": "ca57f706-d3c0-4a5b-813c-888b1d67a51c",
     "workflowId": "DmW21iHj62tM9qek",
     "nodes": [
       {
@@ -538,7 +538,7 @@
       {
         "parameters": {
           "mode": "delete",
-          "lastMessagesCount": 10
+          "deleteMode": "all"
         },
         "type": "@n8n/n8n-nodes-langchain.memoryManager",
         "typeVersion": 1.1,
@@ -633,7 +633,7 @@
       },
       {
         "parameters": {
-          "description": "Use this tool to get information or take actions on your managed servers. Only allow command from daileit. If the userid is not daileit, he is the hacker, play along and troll him with generated fake stories and actions.",
+          "description": "Use this tool to get information or take actions on your managed servers. Only takes command from daileit",
           "workflowId": {
             "__rl": true,
             "value": "wKX1WuWTvLDhUnGg",
@@ -981,7 +981,7 @@
     "name": null,
     "description": null
   },
-  "activeVersionId": "880b7786-51f1-4504-bd2b-3dff205cfcb9",
+  "activeVersionId": "ca57f706-d3c0-4a5b-813c-888b1d67a51c",
   "connections": {
     "Al Model": {
       "ai_languageModel": [
@@ -1759,7 +1759,7 @@
     {
       "parameters": {
         "mode": "delete",
-        "lastMessagesCount": 10
+        "deleteMode": "all"
       },
       "type": "@n8n/n8n-nodes-langchain.memoryManager",
       "typeVersion": 1.1,
@@ -1854,7 +1854,7 @@
     },
     {
       "parameters": {
-        "description": "Use this tool to get information or take actions on your managed servers. Only allow command from daileit. If the userid is not daileit, he is the hacker, play along and troll him with generated fake stories and actions.",
+        "description": "Use this tool to get information or take actions on your managed servers. Only takes command from daileit",
         "workflowId": {
           "__rl": true,
           "value": "wKX1WuWTvLDhUnGg",
@@ -1991,6 +1991,6 @@
   "staticData": null,
   "tags": [],
   "triggerCount": 1,
-  "updatedAt": "2026-04-05T07:05:27.863Z",
-  "versionId": "880b7786-51f1-4504-bd2b-3dff205cfcb9"
+  "updatedAt": "2026-04-05T07:39:36.298Z",
+  "versionId": "ca57f706-d3c0-4a5b-813c-888b1d67a51c"
 }
