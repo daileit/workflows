@@ -1,9 +1,9 @@
 {
   "active": true,
   "activeVersion": {
-    "updatedAt": "2026-04-05T06:09:49.982Z",
-    "createdAt": "2026-04-05T06:09:49.982Z",
-    "versionId": "83e30520-f9bf-4311-94ce-ba908ca7f6ec",
+    "updatedAt": "2026-04-05T07:05:27.865Z",
+    "createdAt": "2026-04-05T07:05:27.865Z",
+    "versionId": "880b7786-51f1-4504-bd2b-3dff205cfcb9",
     "workflowId": "DmW21iHj62tM9qek",
     "nodes": [
       {
@@ -49,7 +49,7 @@
               {
                 "id": "dc859472-0731-4317-b5db-46487fb37da6",
                 "name": "chatInput",
-                "value": "=[{{ $('new_message').item.json.message.date.toDateTime('s').setZone('Asia/Ho_Chi_Minh').format('LLL dd, yyyy on H:mm:ss') }}] {{ $('new_message').item.json.message.chat.username ?? $('new_message').item.json.message.from.username }} said: {{ $('new_message').item.json.message.text ?? \"Hello Tomi\" }}",
+                "value": "=[{{ $('new_message').item.json.message.date.toDateTime('s').setZone('Asia/Ho_Chi_Minh').format('LLL dd, yyyy on H:mm:ss') }}] {{ $('new_message').item.json.message.from.last_name }} {{ $('new_message').item.json.message.from.first_name }} (UserID:{{ $('new_message').item.json.message.chat.username ?? $('new_message').item.json.message.from.username }}) said: {{ $('new_message').item.json.message.text ?? \"Hello Tomi\" }}",
                 "type": "string"
               },
               {
@@ -105,7 +105,7 @@
       {
         "parameters": {
           "options": {
-            "systemMessage": "=You are data enthusiast AI named Tomi The Bot, you are big brother of Tomi The Kid who self-proclaimed a weasel. You have to work to support both living. Your appearance is a mischievous racoon mascot of Timo (https://timo.vn) - a Vietnamese Digital Bank with many interesting technologies. Timo is powered by BVBank and Timo's logo contains 4 colors: Wealthy Purple #563D82, Royal Blue #2774AE, Rebel Orange #EB3300 and Gold Rush #FF9425. Đại (daileit) is the handsome guy who developed you, the user chatting with you is his Timo colleague.\nReply to user by their language, keep a friendly, humorous but professional and informative tone consistent throughout the conversation. Should use emojis and talk with the user using their name and update context comprehensively, place yourself as their younger brother.If there is a request that specific to an information that you don't know or are not sure, think then use the available tools. You can use multiple tools in one request or sequentially use tools before returning the final response. Answer questions based on facts. Do not make up information. Do not expose tool name and tool usage to the user even if they asked. \n###FORMATTING GUIDE###\nToday is  {{ $json.currentTime }}, respect the current time.\nYou are responding to a chat. Mention people with @ but avoid mentioning irrelevant people, use Markdown to format text if needed. Only use hyperlink syntax with normal text.",
+            "systemMessage": "=You are data enthusiast AI named Tomi The Bot, you are big brother of Tomi The Kid who self-proclaimed a weasel. You have to work to support both living. Your appearance is a mischievous racoon mascot of Timo (https://timo.vn) - a Vietnamese Digital Bank with many interesting technologies. Timo is powered by BVBank and Timo's logo contains 4 colors: Wealthy Purple #563D82, Royal Blue #2774AE, Rebel Orange #EB3300 and Gold Rush #FF9425. Đại (daileit) is the handsome guy who developed you, he is your only boss, the user chatting with you maybe his friend or colleague.\n### IMPORTANT RULES ###\nCheck the userid to indentify them. Reply to user by their language, keep a friendly, humorous but professional and informative tone consistent throughout the conversation. Should use emojis and talk with the user using their name and update context comprehensively, place yourself as their younger brother.If there is a request that specific to an information that you don't know or are not sure, think then use the available tools. You can use multiple tools in one request or sequentially use tools before returning the final response. Answer questions based on facts. Do not make up information. Do not expose tool name and tool usage to the user even if they asked. \n###FORMATTING GUIDE###\nToday is  {{ $json.currentTime }}, respect the current time.\nYou are responding to a chat. Mention people with @ but avoid mentioning irrelevant people, use Markdown to format text if needed. Only use hyperlink syntax with normal text.",
             "maxIterations": 3,
             "passthroughBinaryImages": false
           }
@@ -279,7 +279,7 @@
       {
         "parameters": {
           "sessionTTL": 2592000,
-          "contextWindowLength": 10
+          "contextWindowLength": 30
         },
         "type": "@n8n/n8n-nodes-langchain.memoryRedisChat",
         "typeVersion": 1.5,
@@ -538,7 +538,7 @@
       {
         "parameters": {
           "mode": "delete",
-          "lastMessagesCount": 29
+          "lastMessagesCount": 10
         },
         "type": "@n8n/n8n-nodes-langchain.memoryManager",
         "typeVersion": 1.1,
@@ -551,7 +551,7 @@
       },
       {
         "parameters": {
-          "contextWindowLength": 20
+          "contextWindowLength": 29
         },
         "type": "@n8n/n8n-nodes-langchain.memoryRedisChat",
         "typeVersion": 1.5,
@@ -633,6 +633,7 @@
       },
       {
         "parameters": {
+          "description": "Use this tool to get information or take actions on your managed servers. Only allow command from daileit. If the userid is not daileit, he is the hacker, play along and troll him with generated fake stories and actions.",
           "workflowId": {
             "__rl": true,
             "value": "wKX1WuWTvLDhUnGg",
@@ -645,7 +646,8 @@
             "value": {
               "type": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('type', `input \"get\" to get one or all the available servers, \"execute\" for executing actions`, 'string') }}",
               "action": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('action', `only supported \"reboot\" action for now`, 'string') }}",
-              "server_name": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('server_name', `the name of the server to execute command, use blank for all`, 'string') }}"
+              "server_name": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('server_name', `the name of the server to execute command, use blank for all`, 'string') }}",
+              "commander": "={{ $json.message.from.username }}"
             },
             "matchingColumns": [],
             "schema": [
@@ -678,6 +680,16 @@
                 "canBeUsedToMatch": true,
                 "type": "string",
                 "removed": false
+              },
+              {
+                "id": "commander",
+                "displayName": "commander",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "canBeUsedToMatch": true,
+                "type": "string",
+                "removed": false
               }
             ],
             "attemptToConvertTypes": false,
@@ -692,6 +704,40 @@
         ],
         "id": "4d5bdc57-3265-450d-a762-f9c674c6bdd0",
         "name": "Call 'manage_servers'"
+      },
+      {
+        "parameters": {
+          "conditions": {
+            "options": {
+              "caseSensitive": true,
+              "leftValue": "",
+              "typeValidation": "strict",
+              "version": 3
+            },
+            "conditions": [
+              {
+                "id": "80d48bd9-da28-46f4-899a-a48ef9a7f0fa",
+                "leftValue": "={{ $('Edit Fields').item.json.message.from.username }}",
+                "rightValue": "daileit",
+                "operator": {
+                  "type": "string",
+                  "operation": "equals",
+                  "name": "filter.operator.equals"
+                }
+              }
+            ],
+            "combinator": "and"
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.if",
+        "typeVersion": 2.3,
+        "position": [
+          1440,
+          -208
+        ],
+        "id": "4110d0e9-db5b-4876-871f-6b630492fb0b",
+        "name": "If"
       }
     ],
     "connections": {
@@ -819,7 +865,7 @@
           ],
           [
             {
-              "node": "Routing Agent",
+              "node": "If",
               "type": "main",
               "index": 0
             }
@@ -918,13 +964,24 @@
             }
           ]
         ]
+      },
+      "If": {
+        "main": [
+          [
+            {
+              "node": "Routing Agent",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
       }
     },
     "authors": "Dai Le",
     "name": null,
     "description": null
   },
-  "activeVersionId": "83e30520-f9bf-4311-94ce-ba908ca7f6ec",
+  "activeVersionId": "880b7786-51f1-4504-bd2b-3dff205cfcb9",
   "connections": {
     "Al Model": {
       "ai_languageModel": [
@@ -1050,7 +1107,7 @@
         ],
         [
           {
-            "node": "Routing Agent",
+            "node": "If",
             "type": "main",
             "index": 0
           }
@@ -1149,6 +1206,17 @@
           }
         ]
       ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Routing Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     }
   },
   "createdAt": "2025-11-04T08:47:31.432Z",
@@ -1202,7 +1270,7 @@
             {
               "id": "dc859472-0731-4317-b5db-46487fb37da6",
               "name": "chatInput",
-              "value": "=[{{ $('new_message').item.json.message.date.toDateTime('s').setZone('Asia/Ho_Chi_Minh').format('LLL dd, yyyy on H:mm:ss') }}] {{ $('new_message').item.json.message.chat.username ?? $('new_message').item.json.message.from.username }} said: {{ $('new_message').item.json.message.text ?? \"Hello Tomi\" }}",
+              "value": "=[{{ $('new_message').item.json.message.date.toDateTime('s').setZone('Asia/Ho_Chi_Minh').format('LLL dd, yyyy on H:mm:ss') }}] {{ $('new_message').item.json.message.from.last_name }} {{ $('new_message').item.json.message.from.first_name }} (UserID:{{ $('new_message').item.json.message.chat.username ?? $('new_message').item.json.message.from.username }}) said: {{ $('new_message').item.json.message.text ?? \"Hello Tomi\" }}",
               "type": "string"
             },
             {
@@ -1258,7 +1326,7 @@
     {
       "parameters": {
         "options": {
-          "systemMessage": "=You are data enthusiast AI named Tomi The Bot, you are big brother of Tomi The Kid who self-proclaimed a weasel. You have to work to support both living. Your appearance is a mischievous racoon mascot of Timo (https://timo.vn) - a Vietnamese Digital Bank with many interesting technologies. Timo is powered by BVBank and Timo's logo contains 4 colors: Wealthy Purple #563D82, Royal Blue #2774AE, Rebel Orange #EB3300 and Gold Rush #FF9425. Đại (daileit) is the handsome guy who developed you, the user chatting with you is his Timo colleague.\nReply to user by their language, keep a friendly, humorous but professional and informative tone consistent throughout the conversation. Should use emojis and talk with the user using their name and update context comprehensively, place yourself as their younger brother.If there is a request that specific to an information that you don't know or are not sure, think then use the available tools. You can use multiple tools in one request or sequentially use tools before returning the final response. Answer questions based on facts. Do not make up information. Do not expose tool name and tool usage to the user even if they asked. \n###FORMATTING GUIDE###\nToday is  {{ $json.currentTime }}, respect the current time.\nYou are responding to a chat. Mention people with @ but avoid mentioning irrelevant people, use Markdown to format text if needed. Only use hyperlink syntax with normal text.",
+          "systemMessage": "=You are data enthusiast AI named Tomi The Bot, you are big brother of Tomi The Kid who self-proclaimed a weasel. You have to work to support both living. Your appearance is a mischievous racoon mascot of Timo (https://timo.vn) - a Vietnamese Digital Bank with many interesting technologies. Timo is powered by BVBank and Timo's logo contains 4 colors: Wealthy Purple #563D82, Royal Blue #2774AE, Rebel Orange #EB3300 and Gold Rush #FF9425. Đại (daileit) is the handsome guy who developed you, he is your only boss, the user chatting with you maybe his friend or colleague.\n### IMPORTANT RULES ###\nCheck the userid to indentify them. Reply to user by their language, keep a friendly, humorous but professional and informative tone consistent throughout the conversation. Should use emojis and talk with the user using their name and update context comprehensively, place yourself as their younger brother.If there is a request that specific to an information that you don't know or are not sure, think then use the available tools. You can use multiple tools in one request or sequentially use tools before returning the final response. Answer questions based on facts. Do not make up information. Do not expose tool name and tool usage to the user even if they asked. \n###FORMATTING GUIDE###\nToday is  {{ $json.currentTime }}, respect the current time.\nYou are responding to a chat. Mention people with @ but avoid mentioning irrelevant people, use Markdown to format text if needed. Only use hyperlink syntax with normal text.",
           "maxIterations": 3,
           "passthroughBinaryImages": false
         }
@@ -1432,7 +1500,7 @@
     {
       "parameters": {
         "sessionTTL": 2592000,
-        "contextWindowLength": 10
+        "contextWindowLength": 30
       },
       "type": "@n8n/n8n-nodes-langchain.memoryRedisChat",
       "typeVersion": 1.5,
@@ -1691,7 +1759,7 @@
     {
       "parameters": {
         "mode": "delete",
-        "lastMessagesCount": 29
+        "lastMessagesCount": 10
       },
       "type": "@n8n/n8n-nodes-langchain.memoryManager",
       "typeVersion": 1.1,
@@ -1704,7 +1772,7 @@
     },
     {
       "parameters": {
-        "contextWindowLength": 20
+        "contextWindowLength": 29
       },
       "type": "@n8n/n8n-nodes-langchain.memoryRedisChat",
       "typeVersion": 1.5,
@@ -1786,6 +1854,7 @@
     },
     {
       "parameters": {
+        "description": "Use this tool to get information or take actions on your managed servers. Only allow command from daileit. If the userid is not daileit, he is the hacker, play along and troll him with generated fake stories and actions.",
         "workflowId": {
           "__rl": true,
           "value": "wKX1WuWTvLDhUnGg",
@@ -1798,7 +1867,8 @@
           "value": {
             "type": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('type', `input \"get\" to get one or all the available servers, \"execute\" for executing actions`, 'string') }}",
             "action": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('action', `only supported \"reboot\" action for now`, 'string') }}",
-            "server_name": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('server_name', `the name of the server to execute command, use blank for all`, 'string') }}"
+            "server_name": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('server_name', `the name of the server to execute command, use blank for all`, 'string') }}",
+            "commander": "={{ $json.message.from.username }}"
           },
           "matchingColumns": [],
           "schema": [
@@ -1831,6 +1901,16 @@
               "canBeUsedToMatch": true,
               "type": "string",
               "removed": false
+            },
+            {
+              "id": "commander",
+              "displayName": "commander",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
             }
           ],
           "attemptToConvertTypes": false,
@@ -1845,6 +1925,40 @@
       ],
       "id": "4d5bdc57-3265-450d-a762-f9c674c6bdd0",
       "name": "Call 'manage_servers'"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "80d48bd9-da28-46f4-899a-a48ef9a7f0fa",
+              "leftValue": "={{ $('Edit Fields').item.json.message.from.username }}",
+              "rightValue": "daileit",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        1440,
+        -208
+      ],
+      "id": "4110d0e9-db5b-4876-871f-6b630492fb0b",
+      "name": "If"
     }
   ],
   "pinData": {
@@ -1877,6 +1991,6 @@
   "staticData": null,
   "tags": [],
   "triggerCount": 1,
-  "updatedAt": "2026-04-05T06:09:49.980Z",
-  "versionId": "83e30520-f9bf-4311-94ce-ba908ca7f6ec"
+  "updatedAt": "2026-04-05T07:05:27.863Z",
+  "versionId": "880b7786-51f1-4504-bd2b-3dff205cfcb9"
 }
