@@ -1,0 +1,457 @@
+{
+  "active": false,
+  "activeVersion": null,
+  "activeVersionId": null,
+  "connections": {
+    "Get row(s)": {
+      "main": [
+        []
+      ]
+    },
+    "Switch": {
+      "main": [
+        [
+          {
+            "node": "Get row(s)",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Switch1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "trigger": {
+      "main": [
+        [
+          {
+            "node": "Switch",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch1": {
+      "main": [
+        [
+          {
+            "node": "Execute a command",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Execute a command1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Execute a command2",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Execute a command3",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Execute a command4",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2026-04-05T05:34:45.186Z",
+  "id": "wKX1WuWTvLDhUnGg",
+  "isArchived": false,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "name": "manage_servers",
+  "nodes": [
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.type }}",
+                    "rightValue": "get",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "091cdfd6-d425-460e-b81e-e9200ff02adb"
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "0716e7a6-9c5d-402f-b7ca-a8182bef5ec3",
+                    "leftValue": "={{ $json.type }}",
+                    "rightValue": "execute",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.4,
+      "position": [
+        416,
+        0
+      ],
+      "id": "c6d1d504-71d7-4764-bb06-90c7e9aecb10",
+      "name": "Switch"
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "dataTableId": {
+          "__rl": true,
+          "value": "Y2xjpbxDXxnh9pM7",
+          "mode": "list",
+          "cachedResultName": "server_info",
+          "cachedResultUrl": "/projects/TgT7sbikPaxzUZlq/datatables/Y2xjpbxDXxnh9pM7"
+        }
+      },
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1,
+      "position": [
+        624,
+        -160
+      ],
+      "id": "895a464b-8863-4d39-ab2b-c73632965a3b",
+      "name": "Get row(s)"
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $('trigger').item.json.server_name }}",
+                    "rightValue": "vps-hhs",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "547bf310-59dd-4783-b9ef-c15f175e6f7e"
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "hhs"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "06f96fb5-c2e7-41ea-b3e7-0704a6d51d29",
+                    "leftValue": "={{ $('trigger').item.json.server_name }}",
+                    "rightValue": "vps-tino1",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "tino1"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "65dbdb58-2fe9-4271-80da-b55ad9a78291",
+                    "leftValue": "={{ $('trigger').item.json.server_name }}",
+                    "rightValue": "vps-tino3",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "tino3"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "dea302b9-6632-43fd-883d-528bbc367698",
+                    "leftValue": "={{ $('trigger').item.json.server_name }}",
+                    "rightValue": "vps-tino4",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "tino4"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "205dfde3-0062-4ba8-96a5-c0ba17aa1b31",
+                    "leftValue": "={{ $('trigger').item.json.server_name }}",
+                    "rightValue": "vps-apm",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "apm"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.4,
+      "position": [
+        624,
+        96
+      ],
+      "id": "d31eca26-df85-4d3e-bc05-1099acb680be",
+      "name": "Switch1"
+    },
+    {
+      "parameters": {
+        "workflowInputs": {
+          "values": [
+            {
+              "name": "type"
+            },
+            {
+              "name": "action"
+            },
+            {
+              "name": "server_name"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        160,
+        0
+      ],
+      "id": "bb0d7a5f-a990-418c-80f8-11bae46d1a55",
+      "name": "trigger"
+    },
+    {
+      "parameters": {
+        "authentication": "privateKey",
+        "command": "sudo reboot"
+      },
+      "type": "n8n-nodes-base.ssh",
+      "typeVersion": 1,
+      "position": [
+        1104,
+        80
+      ],
+      "id": "9211d7ac-8ecb-4ab2-8fa9-c69242be8884",
+      "name": "Execute a command",
+      "credentials": {
+        "sshPrivateKey": {
+          "id": "YosrDQomCrWVYGjd",
+          "name": "vpshhs_sealdesign_net"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "authentication": "privateKey",
+        "command": "sudo reboot"
+      },
+      "type": "n8n-nodes-base.ssh",
+      "typeVersion": 1,
+      "position": [
+        1104,
+        240
+      ],
+      "id": "ff4350fb-b007-436b-8b52-0e776655151c",
+      "name": "Execute a command1",
+      "credentials": {
+        "sshPrivateKey": {
+          "id": "ug12hgqgIt7Vb8ke",
+          "name": "vpstino1_sealdesign_net"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "authentication": "privateKey",
+        "command": "sudo reboot"
+      },
+      "type": "n8n-nodes-base.ssh",
+      "typeVersion": 1,
+      "position": [
+        1104,
+        400
+      ],
+      "id": "0d212550-c2d2-4494-84d1-fe32ceb5ba9d",
+      "name": "Execute a command2",
+      "credentials": {
+        "sshPrivateKey": {
+          "id": "6h6r0zgvqYXl5khi",
+          "name": "vpstino3_sealdesign_net"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "command": "sudo reboot"
+      },
+      "type": "n8n-nodes-base.ssh",
+      "typeVersion": 1,
+      "position": [
+        1104,
+        576
+      ],
+      "id": "1fe90094-981c-4ac2-bc95-72bd2e757b51",
+      "name": "Execute a command3",
+      "credentials": {
+        "sshPassword": {
+          "id": "y3LxyO3vmRyZ8UUA",
+          "name": "vpstino4_sealdesign_net"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "authentication": "privateKey",
+        "command": "sudo reboot"
+      },
+      "type": "n8n-nodes-base.ssh",
+      "typeVersion": 1,
+      "position": [
+        1104,
+        752
+      ],
+      "id": "db4ba68b-1af4-421e-bc73-fbc2a6c2f4a6",
+      "name": "Execute a command4",
+      "credentials": {
+        "sshPrivateKey": {
+          "id": "3iS4XAZKorQ6ztoN",
+          "name": "apm_sealdesign_net"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "repo_name": "workflows",
+  "repo_owner": "daileit",
+  "repo_path": "n8n/",
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "shared": [
+    {
+      "updatedAt": "2026-04-05T05:34:45.186Z",
+      "createdAt": "2026-04-05T05:34:45.186Z",
+      "role": "workflow:owner",
+      "workflowId": "wKX1WuWTvLDhUnGg",
+      "projectId": "TgT7sbikPaxzUZlq"
+    }
+  ],
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 0,
+  "updatedAt": "2026-04-05T06:03:51.852Z",
+  "versionId": "f0af8a53-c574-4ee6-bdb4-ee7d1cc3e5e3"
+}
