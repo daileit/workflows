@@ -588,13 +588,13 @@
             {
               "id": "4521dff2-6bbc-4648-84d1-5ed3ff9723a5",
               "name": "status",
-              "value": "={{ $('add_result').item.json.status ?? \"ok\"}}",
+              "value": "={{ $if($('add_result').isExecuted,$('add_result').item.json.status,\"ok\")}}",
               "type": "string"
             },
             {
               "id": "fc3d4782-e7df-4f70-97be-ce7f568c9cc1",
               "name": "message",
-              "value": "={{ $('add_result').item.json.message ?? \"None\"}}",
+              "value": "={{$if($('add_result').isExecuted,$('add_result').item.json.message,\"None\")}}",
               "type": "string"
             }
           ]
@@ -674,6 +674,6 @@
   "staticData": null,
   "tags": [],
   "triggerCount": 0,
-  "updatedAt": "2026-04-05T07:58:11.323Z",
-  "versionId": "ab42fcba-a862-4046-a0f6-15e4733c0abf"
+  "updatedAt": "2026-04-07T10:27:27.507Z",
+  "versionId": "c7cc0244-952f-494e-955b-522950e25f9d"
 }
