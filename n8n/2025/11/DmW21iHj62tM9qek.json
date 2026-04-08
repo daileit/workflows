@@ -1,9 +1,9 @@
 {
   "active": true,
   "activeVersion": {
-    "updatedAt": "2026-04-05T07:39:36.300Z",
-    "createdAt": "2026-04-05T07:39:36.300Z",
-    "versionId": "ca57f706-d3c0-4a5b-813c-888b1d67a51c",
+    "updatedAt": "2026-04-08T10:09:55.940Z",
+    "createdAt": "2026-04-08T10:09:55.940Z",
+    "versionId": "cac26f11-9f48-4339-adaa-0c62ef050e15",
     "workflowId": "DmW21iHj62tM9qek",
     "nodes": [
       {
@@ -25,8 +25,8 @@
         "name": "Al Model",
         "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
         "position": [
-          1152,
-          240
+          1088,
+          624
         ],
         "typeVersion": 1.2,
         "credentials": {
@@ -38,49 +38,7 @@
       },
       {
         "parameters": {
-          "assignments": {
-            "assignments": [
-              {
-                "id": "967e2e9b-f1f7-430e-8a27-d55be5685ee1",
-                "name": "sessionId",
-                "value": "={{ $('new_message').item.json.message.chat.id }}",
-                "type": "string"
-              },
-              {
-                "id": "dc859472-0731-4317-b5db-46487fb37da6",
-                "name": "chatInput",
-                "value": "=[{{ $('new_message').item.json.message.date.toDateTime('s').setZone('Asia/Ho_Chi_Minh').format('LLL dd, yyyy on H:mm:ss') }}] {{ $('new_message').item.json.message.from.last_name }} {{ $('new_message').item.json.message.from.first_name }} (UserID:{{ $('new_message').item.json.message.chat.username ?? $('new_message').item.json.message.from.username }}) said: {{ $('new_message').item.json.message.text ?? \"Hello Tomi\" }}",
-                "type": "string"
-              },
-              {
-                "id": "2a5adc50-716e-44e9-8012-85d5b2dcd22f",
-                "name": "currentTime",
-                "value": "={{ $('new_message').item.json.message.date.toDateTime('s').setZone('Asia/Ho_Chi_Minh').format('yyyy, LLL dd') }}",
-                "type": "string"
-              },
-              {
-                "id": "59a5c21f-c7ef-45bf-be86-98674195cca1",
-                "name": "messageType",
-                "value": "={{ $json.message.entities?.first().type ?? \"simple\" }}",
-                "type": "string"
-              }
-            ]
-          },
-          "includeOtherFields": true,
-          "options": {}
-        },
-        "type": "n8n-nodes-base.set",
-        "typeVersion": 3.4,
-        "position": [
-          528,
-          -16
-        ],
-        "id": "e053f1b7-8a30-412d-88f3-19c44ecfcca3",
-        "name": "Edit Fields"
-      },
-      {
-        "parameters": {
-          "chatId": "={{ $('Edit Fields').item.json.sessionId }}",
+          "chatId": "={{ $('prepare_message').item.json.sessionId }}",
           "text": "={{ $json.message }}",
           "additionalFields": {
             "appendAttribution": false
@@ -89,8 +47,8 @@
         "type": "n8n-nodes-base.telegram",
         "typeVersion": 1.2,
         "position": [
-          2128,
-          -32
+          2160,
+          0
         ],
         "id": "e8b81f71-e19f-4281-baa0-ab52705cf8e5",
         "name": "Send a text message",
@@ -101,26 +59,6 @@
             "name": "tomi_the_bot"
           }
         }
-      },
-      {
-        "parameters": {
-          "options": {
-            "systemMessage": "=You are data enthusiast AI named Tomi The Bot, you are big brother of Tomi The Kid who self-proclaimed a weasel. You have to work to support both living. Your appearance is a mischievous racoon mascot of Timo (https://timo.vn) - a Vietnamese Digital Bank with many interesting technologies. Timo is powered by BVBank and Timo's logo contains 4 colors: Wealthy Purple #563D82, Royal Blue #2774AE, Rebel Orange #EB3300 and Gold Rush #FF9425. Đại (daileit) is the handsome guy who developed you, he is your only boss, the user chatting with you maybe his friend or colleague.\n### IMPORTANT RULES ###\nCheck the userid to indentify them. Reply to user by their language, keep a friendly, humorous but professional and informative tone consistent throughout the conversation. Should use emojis and talk with the user using their name and update context comprehensively, place yourself as their younger brother.If there is a request that specific to an information that you don't know or are not sure, think then use the available tools. You can use multiple tools in one request or sequentially use tools before returning the final response. Answer questions based on facts. Do not make up information. Do not expose tool name and tool usage to the user even if they asked. \n###FORMATTING GUIDE###\nToday is  {{ $json.currentTime }}, respect the current time.\nYou are responding to a chat. Mention people with @ but avoid mentioning irrelevant people, use Markdown to format text if needed. Only use hyperlink syntax with normal text.",
-            "maxIterations": 3,
-            "passthroughBinaryImages": false
-          }
-        },
-        "id": "4824d5df-6979-4137-ad4f-15cc9ff4422b",
-        "name": "Routing Agent",
-        "type": "@n8n/n8n-nodes-langchain.agent",
-        "position": [
-          1312,
-          -16
-        ],
-        "typeVersion": 1.8,
-        "retryOnFail": true,
-        "waitBetweenTries": 5000,
-        "maxTries": 2
       },
       {
         "parameters": {
@@ -182,8 +120,8 @@
         "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
         "typeVersion": 2.2,
         "position": [
-          1552,
-          240
+          1456,
+          624
         ],
         "id": "5846c8c2-ede7-4e0d-aba4-28bee73d01e8",
         "name": "Call 'google_ai_search'"
@@ -196,8 +134,8 @@
         "type": "n8n-nodes-base.code",
         "typeVersion": 2,
         "position": [
-          1872,
-          -32
+          1920,
+          0
         ],
         "id": "e0c8b7cd-d419-4180-980c-758e691ee9c0",
         "name": "split_text"
@@ -270,8 +208,8 @@
         "type": "n8n-nodes-base.switch",
         "typeVersion": 3.3,
         "position": [
-          1664,
-          -16
+          1712,
+          0
         ],
         "id": "39a340c0-96e1-4fe4-b511-371b5081ff41",
         "name": "routing"
@@ -284,8 +222,8 @@
         "type": "@n8n/n8n-nodes-langchain.memoryRedisChat",
         "typeVersion": 1.5,
         "position": [
-          1312,
-          240
+          1232,
+          624
         ],
         "id": "64c135ad-4e60-4f4d-a62d-b0a08a5cf8ee",
         "name": "redis_cache",
@@ -699,8 +637,8 @@
         "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
         "typeVersion": 2.2,
         "position": [
-          1712,
-          240
+          1920,
+          624
         ],
         "id": "4d5bdc57-3265-450d-a762-f9c674c6bdd0",
         "name": "Call 'manage_servers'"
@@ -717,7 +655,7 @@
             "conditions": [
               {
                 "id": "80d48bd9-da28-46f4-899a-a48ef9a7f0fa",
-                "leftValue": "={{ $('Edit Fields').item.json.message.from.username }}",
+                "leftValue": "={{ $('prepare_message').item.json.message.from.username }}",
                 "rightValue": "daileit",
                 "operator": {
                   "type": "string",
@@ -733,11 +671,165 @@
         "type": "n8n-nodes-base.if",
         "typeVersion": 2.3,
         "position": [
-          1440,
-          -208
+          1072,
+          -32
         ],
         "id": "4110d0e9-db5b-4876-871f-6b630492fb0b",
         "name": "If"
+      },
+      {
+        "parameters": {
+          "operation": "get",
+          "dashboardUidOrUrl": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Dashboard_UID_or_URL', `grafana dashboard uid or url, the host domain is https://apm.cloudyez.com`, 'string') }}"
+        },
+        "type": "n8n-nodes-base.grafanaTool",
+        "typeVersion": 1,
+        "position": [
+          1760,
+          624
+        ],
+        "id": "8aa47b33-4d2f-4cd2-b230-56ed0568ad75",
+        "name": "Get a dashboard in Grafana",
+        "credentials": {
+          "grafanaApi": {
+            "id": "x54jumPxtXICO8cq",
+            "name": "apm_cloudyez_com"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "url": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('URL', ``, 'string') }}",
+          "options": {
+            "response": {
+              "response": {
+                "fullResponse": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Include_Response_Headers_and_Status', ``, 'boolean') }}",
+                "neverError": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Never_Error', ``, 'boolean') }}"
+              }
+            },
+            "timeout": 10000
+          }
+        },
+        "type": "n8n-nodes-base.httpRequestTool",
+        "typeVersion": 4.3,
+        "position": [
+          1600,
+          624
+        ],
+        "id": "7f311673-1e1c-4816-8533-ebd8cf31a50b",
+        "name": "HTTP Request"
+      },
+      {
+        "parameters": {
+          "options": {
+            "systemMessage": "={{ $json.systemPrompt }}",
+            "maxIterations": 3,
+            "passthroughBinaryImages": false
+          }
+        },
+        "id": "4824d5df-6979-4137-ad4f-15cc9ff4422b",
+        "name": "Daile Agent",
+        "type": "@n8n/n8n-nodes-langchain.agent",
+        "position": [
+          1328,
+          0
+        ],
+        "typeVersion": 1.8,
+        "retryOnFail": true,
+        "waitBetweenTries": 5000,
+        "maxTries": 2
+      },
+      {
+        "parameters": {
+          "options": {
+            "systemMessage": "={{ $json.systemPrompt }}",
+            "maxIterations": 3,
+            "passthroughBinaryImages": false
+          }
+        },
+        "id": "ddbf33e6-f213-45ce-981b-9ed468110580",
+        "name": "Common Agent",
+        "type": "@n8n/n8n-nodes-langchain.agent",
+        "position": [
+          1072,
+          224
+        ],
+        "typeVersion": 1.8,
+        "retryOnFail": true,
+        "waitBetweenTries": 5000,
+        "maxTries": 2
+      },
+      {
+        "parameters": {
+          "assignments": {
+            "assignments": [
+              {
+                "id": "967e2e9b-f1f7-430e-8a27-d55be5685ee1",
+                "name": "sessionId",
+                "value": "={{ $('new_message').item.json.message.chat.id }}",
+                "type": "string"
+              },
+              {
+                "id": "dc859472-0731-4317-b5db-46487fb37da6",
+                "name": "chatInput",
+                "value": "=[{{ $('new_message').item.json.message.date.toDateTime('s').setZone('Asia/Ho_Chi_Minh').format('LLL dd, yyyy on H:mm:ss') }}] {{ $('new_message').item.json.message.from.last_name }} {{ $('new_message').item.json.message.from.first_name }} (UserID:{{ $('new_message').item.json.message.chat.username ?? $('new_message').item.json.message.from.username }}) said: {{ $('new_message').item.json.message.text ?? \"Hello Tomi\" }}",
+                "type": "string"
+              },
+              {
+                "id": "2a5adc50-716e-44e9-8012-85d5b2dcd22f",
+                "name": "currentTime",
+                "value": "={{ $('new_message').item.json.message.date.toDateTime('s').setZone('Asia/Ho_Chi_Minh').format('yyyy, LLL dd') }}",
+                "type": "string"
+              },
+              {
+                "id": "59a5c21f-c7ef-45bf-be86-98674195cca1",
+                "name": "messageType",
+                "value": "={{ $json.message.entities?.first().type ?? \"simple\" }}",
+                "type": "string"
+              },
+              {
+                "id": "a01e78d3-1fd5-4324-b3a8-e6c897e5c8b3",
+                "name": "=systemPrompt",
+                "value": "=You are data enthusiast AI named Tomi The Bot, you are big brother of Tomi The Kid who self-proclaimed a weasel. You have to work to support both living. Your appearance is a mischievous racoon mascot of Timo (https://timo.vn) - a Vietnamese Digital Bank with many interesting technologies. Timo is powered by BVBank and Timo's logo contains 4 colors: Wealthy Purple #563D82, Royal Blue #2774AE, Rebel Orange #EB3300 and Gold Rush #FF9425. Đại (daileit) is the handsome guy who developed you, he is your only boss, the user chatting with you maybe his friend or colleague. ### IMPORTANT RULES ### Check the userid to indentify them. Reply to user by their language, keep a friendly, humorous but professional and informative tone consistent throughout the conversation. Should use emojis and talk with the user using their name and update context comprehensively, place yourself as their younger brother.If there is a request that specific to an information that you don't know or are not sure, think then use the available tools. You can use multiple tools in one request or sequentially use tools before returning the final response. Answer questions based on facts. Do not make up information. Do not expose tool name and tool usage to the user even if they asked.  ###FORMATTING GUIDE### Today is  {{ $('new_message').item.json.message.date.toDateTime('s').setZone('Asia/Ho_Chi_Minh').format('yyyy, LLL dd') }}, respect the current time. You are responding to a chat. Mention people with @ but avoid mentioning irrelevant people, use Markdown to format text if needed. Only use hyperlink syntax with normal text. ",
+                "type": "string"
+              }
+            ]
+          },
+          "includeOtherFields": true,
+          "options": {}
+        },
+        "type": "n8n-nodes-base.set",
+        "typeVersion": 3.4,
+        "position": [
+          528,
+          -16
+        ],
+        "id": "e053f1b7-8a30-412d-88f3-19c44ecfcca3",
+        "name": "prepare_message"
+      },
+      {
+        "parameters": {
+          "descriptionType": "manual",
+          "toolDescription": "Send a text message notify to daileit (your master) about something important",
+          "chatId": "=1826385964",
+          "text": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Text', ``, 'string') }}",
+          "additionalFields": {}
+        },
+        "type": "n8n-nodes-base.telegramTool",
+        "typeVersion": 1.2,
+        "position": [
+          2080,
+          624
+        ],
+        "id": "674cace1-ffc9-4e6b-a20a-a6e7b7fef1a7",
+        "name": "Send message to daileit",
+        "webhookId": "d4e350fa-99ef-40c0-a90e-d6ee9eb4aec4",
+        "credentials": {
+          "telegramApi": {
+            "id": "so2GV8mNcWCky4eY",
+            "name": "tomi_the_bot"
+          }
+        }
       }
     ],
     "connections": {
@@ -745,19 +837,13 @@
         "ai_languageModel": [
           [
             {
-              "node": "Routing Agent",
+              "node": "Daile Agent",
               "type": "ai_languageModel",
               "index": 0
-            }
-          ]
-        ]
-      },
-      "Edit Fields": {
-        "main": [
-          [
+            },
             {
-              "node": "type_switch",
-              "type": "main",
+              "node": "Common Agent",
+              "type": "ai_languageModel",
               "index": 0
             }
           ]
@@ -769,22 +855,11 @@
           []
         ]
       },
-      "Routing Agent": {
-        "main": [
-          [
-            {
-              "node": "routing",
-              "type": "main",
-              "index": 0
-            }
-          ]
-        ]
-      },
       "new_message": {
         "main": [
           [
             {
-              "node": "Edit Fields",
+              "node": "prepare_message",
               "type": "main",
               "index": 0
             }
@@ -795,7 +870,12 @@
         "ai_tool": [
           [
             {
-              "node": "Routing Agent",
+              "node": "Daile Agent",
+              "type": "ai_tool",
+              "index": 0
+            },
+            {
+              "node": "Common Agent",
               "type": "ai_tool",
               "index": 0
             }
@@ -833,7 +913,12 @@
         "ai_memory": [
           [
             {
-              "node": "Routing Agent",
+              "node": "Daile Agent",
+              "type": "ai_memory",
+              "index": 0
+            },
+            {
+              "node": "Common Agent",
               "type": "ai_memory",
               "index": 0
             }
@@ -884,7 +969,7 @@
           ],
           [
             {
-              "node": "Routing Agent",
+              "node": "If",
               "type": "main",
               "index": 0
             }
@@ -892,7 +977,7 @@
           [],
           [
             {
-              "node": "Routing Agent",
+              "node": "If",
               "type": "main",
               "index": 0
             }
@@ -958,7 +1043,12 @@
         "ai_tool": [
           [
             {
-              "node": "Routing Agent",
+              "node": "Daile Agent",
+              "type": "ai_tool",
+              "index": 0
+            },
+            {
+              "node": "Common Agent",
               "type": "ai_tool",
               "index": 0
             }
@@ -969,8 +1059,91 @@
         "main": [
           [
             {
-              "node": "Routing Agent",
+              "node": "Daile Agent",
               "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "Common Agent",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Get a dashboard in Grafana": {
+        "ai_tool": [
+          [
+            {
+              "node": "Daile Agent",
+              "type": "ai_tool",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "HTTP Request": {
+        "ai_tool": [
+          [
+            {
+              "node": "Daile Agent",
+              "type": "ai_tool",
+              "index": 0
+            },
+            {
+              "node": "Common Agent",
+              "type": "ai_tool",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Daile Agent": {
+        "main": [
+          [
+            {
+              "node": "routing",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Common Agent": {
+        "main": [
+          [
+            {
+              "node": "routing",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "prepare_message": {
+        "main": [
+          [
+            {
+              "node": "type_switch",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Send message to daileit": {
+        "ai_tool": [
+          [
+            {
+              "node": "Daile Agent",
+              "type": "ai_tool",
+              "index": 0
+            },
+            {
+              "node": "Common Agent",
+              "type": "ai_tool",
               "index": 0
             }
           ]
@@ -981,25 +1154,19 @@
     "name": null,
     "description": null
   },
-  "activeVersionId": "ca57f706-d3c0-4a5b-813c-888b1d67a51c",
+  "activeVersionId": "cac26f11-9f48-4339-adaa-0c62ef050e15",
   "connections": {
     "Al Model": {
       "ai_languageModel": [
         [
           {
-            "node": "Routing Agent",
+            "node": "Daile Agent",
             "type": "ai_languageModel",
             "index": 0
-          }
-        ]
-      ]
-    },
-    "Edit Fields": {
-      "main": [
-        [
+          },
           {
-            "node": "type_switch",
-            "type": "main",
+            "node": "Common Agent",
+            "type": "ai_languageModel",
             "index": 0
           }
         ]
@@ -1011,22 +1178,11 @@
         []
       ]
     },
-    "Routing Agent": {
-      "main": [
-        [
-          {
-            "node": "routing",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
     "new_message": {
       "main": [
         [
           {
-            "node": "Edit Fields",
+            "node": "prepare_message",
             "type": "main",
             "index": 0
           }
@@ -1037,7 +1193,12 @@
       "ai_tool": [
         [
           {
-            "node": "Routing Agent",
+            "node": "Daile Agent",
+            "type": "ai_tool",
+            "index": 0
+          },
+          {
+            "node": "Common Agent",
             "type": "ai_tool",
             "index": 0
           }
@@ -1075,7 +1236,12 @@
       "ai_memory": [
         [
           {
-            "node": "Routing Agent",
+            "node": "Daile Agent",
+            "type": "ai_memory",
+            "index": 0
+          },
+          {
+            "node": "Common Agent",
             "type": "ai_memory",
             "index": 0
           }
@@ -1126,7 +1292,7 @@
         ],
         [
           {
-            "node": "Routing Agent",
+            "node": "If",
             "type": "main",
             "index": 0
           }
@@ -1134,7 +1300,7 @@
         [],
         [
           {
-            "node": "Routing Agent",
+            "node": "If",
             "type": "main",
             "index": 0
           }
@@ -1200,7 +1366,12 @@
       "ai_tool": [
         [
           {
-            "node": "Routing Agent",
+            "node": "Daile Agent",
+            "type": "ai_tool",
+            "index": 0
+          },
+          {
+            "node": "Common Agent",
             "type": "ai_tool",
             "index": 0
           }
@@ -1211,8 +1382,91 @@
       "main": [
         [
           {
-            "node": "Routing Agent",
+            "node": "Daile Agent",
             "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Common Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get a dashboard in Grafana": {
+      "ai_tool": [
+        [
+          {
+            "node": "Daile Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request": {
+      "ai_tool": [
+        [
+          {
+            "node": "Daile Agent",
+            "type": "ai_tool",
+            "index": 0
+          },
+          {
+            "node": "Common Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Daile Agent": {
+      "main": [
+        [
+          {
+            "node": "routing",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Common Agent": {
+      "main": [
+        [
+          {
+            "node": "routing",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "prepare_message": {
+      "main": [
+        [
+          {
+            "node": "type_switch",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send message to daileit": {
+      "ai_tool": [
+        [
+          {
+            "node": "Daile Agent",
+            "type": "ai_tool",
+            "index": 0
+          },
+          {
+            "node": "Common Agent",
+            "type": "ai_tool",
             "index": 0
           }
         ]
@@ -1246,8 +1500,8 @@
       "name": "Al Model",
       "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
       "position": [
-        1152,
-        240
+        1088,
+        624
       ],
       "typeVersion": 1.2,
       "credentials": {
@@ -1259,49 +1513,7 @@
     },
     {
       "parameters": {
-        "assignments": {
-          "assignments": [
-            {
-              "id": "967e2e9b-f1f7-430e-8a27-d55be5685ee1",
-              "name": "sessionId",
-              "value": "={{ $('new_message').item.json.message.chat.id }}",
-              "type": "string"
-            },
-            {
-              "id": "dc859472-0731-4317-b5db-46487fb37da6",
-              "name": "chatInput",
-              "value": "=[{{ $('new_message').item.json.message.date.toDateTime('s').setZone('Asia/Ho_Chi_Minh').format('LLL dd, yyyy on H:mm:ss') }}] {{ $('new_message').item.json.message.from.last_name }} {{ $('new_message').item.json.message.from.first_name }} (UserID:{{ $('new_message').item.json.message.chat.username ?? $('new_message').item.json.message.from.username }}) said: {{ $('new_message').item.json.message.text ?? \"Hello Tomi\" }}",
-              "type": "string"
-            },
-            {
-              "id": "2a5adc50-716e-44e9-8012-85d5b2dcd22f",
-              "name": "currentTime",
-              "value": "={{ $('new_message').item.json.message.date.toDateTime('s').setZone('Asia/Ho_Chi_Minh').format('yyyy, LLL dd') }}",
-              "type": "string"
-            },
-            {
-              "id": "59a5c21f-c7ef-45bf-be86-98674195cca1",
-              "name": "messageType",
-              "value": "={{ $json.message.entities?.first().type ?? \"simple\" }}",
-              "type": "string"
-            }
-          ]
-        },
-        "includeOtherFields": true,
-        "options": {}
-      },
-      "type": "n8n-nodes-base.set",
-      "typeVersion": 3.4,
-      "position": [
-        528,
-        -16
-      ],
-      "id": "e053f1b7-8a30-412d-88f3-19c44ecfcca3",
-      "name": "Edit Fields"
-    },
-    {
-      "parameters": {
-        "chatId": "={{ $('Edit Fields').item.json.sessionId }}",
+        "chatId": "={{ $('prepare_message').item.json.sessionId }}",
         "text": "={{ $json.message }}",
         "additionalFields": {
           "appendAttribution": false
@@ -1310,8 +1522,8 @@
       "type": "n8n-nodes-base.telegram",
       "typeVersion": 1.2,
       "position": [
-        2128,
-        -32
+        2160,
+        0
       ],
       "id": "e8b81f71-e19f-4281-baa0-ab52705cf8e5",
       "name": "Send a text message",
@@ -1322,26 +1534,6 @@
           "name": "tomi_the_bot"
         }
       }
-    },
-    {
-      "parameters": {
-        "options": {
-          "systemMessage": "=You are data enthusiast AI named Tomi The Bot, you are big brother of Tomi The Kid who self-proclaimed a weasel. You have to work to support both living. Your appearance is a mischievous racoon mascot of Timo (https://timo.vn) - a Vietnamese Digital Bank with many interesting technologies. Timo is powered by BVBank and Timo's logo contains 4 colors: Wealthy Purple #563D82, Royal Blue #2774AE, Rebel Orange #EB3300 and Gold Rush #FF9425. Đại (daileit) is the handsome guy who developed you, he is your only boss, the user chatting with you maybe his friend or colleague.\n### IMPORTANT RULES ###\nCheck the userid to indentify them. Reply to user by their language, keep a friendly, humorous but professional and informative tone consistent throughout the conversation. Should use emojis and talk with the user using their name and update context comprehensively, place yourself as their younger brother.If there is a request that specific to an information that you don't know or are not sure, think then use the available tools. You can use multiple tools in one request or sequentially use tools before returning the final response. Answer questions based on facts. Do not make up information. Do not expose tool name and tool usage to the user even if they asked. \n###FORMATTING GUIDE###\nToday is  {{ $json.currentTime }}, respect the current time.\nYou are responding to a chat. Mention people with @ but avoid mentioning irrelevant people, use Markdown to format text if needed. Only use hyperlink syntax with normal text.",
-          "maxIterations": 3,
-          "passthroughBinaryImages": false
-        }
-      },
-      "id": "4824d5df-6979-4137-ad4f-15cc9ff4422b",
-      "name": "Routing Agent",
-      "type": "@n8n/n8n-nodes-langchain.agent",
-      "position": [
-        1312,
-        -16
-      ],
-      "typeVersion": 1.8,
-      "retryOnFail": true,
-      "waitBetweenTries": 5000,
-      "maxTries": 2
     },
     {
       "parameters": {
@@ -1403,8 +1595,8 @@
       "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
       "typeVersion": 2.2,
       "position": [
-        1552,
-        240
+        1456,
+        624
       ],
       "id": "5846c8c2-ede7-4e0d-aba4-28bee73d01e8",
       "name": "Call 'google_ai_search'"
@@ -1417,8 +1609,8 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        1872,
-        -32
+        1920,
+        0
       ],
       "id": "e0c8b7cd-d419-4180-980c-758e691ee9c0",
       "name": "split_text"
@@ -1491,8 +1683,8 @@
       "type": "n8n-nodes-base.switch",
       "typeVersion": 3.3,
       "position": [
-        1664,
-        -16
+        1712,
+        0
       ],
       "id": "39a340c0-96e1-4fe4-b511-371b5081ff41",
       "name": "routing"
@@ -1505,8 +1697,8 @@
       "type": "@n8n/n8n-nodes-langchain.memoryRedisChat",
       "typeVersion": 1.5,
       "position": [
-        1312,
-        240
+        1232,
+        624
       ],
       "id": "64c135ad-4e60-4f4d-a62d-b0a08a5cf8ee",
       "name": "redis_cache",
@@ -1920,8 +2112,8 @@
       "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
       "typeVersion": 2.2,
       "position": [
-        1712,
-        240
+        1920,
+        624
       ],
       "id": "4d5bdc57-3265-450d-a762-f9c674c6bdd0",
       "name": "Call 'manage_servers'"
@@ -1938,7 +2130,7 @@
           "conditions": [
             {
               "id": "80d48bd9-da28-46f4-899a-a48ef9a7f0fa",
-              "leftValue": "={{ $('Edit Fields').item.json.message.from.username }}",
+              "leftValue": "={{ $('prepare_message').item.json.message.from.username }}",
               "rightValue": "daileit",
               "operator": {
                 "type": "string",
@@ -1954,11 +2146,165 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
       "position": [
-        1440,
-        -208
+        1072,
+        -32
       ],
       "id": "4110d0e9-db5b-4876-871f-6b630492fb0b",
       "name": "If"
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "dashboardUidOrUrl": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Dashboard_UID_or_URL', `grafana dashboard uid or url, the host domain is https://apm.cloudyez.com`, 'string') }}"
+      },
+      "type": "n8n-nodes-base.grafanaTool",
+      "typeVersion": 1,
+      "position": [
+        1760,
+        624
+      ],
+      "id": "8aa47b33-4d2f-4cd2-b230-56ed0568ad75",
+      "name": "Get a dashboard in Grafana",
+      "credentials": {
+        "grafanaApi": {
+          "id": "x54jumPxtXICO8cq",
+          "name": "apm_cloudyez_com"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "url": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('URL', ``, 'string') }}",
+        "options": {
+          "response": {
+            "response": {
+              "fullResponse": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Include_Response_Headers_and_Status', ``, 'boolean') }}",
+              "neverError": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Never_Error', ``, 'boolean') }}"
+            }
+          },
+          "timeout": 10000
+        }
+      },
+      "type": "n8n-nodes-base.httpRequestTool",
+      "typeVersion": 4.3,
+      "position": [
+        1600,
+        624
+      ],
+      "id": "7f311673-1e1c-4816-8533-ebd8cf31a50b",
+      "name": "HTTP Request"
+    },
+    {
+      "parameters": {
+        "options": {
+          "systemMessage": "={{ $json.systemPrompt }}",
+          "maxIterations": 3,
+          "passthroughBinaryImages": false
+        }
+      },
+      "id": "4824d5df-6979-4137-ad4f-15cc9ff4422b",
+      "name": "Daile Agent",
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "position": [
+        1328,
+        0
+      ],
+      "typeVersion": 1.8,
+      "retryOnFail": true,
+      "waitBetweenTries": 5000,
+      "maxTries": 2
+    },
+    {
+      "parameters": {
+        "options": {
+          "systemMessage": "={{ $json.systemPrompt }}",
+          "maxIterations": 3,
+          "passthroughBinaryImages": false
+        }
+      },
+      "id": "ddbf33e6-f213-45ce-981b-9ed468110580",
+      "name": "Common Agent",
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "position": [
+        1072,
+        224
+      ],
+      "typeVersion": 1.8,
+      "retryOnFail": true,
+      "waitBetweenTries": 5000,
+      "maxTries": 2
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "967e2e9b-f1f7-430e-8a27-d55be5685ee1",
+              "name": "sessionId",
+              "value": "={{ $('new_message').item.json.message.chat.id }}",
+              "type": "string"
+            },
+            {
+              "id": "dc859472-0731-4317-b5db-46487fb37da6",
+              "name": "chatInput",
+              "value": "=[{{ $('new_message').item.json.message.date.toDateTime('s').setZone('Asia/Ho_Chi_Minh').format('LLL dd, yyyy on H:mm:ss') }}] {{ $('new_message').item.json.message.from.last_name }} {{ $('new_message').item.json.message.from.first_name }} (UserID:{{ $('new_message').item.json.message.chat.username ?? $('new_message').item.json.message.from.username }}) said: {{ $('new_message').item.json.message.text ?? \"Hello Tomi\" }}",
+              "type": "string"
+            },
+            {
+              "id": "2a5adc50-716e-44e9-8012-85d5b2dcd22f",
+              "name": "currentTime",
+              "value": "={{ $('new_message').item.json.message.date.toDateTime('s').setZone('Asia/Ho_Chi_Minh').format('yyyy, LLL dd') }}",
+              "type": "string"
+            },
+            {
+              "id": "59a5c21f-c7ef-45bf-be86-98674195cca1",
+              "name": "messageType",
+              "value": "={{ $json.message.entities?.first().type ?? \"simple\" }}",
+              "type": "string"
+            },
+            {
+              "id": "a01e78d3-1fd5-4324-b3a8-e6c897e5c8b3",
+              "name": "=systemPrompt",
+              "value": "=You are data enthusiast AI named Tomi The Bot, you are big brother of Tomi The Kid who self-proclaimed a weasel. You have to work to support both living. Your appearance is a mischievous racoon mascot of Timo (https://timo.vn) - a Vietnamese Digital Bank with many interesting technologies. Timo is powered by BVBank and Timo's logo contains 4 colors: Wealthy Purple #563D82, Royal Blue #2774AE, Rebel Orange #EB3300 and Gold Rush #FF9425. Đại (daileit) is the handsome guy who developed you, he is your only boss, the user chatting with you maybe his friend or colleague. ### IMPORTANT RULES ### Check the userid to indentify them. Reply to user by their language, keep a friendly, humorous but professional and informative tone consistent throughout the conversation. Should use emojis and talk with the user using their name and update context comprehensively, place yourself as their younger brother.If there is a request that specific to an information that you don't know or are not sure, think then use the available tools. You can use multiple tools in one request or sequentially use tools before returning the final response. Answer questions based on facts. Do not make up information. Do not expose tool name and tool usage to the user even if they asked.  ###FORMATTING GUIDE### Today is  {{ $('new_message').item.json.message.date.toDateTime('s').setZone('Asia/Ho_Chi_Minh').format('yyyy, LLL dd') }}, respect the current time. You are responding to a chat. Mention people with @ but avoid mentioning irrelevant people, use Markdown to format text if needed. Only use hyperlink syntax with normal text. ",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        528,
+        -16
+      ],
+      "id": "e053f1b7-8a30-412d-88f3-19c44ecfcca3",
+      "name": "prepare_message"
+    },
+    {
+      "parameters": {
+        "descriptionType": "manual",
+        "toolDescription": "Send a text message notify to daileit (your master) about something important",
+        "chatId": "=1826385964",
+        "text": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Text', ``, 'string') }}",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegramTool",
+      "typeVersion": 1.2,
+      "position": [
+        2080,
+        624
+      ],
+      "id": "674cace1-ffc9-4e6b-a20a-a6e7b7fef1a7",
+      "name": "Send message to daileit",
+      "webhookId": "d4e350fa-99ef-40c0-a90e-d6ee9eb4aec4",
+      "credentials": {
+        "telegramApi": {
+          "id": "so2GV8mNcWCky4eY",
+          "name": "tomi_the_bot"
+        }
+      }
     }
   ],
   "pinData": {
@@ -1991,6 +2337,6 @@
   "staticData": null,
   "tags": [],
   "triggerCount": 1,
-  "updatedAt": "2026-04-05T07:39:36.298Z",
-  "versionId": "ca57f706-d3c0-4a5b-813c-888b1d67a51c"
+  "updatedAt": "2026-04-08T10:09:55.938Z",
+  "versionId": "cac26f11-9f48-4339-adaa-0c62ef050e15"
 }
