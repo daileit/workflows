@@ -1,9 +1,9 @@
 {
   "active": true,
   "activeVersion": {
-    "updatedAt": "2026-04-08T10:09:55.940Z",
-    "createdAt": "2026-04-08T10:09:55.940Z",
-    "versionId": "cac26f11-9f48-4339-adaa-0c62ef050e15",
+    "updatedAt": "2026-04-08T10:37:58.803Z",
+    "createdAt": "2026-04-08T10:37:58.803Z",
+    "versionId": "d0b57e83-7824-4af6-ade5-c9305f8fda00",
     "workflowId": "DmW21iHj62tM9qek",
     "nodes": [
       {
@@ -810,10 +810,12 @@
       {
         "parameters": {
           "descriptionType": "manual",
-          "toolDescription": "Send a text message notify to daileit (your master) about something important",
+          "toolDescription": "Send a text message notify to daileit (your master) about something important or someone is abusing you.",
           "chatId": "=1826385964",
           "text": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Text', ``, 'string') }}",
-          "additionalFields": {}
+          "additionalFields": {
+            "appendAttribution": false
+          }
         },
         "type": "n8n-nodes-base.telegramTool",
         "typeVersion": 1.2,
@@ -1154,7 +1156,7 @@
     "name": null,
     "description": null
   },
-  "activeVersionId": "cac26f11-9f48-4339-adaa-0c62ef050e15",
+  "activeVersionId": "d0b57e83-7824-4af6-ade5-c9305f8fda00",
   "connections": {
     "Al Model": {
       "ai_languageModel": [
@@ -2285,10 +2287,12 @@
     {
       "parameters": {
         "descriptionType": "manual",
-        "toolDescription": "Send a text message notify to daileit (your master) about something important",
+        "toolDescription": "Send a text message notify to daileit (your master) about something important or someone is abusing you.",
         "chatId": "=1826385964",
         "text": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Text', ``, 'string') }}",
-        "additionalFields": {}
+        "additionalFields": {
+          "appendAttribution": false
+        }
       },
       "type": "n8n-nodes-base.telegramTool",
       "typeVersion": 1.2,
@@ -2337,6 +2341,6 @@
   "staticData": null,
   "tags": [],
   "triggerCount": 1,
-  "updatedAt": "2026-04-08T10:09:55.938Z",
-  "versionId": "cac26f11-9f48-4339-adaa-0c62ef050e15"
+  "updatedAt": "2026-04-08T10:37:58.801Z",
+  "versionId": "d0b57e83-7824-4af6-ade5-c9305f8fda00"
 }
