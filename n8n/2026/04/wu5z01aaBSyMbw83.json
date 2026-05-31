@@ -1,9 +1,9 @@
 {
   "active": true,
   "activeVersion": {
-    "updatedAt": "2026-05-31T09:04:09.100Z",
-    "createdAt": "2026-05-31T09:03:54.372Z",
-    "versionId": "f312a606-789c-4f3c-a416-7ea572e8fcdf",
+    "updatedAt": "2026-05-31T09:06:37.553Z",
+    "createdAt": "2026-05-31T09:06:21.782Z",
+    "versionId": "ae7f62ea-5e9e-44df-bc70-8bf1d1b7b5ec",
     "workflowId": "wu5z01aaBSyMbw83",
     "nodes": [
       {
@@ -261,7 +261,7 @@
           },
           "filePath": "={{ $('Config').item.json.repo_path }}{{ $json.subPath }}{{$('Execute Workflow Trigger').first().json.id}}.json",
           "fileContent": "={{$('isDiffOrNew').item.json[\"n8n_data_stringy\"]}}",
-          "commitMessage": "={{$('Execute Workflow Trigger').first().json.isArchived === true ? \"archived\" : \"chore\" }}({{$('Execute Workflow Trigger').first().json.name}}): {{ $('Config').first().workflow_meta }}{{$json.github_status}} {{$('Execute Workflow Trigger').first().json.active === true ? \"active workflow\" : \"workflow\" }}"
+          "commitMessage": "={{$('Execute Workflow Trigger').first().json.isArchived === true ? \"archived\" : \"chore\" }}({{$('Execute Workflow Trigger').first().json.name}}): {{ $('Config').first().json.workflow_meta }}{{$json.github_status}} {{$('Execute Workflow Trigger').first().json.active === true ? \"active workflow\" : \"workflow\" }}"
         },
         "id": "0c7ba03a-63c6-4c88-85ea-d2acdceb8423",
         "name": "Edit existing file",
@@ -1116,11 +1116,11 @@
       }
     },
     "authors": "Dai Le",
-    "name": "v1.0.13",
+    "name": "v1.1.0",
     "description": "",
     "autosaved": true
   },
-  "activeVersionId": "f312a606-789c-4f3c-a416-7ea572e8fcdf",
+  "activeVersionId": "ae7f62ea-5e9e-44df-bc70-8bf1d1b7b5ec",
   "connections": {
     "n8n": {
       "main": [
@@ -1738,7 +1738,7 @@
         },
         "filePath": "={{ $('Config').item.json.repo_path }}{{ $json.subPath }}{{$('Execute Workflow Trigger').first().json.id}}.json",
         "fileContent": "={{$('isDiffOrNew').item.json[\"n8n_data_stringy\"]}}",
-        "commitMessage": "={{$('Execute Workflow Trigger').first().json.isArchived === true ? \"archived\" : \"chore\" }}({{$('Execute Workflow Trigger').first().json.name}}): {{ $('Config').first().workflow_meta }}{{$json.github_status}} {{$('Execute Workflow Trigger').first().json.active === true ? \"active workflow\" : \"workflow\" }}"
+        "commitMessage": "={{$('Execute Workflow Trigger').first().json.isArchived === true ? \"archived\" : \"chore\" }}({{$('Execute Workflow Trigger').first().json.name}}): {{ $('Config').first().json.workflow_meta }}{{$json.github_status}} {{$('Execute Workflow Trigger').first().json.active === true ? \"active workflow\" : \"workflow\" }}"
       },
       "id": "0c7ba03a-63c6-4c88-85ea-d2acdceb8423",
       "name": "Edit existing file",
@@ -2262,7 +2262,7 @@
   },
   "tags": [],
   "triggerCount": 1,
-  "updatedAt": "2026-05-31T09:03:54.370Z",
-  "versionId": "f312a606-789c-4f3c-a416-7ea572e8fcdf",
-  "workflow_meta": "[v1.0.13] "
+  "updatedAt": "2026-05-31T09:06:21.781Z",
+  "versionId": "ae7f62ea-5e9e-44df-bc70-8bf1d1b7b5ec",
+  "workflow_meta": "[v1.1.0] "
 }
