@@ -1896,6 +1896,12 @@
               "name": "repo_path",
               "type": "string",
               "value": "=n8n/"
+            },
+            {
+              "id": "f7e43e61-6297-47a2-a516-315454c2c28f",
+              "name": "workflow_meta",
+              "value": "={{ $json.activeVersion?.name ? `[${$json.activeVersion.name}]` : \"\" }}",
+              "type": "string"
             }
           ]
         },
@@ -2250,6 +2256,7 @@
   },
   "tags": [],
   "triggerCount": 1,
-  "updatedAt": "2026-05-31T08:40:21.286Z",
-  "versionId": "41afe030-f5f7-4f43-a29e-f7c2450f44d6"
+  "updatedAt": "2026-05-31T08:59:23.668Z",
+  "versionId": "86fd6934-a74b-404d-8ad6-f20c22e26284",
+  "workflow_meta": "[v1.0.1]"
 }
