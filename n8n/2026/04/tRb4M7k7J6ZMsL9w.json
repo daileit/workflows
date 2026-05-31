@@ -1,0 +1,127 @@
+{
+  "active": false,
+  "activeVersion": null,
+  "activeVersionId": null,
+  "connections": {
+    "When clicking ‘Execute workflow’": {
+      "main": [
+        [
+          {
+            "node": "Code in Python (Beta)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Groq Models": {
+      "main": [
+        [
+          {
+            "node": "Get Timo Models",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in Python (Beta)": {
+      "main": [
+        [
+          {
+            "node": "Get Groq Models",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2026-04-21T18:39:18.965Z",
+  "id": "tRb4M7k7J6ZMsL9w",
+  "isArchived": false,
+  "meta": null,
+  "name": "process_email",
+  "nodes": [
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -464,
+        32
+      ],
+      "id": "d24ced12-f0e4-451e-a27b-b5c3b99bc15a",
+      "name": "When clicking ‘Execute workflow’"
+    },
+    {
+      "parameters": {
+        "url": "https://api.groq.com/openai/v1/models",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "openAiApi",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        0,
+        0
+      ],
+      "id": "5fc61427-e7df-4643-8e3f-3ab4339d2988",
+      "name": "Get Groq Models"
+    },
+    {
+      "parameters": {
+        "url": "http://timo-llm-inference.timo-llm.svc.cluster.local/api/v1/models",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "openAiApi",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        224,
+        0
+      ],
+      "id": "dd2c9f04-76ad-491e-9a97-f35e3012f645",
+      "name": "Get Timo Models"
+    },
+    {
+      "parameters": {
+        "language": "python",
+        "pythonCode": "import os\nresult =\"\"\ntry:\n    with open('/home/node/.n8n/config', 'r') as file:\n        content = file.read()  # Read the entire content of the file\n        result = content\nexcept FileNotFoundError as ex:\n    result = f\"Error: The file 'my_file.txt' was not found. {ex}\"\nexcept Exception as e:\n    result = f\"An error occurred: {e}\"\nreturn {'data': f'{result}', 'env': f'{os.environ}' }"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -256,
+        32
+      ],
+      "id": "fff57792-4ef4-4a26-bfce-f65e6a5d6fec",
+      "name": "Code in Python (Beta)"
+    }
+  ],
+  "pinData": {},
+  "repo_name": "workflows",
+  "repo_owner": "daileit",
+  "repo_path": "n8n/",
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "shared": [
+    {
+      "updatedAt": "2026-04-21T18:39:18.965Z",
+      "createdAt": "2026-04-21T18:39:18.965Z",
+      "role": "workflow:owner",
+      "workflowId": "tRb4M7k7J6ZMsL9w",
+      "projectId": "Ewpdqr0Y4bH3sf2c"
+    }
+  ],
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 0,
+  "updatedAt": "2026-04-21T18:39:18.965Z",
+  "versionId": "042a1765-eb53-4d81-8ef7-b4d4f5ebcf70",
+  "workflow_meta": ""
+}
