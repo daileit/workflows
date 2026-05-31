@@ -1,0 +1,81 @@
+{
+  "active": false,
+  "activeVersion": null,
+  "activeVersionId": null,
+  "connections": {
+    "When clicking ‘Execute workflow’": {
+      "main": [
+        [
+          {
+            "node": "Execute a command",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2026-05-31T09:21:17.383Z",
+  "id": "tTseWbXguKSzzJAX",
+  "isArchived": false,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "name": "test_workflow",
+  "nodes": [
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "618a0087-690c-4a46-b9b3-937c7fc41677",
+      "name": "When clicking ‘Execute workflow’"
+    },
+    {
+      "parameters": {
+        "authentication": "privateKey",
+        "command": "sudo cat /etc/hostname"
+      },
+      "type": "n8n-nodes-base.ssh",
+      "typeVersion": 1,
+      "position": [
+        208,
+        0
+      ],
+      "id": "e261431b-d008-469c-8145-77af5cfecc76",
+      "name": "Execute a command",
+      "credentials": {
+        "sshPrivateKey": {
+          "id": "adzdIpORhPd2ilgl",
+          "name": "vpsapm_sealdesign_net"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "repo_name": "workflows",
+  "repo_owner": "daileit",
+  "repo_path": "n8n/",
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "shared": [
+    {
+      "updatedAt": "2026-05-31T09:21:17.383Z",
+      "createdAt": "2026-05-31T09:21:17.383Z",
+      "role": "workflow:owner",
+      "workflowId": "tTseWbXguKSzzJAX",
+      "projectId": "Ewpdqr0Y4bH3sf2c"
+    }
+  ],
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 0,
+  "updatedAt": "2026-05-31T09:35:49.537Z",
+  "versionId": "693a0a45-4641-4352-8efa-057727baa6f4",
+  "workflow_meta": ""
+}
