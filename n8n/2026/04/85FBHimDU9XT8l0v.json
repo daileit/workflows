@@ -1,0 +1,692 @@
+{
+  "active": false,
+  "activeVersion": null,
+  "activeVersionId": null,
+  "connections": {
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "get_source",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch": {
+      "main": [
+        [
+          {
+            "node": "prepare",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "list_files",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "get_source": {
+      "main": [
+        [
+          {
+            "node": "Switch",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "split_list": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "list_files": {
+      "main": [
+        [
+          {
+            "node": "split_list",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Split Out",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Split Out": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Loop Over Items": {
+      "main": [
+        [
+          {
+            "node": "merge",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "sync",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "sync": {
+      "main": [
+        [
+          {
+            "node": "if_synced",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "prepare": {
+      "main": [
+        [
+          {
+            "node": "check_retentions",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "check_retentions": {
+      "main": [
+        [
+          {
+            "node": "conditions",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "conditions": {
+      "main": [
+        [
+          {
+            "node": "delete_retentions",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "merge": {
+      "main": [
+        [
+          {
+            "node": "message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "if_synced": {
+      "main": [
+        [
+          {
+            "node": "delete_source",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "delete_source": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "message": {
+      "main": [
+        [
+          {
+            "node": "Notify Success",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2026-04-21T18:31:43.843Z",
+  "id": "85FBHimDU9XT8l0v",
+  "isArchived": false,
+  "meta": null,
+  "name": "sync_backup_files",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "triggerAtHour": 5
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.3,
+      "position": [
+        -1408,
+        288
+      ],
+      "id": "9751c167-b263-4a54-8551-d6c0f46e19e9",
+      "name": "Schedule Trigger"
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "8e1824d3-3c8c-4374-b7ab-365c9c191040",
+                    "leftValue": "={{ $json.destination }}",
+                    "rightValue": "",
+                    "operator": {
+                      "type": "string",
+                      "operation": "exists",
+                      "singleValue": true
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "apm"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.server }}",
+                    "rightValue": "tino1",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "1a2aba8a-30f4-4c80-b5e1-70ff32169522"
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "tino1"
+            }
+          ]
+        },
+        "options": {
+          "allMatchingOutputs": true
+        }
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.3,
+      "position": [
+        -992,
+        288
+      ],
+      "id": "6ef4e950-cffd-4a9c-adcc-61305ee57b5b",
+      "name": "Switch"
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "dataTableId": {
+          "__rl": true,
+          "value": "PjL6uPDTw477YFzH",
+          "mode": "list",
+          "cachedResultName": "website_backup_locations",
+          "cachedResultUrl": "/projects/TgT7sbikPaxzUZlq/datatables/PjL6uPDTw477YFzH"
+        },
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "location",
+              "condition": "isNotEmpty"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1,
+      "position": [
+        -1216,
+        288
+      ],
+      "id": "447c40bd-bdb2-47f1-b253-c341d85f6fa9",
+      "name": "get_source"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "3472a952-603e-4a7a-b7f9-d28b827da922",
+              "name": "file",
+              "value": "={{ $json.stdout.split('\\n') }}",
+              "type": "array"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -560,
+        304
+      ],
+      "id": "71ad85ac-f8f8-4692-a057-34b9c1dabf4e",
+      "name": "split_list"
+    },
+    {
+      "parameters": {
+        "authentication": "privateKey",
+        "command": "=sudo find {{ $now.format('yyyy-MM') }}* -type f -name \"*user*tar.gz\"\n",
+        "cwd": "={{ $json.location }}"
+      },
+      "type": "n8n-nodes-base.ssh",
+      "typeVersion": 1,
+      "position": [
+        -752,
+        304
+      ],
+      "id": "df6d1f29-d66d-436c-9790-b821f9734be0",
+      "name": "list_files"
+    },
+    {
+      "parameters": {
+        "fieldToSplitOut": "file",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitOut",
+      "typeVersion": 1,
+      "position": [
+        -192,
+        176
+      ],
+      "id": "6763cc24-41df-48b0-89a7-5ccc4ea5076e",
+      "name": "Split Out"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "80ada1c7-31cf-45b6-a519-37f1faf3860a",
+              "leftValue": "={{ $json.file.length }}",
+              "rightValue": 0,
+              "operator": {
+                "type": "number",
+                "operation": "gt"
+              }
+            },
+            {
+              "id": "4b8728d0-0406-4e68-a7a1-9759774ea3a5",
+              "leftValue": "={{ $('list_files').item.json.code }}",
+              "rightValue": 0,
+              "operator": {
+                "type": "number",
+                "operation": "equals"
+              }
+            },
+            {
+              "id": "2a0f5e14-dbb1-41bf-8454-8762b05d5331",
+              "leftValue": "={{ $('list_files').item.json.stdout  }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "notEmpty",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -368,
+        304
+      ],
+      "id": "f8e789d1-6938-43b5-bf39-3fab4b8331a0",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "authentication": "privateKey",
+        "command": "=sudo mkdir -p {{ $('get_source').item.json.destination_folder }}/{{ $json.server }}/{{ $('Schedule Trigger').item.json.timestamp.toDateTime().format('yyyy-MM') }} && sudo chown {{ $('get_source').item.json.user }}:root {{ $('get_source').item.json.destination_folder }}/{{ $json.server }}/{{ $('Schedule Trigger').item.json.timestamp.toDateTime().format('yyyy-MM') }}"
+      },
+      "type": "n8n-nodes-base.ssh",
+      "typeVersion": 1,
+      "position": [
+        -752,
+        48
+      ],
+      "id": "d77a93dd-d6a2-4ea3-bf42-ad03b7577584",
+      "name": "prepare"
+    },
+    {
+      "parameters": {
+        "authentication": "privateKey",
+        "command": "=rsync -avz -e 'ssh -p 22332' ./{{ $json.file }} vpstino1@apm.cloudyez.com:{{ $('get_source').item.json.destination_folder }}/{{ $('get_source').item.json.server }}/{{ $('Schedule Trigger').item.json.timestamp.toDateTime().format('yyyy-MM')  }}/",
+        "cwd": "={{ $('get_source').item.json.location }}"
+      },
+      "type": "n8n-nodes-base.ssh",
+      "typeVersion": 1,
+      "position": [
+        208,
+        288
+      ],
+      "id": "ffdc2a62-1308-401c-944e-8a82f3bedc2c",
+      "name": "sync",
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        0,
+        176
+      ],
+      "id": "d9c36577-7f08-4910-9c3a-b726741ccbf8",
+      "name": "Loop Over Items"
+    },
+    {
+      "parameters": {
+        "chatId": "-870986299",
+        "text": "={{ $json.content ?? $json.message.content }}",
+        "additionalFields": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        624,
+        64
+      ],
+      "id": "4069bb8b-a66d-43f7-a842-81b46cd001e8",
+      "name": "Notify Success",
+      "webhookId": "868eda86-564a-45b2-9814-7d86067d9b4f",
+      "alwaysOutputData": false,
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "authentication": "privateKey",
+        "command": "=sudo ls -t1d [0-9]* | wc -l",
+        "cwd": "={{ $('get_source').item.json.destination_folder }}/{{ $('get_source').item.json.server }}"
+      },
+      "type": "n8n-nodes-base.ssh",
+      "typeVersion": 1,
+      "position": [
+        -560,
+        48
+      ],
+      "id": "9c402e38-491e-41e9-ac4a-436602e4be8d",
+      "name": "check_retentions"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "a86c366e-ba31-4a36-89e5-5544701c2bb7",
+              "leftValue": "={{ $json.stdout }}",
+              "rightValue": 6,
+              "operator": {
+                "type": "number",
+                "operation": "gte"
+              }
+            },
+            {
+              "id": "9145868a-c035-4ba6-ae89-2c33726bd639",
+              "leftValue": "={{ $json.code }}",
+              "rightValue": 0,
+              "operator": {
+                "type": "number",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "looseTypeValidation": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -368,
+        48
+      ],
+      "id": "5e38679e-8e35-48c2-911f-daadd5ca02a4",
+      "name": "conditions"
+    },
+    {
+      "parameters": {
+        "aggregate": "aggregateAllItemData",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.aggregate",
+      "typeVersion": 1,
+      "position": [
+        208,
+        64
+      ],
+      "id": "acfa51f1-f937-4579-9886-3c82f23efc2b",
+      "name": "merge"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "79f07df4-4ea1-4c2c-8c95-cf0bdca79079",
+              "leftValue": "={{ $json.code }}",
+              "rightValue": 0,
+              "operator": {
+                "type": "number",
+                "operation": "equals"
+              }
+            },
+            {
+              "id": "aa3d4312-cd9b-4a24-ad77-fcfed567fc7a",
+              "leftValue": "={{ $json.stderr }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "empty",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "looseTypeValidation": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        416,
+        288
+      ],
+      "id": "79451ea3-972e-4882-a6eb-b493108126bd",
+      "name": "if_synced"
+    },
+    {
+      "parameters": {
+        "authentication": "privateKey",
+        "command": "=rm -f ./{{ $('Loop Over Items').item.json.file }} && echo \"{{ $('Loop Over Items').item.json.file }}:{{ $json.stdout.split(\" \")[15] }}\"",
+        "cwd": "={{ $('get_source').item.json.location }}"
+      },
+      "type": "n8n-nodes-base.ssh",
+      "typeVersion": 1,
+      "position": [
+        624,
+        288
+      ],
+      "id": "321f623c-8203-47a9-8226-b16f91a71d63",
+      "name": "delete_source"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "a97febce-a8a1-4d8f-bb77-030715e97f00",
+              "name": "content",
+              "value": "=💾 * Server Backup Sync has completed: {{ $('merge').first().json.data.filter(item => item.code == 0).length }}/{{ $('merge').first().json.data.length }} websites have been synced.*\n✅ Success ({{ $('merge').first().json.data.filter(item => item.code == 0).length }}): {{ $('merge').first().json.data.filter(item => item.code == 0 ).map(item => `\\n • *${item.stdout.trim().split('.')[2]}* (${item.stdout.trim().split(':')[1]} bytes)`) }}\n{{ $('merge').first().json.data.filter(item => item.code != 0).length != 0 ? \"❌ Failed: \" : \"\" }} {{ $('merge').first().json.data.filter(item => item.code != 0 ).map(item => `\\n • ${item.stderr.trim()}`) }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        416,
+        64
+      ],
+      "id": "471574a2-2ef8-4e6b-a166-850fe3a25dfd",
+      "name": "message"
+    },
+    {
+      "parameters": {
+        "authentication": "privateKey",
+        "command": "sudo ls -t1d [0-9][0-9][0-9][0-9]-[0-9][0-9] | tail -n +6 | xargs echo",
+        "cwd": "={{ $('get_source').item.json.destination_folder }}/{{ $('get_source').item.json.server }}"
+      },
+      "type": "n8n-nodes-base.ssh",
+      "typeVersion": 1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "87cf7fa8-0120-4a9e-9eba-f6080eafdfc0",
+      "name": "delete_retentions"
+    }
+  ],
+  "pinData": {},
+  "repo_name": "workflows",
+  "repo_owner": "daileit",
+  "repo_path": "n8n/",
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "shared": [
+    {
+      "updatedAt": "2026-04-21T18:31:43.843Z",
+      "createdAt": "2026-04-21T18:31:43.843Z",
+      "role": "workflow:owner",
+      "workflowId": "85FBHimDU9XT8l0v",
+      "projectId": "Ewpdqr0Y4bH3sf2c"
+    }
+  ],
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 0,
+  "updatedAt": "2026-04-21T18:31:43.843Z",
+  "versionId": "28b9ca84-ccda-4524-abc3-0675bfef9701",
+  "workflow_meta": ""
+}
