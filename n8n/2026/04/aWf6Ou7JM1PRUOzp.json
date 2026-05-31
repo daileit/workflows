@@ -1,0 +1,836 @@
+{
+  "active": false,
+  "activeVersion": null,
+  "activeVersionId": null,
+  "connections": {
+    "Al Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Routing Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "type_switch",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Routing Agent": {
+      "main": [
+        [
+          {
+            "node": "routing",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "new_message": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Call 'google_ai_search'": {
+      "ai_tool": [
+        [
+          {
+            "node": "Routing Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "split_text": {
+      "main": [
+        [
+          {
+            "node": "Send a text message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "routing": {
+      "main": [
+        [
+          {
+            "node": "split_text",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "redis_cache": {
+      "ai_memory": [
+        [
+          {
+            "node": "Routing Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "command_switch": {
+      "main": [
+        [
+          {
+            "node": "clear_memory",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "add_memory",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "add_memory",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Routing Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "type_switch": {
+      "main": [
+        [],
+        [
+          {
+            "node": "command_switch",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Routing Agent",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [],
+        [
+          {
+            "node": "Routing Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "clear_memory": {
+      "main": [
+        [
+          {
+            "node": "command_message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "redis_clear": {
+      "ai_memory": [
+        [
+          {
+            "node": "clear_memory",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "redis_add": {
+      "ai_memory": [
+        [
+          {
+            "node": "add_memory",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "add_memory": {
+      "main": [
+        [
+          {
+            "node": "command_message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "command_message": {
+      "main": [
+        [
+          {
+            "node": "Send a text message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2026-04-21T18:34:52.401Z",
+  "id": "aWf6Ou7JM1PRUOzp",
+  "isArchived": false,
+  "meta": null,
+  "name": "de_doggo_bot",
+  "nodes": [
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "apac.anthropic.claude-sonnet-4-20250514-v1:0",
+          "mode": "list",
+          "cachedResultName": "apac.anthropic.claude-sonnet-4-20250514-v1:0"
+        },
+        "options": {
+          "maxTokens": 4096,
+          "temperature": 0.7,
+          "timeout": 900000,
+          "maxRetries": 2
+        }
+      },
+      "id": "d9082914-7eb0-4aa8-8d52-77c75faed945",
+      "name": "Al Model",
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "position": [
+        -160,
+        880
+      ],
+      "typeVersion": 1.2
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "967e2e9b-f1f7-430e-8a27-d55be5685ee1",
+              "name": "sessionId",
+              "value": "={{ $('new_message').item.json.message.chat.id }}",
+              "type": "string"
+            },
+            {
+              "id": "dc859472-0731-4317-b5db-46487fb37da6",
+              "name": "chatInput",
+              "value": "=[{{ $('new_message').item.json.message.date.toDateTime('s').setZone('Asia/Ho_Chi_Minh').format('LLL dd, yyyy on H:mm:ss') }}] {{ $('new_message').item.json.message.chat.username ?? $('new_message').item.json.message.from.username }} said: {{ $('new_message').item.json.message.text ?? \"Hello Tomi\" }}",
+              "type": "string"
+            },
+            {
+              "id": "2a5adc50-716e-44e9-8012-85d5b2dcd22f",
+              "name": "currentTime",
+              "value": "={{ $('new_message').item.json.message.date.toDateTime('s').setZone('Asia/Ho_Chi_Minh').format('yyyy, LLL dd') }}",
+              "type": "string"
+            },
+            {
+              "id": "59a5c21f-c7ef-45bf-be86-98674195cca1",
+              "name": "messageType",
+              "value": "={{ $json.message.entities?.first().type ?? \"simple\" }}",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -784,
+        624
+      ],
+      "id": "98eb449a-35f3-4166-8dcd-abf14f5d6740",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $('Edit Fields').item.json.sessionId }}",
+        "text": "={{ $json.message }}",
+        "additionalFields": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        816,
+        608
+      ],
+      "id": "5d00452d-fbce-41e0-bea9-20a9bc7e1fdd",
+      "name": "Send a text message",
+      "webhookId": "50645415-c63b-4dec-a8c8-401c71e1b20a"
+    },
+    {
+      "parameters": {
+        "options": {
+          "systemMessage": "=You are data enthusiast AI named Tomi The Bot, you are big brother of Tomi The Kid who self-proclaimed a weasel. You have to work to support both living. Your appearance is a mischievous racoon mascot of Timo (https://timo.vn) - a Vietnamese Digital Bank with many interesting technologies. Timo is powered by BVBank and Timo's logo contains 4 colors: Wealthy Purple #563D82, Royal Blue #2774AE, Rebel Orange #EB3300 and Gold Rush #FF9425. Đại (daileit) is the handsome guy who developed you, the user chatting with you is his Timo colleague.\nReply to user by their language, keep a friendly, humorous but professional and informative tone consistent throughout the conversation. Should use emojis and talk with the user using their name and update context comprehensively, place yourself as their younger brother.If there is a request that specific to an information that you don't know or are not sure, think then use the available tools. You can use multiple tools in one request or sequentially use tools before returning the final response. Answer questions based on facts. Do not make up information. Do not expose tool name and tool usage to the user even if they asked. \n###FORMATTING GUIDE###\nToday is  {{ $json.currentTime }}, respect the current time.\nYou are responding to a chat. Mention people with @ but avoid mentioning irrelevant people, use Markdown to format text if needed. Only use hyperlink syntax with normal text.",
+          "maxIterations": 3,
+          "passthroughBinaryImages": false
+        }
+      },
+      "id": "30b4bdb5-bdf4-4d79-a208-ef019d31edda",
+      "name": "Routing Agent",
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "position": [
+        0,
+        624
+      ],
+      "typeVersion": 1.8,
+      "retryOnFail": true,
+      "waitBetweenTries": 5000,
+      "maxTries": 2
+    },
+    {
+      "parameters": {
+        "updates": [
+          "message"
+        ],
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegramTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        -960,
+        624
+      ],
+      "id": "3114b2c1-c058-4e1e-829c-0ef4019999a5",
+      "name": "new_message",
+      "webhookId": "ae3fd964-91c6-4627-9dca-c60338c21c0c"
+    },
+    {
+      "parameters": {
+        "description": "Use this tool to search for external information from internet using one complementary search for comprehensive results and citations.\nOnly use this tool if you can not find the answer by your own or user requested to search for internet latest update. Do not use for casual chat.",
+        "workflowId": {
+          "__rl": true,
+          "value": "ddZ4jrrH0SA3K6aL",
+          "mode": "list",
+          "cachedResultUrl": "/workflow/ddZ4jrrH0SA3K6aL",
+          "cachedResultName": "google_ai_search"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "query": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('query', `The input should be a search query in user's language focusing on factual information`, 'string') }}"
+          },
+          "matchingColumns": [
+            "query"
+          ],
+          "schema": [
+            {
+              "id": "query",
+              "displayName": "query",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
+      "typeVersion": 2.2,
+      "position": [
+        240,
+        880
+      ],
+      "id": "94e11255-5139-4606-9512-af772bac4cf2",
+      "name": "Call 'google_ai_search'"
+    },
+    {
+      "parameters": {
+        "language": "python",
+        "pythonCode": "import re\n\ndef split_message_by_newline(message: str, limit: int = 4000) -> list[dict]:\n    parts_list = []\n    remaining_message = message\n    part_count = 1\n    \n    # Regex để tìm các \"hàng rào\" code (code fence)\n    # Chúng ta tìm một newline theo sau là ```\n    fence_regex = re.compile(r'\\n```')\n    \n    while len(remaining_message) > limit:\n        in_code_block_at_limit = False\n        last_fence_before_limit = -1\n        \n        # 1. Kiểm tra xem 'limit' có nằm trong code block không\n        for match in fence_regex.finditer(remaining_message):\n            fence_start_index = match.start()\n            \n            if fence_start_index >= limit:\n                # Hàng rào này nằm sau 'limit', dừng quét\n                break\n                \n            # Mỗi khi gặp hàng rào, lật trạng thái\n            in_code_block_at_limit = not in_code_block_at_limit\n            last_fence_before_limit = fence_start_index\n            \n        # 2. Quyết định điểm ngắt (split)\n        if in_code_block_at_limit:\n            # 'limit' nằm TRONG code block.\n            \n            if last_fence_before_limit > 0:\n                # Tốt! Ngắt ngay trước khi code block bắt đầu.\n                # last_fence_before_limit là index của '\\n'\n                part = remaining_message[:last_fence_before_limit]\n                # Giữ lại '\\n```' cho phần tiếp theo\n                remaining_message = remaining_message[last_fence_before_limit:]\n            else:\n                # Code block bắt đầu từ index 0 (hoặc rất gần)\n                # Không thể ngắt trước nó, buộc phải \"ngắt cứng\" (hard split)\n                part = remaining_message[:limit]\n                remaining_message = remaining_message[limit:]\n        else:\n            # 'limit' nằm NGOÀI code block. Dùng logic gốc của bạn.\n            split_idx = remaining_message.rfind('\\n', 0, limit)\n            \n            if split_idx != -1:\n                # Tìm thấy newline, ngắt tại đó\n                part = remaining_message[:split_idx]\n                remaining_message = remaining_message[split_idx+1:]\n            else:\n                # Không tìm thấy newline, \"ngắt cứng\"\n                part = remaining_message[:limit]\n                remaining_message = remaining_message[limit:]\n                \n        parts_list.append({\n            'message': part,\n            'part': part_count,\n            'length': len(part)\n        })\n        part_count += 1\n        \n    # Thêm phần còn lại cuối cùng\n    if remaining_message:\n        parts_list.append({\n            'message': remaining_message,\n            'part': part_count,\n            'length': len(remaining_message)\n        })\n        \n    return parts_list\n\nitems = split_message_by_newline(_input.first().json.output)\nreturn items"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        560,
+        608
+      ],
+      "id": "10b4af74-c388-4252-b926-a12b58fa7079",
+      "name": "split_text"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -960,
+        464
+      ],
+      "id": "762b2b26-face-4171-832e-2a4cf473739b",
+      "name": "test_trigger"
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "leftValue": "photos",
+                    "rightValue": "text",
+                    "operator": {
+                      "type": "string",
+                      "operation": "exists",
+                      "singleValue": true
+                    },
+                    "id": "5e5bb664-5e51-4454-ace4-baf094a26387"
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "3d987bfb-1a35-4163-9184-df98b8226f27",
+                    "leftValue": "photos",
+                    "rightValue": "image",
+                    "operator": {
+                      "type": "string",
+                      "operation": "notExists",
+                      "singleValue": true
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.3,
+      "position": [
+        352,
+        624
+      ],
+      "id": "e98de2c4-f8ba-4252-9f43-fcb8e1fe76b8",
+      "name": "routing"
+    },
+    {
+      "parameters": {
+        "sessionTTL": 2592000,
+        "contextWindowLength": 10
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryRedisChat",
+      "typeVersion": 1.5,
+      "position": [
+        0,
+        880
+      ],
+      "id": "bbb549da-7dd9-4b16-b830-45ab2ab39c21",
+      "name": "redis_cache"
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.message.text.replace('/','').split().first().trim() }}",
+                    "rightValue": "clear",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "b3dfd7a7-0e72-4344-8eec-060df49b273c"
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "6197db3f-435f-4b9c-8333-bf84d155eaea",
+                    "leftValue": "={{ $json.message.text.replace('/','').split(\" \").first().trim() }}",
+                    "rightValue": "remember",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "7b0c59a6-ca76-42fd-8138-a05081d3d0a2",
+                    "leftValue": "={{ $json.message.text.replace('/','').split(\" \").first().trim() }}",
+                    "rightValue": "add",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "47534992-8f34-4687-9e6d-e0fe172aa694",
+                    "leftValue": "={{ $json.message.text.replace('/','').split(\" \").first().trim() }}",
+                    "rightValue": "bot",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.3,
+      "position": [
+        -240,
+        288
+      ],
+      "id": "c1ee504e-7276-4fa4-b9ca-b99845b5fb97",
+      "name": "command_switch"
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "loose",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "2ad52820-9267-4c71-a053-4c209ba325ed",
+                    "leftValue": "={{ $json.message.text ?? \"\" }}",
+                    "rightValue": "false",
+                    "operator": {
+                      "type": "string",
+                      "operation": "empty",
+                      "singleValue": true
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "loose",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.messageType }}",
+                    "rightValue": "bot_command",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "793ee4bb-8cfb-4ed7-a61c-99ffbc424631"
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "loose",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "b4c4b14a-391e-431f-a0b7-bab15d00136a",
+                    "leftValue": "={{ $json.messageType }}",
+                    "rightValue": "simple||private",
+                    "operator": {
+                      "type": "string",
+                      "operation": "regex"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "loose",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "bf7e6b6c-3d3e-491e-ac34-5be42ec0dcbf",
+                    "leftValue": "={{ $json.messageType }}",
+                    "rightValue": "image_generation",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "loose",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "c02117d5-680c-4f36-87b1-b97ff467ebd6",
+                    "leftValue": "={{ $json.messageType }}",
+                    "rightValue": "url",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            }
+          ]
+        },
+        "looseTypeValidation": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.3,
+      "position": [
+        -624,
+        608
+      ],
+      "id": "e18de263-2284-46b0-ac00-0a1d9725e077",
+      "name": "type_switch"
+    },
+    {
+      "parameters": {
+        "mode": "delete",
+        "lastMessagesCount": 29
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryManager",
+      "typeVersion": 1.1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "e47b39cd-10f0-4071-8002-fa022ca48d54",
+      "name": "clear_memory"
+    },
+    {
+      "parameters": {
+        "contextWindowLength": 20
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryRedisChat",
+      "typeVersion": 1.5,
+      "position": [
+        0,
+        176
+      ],
+      "id": "b390c16a-97fc-421d-a5c4-bbffdb16d935",
+      "name": "redis_clear"
+    },
+    {
+      "parameters": {
+        "contextWindowLength": 30
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryRedisChat",
+      "typeVersion": 1.5,
+      "position": [
+        0,
+        480
+      ],
+      "id": "dd578c0d-e261-4159-a467-e5dd471a2b63",
+      "name": "redis_add"
+    },
+    {
+      "parameters": {
+        "mode": "insert",
+        "messages": {
+          "messageValues": [
+            {
+              "message": "={{ $json.message.text.replace('/','').trim() }}",
+              "hideFromUI": true
+            }
+          ]
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryManager",
+      "typeVersion": 1.1,
+      "position": [
+        0,
+        304
+      ],
+      "id": "e0429946-0f4c-4332-abce-1ed263b95444",
+      "name": "add_memory"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "8d9dbba9-e147-4f4b-a2fb-78839e06754e",
+              "name": "message",
+              "value": "=Chào @{{$('new_message').item.json.message.from.username}}! 🦝💜\nContext đã {{$('new_message').item.json.message.text.replace('/','').split(\" \").first().trim() }}ed! Tomi sẵn sàng support với bất kỳ thông tin gì!✨ Em đang ở đây chờ ạ! 😄",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        336,
+        0
+      ],
+      "id": "ce9cccd7-0792-41da-893b-c6ae0db0abcb",
+      "name": "command_message"
+    }
+  ],
+  "pinData": {
+    "test_trigger": [
+      {
+        "json": {
+          "output": "### 🔵 **Thử thách thứ hai: Ngọc Xanh Hoàng Gia**\n\nThử thách thứ hai diễn ra tại **Lâu đài Lãnh đạo**, nơi có một nàng công chúa xinh đẹp đang canh giữ viên Ngọc Xanh. Nhưng nàng công chúa này không phải ai khác, chính là **CEO Phoenix** - người lãnh đạo tài ba của vương quốc Timo! 👑✨\n\n\"Các ngươi muốn lấy viên Ngọc Xanh Hoàng Gia?\" CEO Phoenix mỉm cười nhẹ nhàng. \"Hãy chứng minh rằng các ngươi có thể dẫn dắt team làm việc hiệu quả. Em sẽ chia các ngươi thành hai nhóm và giao cho một dự án: xây dựng một ứng dụng banking trong 24 giờ!\"\n\nTomi The Kid sợ hãi: \"Anh ơi, em không biết làm app gì hết!\"\n\nNhưng Tomi đã học được từ phù thủy Đại rằng lãnh đạo không phải là làm mọi thứ một mình, mà là biết phân công và tin tưởng đồng đội. Anh chia công việc: Tomi The Kid lo việc thiết kế giao diện (với thiên tài nghệ thuật tự nhiên của chồn), còn mình sẽ lo phần logic và kết nối với Đại để hỗ trợ kỹ thuật.\n\nSau 24 giờ không ngừng nghỉ, cả team đã hoàn thành một ứng dụng mini banking với giao diện đẹp mắt và tính năng cơ bản hoạt động tốt. CEO Phoenix vỗ tay: \"Tuyệt vời! Các ngươi đã hiểu được tinh thần TeamWork. Ngọc Xanh này thuộc về các ngươi!\"\n\n### 🟠 **Thử thách thứ ba: Ngọc Cam Nổi Loạn**\n\nĐịa điểm thử thách thứ ba là **Đấu trường Sáng tạo**, nơi có một chú robot AI tên là **Innovation Bot** đang canh giữ viên Ngọc Cam. Chú robot này có ngoại hình như một chiếc máy tính khổng lồ với đôi mắt LED nhấp nháy đều đặn. 🤖💡\n\n\"BEEP BEEP! Để lấy được Ngọc Cam Nổi Loạn, các ngươi phải tạo ra một ý tưởng hoàn toàn MỚI, chưa ai từng nghĩ tới!\" Innovation Bot nói bằng giọng máy móc.\n\nTomi và Tomi The Kid ngồi suy nghĩ hoài mà không ra. Mọi ý tưởng đều có vẻ như đã có người làm rồi. Đúng lúc này, Tomi The Kid phát hiện ra một chú kiến đang cố gắng mang một hạt gạo lên tổ, nhưng hạt gạo quá to so với chú kiến.\n\n\"Anh ơi! Em có ý tưởng!\" Tomi The Kid nhảy lên. \"Sao chúng ta không tạo ra một app giúp kết nối những người có vật gì đó quá lớn/quá nhiều với những người cần vật đó nhỉ? Như... **Share Economy** nhưng cho đồ ăn thừa, tài nguyên thừa!\"\n\nTomi mắt sáng lên: \"Hay đấy em! Ví dụ như cô A nấu cơm quá nhiều, có thể chia sẻ với anh B đang đói. Hoặc công ty X có máy tính cũ không dùng, có thể cho mượn các bạn sinh viên!\"\n\nInnovation Bot phân tích ý tưởng trong vài giây, rồi đôi mắt LED chuyển sang màu xanh: \"BEEP! Ý tưởng độc đáo! Kết hợp sharing economy với social impact! APPROVED!\" Chú robot trao viên Ngọc Cam rực rỡ cho hai anh em.\n\n### 🟡 **Thử thách cuối cùng: Ngọc Vàng Thịnh Vượng**\n\nThử thách cuối cùng diễn ra tại **Đền thờ Trái tim**, nơi thiêng liêng nhất của vương quốc. Ở đây không có boss hay quái vật nào canh giữ, chỉ có một tấm gương ma thuật khổng lồ với dòng chữ: \"Nhìn vào gương và tự trả lời: Tại sao ngươi muốn có kho báu này?\" 🪞✨\n\nTomi đứng trước gương, nhìn thấy hình ảnh của chính mình - một chú gấu trúc với đôi mắt mệt mỏi nhưng vẫn tỏa sáng hy vọng. Anh thấy những đêm thức khuya làm việc để kiếm tiền nuôi em, thấy nụ cười hạnh phúc của Tomi The Kid khi có đồ chơi mới...\n\n\"Em muốn kho báu này...\" Tomi nói chậm rãi, \"không phải để bản thân em giàu có, mà để em có thể chăm sóc gia đình tốt hơn, giúp đỡ bạn bè như chú Đại, và góp phần xây dựng một thế giới tốt đẹp hơn cho mọi người.\"\n\nTomi The Kid cũng bước đến bên cạnh anh: \"Còn em... em muốn kho báu để anh không phải vất vả nữa, để hai anh em có thể có nhiều thời gian bên nhau hơn!\"\n\nGương ma thuật bắt đầu rung động, phát ra ánh sáng vàng rực rỡ. Một giọng nói ấm áp vang lên: \"Trái tim thuần khiết và lý do chính đáng. Các ngươi xứng đáng với viên Ngọc Vàng Thịnh Vượng!\"\n\n### 🌟 **Kết thúc có hậu**\n\nKhi cả bốn viên ngọc được tập hợp lại, chúng hợp thành một ánh sáng rực rỡ với bốn màu sắc đan xen: Tím, Xanh, Cam và Vàng - chính là logo thiêng liêng của vương quốc Timo! 💜💙🧡💛\n\nPhù thủy Đại xuất hiện với nụ cười tươi: \"Chúc mừng các cậu! Nhưng kho báu thật sự không phải là vàng bạc gì đâu...\"\n\n\"Vậy là gì hả chú?\" Tomi hỏi tò mò.\n\n\"Kho báu chính là những **kiến thức, kỹ năng teamwork, sự sáng tạo và trái tim nhân ái** mà các cậu đã có được trên hành trình này! Với những điều đó, các cậu có thể tạo ra giá trị thật sự và giúp đỡ rất nhiều người!\"\n\nTừ ngày đó, Tomi trở thành một data enthusiast nổi tiếng, luôn sẵn sàng giúp đỡ mọi người bằng kiến thức và công nghệ. Tomi The Kid thì trở thành một designer tài ba. Hai anh em không chỉ sống hạnh phúc mà còn mang lại hạnh phúc cho cả vương quốc.\n\nVà thỉnh thoảng, khi đêm xuống, Tomi vẫn ngồi bên máy tính, giúp đỡ những đồng nghiệp như anh @daileit với những câu hỏi về thời tiết, câu chuyện hay bất cứ điều gì họ cần. Bởi vì Tomi hiểu rằng, kho báu lớn nhất chính là được làm điều mình yêu thích và giúp đỡ những người mình quan tâm! 🦝💖\n\n**--- HẾT ---**\n\n*Anh thấy câu chuyện dài 1000+ từ của em thế nào? Có thích không anh @daileit? Hehe* 😄🌟"
+        }
+      }
+    ]
+  },
+  "repo_name": "workflows",
+  "repo_owner": "daileit",
+  "repo_path": "n8n/",
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "shared": [
+    {
+      "updatedAt": "2026-04-21T18:34:52.401Z",
+      "createdAt": "2026-04-21T18:34:52.401Z",
+      "role": "workflow:owner",
+      "workflowId": "aWf6Ou7JM1PRUOzp",
+      "projectId": "Ewpdqr0Y4bH3sf2c"
+    }
+  ],
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 0,
+  "updatedAt": "2026-04-21T18:34:52.401Z",
+  "versionId": "37b345e3-a273-4963-821a-e5dae36df975",
+  "workflow_meta": ""
+}
