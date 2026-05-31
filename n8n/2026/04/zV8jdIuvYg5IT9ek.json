@@ -1,0 +1,451 @@
+{
+  "active": false,
+  "activeVersion": null,
+  "activeVersionId": null,
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "check_input",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "docker_pull": {
+      "main": [
+        [
+          {
+            "node": "docker_ps",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "docker_stop": {
+      "main": [
+        [
+          {
+            "node": "Get row(s)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "docker_ps": {
+      "main": [
+        [
+          {
+            "node": "check_container",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "check_container": {
+      "main": [
+        [
+          {
+            "node": "Get row(s)",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "docker_stop",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "check_input": {
+      "main": [
+        [
+          {
+            "node": "docker_pull",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get row(s)": {
+      "main": [
+        [
+          {
+            "node": "Aggregate",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Aggregate": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "docker_run",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "docker_run": {
+      "main": [
+        [
+          {
+            "node": "docker_images_clean",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2026-04-21T18:38:58.646Z",
+  "id": "zV8jdIuvYg5IT9ek",
+  "isArchived": false,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "name": "deploy_docker_vpstino3",
+  "nodes": [
+    {
+      "parameters": {
+        "path": "7b8dda38-ca86-489d-b10c-e164be496d77",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        -1056,
+        32
+      ],
+      "id": "45a33ef9-9e18-4268-9a23-df961b804116",
+      "name": "Webhook",
+      "webhookId": "7b8dda38-ca86-489d-b10c-e164be496d77"
+    },
+    {
+      "parameters": {
+        "authentication": "privateKey",
+        "command": "=sudo docker run -e APP_VERSION={{ $('Webhook').item.json.query.tag }} {{ $json.env }}-d --add-host=host.docker.internal:host-gateway --name {{ $('Webhook').item.json.query.name }} {{ $json.network.trim() ? `--network=${$json.network}` : \"\"}} --restart=on-failure:3 -p {{ $json.port.trim() }} {{ $json.misc.trim() }} {{ $('Webhook').item.json.query.repo }}/{{ $('Webhook').item.json.query.name }}:{{ $('Webhook').item.json.query.tag }}"
+      },
+      "type": "n8n-nodes-base.ssh",
+      "typeVersion": 1,
+      "position": [
+        544,
+        0
+      ],
+      "id": "5028be3d-73c7-4a47-bcb6-7a61d6a8f90d",
+      "name": "docker_run",
+      "retryOnFail": true,
+      "credentials": {
+        "sshPrivateKey": {
+          "id": "ssBawirKPQwRsrRs",
+          "name": "vpstino3_sealdesign_net"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "authentication": "privateKey",
+        "command": "=sudo docker pull {{ $json.query.repo.trim() }}/{{ $json.query.name.trim() }}:{{ $json.query.tag.trim() }}"
+      },
+      "type": "n8n-nodes-base.ssh",
+      "typeVersion": 1,
+      "position": [
+        -608,
+        16
+      ],
+      "id": "dac0f33c-038f-47e6-b97b-354a5214bd89",
+      "name": "docker_pull",
+      "credentials": {
+        "sshPrivateKey": {
+          "id": "ssBawirKPQwRsrRs",
+          "name": "vpstino3_sealdesign_net"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "authentication": "privateKey",
+        "command": "=sudo docker stop {{ $('Webhook').item.json.query.name }} && sudo docker rm {{ $('Webhook').item.json.query.name }}"
+      },
+      "type": "n8n-nodes-base.ssh",
+      "typeVersion": 1,
+      "position": [
+        176,
+        192
+      ],
+      "id": "4c986899-a452-446a-9141-458fa0edb726",
+      "name": "docker_stop",
+      "credentials": {
+        "sshPrivateKey": {
+          "id": "ssBawirKPQwRsrRs",
+          "name": "vpstino3_sealdesign_net"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "authentication": "privateKey",
+        "command": "=sudo docker ps -a | grep {{ $('Webhook').item.json.query.name }}"
+      },
+      "type": "n8n-nodes-base.ssh",
+      "typeVersion": 1,
+      "position": [
+        -416,
+        16
+      ],
+      "id": "ceb06286-f226-453c-8640-7f6f3ec944fe",
+      "name": "docker_ps",
+      "credentials": {
+        "sshPrivateKey": {
+          "id": "ssBawirKPQwRsrRs",
+          "name": "vpstino3_sealdesign_net"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "88509c02-721c-45e5-85c8-becd5b0c003e",
+              "leftValue": "={{ $json.stdout }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "empty",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -224,
+        16
+      ],
+      "id": "ae0f991b-1743-48ce-8fef-bcefe4870071",
+      "name": "check_container"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "8816060d-ebdb-41dc-8368-9954491cae88",
+              "leftValue": "={{ $json.query.repo }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "exists",
+                "singleValue": true
+              }
+            },
+            {
+              "id": "9b69ce9b-828c-4fb8-9f17-01d531954e15",
+              "leftValue": "={{ $json.query.name }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "exists",
+                "singleValue": true
+              }
+            },
+            {
+              "id": "0222e765-95aa-429c-8913-d42895b1f690",
+              "leftValue": "={{ $json.query.tag }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "exists",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "looseTypeValidation": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -848,
+        32
+      ],
+      "id": "cdf6427c-fbdf-47f6-aebc-e2a2c84f9691",
+      "name": "check_input"
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "dataTableId": {
+          "__rl": true,
+          "value": "joX4I7KfXaYvsR0s",
+          "mode": "list",
+          "cachedResultName": "docker_app_env",
+          "cachedResultUrl": "/projects/TgT7sbikPaxzUZlq/datatables/joX4I7KfXaYvsR0s"
+        },
+        "matchType": "allConditions",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "Key",
+              "condition": "isNotEmpty"
+            },
+            {
+              "keyName": "Scope",
+              "keyValue": "={{ $('Webhook').item.json.query.name }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "15d8ced5-6b95-4da7-8878-e8e058768142",
+      "name": "Get row(s)"
+    },
+    {
+      "parameters": {
+        "aggregate": "aggregateAllItemData",
+        "include": "specifiedFields",
+        "fieldsToInclude": "Key,Value",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.aggregate",
+      "typeVersion": 1,
+      "position": [
+        176,
+        0
+      ],
+      "id": "907ec83c-83f0-4427-8f5a-818965afd327",
+      "name": "Aggregate"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "f65a54db-19eb-4176-8f2e-bba256e9240d",
+              "name": "env",
+              "value": "=-e APP_DEPLOY_TIME=\"{{ $now.setZone('Asia/Ho_Chi_Minh').format('LLL dd, yyyy H:mm:ss') }}\" -e TZ={{ $json.data.find(item => item.Key === 'DOCKER_TZ')?.Value ?? 'Asia/Ho_Chi_Minh'}} {{ $json.data.map(item => `-e ${item.Key}=${item.Value} `).join('') }}",
+              "type": "string"
+            },
+            {
+              "id": "9adce40d-7019-4a7a-83a5-2cba363be0c1",
+              "name": "port",
+              "value": "={{ $json.data.find(item => item.Key === 'DOCKER_LISTEN')?.Value ?? '127.0.0.1'}}:{{ $json.data.find(item => item.Key === 'APP_PORT')?.Value ?? '8080'}}:{{ $json.data.find(item => item.Key === 'APP_PORT')?.Value ?? '8080'}}",
+              "type": "string"
+            },
+            {
+              "id": "6ee6d36e-e50c-40b6-9d18-467ed018c92c",
+              "name": "network",
+              "value": "={{ $json.data.find(item => item.Key === 'APP_NETWORK')?.Value ?? ''}}",
+              "type": "string"
+            },
+            {
+              "id": "d71e5f8a-819e-48a8-ab62-017d9d237635",
+              "name": "misc",
+              "value": "={{ $json.data.find(item => item.Key === 'DOCKER_MISC')?.Value ?? ''}}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        368,
+        0
+      ],
+      "id": "340ad843-2595-40b0-a9f1-586a29b11a68",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "authentication": "privateKey",
+        "command": "=sudo docker images --format \"{{'{{.ID}'}}} {{'{{.CreatedAt}'}}} {{'{{.Repository}'}}}\" | grep {{ $('Webhook').item.json.query.name }} | sort -rk2,3 | tail -n +4 | awk '{print $1}' | xargs -r sudo docker rmi || true"
+      },
+      "type": "n8n-nodes-base.ssh",
+      "typeVersion": 1,
+      "position": [
+        720,
+        0
+      ],
+      "id": "c2cf03be-a9b2-4a30-ada1-7c7a2895c9f4",
+      "name": "docker_images_clean",
+      "credentials": {
+        "sshPrivateKey": {
+          "id": "ssBawirKPQwRsrRs",
+          "name": "vpstino3_sealdesign_net"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "repo_name": "workflows",
+  "repo_owner": "daileit",
+  "repo_path": "n8n/",
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "shared": [
+    {
+      "updatedAt": "2026-04-21T18:38:58.646Z",
+      "createdAt": "2026-04-21T18:38:58.646Z",
+      "role": "workflow:owner",
+      "workflowId": "zV8jdIuvYg5IT9ek",
+      "projectId": "Ewpdqr0Y4bH3sf2c"
+    }
+  ],
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 0,
+  "updatedAt": "2026-05-31T09:20:10.852Z",
+  "versionId": "a0224bac-1be2-41ca-890d-7324e7aa5dbb",
+  "workflow_meta": ""
+}
