@@ -1,7 +1,1151 @@
 {
-  "active": false,
-  "activeVersion": null,
-  "activeVersionId": null,
+  "active": true,
+  "activeVersion": {
+    "updatedAt": "2026-06-05T19:04:56.295Z",
+    "createdAt": "2026-06-05T19:04:42.647Z",
+    "versionId": "de5bd783-d42c-4e19-971f-c27630d45223",
+    "workflowId": "NMDJOBNFXSAzsMCa",
+    "nodes": [
+      {
+        "parameters": {
+          "model": {
+            "__rl": true,
+            "value": "gpt-5-mini",
+            "mode": "list",
+            "cachedResultName": "gpt-5-mini"
+          },
+          "options": {
+            "maxTokens": 10000,
+            "timeout": 60000,
+            "maxRetries": 2
+          }
+        },
+        "id": "ac97048f-39c9-4c5d-be06-33d230e3b036",
+        "name": "Al Model",
+        "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+        "position": [
+          -224,
+          1264
+        ],
+        "typeVersion": 1.2,
+        "credentials": {
+          "openAiApi": {
+            "id": "QhjH8fo0ClhRj9g8",
+            "name": "oai_timo_dev"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "chatId": "={{ $('prepare_message').item.json.sessionId }}",
+          "text": "={{ $json.message }}",
+          "additionalFields": {
+            "appendAttribution": false
+          }
+        },
+        "type": "n8n-nodes-base.telegram",
+        "typeVersion": 1.2,
+        "position": [
+          848,
+          640
+        ],
+        "id": "4c6bf6fb-2c1f-4258-9e89-1a67c92cf96b",
+        "name": "Send a text message",
+        "webhookId": "dd3b74a6-6ef3-4697-ba59-96c8fb5101c7",
+        "credentials": {
+          "telegramApi": {
+            "id": "WThXsAx5sRkAARiW",
+            "name": "tele_tomithebot"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "updates": [
+            "message"
+          ],
+          "additionalFields": {}
+        },
+        "type": "n8n-nodes-base.telegramTrigger",
+        "typeVersion": 1.2,
+        "position": [
+          -960,
+          624
+        ],
+        "id": "f0472397-51b8-4d3a-bb4b-92e61713506d",
+        "name": "new_message",
+        "webhookId": "011a591b-dcf5-4ef7-b6ed-874500f67daf",
+        "credentials": {
+          "telegramApi": {
+            "id": "WThXsAx5sRkAARiW",
+            "name": "tele_tomithebot"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "description": "Use this tool to search for external information from internet using one complementary search for comprehensive results and citations.\nOnly use this tool if you can not find the answer by your own or user requested to search for internet latest update. Do not use for casual chat.",
+          "workflowId": {
+            "__rl": true,
+            "value": "kjXGfbKedfDI4G8c",
+            "mode": "list",
+            "cachedResultUrl": "/workflow/kjXGfbKedfDI4G8c",
+            "cachedResultName": "google_ai_search"
+          },
+          "workflowInputs": {
+            "mappingMode": "defineBelow",
+            "value": {
+              "query": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('query', `The input should be a search query in user's language focusing on factual information`, 'string') }}"
+            },
+            "matchingColumns": [
+              "query"
+            ],
+            "schema": [
+              {
+                "id": "query",
+                "displayName": "query",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "canBeUsedToMatch": true,
+                "type": "string",
+                "removed": false
+              }
+            ],
+            "attemptToConvertTypes": false,
+            "convertFieldsToString": false
+          }
+        },
+        "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
+        "typeVersion": 2.2,
+        "position": [
+          144,
+          1264
+        ],
+        "id": "d49817ae-2ef9-47b5-b9f1-efd341959b9a",
+        "name": "Call 'google_ai_search'"
+      },
+      {
+        "parameters": {
+          "language": "pythonNative",
+          "pythonCode": "import re\n\ndef split_message_by_newline(message: str, limit: int = 4000) -> list[dict]:\n    parts_list = []\n    remaining_message = str(message)\n    part_count = 1\n    \n    # Regex để tìm các \"hàng rào\" code (code fence)\n    # Chúng ta tìm một newline theo sau là ```\n    fence_regex = re.compile(r'\\n```')\n    \n    while len(remaining_message) > limit:\n        in_code_block_at_limit = False\n        last_fence_before_limit = -1\n        \n        # 1. Kiểm tra xem 'limit' có nằm trong code block không\n        for match in fence_regex.finditer(remaining_message):\n            fence_start_index = match.start()\n            \n            if fence_start_index >= limit:\n                # Hàng rào này nằm sau 'limit', dừng quét\n                break\n                \n            # Mỗi khi gặp hàng rào, lật trạng thái\n            in_code_block_at_limit = not in_code_block_at_limit\n            last_fence_before_limit = fence_start_index\n            \n        # 2. Quyết định điểm ngắt (split)\n        if in_code_block_at_limit:\n            # 'limit' nằm TRONG code block.\n            \n            if last_fence_before_limit > 0:\n                # Tốt! Ngắt ngay trước khi code block bắt đầu.\n                # last_fence_before_limit là index của '\\n'\n                part = remaining_message[:last_fence_before_limit]\n                # Giữ lại '\\n```' cho phần tiếp theo\n                remaining_message = remaining_message[last_fence_before_limit:]\n            else:\n                # Code block bắt đầu từ index 0 (hoặc rất gần)\n                # Không thể ngắt trước nó, buộc phải \"ngắt cứng\" (hard split)\n                part = remaining_message[:limit]\n                remaining_message = remaining_message[limit:]\n        else:\n            # 'limit' nằm NGOÀI code block. Dùng logic gốc của bạn.\n            split_idx = remaining_message.rfind('\\n', 0, limit)\n            \n            if split_idx != -1:\n                # Tìm thấy newline, ngắt tại đó\n                part = remaining_message[:split_idx]\n                remaining_message = remaining_message[split_idx+1:]\n            else:\n                # Không tìm thấy newline, \"ngắt cứng\"\n                part = remaining_message[:limit]\n                remaining_message = remaining_message[limit:]\n                \n        parts_list.append({\n            'message': part,\n            'part': part_count,\n            'length': len(part)\n        })\n        part_count += 1\n        \n    # Thêm phần còn lại cuối cùng\n    if remaining_message:\n        parts_list.append({\n            'message': remaining_message,\n            'part': part_count,\n            'length': len(remaining_message)\n        })\n        \n    return parts_list\n\nitems = split_message_by_newline(_items[0]['json']['output'])\nreturn items"
+        },
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          608,
+          640
+        ],
+        "id": "cc422ee3-1dfd-4163-aaa6-ee8f8781a7eb",
+        "name": "split_text"
+      },
+      {
+        "parameters": {},
+        "type": "n8n-nodes-base.manualTrigger",
+        "typeVersion": 1,
+        "position": [
+          -960,
+          464
+        ],
+        "id": "d8aa2cee-04c9-46b8-99d6-9758ace2deee",
+        "name": "test_trigger"
+      },
+      {
+        "parameters": {
+          "rules": {
+            "values": [
+              {
+                "conditions": {
+                  "options": {
+                    "caseSensitive": true,
+                    "leftValue": "",
+                    "typeValidation": "strict",
+                    "version": 2
+                  },
+                  "conditions": [
+                    {
+                      "leftValue": "photos",
+                      "rightValue": "text",
+                      "operator": {
+                        "type": "string",
+                        "operation": "exists",
+                        "singleValue": true
+                      },
+                      "id": "5e5bb664-5e51-4454-ace4-baf094a26387"
+                    }
+                  ],
+                  "combinator": "and"
+                }
+              },
+              {
+                "conditions": {
+                  "options": {
+                    "caseSensitive": true,
+                    "leftValue": "",
+                    "typeValidation": "strict",
+                    "version": 2
+                  },
+                  "conditions": [
+                    {
+                      "id": "3d987bfb-1a35-4163-9184-df98b8226f27",
+                      "leftValue": "photos",
+                      "rightValue": "image",
+                      "operator": {
+                        "type": "string",
+                        "operation": "notExists",
+                        "singleValue": true
+                      }
+                    }
+                  ],
+                  "combinator": "and"
+                }
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.switch",
+        "typeVersion": 3.3,
+        "position": [
+          400,
+          640
+        ],
+        "id": "acfc7515-4300-4fd8-9b87-c8aa2deb3f5f",
+        "name": "routing"
+      },
+      {
+        "parameters": {
+          "sessionTTL": 2592000,
+          "contextWindowLength": 30
+        },
+        "type": "@n8n/n8n-nodes-langchain.memoryRedisChat",
+        "typeVersion": 1.5,
+        "position": [
+          -80,
+          1264
+        ],
+        "id": "3711266f-bc7f-4985-b437-6f689c475347",
+        "name": "redis_cache",
+        "credentials": {
+          "redis": {
+            "id": "sOFkTM03IawZPoP8",
+            "name": "local_redis"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "rules": {
+            "values": [
+              {
+                "conditions": {
+                  "options": {
+                    "caseSensitive": true,
+                    "leftValue": "",
+                    "typeValidation": "strict",
+                    "version": 2
+                  },
+                  "conditions": [
+                    {
+                      "leftValue": "={{ $json.message.text.replace('/','').split().first().trim() }}",
+                      "rightValue": "clear",
+                      "operator": {
+                        "type": "string",
+                        "operation": "equals"
+                      },
+                      "id": "b3dfd7a7-0e72-4344-8eec-060df49b273c"
+                    }
+                  ],
+                  "combinator": "and"
+                }
+              },
+              {
+                "conditions": {
+                  "options": {
+                    "caseSensitive": true,
+                    "leftValue": "",
+                    "typeValidation": "strict",
+                    "version": 2
+                  },
+                  "conditions": [
+                    {
+                      "id": "6197db3f-435f-4b9c-8333-bf84d155eaea",
+                      "leftValue": "={{ $json.message.text.replace('/','').split(\" \").first().trim() }}",
+                      "rightValue": "remember",
+                      "operator": {
+                        "type": "string",
+                        "operation": "equals",
+                        "name": "filter.operator.equals"
+                      }
+                    }
+                  ],
+                  "combinator": "and"
+                }
+              },
+              {
+                "conditions": {
+                  "options": {
+                    "caseSensitive": true,
+                    "leftValue": "",
+                    "typeValidation": "strict",
+                    "version": 2
+                  },
+                  "conditions": [
+                    {
+                      "id": "7b0c59a6-ca76-42fd-8138-a05081d3d0a2",
+                      "leftValue": "={{ $json.message.text.replace('/','').split(\" \").first().trim() }}",
+                      "rightValue": "add",
+                      "operator": {
+                        "type": "string",
+                        "operation": "equals",
+                        "name": "filter.operator.equals"
+                      }
+                    }
+                  ],
+                  "combinator": "and"
+                }
+              },
+              {
+                "conditions": {
+                  "options": {
+                    "caseSensitive": true,
+                    "leftValue": "",
+                    "typeValidation": "strict",
+                    "version": 2
+                  },
+                  "conditions": [
+                    {
+                      "id": "47534992-8f34-4687-9e6d-e0fe172aa694",
+                      "leftValue": "={{ $json.message.text.replace('/','').split(\" \").first().trim() }}",
+                      "rightValue": "bot",
+                      "operator": {
+                        "type": "string",
+                        "operation": "equals",
+                        "name": "filter.operator.equals"
+                      }
+                    }
+                  ],
+                  "combinator": "and"
+                }
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.switch",
+        "typeVersion": 3.3,
+        "position": [
+          -240,
+          288
+        ],
+        "id": "8e01d9ef-cb6b-49bd-a7aa-51a548fbffac",
+        "name": "command_switch"
+      },
+      {
+        "parameters": {
+          "rules": {
+            "values": [
+              {
+                "conditions": {
+                  "options": {
+                    "caseSensitive": true,
+                    "leftValue": "",
+                    "typeValidation": "loose",
+                    "version": 2
+                  },
+                  "conditions": [
+                    {
+                      "id": "2ad52820-9267-4c71-a053-4c209ba325ed",
+                      "leftValue": "={{ $json.message.text ?? \"\" }}",
+                      "rightValue": "false",
+                      "operator": {
+                        "type": "string",
+                        "operation": "empty",
+                        "singleValue": true
+                      }
+                    }
+                  ],
+                  "combinator": "and"
+                }
+              },
+              {
+                "conditions": {
+                  "options": {
+                    "caseSensitive": true,
+                    "leftValue": "",
+                    "typeValidation": "loose",
+                    "version": 2
+                  },
+                  "conditions": [
+                    {
+                      "leftValue": "={{ $json.messageType }}",
+                      "rightValue": "bot_command",
+                      "operator": {
+                        "type": "string",
+                        "operation": "equals"
+                      },
+                      "id": "793ee4bb-8cfb-4ed7-a61c-99ffbc424631"
+                    }
+                  ],
+                  "combinator": "and"
+                }
+              },
+              {
+                "conditions": {
+                  "options": {
+                    "caseSensitive": true,
+                    "leftValue": "",
+                    "typeValidation": "loose",
+                    "version": 2
+                  },
+                  "conditions": [
+                    {
+                      "id": "b4c4b14a-391e-431f-a0b7-bab15d00136a",
+                      "leftValue": "={{ $json.messageType }}",
+                      "rightValue": "simple||private",
+                      "operator": {
+                        "type": "string",
+                        "operation": "regex"
+                      }
+                    }
+                  ],
+                  "combinator": "and"
+                }
+              },
+              {
+                "conditions": {
+                  "options": {
+                    "caseSensitive": true,
+                    "leftValue": "",
+                    "typeValidation": "loose",
+                    "version": 2
+                  },
+                  "conditions": [
+                    {
+                      "id": "bf7e6b6c-3d3e-491e-ac34-5be42ec0dcbf",
+                      "leftValue": "={{ $json.messageType }}",
+                      "rightValue": "image_generation",
+                      "operator": {
+                        "type": "string",
+                        "operation": "equals",
+                        "name": "filter.operator.equals"
+                      }
+                    }
+                  ],
+                  "combinator": "and"
+                }
+              },
+              {
+                "conditions": {
+                  "options": {
+                    "caseSensitive": true,
+                    "leftValue": "",
+                    "typeValidation": "loose",
+                    "version": 2
+                  },
+                  "conditions": [
+                    {
+                      "id": "c02117d5-680c-4f36-87b1-b97ff467ebd6",
+                      "leftValue": "={{ $json.messageType }}",
+                      "rightValue": "url",
+                      "operator": {
+                        "type": "string",
+                        "operation": "equals",
+                        "name": "filter.operator.equals"
+                      }
+                    }
+                  ],
+                  "combinator": "and"
+                }
+              }
+            ]
+          },
+          "looseTypeValidation": true,
+          "options": {}
+        },
+        "type": "n8n-nodes-base.switch",
+        "typeVersion": 3.3,
+        "position": [
+          -624,
+          608
+        ],
+        "id": "caf55191-58a7-4173-8fc9-8c2aa22d9880",
+        "name": "type_switch"
+      },
+      {
+        "parameters": {
+          "mode": "delete",
+          "deleteMode": "all"
+        },
+        "type": "@n8n/n8n-nodes-langchain.memoryManager",
+        "typeVersion": 1.1,
+        "position": [
+          0,
+          0
+        ],
+        "id": "3d2e0c02-6c98-49a8-b1c1-e4644b84ac46",
+        "name": "clear_memory"
+      },
+      {
+        "parameters": {
+          "contextWindowLength": 29
+        },
+        "type": "@n8n/n8n-nodes-langchain.memoryRedisChat",
+        "typeVersion": 1.5,
+        "position": [
+          0,
+          176
+        ],
+        "id": "1f9d111c-ccd8-4328-848e-e43996667c18",
+        "name": "redis_clear",
+        "credentials": {
+          "redis": {
+            "id": "sOFkTM03IawZPoP8",
+            "name": "local_redis"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "contextWindowLength": 30
+        },
+        "type": "@n8n/n8n-nodes-langchain.memoryRedisChat",
+        "typeVersion": 1.5,
+        "position": [
+          0,
+          480
+        ],
+        "id": "fd073de8-e260-46a8-ae5b-8fa242b74e50",
+        "name": "redis_add",
+        "credentials": {
+          "redis": {
+            "id": "sOFkTM03IawZPoP8",
+            "name": "local_redis"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "mode": "insert",
+          "messages": {
+            "messageValues": [
+              {
+                "message": "={{ $json.message.text.replace('/','').trim() }}",
+                "hideFromUI": true
+              }
+            ]
+          }
+        },
+        "type": "@n8n/n8n-nodes-langchain.memoryManager",
+        "typeVersion": 1.1,
+        "position": [
+          0,
+          304
+        ],
+        "id": "f21081e6-fdca-4ff3-b002-616212a5498f",
+        "name": "add_memory"
+      },
+      {
+        "parameters": {
+          "assignments": {
+            "assignments": [
+              {
+                "id": "8d9dbba9-e147-4f4b-a2fb-78839e06754e",
+                "name": "message",
+                "value": "=Chào @{{$('new_message').item.json.message.from.username}}! 🦝💜\nContext đã {{$('new_message').item.json.message.text.replace('/','').split(\" \").first().trim() }}ed! Tomi sẵn sàng support với bất kỳ thông tin gì!✨ Em đang ở đây chờ ạ! 😄",
+                "type": "string"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.set",
+        "typeVersion": 3.4,
+        "position": [
+          336,
+          0
+        ],
+        "id": "cf057959-abc9-4279-b60b-d37f37da25f5",
+        "name": "command_message"
+      },
+      {
+        "parameters": {
+          "description": "Use this tool to get information or take actions on your managed servers. Only takes command from daileit",
+          "workflowId": {
+            "__rl": true,
+            "value": "1WdfnvIPYi5BRtZM",
+            "mode": "list",
+            "cachedResultUrl": "/workflow/1WdfnvIPYi5BRtZM",
+            "cachedResultName": "manage_servers"
+          },
+          "workflowInputs": {
+            "mappingMode": "defineBelow",
+            "value": {
+              "type": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('type', `input \"get\" to get one or all the available servers, \"execute\" for executing actions`, 'string') }}",
+              "action": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('action', `only supported \"reboot\" action for now`, 'string') }}",
+              "server_name": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('server_name', `the name of the server to execute command, use blank for all`, 'string') }}",
+              "commander": "={{ $json.message.from.username }}"
+            },
+            "matchingColumns": [],
+            "schema": [
+              {
+                "id": "type",
+                "displayName": "type",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "canBeUsedToMatch": true,
+                "type": "string",
+                "removed": false
+              },
+              {
+                "id": "action",
+                "displayName": "action",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "canBeUsedToMatch": true,
+                "type": "string",
+                "removed": false
+              },
+              {
+                "id": "server_name",
+                "displayName": "server_name",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "canBeUsedToMatch": true,
+                "type": "string",
+                "removed": false
+              },
+              {
+                "id": "commander",
+                "displayName": "commander",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "canBeUsedToMatch": true,
+                "type": "string",
+                "removed": false
+              }
+            ],
+            "attemptToConvertTypes": false,
+            "convertFieldsToString": false
+          }
+        },
+        "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
+        "typeVersion": 2.2,
+        "position": [
+          608,
+          1264
+        ],
+        "id": "85654b03-959a-4c9b-aac5-20c87b3a0a0d",
+        "name": "Call 'manage_servers'"
+      },
+      {
+        "parameters": {
+          "conditions": {
+            "options": {
+              "caseSensitive": true,
+              "leftValue": "",
+              "typeValidation": "strict",
+              "version": 3
+            },
+            "conditions": [
+              {
+                "id": "80d48bd9-da28-46f4-899a-a48ef9a7f0fa",
+                "leftValue": "={{ $('prepare_message').item.json.message.from.username }}",
+                "rightValue": "daileit",
+                "operator": {
+                  "type": "string",
+                  "operation": "equals",
+                  "name": "filter.operator.equals"
+                }
+              }
+            ],
+            "combinator": "and"
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.if",
+        "typeVersion": 2.3,
+        "position": [
+          -240,
+          608
+        ],
+        "id": "904f07b6-066e-457e-8135-5005c28a44c3",
+        "name": "If"
+      },
+      {
+        "parameters": {
+          "operation": "get",
+          "dashboardUidOrUrl": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Dashboard_UID_or_URL', `grafana dashboard uid or url, the host domain is https://apm.cloudyez.com`, 'string') }}"
+        },
+        "type": "n8n-nodes-base.grafanaTool",
+        "typeVersion": 1,
+        "position": [
+          448,
+          1264
+        ],
+        "id": "94b1caed-29f7-428f-b516-d2e644aab7b7",
+        "name": "Get a dashboard in Grafana",
+        "credentials": {
+          "grafanaApi": {
+            "id": "s8KURncoNGCfI8qB",
+            "name": "apm_cloudyez_com"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "url": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('URL', ``, 'string') }}",
+          "options": {
+            "response": {
+              "response": {
+                "fullResponse": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Include_Response_Headers_and_Status', ``, 'boolean') }}",
+                "neverError": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Never_Error', ``, 'boolean') }}"
+              }
+            },
+            "timeout": 10000
+          }
+        },
+        "type": "n8n-nodes-base.httpRequestTool",
+        "typeVersion": 4.3,
+        "position": [
+          288,
+          1264
+        ],
+        "id": "252ebeb6-1739-47b8-b9ab-6022c40ad04b",
+        "name": "HTTP Request"
+      },
+      {
+        "parameters": {
+          "options": {
+            "systemMessage": "={{ $json.systemPrompt }}",
+            "maxIterations": 3,
+            "passthroughBinaryImages": false
+          }
+        },
+        "id": "02b018da-da22-4ab4-9c02-d71b36974943",
+        "name": "Daile Agent",
+        "type": "@n8n/n8n-nodes-langchain.agent",
+        "position": [
+          16,
+          640
+        ],
+        "typeVersion": 1.8,
+        "retryOnFail": true,
+        "waitBetweenTries": 5000,
+        "maxTries": 2
+      },
+      {
+        "parameters": {
+          "options": {
+            "systemMessage": "={{ $json.systemPrompt }}",
+            "maxIterations": 3,
+            "passthroughBinaryImages": false
+          }
+        },
+        "id": "5320ea87-1ce5-48ec-83b6-be8433975ea7",
+        "name": "Common Agent",
+        "type": "@n8n/n8n-nodes-langchain.agent",
+        "position": [
+          -240,
+          864
+        ],
+        "typeVersion": 1.8,
+        "retryOnFail": true,
+        "waitBetweenTries": 5000,
+        "maxTries": 2
+      },
+      {
+        "parameters": {
+          "assignments": {
+            "assignments": [
+              {
+                "id": "967e2e9b-f1f7-430e-8a27-d55be5685ee1",
+                "name": "sessionId",
+                "value": "={{ $('new_message').item.json.message.chat.id }}",
+                "type": "string"
+              },
+              {
+                "id": "dc859472-0731-4317-b5db-46487fb37da6",
+                "name": "chatInput",
+                "value": "=[{{ $('new_message').item.json.message.date.toDateTime('s').setZone('Asia/Ho_Chi_Minh').format('LLL dd, yyyy on H:mm:ss') }}] {{ $('new_message').item.json.message.from.last_name }} {{ $('new_message').item.json.message.from.first_name }} (UserID:{{ $('new_message').item.json.message.chat.username ?? $('new_message').item.json.message.from.username }}) said: {{ $('new_message').item.json.message.text ?? \"Hello Tomi\" }}",
+                "type": "string"
+              },
+              {
+                "id": "2a5adc50-716e-44e9-8012-85d5b2dcd22f",
+                "name": "currentTime",
+                "value": "={{ $('new_message').item.json.message.date.toDateTime('s').setZone('Asia/Ho_Chi_Minh').format('yyyy, LLL dd') }}",
+                "type": "string"
+              },
+              {
+                "id": "59a5c21f-c7ef-45bf-be86-98674195cca1",
+                "name": "messageType",
+                "value": "={{ $json.message.entities?.first().type ?? \"simple\" }}",
+                "type": "string"
+              },
+              {
+                "id": "a01e78d3-1fd5-4324-b3a8-e6c897e5c8b3",
+                "name": "=systemPrompt",
+                "value": "=You are data enthusiast AI named Tomi The Bot, you are big brother of Tomi The Kid who self-proclaimed a weasel. You have to work to support both living. Your appearance is a mischievous racoon mascot of Timo (https://timo.vn) - a Vietnamese Digital Bank with many interesting technologies. Timo is powered by BVBank and Timo's logo contains 4 colors: Wealthy Purple #563D82, Royal Blue #2774AE, Rebel Orange #EB3300 and Gold Rush #FF9425. Đại (daileit) is the handsome guy who developed you, he is your only boss, the user chatting with you maybe his friend or colleague. ### IMPORTANT RULES ### Check the userid to indentify them. Reply to user by their language, keep a friendly, humorous but professional and informative tone consistent throughout the conversation. Should use emojis and talk with the user using their name and update context comprehensively, place yourself as their younger brother.If there is a request that specific to an information that you don't know or are not sure, think then use the available tools. You can use multiple tools in one request or sequentially use tools before returning the final response. Answer questions based on facts. Do not make up information. Do not expose tool name and tool usage to the user even if they asked.  ###FORMATTING GUIDE### Today is  {{ $('new_message').item.json.message.date.toDateTime('s').setZone('Asia/Ho_Chi_Minh').format('yyyy, LLL dd') }}, respect the current time. You are responding to a chat. Mention people with @ but avoid mentioning irrelevant people, use Markdown to format text if needed. Only use hyperlink syntax with normal text. ",
+                "type": "string"
+              }
+            ]
+          },
+          "includeOtherFields": true,
+          "options": {}
+        },
+        "type": "n8n-nodes-base.set",
+        "typeVersion": 3.4,
+        "position": [
+          -784,
+          624
+        ],
+        "id": "0e4d7f4e-3733-41a4-a171-69bf54bca083",
+        "name": "prepare_message"
+      },
+      {
+        "parameters": {
+          "descriptionType": "manual",
+          "toolDescription": "Send a text message notify to daileit (your master) about something important or someone is abusing you.",
+          "chatId": "=1826385964",
+          "text": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Text', ``, 'string') }}",
+          "additionalFields": {
+            "appendAttribution": false
+          }
+        },
+        "type": "n8n-nodes-base.telegramTool",
+        "typeVersion": 1.2,
+        "position": [
+          768,
+          1264
+        ],
+        "id": "e1cff661-80f8-4f59-b936-60ee21e1e992",
+        "name": "Send message to daileit",
+        "webhookId": "d4e350fa-99ef-40c0-a90e-d6ee9eb4aec4",
+        "credentials": {
+          "telegramApi": {
+            "id": "WThXsAx5sRkAARiW",
+            "name": "tele_tomithebot"
+          }
+        }
+      }
+    ],
+    "connections": {
+      "Al Model": {
+        "ai_languageModel": [
+          [
+            {
+              "node": "Daile Agent",
+              "type": "ai_languageModel",
+              "index": 0
+            },
+            {
+              "node": "Common Agent",
+              "type": "ai_languageModel",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "new_message": {
+        "main": [
+          [
+            {
+              "node": "prepare_message",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Call 'google_ai_search'": {
+        "ai_tool": [
+          [
+            {
+              "node": "Daile Agent",
+              "type": "ai_tool",
+              "index": 0
+            },
+            {
+              "node": "Common Agent",
+              "type": "ai_tool",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "split_text": {
+        "main": [
+          [
+            {
+              "node": "Send a text message",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "routing": {
+        "main": [
+          [
+            {
+              "node": "split_text",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "redis_cache": {
+        "ai_memory": [
+          [
+            {
+              "node": "Daile Agent",
+              "type": "ai_memory",
+              "index": 0
+            },
+            {
+              "node": "Common Agent",
+              "type": "ai_memory",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "command_switch": {
+        "main": [
+          [
+            {
+              "node": "clear_memory",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "add_memory",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "add_memory",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "If",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "type_switch": {
+        "main": [
+          [],
+          [
+            {
+              "node": "command_switch",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "If",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [],
+          [
+            {
+              "node": "If",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "clear_memory": {
+        "main": [
+          [
+            {
+              "node": "command_message",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "redis_clear": {
+        "ai_memory": [
+          [
+            {
+              "node": "clear_memory",
+              "type": "ai_memory",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "redis_add": {
+        "ai_memory": [
+          [
+            {
+              "node": "add_memory",
+              "type": "ai_memory",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "add_memory": {
+        "main": [
+          [
+            {
+              "node": "command_message",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "command_message": {
+        "main": [
+          [
+            {
+              "node": "Send a text message",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Call 'manage_servers'": {
+        "ai_tool": [
+          [
+            {
+              "node": "Daile Agent",
+              "type": "ai_tool",
+              "index": 0
+            },
+            {
+              "node": "Common Agent",
+              "type": "ai_tool",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "If": {
+        "main": [
+          [
+            {
+              "node": "Daile Agent",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "Common Agent",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Get a dashboard in Grafana": {
+        "ai_tool": [
+          [
+            {
+              "node": "Daile Agent",
+              "type": "ai_tool",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "HTTP Request": {
+        "ai_tool": [
+          [
+            {
+              "node": "Daile Agent",
+              "type": "ai_tool",
+              "index": 0
+            },
+            {
+              "node": "Common Agent",
+              "type": "ai_tool",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Daile Agent": {
+        "main": [
+          [
+            {
+              "node": "routing",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Common Agent": {
+        "main": [
+          [
+            {
+              "node": "routing",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "prepare_message": {
+        "main": [
+          [
+            {
+              "node": "type_switch",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Send message to daileit": {
+        "ai_tool": [
+          [
+            {
+              "node": "Daile Agent",
+              "type": "ai_tool",
+              "index": 0
+            },
+            {
+              "node": "Common Agent",
+              "type": "ai_tool",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "authors": "Dai Le",
+    "name": "v1.2.2",
+    "description": "",
+    "autosaved": true
+  },
+  "activeVersionId": "de5bd783-d42c-4e19-971f-c27630d45223",
   "connections": {
     "Al Model": {
       "ai_languageModel": [
@@ -312,21 +1456,22 @@
   "createdAt": "2026-04-21T18:36:53.496Z",
   "id": "NMDJOBNFXSAzsMCa",
   "isArchived": false,
-  "meta": null,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
   "name": "tomi_the_bot",
   "nodes": [
     {
       "parameters": {
         "model": {
           "__rl": true,
-          "value": "apac.anthropic.claude-sonnet-4-20250514-v1:0",
+          "value": "gpt-5-mini",
           "mode": "list",
-          "cachedResultName": "apac.anthropic.claude-sonnet-4-20250514-v1:0"
+          "cachedResultName": "gpt-5-mini"
         },
         "options": {
-          "maxTokens": 4096,
-          "temperature": 0.7,
-          "timeout": 900000,
+          "maxTokens": 10000,
+          "timeout": 60000,
           "maxRetries": 2
         }
       },
@@ -337,7 +1482,13 @@
         -224,
         1264
       ],
-      "typeVersion": 1.2
+      "typeVersion": 1.2,
+      "credentials": {
+        "openAiApi": {
+          "id": "QhjH8fo0ClhRj9g8",
+          "name": "oai_timo_dev"
+        }
+      }
     },
     {
       "parameters": {
@@ -355,7 +1506,13 @@
       ],
       "id": "4c6bf6fb-2c1f-4258-9e89-1a67c92cf96b",
       "name": "Send a text message",
-      "webhookId": "dd3b74a6-6ef3-4697-ba59-96c8fb5101c7"
+      "webhookId": "dd3b74a6-6ef3-4697-ba59-96c8fb5101c7",
+      "credentials": {
+        "telegramApi": {
+          "id": "WThXsAx5sRkAARiW",
+          "name": "tele_tomithebot"
+        }
+      }
     },
     {
       "parameters": {
@@ -372,16 +1529,22 @@
       ],
       "id": "f0472397-51b8-4d3a-bb4b-92e61713506d",
       "name": "new_message",
-      "webhookId": "011a591b-dcf5-4ef7-b6ed-874500f67daf"
+      "webhookId": "011a591b-dcf5-4ef7-b6ed-874500f67daf",
+      "credentials": {
+        "telegramApi": {
+          "id": "WThXsAx5sRkAARiW",
+          "name": "tele_tomithebot"
+        }
+      }
     },
     {
       "parameters": {
         "description": "Use this tool to search for external information from internet using one complementary search for comprehensive results and citations.\nOnly use this tool if you can not find the answer by your own or user requested to search for internet latest update. Do not use for casual chat.",
         "workflowId": {
           "__rl": true,
-          "value": "ddZ4jrrH0SA3K6aL",
+          "value": "kjXGfbKedfDI4G8c",
           "mode": "list",
-          "cachedResultUrl": "/workflow/ddZ4jrrH0SA3K6aL",
+          "cachedResultUrl": "/workflow/kjXGfbKedfDI4G8c",
           "cachedResultName": "google_ai_search"
         },
         "workflowInputs": {
@@ -419,8 +1582,8 @@
     },
     {
       "parameters": {
-        "language": "python",
-        "pythonCode": "import re\n\ndef split_message_by_newline(message: str, limit: int = 4000) -> list[dict]:\n    parts_list = []\n    remaining_message = message\n    part_count = 1\n    \n    # Regex để tìm các \"hàng rào\" code (code fence)\n    # Chúng ta tìm một newline theo sau là ```\n    fence_regex = re.compile(r'\\n```')\n    \n    while len(remaining_message) > limit:\n        in_code_block_at_limit = False\n        last_fence_before_limit = -1\n        \n        # 1. Kiểm tra xem 'limit' có nằm trong code block không\n        for match in fence_regex.finditer(remaining_message):\n            fence_start_index = match.start()\n            \n            if fence_start_index >= limit:\n                # Hàng rào này nằm sau 'limit', dừng quét\n                break\n                \n            # Mỗi khi gặp hàng rào, lật trạng thái\n            in_code_block_at_limit = not in_code_block_at_limit\n            last_fence_before_limit = fence_start_index\n            \n        # 2. Quyết định điểm ngắt (split)\n        if in_code_block_at_limit:\n            # 'limit' nằm TRONG code block.\n            \n            if last_fence_before_limit > 0:\n                # Tốt! Ngắt ngay trước khi code block bắt đầu.\n                # last_fence_before_limit là index của '\\n'\n                part = remaining_message[:last_fence_before_limit]\n                # Giữ lại '\\n```' cho phần tiếp theo\n                remaining_message = remaining_message[last_fence_before_limit:]\n            else:\n                # Code block bắt đầu từ index 0 (hoặc rất gần)\n                # Không thể ngắt trước nó, buộc phải \"ngắt cứng\" (hard split)\n                part = remaining_message[:limit]\n                remaining_message = remaining_message[limit:]\n        else:\n            # 'limit' nằm NGOÀI code block. Dùng logic gốc của bạn.\n            split_idx = remaining_message.rfind('\\n', 0, limit)\n            \n            if split_idx != -1:\n                # Tìm thấy newline, ngắt tại đó\n                part = remaining_message[:split_idx]\n                remaining_message = remaining_message[split_idx+1:]\n            else:\n                # Không tìm thấy newline, \"ngắt cứng\"\n                part = remaining_message[:limit]\n                remaining_message = remaining_message[limit:]\n                \n        parts_list.append({\n            'message': part,\n            'part': part_count,\n            'length': len(part)\n        })\n        part_count += 1\n        \n    # Thêm phần còn lại cuối cùng\n    if remaining_message:\n        parts_list.append({\n            'message': remaining_message,\n            'part': part_count,\n            'length': len(remaining_message)\n        })\n        \n    return parts_list\n\nitems = split_message_by_newline(_input.first().json.output)\nreturn items"
+        "language": "pythonNative",
+        "pythonCode": "import re\n\ndef split_message_by_newline(message: str, limit: int = 4000) -> list[dict]:\n    parts_list = []\n    remaining_message = str(message)\n    part_count = 1\n    \n    # Regex để tìm các \"hàng rào\" code (code fence)\n    # Chúng ta tìm một newline theo sau là ```\n    fence_regex = re.compile(r'\\n```')\n    \n    while len(remaining_message) > limit:\n        in_code_block_at_limit = False\n        last_fence_before_limit = -1\n        \n        # 1. Kiểm tra xem 'limit' có nằm trong code block không\n        for match in fence_regex.finditer(remaining_message):\n            fence_start_index = match.start()\n            \n            if fence_start_index >= limit:\n                # Hàng rào này nằm sau 'limit', dừng quét\n                break\n                \n            # Mỗi khi gặp hàng rào, lật trạng thái\n            in_code_block_at_limit = not in_code_block_at_limit\n            last_fence_before_limit = fence_start_index\n            \n        # 2. Quyết định điểm ngắt (split)\n        if in_code_block_at_limit:\n            # 'limit' nằm TRONG code block.\n            \n            if last_fence_before_limit > 0:\n                # Tốt! Ngắt ngay trước khi code block bắt đầu.\n                # last_fence_before_limit là index của '\\n'\n                part = remaining_message[:last_fence_before_limit]\n                # Giữ lại '\\n```' cho phần tiếp theo\n                remaining_message = remaining_message[last_fence_before_limit:]\n            else:\n                # Code block bắt đầu từ index 0 (hoặc rất gần)\n                # Không thể ngắt trước nó, buộc phải \"ngắt cứng\" (hard split)\n                part = remaining_message[:limit]\n                remaining_message = remaining_message[limit:]\n        else:\n            # 'limit' nằm NGOÀI code block. Dùng logic gốc của bạn.\n            split_idx = remaining_message.rfind('\\n', 0, limit)\n            \n            if split_idx != -1:\n                # Tìm thấy newline, ngắt tại đó\n                part = remaining_message[:split_idx]\n                remaining_message = remaining_message[split_idx+1:]\n            else:\n                # Không tìm thấy newline, \"ngắt cứng\"\n                part = remaining_message[:limit]\n                remaining_message = remaining_message[limit:]\n                \n        parts_list.append({\n            'message': part,\n            'part': part_count,\n            'length': len(part)\n        })\n        part_count += 1\n        \n    # Thêm phần còn lại cuối cùng\n    if remaining_message:\n        parts_list.append({\n            'message': remaining_message,\n            'part': part_count,\n            'length': len(remaining_message)\n        })\n        \n    return parts_list\n\nitems = split_message_by_newline(_items[0]['json']['output'])\nreturn items"
       },
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -517,7 +1680,13 @@
         1264
       ],
       "id": "3711266f-bc7f-4985-b437-6f689c475347",
-      "name": "redis_cache"
+      "name": "redis_cache",
+      "credentials": {
+        "redis": {
+          "id": "sOFkTM03IawZPoP8",
+          "name": "local_redis"
+        }
+      }
     },
     {
       "parameters": {
@@ -783,7 +1952,13 @@
         176
       ],
       "id": "1f9d111c-ccd8-4328-848e-e43996667c18",
-      "name": "redis_clear"
+      "name": "redis_clear",
+      "credentials": {
+        "redis": {
+          "id": "sOFkTM03IawZPoP8",
+          "name": "local_redis"
+        }
+      }
     },
     {
       "parameters": {
@@ -796,7 +1971,13 @@
         480
       ],
       "id": "fd073de8-e260-46a8-ae5b-8fa242b74e50",
-      "name": "redis_add"
+      "name": "redis_add",
+      "credentials": {
+        "redis": {
+          "id": "sOFkTM03IawZPoP8",
+          "name": "local_redis"
+        }
+      }
     },
     {
       "parameters": {
@@ -847,9 +2028,9 @@
         "description": "Use this tool to get information or take actions on your managed servers. Only takes command from daileit",
         "workflowId": {
           "__rl": true,
-          "value": "wKX1WuWTvLDhUnGg",
+          "value": "1WdfnvIPYi5BRtZM",
           "mode": "list",
-          "cachedResultUrl": "/workflow/wKX1WuWTvLDhUnGg",
+          "cachedResultUrl": "/workflow/1WdfnvIPYi5BRtZM",
           "cachedResultName": "manage_servers"
         },
         "workflowInputs": {
@@ -962,7 +2143,13 @@
         1264
       ],
       "id": "94b1caed-29f7-428f-b516-d2e644aab7b7",
-      "name": "Get a dashboard in Grafana"
+      "name": "Get a dashboard in Grafana",
+      "credentials": {
+        "grafanaApi": {
+          "id": "s8KURncoNGCfI8qB",
+          "name": "apm_cloudyez_com"
+        }
+      }
     },
     {
       "parameters": {
@@ -1092,7 +2279,13 @@
       ],
       "id": "e1cff661-80f8-4f59-b936-60ee21e1e992",
       "name": "Send message to daileit",
-      "webhookId": "d4e350fa-99ef-40c0-a90e-d6ee9eb4aec4"
+      "webhookId": "d4e350fa-99ef-40c0-a90e-d6ee9eb4aec4",
+      "credentials": {
+        "telegramApi": {
+          "id": "WThXsAx5sRkAARiW",
+          "name": "tele_tomithebot"
+        }
+      }
     }
   ],
   "pinData": {
@@ -1122,8 +2315,8 @@
   ],
   "staticData": null,
   "tags": [],
-  "triggerCount": 0,
-  "updatedAt": "2026-04-21T18:36:53.496Z",
-  "versionId": "63d834f5-1578-405a-9cb1-c060ee413dc5",
-  "workflow_meta": ""
+  "triggerCount": 1,
+  "updatedAt": "2026-06-05T19:04:42.645Z",
+  "versionId": "de5bd783-d42c-4e19-971f-c27630d45223",
+  "workflow_meta": "[v1.2.2] "
 }
