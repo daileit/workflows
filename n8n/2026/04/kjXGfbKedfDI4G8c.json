@@ -1,9 +1,9 @@
 {
   "active": true,
   "activeVersion": {
-    "updatedAt": "2026-06-05T19:06:03.136Z",
-    "createdAt": "2026-06-05T17:06:04.957Z",
-    "versionId": "d19f284a-3f18-49b5-827b-752baf0030b9",
+    "updatedAt": "2026-06-05T19:37:28.514Z",
+    "createdAt": "2026-06-05T19:37:06.809Z",
+    "versionId": "086a6e20-8116-4e2f-9251-d544f0de897b",
     "workflowId": "kjXGfbKedfDI4G8c",
     "nodes": [
       {
@@ -13,7 +13,7 @@
               {
                 "id": "0a2621a0-b8e2-4cfd-80cd-54941cf9129f",
                 "name": "search_url",
-                "value": "={{ $json.search_url }}",
+                "value": "=https://generativelanguage.googleapis.com",
                 "type": "string"
               },
               {
@@ -62,8 +62,8 @@
         "type": "n8n-nodes-base.dataTable",
         "typeVersion": 1,
         "position": [
-          -848,
-          48
+          -400,
+          336
         ],
         "id": "17fcd385-f2ef-4ff5-a1a0-a8c49c1ac9ec",
         "name": "get_data"
@@ -81,7 +81,7 @@
         "type": "n8n-nodes-base.executeWorkflowTrigger",
         "typeVersion": 1.1,
         "position": [
-          -1088,
+          -896,
           48
         ],
         "id": "1946b49c-4ee5-4770-a503-48629e92cbae",
@@ -286,7 +286,7 @@
       },
       {
         "parameters": {
-          "jsCode": "const axios = require('axios');\n\nasync function convertGroundingToCitations(groundingChunks) {\n  const headers = {\n    \"Content-Type\": \"application/json\",\n    \"User-Agent\": \"Tomi/1.0.1 (https://tomi.dev.lspm.io)\",\n  };\n\n  async function fetchUrlOnce(url, method) {\n    try {\n      //console.log(`fetch ${url}`);\n      const response = await axios({\n        method: method,\n        url: url,\n        headers: headers,\n        timeout: 2000,\n      });\n\n      if (response.status === 404) {\n        return null;\n      }\n      return response.request.res.responseUrl;\n    } catch (error) {\n      return null;\n    }\n  }\n\n  async function fetchFinalUrl(url) {\n    let finalUrl = await fetchUrlOnce(url, 'HEAD');\n    if (!finalUrl) {\n      finalUrl = await fetchUrlOnce(url, 'GET');\n    }\n    return finalUrl;\n  }\n\n  async function processChunk(idx, chunk) {\n    const webInfo = chunk.json.web;\n    const originalUrl = webInfo.uri || '';\n    const title = webInfo.title || 'Unknown Source';\n\n    if (!originalUrl) {\n      return null;\n    }\n\n    const finalUrl = await fetchFinalUrl(originalUrl);\n\n    if (finalUrl) {\n      return {\n        citation_index: idx,\n        citation_url: finalUrl,\n        citation_title: title,\n      };\n    }\n\n    return {\n      citation_index: idx,\n      citation_url: title,\n    };\n  }\n\n  const tasks = groundingChunks.map((chunk, idx) => processChunk(idx, chunk));\n  const results = await Promise.all(tasks);\n  //console.log(\"result: \" + JSON.stringify(results));\n  return results.filter((res) => res);\n}\n\nconst final = await convertGroundingToCitations($input.all())\nreturn {\n  output : final\n};\n"
+          "jsCode": "const axios = require('axios');\n\nasync function convertGroundingToCitations(groundingChunks) {\n  const headers = {\n    \"Content-Type\": \"application/json\",\n    \"User-Agent\": \"Tomi/1.0.1 (https://tomi.dev.lspm.io)\",\n  };\n\n  async function fetchUrlOnce(url, method) {\n    try {\n      console.log(`fetch [${method}] ${url}`);\n      const response = await axios({\n        method: method,\n        url: url,\n        headers: headers,\n        timeout: 2000,\n        // CHÌA KHÓA Ở ĐÂY: Cho phép nhận tất cả các status code từ 200 đến 499 \n        // mà không ném ra lỗi (bỏ qua bước tạo AxiosError lỗi của thư viện)\n        validateStatus: function (status) {\n          return status >= 200 && status < 500; \n        },\n      });\n\n      // Nếu gặp 404 hoặc các lỗi chặn quyền như 403, coi như không lấy được URL final\n      if (response.status === 404 || response.status === 403) {\n        return null;\n      }\n      \n      // Đảm bảo responseUrl tồn tại trước khi lấy\n      return response.request?.res?.responseUrl || url;\n    } catch (error) {\n      // Bọc thêm một lớp an toàn nếu vẫn có lỗi kết nối (Timeout, Network Error)\n      console.log(`Fetch error for ${url}:`, error.message || error);\n      return null;\n    }\n  }\n\n  async function fetchFinalUrl(url) {\n    let finalUrl = await fetchUrlOnce(url, 'HEAD');\n    if (!finalUrl) {\n      finalUrl = await fetchUrlOnce(url, 'GET');\n    }\n    return finalUrl;\n  }\n\n  async function processChunk(idx, chunk) {\n    const webInfo = chunk.json?.web || {};\n    const originalUrl = webInfo.uri || '';\n    const title = webInfo.title || 'Unknown Source';\n\n    if (!originalUrl) {\n      return null;\n    }\n\n    const finalUrl = await fetchFinalUrl(originalUrl);\n\n    if (finalUrl) {\n      return {\n        citation_index: idx,\n        citation_url: finalUrl,\n        citation_title: title,\n      };\n    }\n\n    return {\n      citation_index: idx,\n      citation_url: title,\n    };\n  }\n\n  const tasks = groundingChunks.map((chunk, idx) => processChunk(idx, chunk));\n  const results = await Promise.all(tasks);\n  console.log(\"result: \" + JSON.stringify(results));\n  return results.filter((res) => res);\n}\n\n// Thực thi chính trong n8n\nconst final = await convertGroundingToCitations($input.all());\nreturn {\n  output: final\n};"
         },
         "type": "n8n-nodes-base.code",
         "typeVersion": 2,
@@ -466,20 +466,14 @@
       },
       "get_data": {
         "main": [
-          [
-            {
-              "node": "prepare_data",
-              "type": "main",
-              "index": 0
-            }
-          ]
+          []
         ]
       },
       "trigger": {
         "main": [
           [
             {
-              "node": "get_data",
+              "node": "prepare_data",
               "type": "main",
               "index": 0
             }
@@ -615,11 +609,11 @@
       }
     },
     "authors": "Dai Le",
-    "name": "v1.0.1",
+    "name": "v1.1.12",
     "description": "",
     "autosaved": true
   },
-  "activeVersionId": "d19f284a-3f18-49b5-827b-752baf0030b9",
+  "activeVersionId": "086a6e20-8116-4e2f-9251-d544f0de897b",
   "connections": {
     "prepare_data": {
       "main": [
@@ -1064,7 +1058,7 @@
     },
     {
       "parameters": {
-        "jsCode": "const axios = require('axios');\n\nasync function convertGroundingToCitations(groundingChunks) {\n  const headers = {\n    \"Content-Type\": \"application/json\",\n    \"User-Agent\": \"Tomi/1.0.1 (https://tomi.dev.lspm.io)\",\n  };\n\n  async function fetchUrlOnce(url, method) {\n    try {\n      //console.log(`fetch ${url}`);\n      const response = await axios({\n        method: method,\n        url: url,\n        headers: headers,\n        timeout: 2000,\n      });\n\n      if (response.status === 404) {\n        return null;\n      }\n      return response.request.res.responseUrl;\n    } catch (error) {\n      return null;\n    }\n  }\n\n  async function fetchFinalUrl(url) {\n    let finalUrl = await fetchUrlOnce(url, 'HEAD');\n    if (!finalUrl) {\n      finalUrl = await fetchUrlOnce(url, 'GET');\n    }\n    return finalUrl;\n  }\n\n  async function processChunk(idx, chunk) {\n    const webInfo = chunk.json.web;\n    const originalUrl = webInfo.uri || '';\n    const title = webInfo.title || 'Unknown Source';\n\n    if (!originalUrl) {\n      return null;\n    }\n\n    const finalUrl = await fetchFinalUrl(originalUrl);\n\n    if (finalUrl) {\n      return {\n        citation_index: idx,\n        citation_url: finalUrl,\n        citation_title: title,\n      };\n    }\n\n    return {\n      citation_index: idx,\n      citation_url: title,\n    };\n  }\n\n  const tasks = groundingChunks.map((chunk, idx) => processChunk(idx, chunk));\n  const results = await Promise.all(tasks);\n  //console.log(\"result: \" + JSON.stringify(results));\n  return results.filter((res) => res);\n}\n\nconst final = await convertGroundingToCitations($input.all())\nreturn {\n  output : final\n};\n"
+        "jsCode": "const axios = require('axios');\n\nasync function convertGroundingToCitations(groundingChunks) {\n  const headers = {\n    \"Content-Type\": \"application/json\",\n    \"User-Agent\": \"Tomi/1.0.1 (https://tomi.dev.lspm.io)\",\n  };\n\n  async function fetchUrlOnce(url, method) {\n    try {\n      console.log(`fetch [${method}] ${url}`);\n      const response = await axios({\n        method: method,\n        url: url,\n        headers: headers,\n        timeout: 2000,\n        // CHÌA KHÓA Ở ĐÂY: Cho phép nhận tất cả các status code từ 200 đến 499 \n        // mà không ném ra lỗi (bỏ qua bước tạo AxiosError lỗi của thư viện)\n        validateStatus: function (status) {\n          return status >= 200 && status < 500; \n        },\n      });\n\n      // Nếu gặp 404 hoặc các lỗi chặn quyền như 403, coi như không lấy được URL final\n      if (response.status === 404 || response.status === 403) {\n        return null;\n      }\n      \n      // Đảm bảo responseUrl tồn tại trước khi lấy\n      return response.request?.res?.responseUrl || url;\n    } catch (error) {\n      // Bọc thêm một lớp an toàn nếu vẫn có lỗi kết nối (Timeout, Network Error)\n      console.log(`Fetch error for ${url}:`, error.message || error);\n      return null;\n    }\n  }\n\n  async function fetchFinalUrl(url) {\n    let finalUrl = await fetchUrlOnce(url, 'HEAD');\n    if (!finalUrl) {\n      finalUrl = await fetchUrlOnce(url, 'GET');\n    }\n    return finalUrl;\n  }\n\n  async function processChunk(idx, chunk) {\n    const webInfo = chunk.json?.web || {};\n    const originalUrl = webInfo.uri || '';\n    const title = webInfo.title || 'Unknown Source';\n\n    if (!originalUrl) {\n      return null;\n    }\n\n    const finalUrl = await fetchFinalUrl(originalUrl);\n\n    if (finalUrl) {\n      return {\n        citation_index: idx,\n        citation_url: finalUrl,\n        citation_title: title,\n      };\n    }\n\n    return {\n      citation_index: idx,\n      citation_url: title,\n    };\n  }\n\n  const tasks = groundingChunks.map((chunk, idx) => processChunk(idx, chunk));\n  const results = await Promise.all(tasks);\n  console.log(\"result: \" + JSON.stringify(results));\n  return results.filter((res) => res);\n}\n\n// Thực thi chính trong n8n\nconst final = await convertGroundingToCitations($input.all());\nreturn {\n  output: final\n};"
       },
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -1258,7 +1252,7 @@
   "staticData": null,
   "tags": [],
   "triggerCount": 0,
-  "updatedAt": "2026-06-05T19:10:52.035Z",
-  "versionId": "cd1a6441-c344-4a70-8b1e-6d73b5917f54",
-  "workflow_meta": "[v1.0.1] "
+  "updatedAt": "2026-06-05T19:37:06.807Z",
+  "versionId": "086a6e20-8116-4e2f-9251-d544f0de897b",
+  "workflow_meta": "[v1.1.12] "
 }
