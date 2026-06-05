@@ -1,18 +1,18 @@
 {
   "active": true,
   "activeVersion": {
-    "updatedAt": "2026-06-05T19:04:56.295Z",
-    "createdAt": "2026-06-05T19:04:42.647Z",
-    "versionId": "de5bd783-d42c-4e19-971f-c27630d45223",
+    "updatedAt": "2026-06-05T19:53:51.968Z",
+    "createdAt": "2026-06-05T19:53:37.459Z",
+    "versionId": "77ef3bb4-9b7a-4ed9-9d64-5ac4badeeab0",
     "workflowId": "NMDJOBNFXSAzsMCa",
     "nodes": [
       {
         "parameters": {
           "model": {
             "__rl": true,
-            "value": "gpt-5-mini",
+            "value": "deepseek-v4-flash",
             "mode": "list",
-            "cachedResultName": "gpt-5-mini"
+            "cachedResultName": "deepseek-v4-flash"
           },
           "options": {
             "maxTokens": 10000,
@@ -30,8 +30,8 @@
         "typeVersion": 1.2,
         "credentials": {
           "openAiApi": {
-            "id": "QhjH8fo0ClhRj9g8",
-            "name": "oai_timo_dev"
+            "id": "HaS2f5k9jU2cL1Ou",
+            "name": "oai_deepseek_tomi"
           }
         }
       },
@@ -678,26 +678,6 @@
       },
       {
         "parameters": {
-          "operation": "get",
-          "dashboardUidOrUrl": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Dashboard_UID_or_URL', `grafana dashboard uid or url, the host domain is https://apm.cloudyez.com`, 'string') }}"
-        },
-        "type": "n8n-nodes-base.grafanaTool",
-        "typeVersion": 1,
-        "position": [
-          448,
-          1264
-        ],
-        "id": "94b1caed-29f7-428f-b516-d2e644aab7b7",
-        "name": "Get a dashboard in Grafana",
-        "credentials": {
-          "grafanaApi": {
-            "id": "s8KURncoNGCfI8qB",
-            "name": "apm_cloudyez_com"
-          }
-        }
-      },
-      {
-        "parameters": {
           "url": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('URL', ``, 'string') }}",
           "options": {
             "response": {
@@ -829,6 +809,29 @@
           "telegramApi": {
             "id": "WThXsAx5sRkAARiW",
             "name": "tele_tomithebot"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "operation": "getAll",
+          "returnAll": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Return_All', ``, 'boolean') }}",
+          "filters": {
+            "query": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Search_Query', `query grafana dashboard uid or url, the host domain is https://apm.cloudyez.com`, 'string') }}"
+          }
+        },
+        "type": "n8n-nodes-base.grafanaTool",
+        "typeVersion": 1,
+        "position": [
+          448,
+          1264
+        ],
+        "id": "94b1caed-29f7-428f-b516-d2e644aab7b7",
+        "name": "Get many dashboards in Grafana",
+        "credentials": {
+          "grafanaApi": {
+            "id": "s8KURncoNGCfI8qB",
+            "name": "apm_cloudyez_com"
           }
         }
       }
@@ -1063,17 +1066,6 @@
           ]
         ]
       },
-      "Get a dashboard in Grafana": {
-        "ai_tool": [
-          [
-            {
-              "node": "Daile Agent",
-              "type": "ai_tool",
-              "index": 0
-            }
-          ]
-        ]
-      },
       "HTTP Request": {
         "ai_tool": [
           [
@@ -1138,14 +1130,25 @@
             }
           ]
         ]
+      },
+      "Get many dashboards in Grafana": {
+        "ai_tool": [
+          [
+            {
+              "node": "Daile Agent",
+              "type": "ai_tool",
+              "index": 0
+            }
+          ]
+        ]
       }
     },
     "authors": "Dai Le",
-    "name": "v1.2.2",
+    "name": "v1.2.14",
     "description": "",
     "autosaved": true
   },
-  "activeVersionId": "de5bd783-d42c-4e19-971f-c27630d45223",
+  "activeVersionId": "77ef3bb4-9b7a-4ed9-9d64-5ac4badeeab0",
   "connections": {
     "Al Model": {
       "ai_languageModel": [
@@ -1376,17 +1379,6 @@
         ]
       ]
     },
-    "Get a dashboard in Grafana": {
-      "ai_tool": [
-        [
-          {
-            "node": "Daile Agent",
-            "type": "ai_tool",
-            "index": 0
-          }
-        ]
-      ]
-    },
     "HTTP Request": {
       "ai_tool": [
         [
@@ -1451,6 +1443,17 @@
           }
         ]
       ]
+    },
+    "Get many dashboards in Grafana": {
+      "ai_tool": [
+        [
+          {
+            "node": "Daile Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
     }
   },
   "createdAt": "2026-04-21T18:36:53.496Z",
@@ -1465,9 +1468,9 @@
       "parameters": {
         "model": {
           "__rl": true,
-          "value": "gpt-5-mini",
+          "value": "deepseek-v4-flash",
           "mode": "list",
-          "cachedResultName": "gpt-5-mini"
+          "cachedResultName": "deepseek-v4-flash"
         },
         "options": {
           "maxTokens": 10000,
@@ -1485,8 +1488,8 @@
       "typeVersion": 1.2,
       "credentials": {
         "openAiApi": {
-          "id": "QhjH8fo0ClhRj9g8",
-          "name": "oai_timo_dev"
+          "id": "HaS2f5k9jU2cL1Ou",
+          "name": "oai_deepseek_tomi"
         }
       }
     },
@@ -2133,26 +2136,6 @@
     },
     {
       "parameters": {
-        "operation": "get",
-        "dashboardUidOrUrl": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Dashboard_UID_or_URL', `grafana dashboard uid or url, the host domain is https://apm.cloudyez.com`, 'string') }}"
-      },
-      "type": "n8n-nodes-base.grafanaTool",
-      "typeVersion": 1,
-      "position": [
-        448,
-        1264
-      ],
-      "id": "94b1caed-29f7-428f-b516-d2e644aab7b7",
-      "name": "Get a dashboard in Grafana",
-      "credentials": {
-        "grafanaApi": {
-          "id": "s8KURncoNGCfI8qB",
-          "name": "apm_cloudyez_com"
-        }
-      }
-    },
-    {
-      "parameters": {
         "url": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('URL', ``, 'string') }}",
         "options": {
           "response": {
@@ -2286,6 +2269,29 @@
           "name": "tele_tomithebot"
         }
       }
+    },
+    {
+      "parameters": {
+        "operation": "getAll",
+        "returnAll": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Return_All', ``, 'boolean') }}",
+        "filters": {
+          "query": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Search_Query', `query grafana dashboard uid or url, the host domain is https://apm.cloudyez.com`, 'string') }}"
+        }
+      },
+      "type": "n8n-nodes-base.grafanaTool",
+      "typeVersion": 1,
+      "position": [
+        448,
+        1264
+      ],
+      "id": "94b1caed-29f7-428f-b516-d2e644aab7b7",
+      "name": "Get many dashboards in Grafana",
+      "credentials": {
+        "grafanaApi": {
+          "id": "s8KURncoNGCfI8qB",
+          "name": "apm_cloudyez_com"
+        }
+      }
     }
   ],
   "pinData": {
@@ -2316,7 +2322,7 @@
   "staticData": null,
   "tags": [],
   "triggerCount": 1,
-  "updatedAt": "2026-06-05T19:04:42.645Z",
-  "versionId": "de5bd783-d42c-4e19-971f-c27630d45223",
-  "workflow_meta": "[v1.2.2] "
+  "updatedAt": "2026-06-05T19:53:37.457Z",
+  "versionId": "77ef3bb4-9b7a-4ed9-9d64-5ac4badeeab0",
+  "workflow_meta": "[v1.2.14] "
 }
