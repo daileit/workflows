@@ -1,9 +1,9 @@
 {
   "active": true,
   "activeVersion": {
-    "updatedAt": "2026-05-31T09:06:37.553Z",
-    "createdAt": "2026-05-31T09:06:21.782Z",
-    "versionId": "ae7f62ea-5e9e-44df-bc70-8bf1d1b7b5ec",
+    "updatedAt": "2026-06-06T15:04:18.589Z",
+    "createdAt": "2026-06-06T15:03:52.542Z",
+    "versionId": "fe88d9b2-4c54-4071-8e43-97f85a5f7854",
     "workflowId": "wu5z01aaBSyMbw83",
     "nodes": [
       {
@@ -609,9 +609,9 @@
         "parameters": {
           "modelId": {
             "__rl": true,
-            "value": "apac.anthropic.claude-sonnet-4-20250514-v1:0",
+            "value": "gpt-5-mini",
             "mode": "list",
-            "cachedResultName": "APAC.ANTHROPIC.CLAUDE-SONNET-4-20250514-V1:0"
+            "cachedResultName": "GPT-5-MINI"
           },
           "messages": {
             "values": [
@@ -636,8 +636,8 @@
         "name": "reformat",
         "credentials": {
           "openAiApi": {
-            "id": "eshVArCKvoaUDpPN",
-            "name": "oai_groq_daile_programer"
+            "id": "QhjH8fo0ClhRj9g8",
+            "name": "oai_timo_dev"
           }
         }
       },
@@ -1116,11 +1116,11 @@
       }
     },
     "authors": "Dai Le",
-    "name": "v1.1.0",
+    "name": "v1.1.3",
     "description": "",
     "autosaved": true
   },
-  "activeVersionId": "ae7f62ea-5e9e-44df-bc70-8bf1d1b7b5ec",
+  "activeVersionId": "fe88d9b2-4c54-4071-8e43-97f85a5f7854",
   "connections": {
     "n8n": {
       "main": [
@@ -2086,9 +2086,9 @@
       "parameters": {
         "modelId": {
           "__rl": true,
-          "value": "apac.anthropic.claude-sonnet-4-20250514-v1:0",
+          "value": "gpt-5-mini",
           "mode": "list",
-          "cachedResultName": "APAC.ANTHROPIC.CLAUDE-SONNET-4-20250514-V1:0"
+          "cachedResultName": "GPT-5-MINI"
         },
         "messages": {
           "values": [
@@ -2113,8 +2113,8 @@
       "name": "reformat",
       "credentials": {
         "openAiApi": {
-          "id": "eshVArCKvoaUDpPN",
-          "name": "oai_groq_daile_programer"
+          "id": "QhjH8fo0ClhRj9g8",
+          "name": "oai_timo_dev"
         }
       }
     },
@@ -2262,7 +2262,7 @@
   },
   "tags": [],
   "triggerCount": 1,
-  "updatedAt": "2026-05-31T09:06:21.781Z",
-  "versionId": "ae7f62ea-5e9e-44df-bc70-8bf1d1b7b5ec",
-  "workflow_meta": "[v1.1.0] "
+  "updatedAt": "2026-06-06T15:03:52.541Z",
+  "versionId": "fe88d9b2-4c54-4071-8e43-97f85a5f7854",
+  "workflow_meta": "[v1.1.3] "
 }
