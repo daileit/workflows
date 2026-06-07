@@ -1,23 +1,23 @@
 {
   "active": true,
   "activeVersion": {
-    "updatedAt": "2026-06-07T07:07:16.904Z",
-    "createdAt": "2026-06-07T07:07:09.403Z",
-    "versionId": "25a1d212-012e-4a56-834d-e04feb704eac",
+    "updatedAt": "2026-06-07T07:33:08.168Z",
+    "createdAt": "2026-06-07T07:33:02.202Z",
+    "versionId": "b4c2aa06-b49c-4fc7-8529-a433d466b04e",
     "workflowId": "NMDJOBNFXSAzsMCa",
     "nodes": [
       {
         "parameters": {
           "model": {
             "__rl": true,
-            "value": "deepseek-v4-flash",
+            "value": "gpt-5.4",
             "mode": "list",
-            "cachedResultName": "deepseek-v4-flash"
+            "cachedResultName": "gpt-5.4"
           },
           "options": {
-            "maxTokens": 10000,
+            "maxTokens": 20000,
             "timeout": 60000,
-            "maxRetries": 2
+            "maxRetries": 3
           }
         },
         "id": "ac97048f-39c9-4c5d-be06-33d230e3b036",
@@ -30,8 +30,8 @@
         "typeVersion": 1.2,
         "credentials": {
           "openAiApi": {
-            "id": "HaS2f5k9jU2cL1Ou",
-            "name": "oai_deepseek_tomi"
+            "id": "QhjH8fo0ClhRj9g8",
+            "name": "oai_timo_dev"
           }
         }
       },
@@ -123,8 +123,7 @@
           1264
         ],
         "id": "d49817ae-2ef9-47b5-b9f1-efd341959b9a",
-        "name": "Call 'google_ai_search'",
-        "disabled": true
+        "name": "Call 'google_ai_search'"
       },
       {
         "parameters": {
@@ -1154,14 +1153,25 @@
             }
           ]
         ]
+      },
+      "test_trigger": {
+        "main": [
+          [
+            {
+              "node": "type_switch",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
       }
     },
     "authors": "Dai Le",
-    "name": "Version 25a1d212",
+    "name": "Version b4c2aa06",
     "description": "",
     "autosaved": true
   },
-  "activeVersionId": "25a1d212-012e-4a56-834d-e04feb704eac",
+  "activeVersionId": "b4c2aa06-b49c-4fc7-8529-a433d466b04e",
   "connections": {
     "Al Model": {
       "ai_languageModel": [
@@ -1467,6 +1477,17 @@
           }
         ]
       ]
+    },
+    "test_trigger": {
+      "main": [
+        [
+          {
+            "node": "type_switch",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     }
   },
   "createdAt": "2026-04-21T18:36:53.496Z",
@@ -1481,14 +1502,14 @@
       "parameters": {
         "model": {
           "__rl": true,
-          "value": "deepseek-v4-flash",
+          "value": "gpt-5.4",
           "mode": "list",
-          "cachedResultName": "deepseek-v4-flash"
+          "cachedResultName": "gpt-5.4"
         },
         "options": {
-          "maxTokens": 10000,
+          "maxTokens": 20000,
           "timeout": 60000,
-          "maxRetries": 2
+          "maxRetries": 3
         }
       },
       "id": "ac97048f-39c9-4c5d-be06-33d230e3b036",
@@ -1501,8 +1522,8 @@
       "typeVersion": 1.2,
       "credentials": {
         "openAiApi": {
-          "id": "HaS2f5k9jU2cL1Ou",
-          "name": "oai_deepseek_tomi"
+          "id": "QhjH8fo0ClhRj9g8",
+          "name": "oai_timo_dev"
         }
       }
     },
@@ -1594,8 +1615,7 @@
         1264
       ],
       "id": "d49817ae-2ef9-47b5-b9f1-efd341959b9a",
-      "name": "Call 'google_ai_search'",
-      "disabled": true
+      "name": "Call 'google_ai_search'"
     },
     {
       "parameters": {
@@ -2348,7 +2368,7 @@
   "staticData": null,
   "tags": [],
   "triggerCount": 1,
-  "updatedAt": "2026-06-07T07:07:09.402Z",
-  "versionId": "25a1d212-012e-4a56-834d-e04feb704eac",
-  "workflow_meta": "[Version 25a1d212] "
+  "updatedAt": "2026-06-07T07:33:02.201Z",
+  "versionId": "b4c2aa06-b49c-4fc7-8529-a433d466b04e",
+  "workflow_meta": "[Version b4c2aa06] "
 }
