@@ -1,9 +1,9 @@
 {
   "active": true,
   "activeVersion": {
-    "updatedAt": "2026-06-07T07:06:47.112Z",
-    "createdAt": "2026-06-07T07:06:41.695Z",
-    "versionId": "b0e4a438-6116-4d86-ac6b-1bb19355b70c",
+    "updatedAt": "2026-06-07T07:28:26.945Z",
+    "createdAt": "2026-06-07T07:28:13.315Z",
+    "versionId": "f8f4f6d1-f64c-4641-a889-d32aadfd7e72",
     "workflowId": "kjXGfbKedfDI4G8c",
     "nodes": [
       {
@@ -26,7 +26,13 @@
                 "id": "f7ca36da-4651-405f-b87f-d37db1deec83",
                 "name": "path",
                 "value": "={{ parseInt(Math.random()*100) }} ",
-                "type": "string"
+                "type": "number"
+              },
+              {
+                "id": "5b323d2a-5180-4dc8-854c-b93be283d914",
+                "name": "retry",
+                "value": 0,
+                "type": "number"
               }
             ]
           },
@@ -316,14 +322,14 @@
               {
                 "id": "e2c420bb-e3f0-4f85-9cd1-3297a84d1884",
                 "name": "path",
-                "value": "={{ Math.abs(100 - parseInt($('routing').item.json.path)) }}",
-                "type": "string"
+                "value": "={{ parseInt(Math.random()*100) + $json.retry*10 }} ",
+                "type": "number"
               },
               {
                 "id": "a657b369-ee0b-4742-b0fd-a7fc5513c83f",
-                "name": "retried",
-                "value": true,
-                "type": "boolean"
+                "name": "retry",
+                "value": "={{ $json.retry +1  }}",
+                "type": "number"
               }
             ]
           },
@@ -492,6 +498,30 @@
                 },
                 "renameOutput": true,
                 "outputKey": "3"
+              },
+              {
+                "conditions": {
+                  "options": {
+                    "caseSensitive": true,
+                    "leftValue": "",
+                    "typeValidation": "loose",
+                    "version": 3
+                  },
+                  "conditions": [
+                    {
+                      "id": "eba46865-a8f7-454e-a3be-5d28758c917c",
+                      "leftValue": "={{ $json.path }}",
+                      "rightValue": 100,
+                      "operator": {
+                        "type": "number",
+                        "operation": "gt"
+                      }
+                    }
+                  ],
+                  "combinator": "and"
+                },
+                "renameOutput": true,
+                "outputKey": "4"
               }
             ]
           },
@@ -716,6 +746,13 @@
               "type": "main",
               "index": 0
             }
+          ],
+          [
+            {
+              "node": "Split Out",
+              "type": "main",
+              "index": 0
+            }
           ]
         ]
       },
@@ -739,11 +776,11 @@
       }
     },
     "authors": "Dai Le",
-    "name": "Version b0e4a438",
+    "name": "Version f8f4f6d1",
     "description": "",
     "autosaved": true
   },
-  "activeVersionId": "b0e4a438-6116-4d86-ac6b-1bb19355b70c",
+  "activeVersionId": "f8f4f6d1-f64c-4641-a889-d32aadfd7e72",
   "connections": {
     "prepare_data": {
       "main": [
@@ -903,6 +940,13 @@
             "type": "main",
             "index": 0
           }
+        ],
+        [
+          {
+            "node": "Split Out",
+            "type": "main",
+            "index": 0
+          }
         ]
       ]
     },
@@ -953,7 +997,13 @@
               "id": "f7ca36da-4651-405f-b87f-d37db1deec83",
               "name": "path",
               "value": "={{ parseInt(Math.random()*100) }} ",
-              "type": "string"
+              "type": "number"
+            },
+            {
+              "id": "5b323d2a-5180-4dc8-854c-b93be283d914",
+              "name": "retry",
+              "value": 0,
+              "type": "number"
             }
           ]
         },
@@ -1243,14 +1293,14 @@
             {
               "id": "e2c420bb-e3f0-4f85-9cd1-3297a84d1884",
               "name": "path",
-              "value": "={{ Math.abs(100 - parseInt($('routing').item.json.path)) }}",
-              "type": "string"
+              "value": "={{ parseInt(Math.random()*100) + $json.retry*10 }} ",
+              "type": "number"
             },
             {
               "id": "a657b369-ee0b-4742-b0fd-a7fc5513c83f",
-              "name": "retried",
-              "value": true,
-              "type": "boolean"
+              "name": "retry",
+              "value": "={{ $json.retry +1  }}",
+              "type": "number"
             }
           ]
         },
@@ -1419,6 +1469,30 @@
               },
               "renameOutput": true,
               "outputKey": "3"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "loose",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "eba46865-a8f7-454e-a3be-5d28758c917c",
+                    "leftValue": "={{ $json.path }}",
+                    "rightValue": 100,
+                    "operator": {
+                      "type": "number",
+                      "operation": "gt"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "4"
             }
           ]
         },
@@ -1512,7 +1586,7 @@
   "staticData": null,
   "tags": [],
   "triggerCount": 0,
-  "updatedAt": "2026-06-07T07:06:41.693Z",
-  "versionId": "b0e4a438-6116-4d86-ac6b-1bb19355b70c",
-  "workflow_meta": "[Version b0e4a438] "
+  "updatedAt": "2026-06-07T07:28:13.313Z",
+  "versionId": "f8f4f6d1-f64c-4641-a889-d32aadfd7e72",
+  "workflow_meta": "[Version f8f4f6d1] "
 }
