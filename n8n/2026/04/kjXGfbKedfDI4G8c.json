@@ -1,9 +1,9 @@
 {
   "active": true,
   "activeVersion": {
-    "updatedAt": "2026-06-06T15:00:21.728Z",
-    "createdAt": "2026-06-06T14:59:02.869Z",
-    "versionId": "cf9bc54d-3882-47ec-8a0b-b7ff0e439fec",
+    "updatedAt": "2026-06-07T07:06:47.112Z",
+    "createdAt": "2026-06-07T07:06:41.695Z",
+    "versionId": "b0e4a438-6116-4d86-ac6b-1bb19355b70c",
     "workflowId": "kjXGfbKedfDI4G8c",
     "nodes": [
       {
@@ -62,8 +62,8 @@
         "type": "n8n-nodes-base.dataTable",
         "typeVersion": 1,
         "position": [
-          -400,
-          336
+          -640,
+          272
         ],
         "id": "17fcd385-f2ef-4ff5-a1a0-a8c49c1ac9ec",
         "name": "get_data"
@@ -90,7 +90,7 @@
       {
         "parameters": {
           "method": "POST",
-          "url": "={{ $json.search_url }}/v1beta/models/{{  parseInt(Math.random()*10) > 5 ? \"gemini-2.0-flash\" : \"gemini-2.5-flash-lite\" }}:generateContent",
+          "url": "={{ $json.search_url }}/v1beta/models/{{  parseInt(Math.random()*10) > 6 ? \"gemini-3.5-flash\" : \"gemini-3.1-flash-lite\" }}:generateContent",
           "authentication": "predefinedCredentialType",
           "nodeCredentialType": "googlePalmApi",
           "sendHeaders": true,
@@ -139,7 +139,7 @@
       {
         "parameters": {
           "method": "POST",
-          "url": "={{ $json.search_url }}/v1beta/models/{{ parseInt(Math.random()*10) > 5 ? \"gemini-2.0-flash\" : \"gemini-2.5-flash-lite\" }}:generateContent",
+          "url": "={{ $json.search_url }}/v1beta/models/{{  parseInt(Math.random()*10) > 6 ? \"gemini-3.5-flash\" : \"gemini-3.1-flash-lite\" }}:generateContent",
           "authentication": "predefinedCredentialType",
           "nodeCredentialType": "googlePalmApi",
           "sendHeaders": true,
@@ -419,37 +419,142 @@
       },
       {
         "parameters": {
-          "conditions": {
-            "options": {
-              "caseSensitive": true,
-              "leftValue": "",
-              "typeValidation": "loose",
-              "version": 2
-            },
-            "conditions": [
+          "rules": {
+            "values": [
               {
-                "id": "f3c35b7a-d1e6-4c37-ab68-339ea10bb952",
-                "leftValue": "={{ $json.path }}",
-                "rightValue": 55,
-                "operator": {
-                  "type": "number",
-                  "operation": "gt"
-                }
+                "conditions": {
+                  "options": {
+                    "caseSensitive": true,
+                    "leftValue": "",
+                    "typeValidation": "loose",
+                    "version": 3
+                  },
+                  "conditions": [
+                    {
+                      "leftValue": "={{ $json.path }}",
+                      "rightValue": 20,
+                      "operator": {
+                        "type": "number",
+                        "operation": "lt"
+                      },
+                      "id": "ba72ea40-a88d-4016-a107-89d0c1a05883"
+                    }
+                  ],
+                  "combinator": "and"
+                },
+                "renameOutput": true,
+                "outputKey": "1"
+              },
+              {
+                "conditions": {
+                  "options": {
+                    "caseSensitive": true,
+                    "leftValue": "",
+                    "typeValidation": "loose",
+                    "version": 3
+                  },
+                  "conditions": [
+                    {
+                      "id": "414a664c-7470-4fdc-84cb-ed70e2600533",
+                      "leftValue": "={{ $json.path }}",
+                      "rightValue": 40,
+                      "operator": {
+                        "type": "number",
+                        "operation": "lt"
+                      }
+                    }
+                  ],
+                  "combinator": "and"
+                },
+                "renameOutput": true,
+                "outputKey": "2"
+              },
+              {
+                "conditions": {
+                  "options": {
+                    "caseSensitive": true,
+                    "leftValue": "",
+                    "typeValidation": "loose",
+                    "version": 3
+                  },
+                  "conditions": [
+                    {
+                      "id": "d45f1e43-e3cb-4a16-a033-13e9f5c6ded7",
+                      "leftValue": "={{ $json.path }}",
+                      "rightValue": 100,
+                      "operator": {
+                        "type": "number",
+                        "operation": "lt"
+                      }
+                    }
+                  ],
+                  "combinator": "and"
+                },
+                "renameOutput": true,
+                "outputKey": "3"
               }
-            ],
-            "combinator": "and"
+            ]
           },
           "looseTypeValidation": true,
           "options": {}
         },
-        "type": "n8n-nodes-base.if",
-        "typeVersion": 2.2,
+        "type": "n8n-nodes-base.switch",
+        "typeVersion": 3.4,
         "position": [
-          -448,
-          48
+          -400,
+          32
         ],
-        "id": "164bd14c-ee29-40f0-bfd7-512c7350a7f9",
+        "id": "0d29f673-5c28-4d8b-8433-fa0cc35b88d3",
         "name": "routing"
+      },
+      {
+        "parameters": {
+          "method": "POST",
+          "url": "={{ $json.search_url }}/v1beta/models/{{  parseInt(Math.random()*10) > 6 ? \"gemini-2.5-flash\" : \"gemini-3-flash-preview\" }}:generateContent",
+          "authentication": "predefinedCredentialType",
+          "nodeCredentialType": "googlePalmApi",
+          "sendHeaders": true,
+          "headerParameters": {
+            "parameters": [
+              {
+                "name": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "name": "User-Agent",
+                "value": "Apifox/1.0.0 (https://apifox.com)"
+              }
+            ]
+          },
+          "sendBody": true,
+          "specifyBody": "json",
+          "jsonBody": "={\n  \"contents\": [\n    {\n        \"parts\": [\n            {\"text\": \"{{ $('prepare_data').last().json.query ?? 'find some news' }} with the source links\"}\n        ]\n    }\n],\n\"tools\": [{\"googleSearch\": {}}]\n}",
+          "options": {
+            "response": {
+              "response": {
+                "responseFormat": "json"
+              }
+            }
+          }
+        },
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.3,
+        "position": [
+          -192,
+          368
+        ],
+        "id": "b562dc96-9b65-49a8-947f-2b96483fa88c",
+        "name": "request_ai_3",
+        "retryOnFail": true,
+        "waitBetweenTries": 5000,
+        "maxTries": 2,
+        "credentials": {
+          "googlePalmApi": {
+            "id": "hwdQzyuRFV3iYdeP",
+            "name": "gemini_k3"
+          }
+        },
+        "onError": "continueErrorOutput"
       }
     ],
     "connections": {
@@ -604,16 +709,41 @@
               "type": "main",
               "index": 0
             }
+          ],
+          [
+            {
+              "node": "request_ai_3",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "request_ai_3": {
+        "main": [
+          [
+            {
+              "node": "extract_chunks",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "retry_switch",
+              "type": "main",
+              "index": 0
+            }
           ]
         ]
       }
     },
     "authors": "Dai Le",
-    "name": "v1.2.3",
+    "name": "Version b0e4a438",
     "description": "",
     "autosaved": true
   },
-  "activeVersionId": "cf9bc54d-3882-47ec-8a0b-b7ff0e439fec",
+  "activeVersionId": "b0e4a438-6116-4d86-ac6b-1bb19355b70c",
   "connections": {
     "prepare_data": {
       "main": [
@@ -766,6 +896,31 @@
             "type": "main",
             "index": 0
           }
+        ],
+        [
+          {
+            "node": "request_ai_3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "request_ai_3": {
+      "main": [
+        [
+          {
+            "node": "extract_chunks",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "retry_switch",
+            "type": "main",
+            "index": 0
+          }
         ]
       ]
     }
@@ -834,8 +989,8 @@
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1,
       "position": [
-        -400,
-        336
+        -640,
+        272
       ],
       "id": "17fcd385-f2ef-4ff5-a1a0-a8c49c1ac9ec",
       "name": "get_data"
@@ -862,7 +1017,7 @@
     {
       "parameters": {
         "method": "POST",
-        "url": "={{ $json.search_url }}/v1beta/models/{{  parseInt(Math.random()*10) > 5 ? \"gemini-2.0-flash\" : \"gemini-2.5-flash-lite\" }}:generateContent",
+        "url": "={{ $json.search_url }}/v1beta/models/{{  parseInt(Math.random()*10) > 6 ? \"gemini-3.5-flash\" : \"gemini-3.1-flash-lite\" }}:generateContent",
         "authentication": "predefinedCredentialType",
         "nodeCredentialType": "googlePalmApi",
         "sendHeaders": true,
@@ -911,7 +1066,7 @@
     {
       "parameters": {
         "method": "POST",
-        "url": "={{ $json.search_url }}/v1beta/models/{{ parseInt(Math.random()*10) > 5 ? \"gemini-2.0-flash\" : \"gemini-2.5-flash-lite\" }}:generateContent",
+        "url": "={{ $json.search_url }}/v1beta/models/{{  parseInt(Math.random()*10) > 6 ? \"gemini-3.5-flash\" : \"gemini-3.1-flash-lite\" }}:generateContent",
         "authentication": "predefinedCredentialType",
         "nodeCredentialType": "googlePalmApi",
         "sendHeaders": true,
@@ -1191,37 +1346,142 @@
     },
     {
       "parameters": {
-        "conditions": {
-          "options": {
-            "caseSensitive": true,
-            "leftValue": "",
-            "typeValidation": "loose",
-            "version": 2
-          },
-          "conditions": [
+        "rules": {
+          "values": [
             {
-              "id": "f3c35b7a-d1e6-4c37-ab68-339ea10bb952",
-              "leftValue": "={{ $json.path }}",
-              "rightValue": 55,
-              "operator": {
-                "type": "number",
-                "operation": "gt"
-              }
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "loose",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.path }}",
+                    "rightValue": 20,
+                    "operator": {
+                      "type": "number",
+                      "operation": "lt"
+                    },
+                    "id": "ba72ea40-a88d-4016-a107-89d0c1a05883"
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "1"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "loose",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "414a664c-7470-4fdc-84cb-ed70e2600533",
+                    "leftValue": "={{ $json.path }}",
+                    "rightValue": 40,
+                    "operator": {
+                      "type": "number",
+                      "operation": "lt"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "2"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "loose",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "d45f1e43-e3cb-4a16-a033-13e9f5c6ded7",
+                    "leftValue": "={{ $json.path }}",
+                    "rightValue": 100,
+                    "operator": {
+                      "type": "number",
+                      "operation": "lt"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "3"
             }
-          ],
-          "combinator": "and"
+          ]
         },
         "looseTypeValidation": true,
         "options": {}
       },
-      "type": "n8n-nodes-base.if",
-      "typeVersion": 2.2,
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.4,
       "position": [
-        -448,
-        48
+        -400,
+        32
       ],
-      "id": "164bd14c-ee29-40f0-bfd7-512c7350a7f9",
+      "id": "0d29f673-5c28-4d8b-8433-fa0cc35b88d3",
       "name": "routing"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $json.search_url }}/v1beta/models/{{  parseInt(Math.random()*10) > 6 ? \"gemini-2.5-flash\" : \"gemini-3-flash-preview\" }}:generateContent",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "googlePalmApi",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            },
+            {
+              "name": "User-Agent",
+              "value": "Apifox/1.0.0 (https://apifox.com)"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"contents\": [\n    {\n        \"parts\": [\n            {\"text\": \"{{ $('prepare_data').last().json.query ?? 'find some news' }} with the source links\"}\n        ]\n    }\n],\n\"tools\": [{\"googleSearch\": {}}]\n}",
+        "options": {
+          "response": {
+            "response": {
+              "responseFormat": "json"
+            }
+          }
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        -192,
+        368
+      ],
+      "id": "b562dc96-9b65-49a8-947f-2b96483fa88c",
+      "name": "request_ai_3",
+      "retryOnFail": true,
+      "waitBetweenTries": 5000,
+      "maxTries": 2,
+      "credentials": {
+        "googlePalmApi": {
+          "id": "hwdQzyuRFV3iYdeP",
+          "name": "gemini_k3"
+        }
+      },
+      "onError": "continueErrorOutput"
     }
   ],
   "pinData": {
@@ -1252,7 +1512,7 @@
   "staticData": null,
   "tags": [],
   "triggerCount": 0,
-  "updatedAt": "2026-06-06T14:59:03.122Z",
-  "versionId": "cf9bc54d-3882-47ec-8a0b-b7ff0e439fec",
-  "workflow_meta": "[v1.2.3] "
+  "updatedAt": "2026-06-07T07:06:41.693Z",
+  "versionId": "b0e4a438-6116-4d86-ac6b-1bb19355b70c",
+  "workflow_meta": "[Version b0e4a438] "
 }
