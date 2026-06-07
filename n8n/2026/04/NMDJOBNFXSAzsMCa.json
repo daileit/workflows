@@ -1,9 +1,9 @@
 {
   "active": true,
   "activeVersion": {
-    "updatedAt": "2026-06-05T19:53:51.968Z",
-    "createdAt": "2026-06-05T19:53:37.459Z",
-    "versionId": "77ef3bb4-9b7a-4ed9-9d64-5ac4badeeab0",
+    "updatedAt": "2026-06-07T07:07:16.904Z",
+    "createdAt": "2026-06-07T07:07:09.403Z",
+    "versionId": "25a1d212-012e-4a56-834d-e04feb704eac",
     "workflowId": "NMDJOBNFXSAzsMCa",
     "nodes": [
       {
@@ -123,7 +123,8 @@
           1264
         ],
         "id": "d49817ae-2ef9-47b5-b9f1-efd341959b9a",
-        "name": "Call 'google_ai_search'"
+        "name": "Call 'google_ai_search'",
+        "disabled": true
       },
       {
         "parameters": {
@@ -681,9 +682,21 @@
           "url": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('URL', ``, 'string') }}",
           "options": {
             "response": {
-              "response": {
-                "fullResponse": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Include_Response_Headers_and_Status', ``, 'boolean') }}",
-                "neverError": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Never_Error', ``, 'boolean') }}"
+              "response": {}
+            },
+            "pagination": {
+              "pagination": {
+                "parameters": {
+                  "parameters": [
+                    {
+                      "type": "body",
+                      "name": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('parameters0_Name', ``, 'string') }}",
+                      "value": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('parameters0_Value', ``, 'string') }}"
+                    }
+                  ]
+                },
+                "limitPagesFetched": true,
+                "maxRequests": 10
               }
             },
             "timeout": 10000
@@ -702,7 +715,7 @@
         "parameters": {
           "options": {
             "systemMessage": "={{ $json.systemPrompt }}",
-            "maxIterations": 3,
+            "maxIterations": 6,
             "passthroughBinaryImages": false
           }
         },
@@ -1144,11 +1157,11 @@
       }
     },
     "authors": "Dai Le",
-    "name": "v1.2.14",
+    "name": "Version 25a1d212",
     "description": "",
     "autosaved": true
   },
-  "activeVersionId": "77ef3bb4-9b7a-4ed9-9d64-5ac4badeeab0",
+  "activeVersionId": "25a1d212-012e-4a56-834d-e04feb704eac",
   "connections": {
     "Al Model": {
       "ai_languageModel": [
@@ -1581,7 +1594,8 @@
         1264
       ],
       "id": "d49817ae-2ef9-47b5-b9f1-efd341959b9a",
-      "name": "Call 'google_ai_search'"
+      "name": "Call 'google_ai_search'",
+      "disabled": true
     },
     {
       "parameters": {
@@ -2139,9 +2153,21 @@
         "url": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('URL', ``, 'string') }}",
         "options": {
           "response": {
-            "response": {
-              "fullResponse": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Include_Response_Headers_and_Status', ``, 'boolean') }}",
-              "neverError": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Never_Error', ``, 'boolean') }}"
+            "response": {}
+          },
+          "pagination": {
+            "pagination": {
+              "parameters": {
+                "parameters": [
+                  {
+                    "type": "body",
+                    "name": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('parameters0_Name', ``, 'string') }}",
+                    "value": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('parameters0_Value', ``, 'string') }}"
+                  }
+                ]
+              },
+              "limitPagesFetched": true,
+              "maxRequests": 10
             }
           },
           "timeout": 10000
@@ -2160,7 +2186,7 @@
       "parameters": {
         "options": {
           "systemMessage": "={{ $json.systemPrompt }}",
-          "maxIterations": 3,
+          "maxIterations": 6,
           "passthroughBinaryImages": false
         }
       },
@@ -2322,7 +2348,7 @@
   "staticData": null,
   "tags": [],
   "triggerCount": 1,
-  "updatedAt": "2026-06-05T19:53:37.457Z",
-  "versionId": "77ef3bb4-9b7a-4ed9-9d64-5ac4badeeab0",
-  "workflow_meta": "[v1.2.14] "
+  "updatedAt": "2026-06-07T07:07:09.402Z",
+  "versionId": "25a1d212-012e-4a56-834d-e04feb704eac",
+  "workflow_meta": "[Version 25a1d212] "
 }
