@@ -56,7 +56,7 @@
       "main": [
         [
           {
-            "node": "AI Agent",
+            "node": "HTTP Request",
             "type": "main",
             "index": 0
           }
@@ -215,10 +215,32 @@
       "typeVersion": 2,
       "position": [
         656,
-        128
+        0
       ],
       "id": "4e3f790e-a51c-4385-85d8-4408168c88bf",
       "name": "Code in Python"
+    },
+    {
+      "parameters": {
+        "url": "https://api.openai.com/v1/me",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "openAiApi",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        928,
+        240
+      ],
+      "id": "a9e3d6e8-2a8d-4ef8-9ae6-4c37e5589631",
+      "name": "HTTP Request",
+      "credentials": {
+        "openAiApi": {
+          "id": "QIGg8RB3z3cRFIii",
+          "name": "oai_gtx_hn"
+        }
+      }
     }
   ],
   "pinData": {},
@@ -241,7 +263,7 @@
   "staticData": null,
   "tags": [],
   "triggerCount": 0,
-  "updatedAt": "2026-06-05T19:46:46.303Z",
-  "versionId": "9736dbb4-e528-4260-a530-4c30ee2b05f1",
+  "updatedAt": "2026-06-11T11:10:54.134Z",
+  "versionId": "bdc4ee08-ffee-42b4-bace-40aaf5c4216a",
   "workflow_meta": ""
 }
