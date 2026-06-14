@@ -140,7 +140,9 @@
       "parameters": {
         "promptType": "define",
         "text": "Hello there",
-        "options": {}
+        "options": {
+          "passthroughBinaryImages": false
+        }
       },
       "type": "@n8n/n8n-nodes-langchain.agent",
       "typeVersion": 3.1,
@@ -263,7 +265,7 @@
   "staticData": null,
   "tags": [],
   "triggerCount": 0,
-  "updatedAt": "2026-06-11T11:10:54.134Z",
-  "versionId": "bdc4ee08-ffee-42b4-bace-40aaf5c4216a",
+  "updatedAt": "2026-06-14T08:30:05.774Z",
+  "versionId": "f431dbd0-7acb-44f5-807f-75f338cde148",
   "workflow_meta": ""
 }
