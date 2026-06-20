@@ -41,23 +41,23 @@
         ]
       ]
     },
-    "OpenAI Chat Model": {
-      "ai_languageModel": [
-        [
-          {
-            "node": "AI Agent",
-            "type": "ai_languageModel",
-            "index": 0
-          }
-        ]
-      ]
-    },
     "Code in Python": {
       "main": [
         [
           {
             "node": "HTTP Request",
             "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Vertex Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
             "index": 0
           }
         ]
@@ -184,32 +184,6 @@
     },
     {
       "parameters": {
-        "model": {
-          "__rl": true,
-          "value": "deepseek-v4-flash",
-          "mode": "list",
-          "cachedResultName": "deepseek-v4-flash"
-        },
-        "responsesApiEnabled": false,
-        "options": {}
-      },
-      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
-      "typeVersion": 1.3,
-      "position": [
-        944,
-        80
-      ],
-      "id": "547818e3-7c87-4f3c-9662-c45957294c5c",
-      "name": "OpenAI Chat Model",
-      "credentials": {
-        "openAiApi": {
-          "id": "HaS2f5k9jU2cL1Ou",
-          "name": "oai_deepseek_tomi"
-        }
-      }
-    },
-    {
-      "parameters": {
         "language": "pythonNative",
         "pythonCode": "import re\n\ndef split_message_by_newline(message: str, limit: int = 4000) -> list[dict]:\n    parts_list = []\n    #return message\n    remaining_message = str(message)\n    part_count = 1\n    \n    # Regex để tìm các \"hàng rào\" code (code fence)\n    # Chúng ta tìm một newline theo sau là ```\n    fence_regex = re.compile(r'\\n```')\n    \n    while len(remaining_message) > limit:\n        in_code_block_at_limit = False\n        last_fence_before_limit = -1\n        \n        # 1. Kiểm tra xem 'limit' có nằm trong code block không\n        for match in fence_regex.finditer(remaining_message):\n            fence_start_index = match.start()\n            \n            if fence_start_index >= limit:\n                # Hàng rào này nằm sau 'limit', dừng quét\n                break\n                \n            # Mỗi khi gặp hàng rào, lật trạng thái\n            in_code_block_at_limit = not in_code_block_at_limit\n            last_fence_before_limit = fence_start_index\n            \n        # 2. Quyết định điểm ngắt (split)\n        if in_code_block_at_limit:\n            # 'limit' nằm TRONG code block.\n            \n            if last_fence_before_limit > 0:\n                # Tốt! Ngắt ngay trước khi code block bắt đầu.\n                # last_fence_before_limit là index của '\\n'\n                part = remaining_message[:last_fence_before_limit]\n                # Giữ lại '\\n```' cho phần tiếp theo\n                remaining_message = remaining_message[last_fence_before_limit:]\n            else:\n                # Code block bắt đầu từ index 0 (hoặc rất gần)\n                # Không thể ngắt trước nó, buộc phải \"ngắt cứng\" (hard split)\n                part = remaining_message[:limit]\n                remaining_message = remaining_message[limit:]\n        else:\n            # 'limit' nằm NGOÀI code block. Dùng logic gốc của bạn.\n            split_idx = remaining_message.rfind('\\n', 0, limit)\n            \n            if split_idx != -1:\n                # Tìm thấy newline, ngắt tại đó\n                part = remaining_message[:split_idx]\n                remaining_message = remaining_message[split_idx+1:]\n            else:\n                # Không tìm thấy newline, \"ngắt cứng\"\n                part = remaining_message[:limit]\n                remaining_message = remaining_message[limit:]\n                \n        parts_list.append({\n            'message': part,\n            'part': part_count,\n            'length': len(part)\n        })\n        part_count += 1\n        \n    # Thêm phần còn lại cuối cùng\n    if remaining_message:\n        parts_list.append({\n            'message': remaining_message,\n            'part': part_count,\n            'length': len(remaining_message)\n        })\n        \n    return parts_list\n\nitems = split_message_by_newline(_items[0]['json']['output'])\nreturn items"
       },
@@ -240,9 +214,27 @@
       "credentials": {
         "openAiApi": {
           "id": "QIGg8RB3z3cRFIii",
-          "name": "oai_gtx_hn"
+          "name": "oai_gtx_tyl"
         }
       }
+    },
+    {
+      "parameters": {
+        "projectId": {
+          "__rl": true,
+          "mode": "list",
+          "value": ""
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleVertex",
+      "typeVersion": 1,
+      "position": [
+        928,
+        64
+      ],
+      "id": "e63ed1ba-8e3d-4dcb-b7b6-84618dbc67a7",
+      "name": "Google Vertex Chat Model"
     }
   ],
   "pinData": {},
@@ -265,7 +257,7 @@
   "staticData": null,
   "tags": [],
   "triggerCount": 0,
-  "updatedAt": "2026-06-14T08:30:05.774Z",
-  "versionId": "f431dbd0-7acb-44f5-807f-75f338cde148",
+  "updatedAt": "2026-06-20T15:05:35.879Z",
+  "versionId": "1bc1351f-1654-4eb5-9a31-b5e8893cb62a",
   "workflow_meta": ""
 }
