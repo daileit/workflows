@@ -1,7 +1,221 @@
 {
-  "active": false,
-  "activeVersion": null,
-  "activeVersionId": null,
+  "active": true,
+  "activeVersion": {
+    "updatedAt": "2026-08-10T16:16:35.702Z",
+    "createdAt": "2026-08-10T16:16:32.730Z",
+    "versionId": "5ca5d579-e99e-46b3-beb9-2338d95b30db",
+    "workflowId": "iyp6mGdTFl31DZEt",
+    "nodes": [
+      {
+        "parameters": {
+          "workflowInputs": {
+            "values": [
+              {
+                "name": "target_server"
+              },
+              {
+                "name": "repository"
+              },
+              {
+                "name": "image"
+              },
+              {
+                "name": "tag"
+              }
+            ]
+          }
+        },
+        "type": "n8n-nodes-base.executeWorkflowTrigger",
+        "typeVersion": 1.2,
+        "position": [
+          0,
+          0
+        ],
+        "id": "969acb67-a2a3-475e-aa82-b37bd78e94a9",
+        "name": "trigger"
+      },
+      {
+        "parameters": {
+          "operation": "get",
+          "dataTableId": {
+            "__rl": true,
+            "value": "BhjFEcSCm2NkvBf6",
+            "mode": "list",
+            "cachedResultName": "server_info",
+            "cachedResultUrl": "/projects/Ewpdqr0Y4bH3sf2c/datatables/BhjFEcSCm2NkvBf6"
+          },
+          "filters": {
+            "conditions": [
+              {
+                "keyName": "docker_hook_url",
+                "condition": "isNotEmpty"
+              }
+            ]
+          }
+        },
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1.1,
+        "position": [
+          704,
+          128
+        ],
+        "id": "223d30b6-713a-4b6b-87b4-1dfae0e15b1d",
+        "name": "get_all_servers"
+      },
+      {
+        "parameters": {
+          "operation": "get",
+          "dataTableId": {
+            "__rl": true,
+            "value": "BhjFEcSCm2NkvBf6",
+            "mode": "list",
+            "cachedResultName": "server_info",
+            "cachedResultUrl": "/projects/Ewpdqr0Y4bH3sf2c/datatables/BhjFEcSCm2NkvBf6"
+          },
+          "matchType": "allConditions",
+          "filters": {
+            "conditions": [
+              {
+                "keyName": "docker_hook_url",
+                "condition": "isNotEmpty"
+              },
+              {
+                "keyName": "server_name",
+                "condition": "ilike",
+                "keyValue": "={{ $json.target_server ?? \"None\" }}"
+              }
+            ]
+          }
+        },
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1.1,
+        "position": [
+          224,
+          0
+        ],
+        "id": "b0175e69-3a0f-4d64-91f1-902092574504",
+        "name": "get_server",
+        "alwaysOutputData": true
+      },
+      {
+        "parameters": {
+          "conditions": {
+            "options": {
+              "caseSensitive": true,
+              "leftValue": "",
+              "typeValidation": "strict",
+              "version": 3
+            },
+            "conditions": [
+              {
+                "id": "3addf701-9552-487c-981a-70fc90f9283e",
+                "leftValue": "={{ $('get_server').all().length }}",
+                "rightValue": 1,
+                "operator": {
+                  "type": "number",
+                  "operation": "equals"
+                }
+              }
+            ],
+            "combinator": "and"
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.if",
+        "typeVersion": 2.3,
+        "position": [
+          432,
+          0
+        ],
+        "id": "4995d446-e050-4a58-bbd1-4a9f9c0f53d4",
+        "name": "If"
+      },
+      {
+        "parameters": {
+          "url": "={{ $json.docker_hook_url }}",
+          "sendQuery": true,
+          "queryParameters": {
+            "parameters": [
+              {
+                "name": "repo",
+                "value": "={{ $('trigger').item.json.repository }}"
+              },
+              {
+                "name": "name",
+                "value": "={{ $('trigger').item.json.image }}"
+              },
+              {
+                "name": "tag",
+                "value": "={{ $('trigger').item.json.tag }}"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.4,
+        "position": [
+          704,
+          -96
+        ],
+        "id": "b8b301dd-e406-487c-9324-55331fa66223",
+        "name": "Webhook"
+      }
+    ],
+    "connections": {
+      "trigger": {
+        "main": [
+          [
+            {
+              "node": "get_server",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "get_all_servers": {
+        "main": [
+          []
+        ]
+      },
+      "get_server": {
+        "main": [
+          [
+            {
+              "node": "If",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "If": {
+        "main": [
+          [
+            {
+              "node": "Webhook",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "get_all_servers",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "nodeGroups": [],
+    "authors": "Dai Le",
+    "name": "Version 5ca5d579",
+    "description": "",
+    "autosaved": true
+  },
+  "activeVersionId": "5ca5d579-e99e-46b3-beb9-2338d95b30db",
   "connections": {
     "trigger": {
       "main": [
@@ -16,10 +230,56 @@
     },
     "get_all_servers": {
       "main": [
-        []
+        [
+          {
+            "node": "get_all_apps",
+            "type": "main",
+            "index": 0
+          }
+        ]
       ]
     },
     "get_server": {
+      "main": [
+        [
+          {
+            "node": "get_apps",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Aggregate1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "get_all_servers",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Aggregate": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "get_apps": {
       "main": [
         [
           {
@@ -30,12 +290,22 @@
         ]
       ]
     },
-    "If": {
+    "get_all_apps": {
       "main": [
-        [],
         [
           {
-            "node": "get_all_servers",
+            "node": "Aggregate",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Aggregate1": {
+      "main": [
+        [
+          {
+            "node": "Webhook",
             "type": "main",
             "index": 0
           }
@@ -71,7 +341,7 @@
       "type": "n8n-nodes-base.executeWorkflowTrigger",
       "typeVersion": 1.2,
       "position": [
-        0,
+        48,
         0
       ],
       "id": "969acb67-a2a3-475e-aa82-b37bd78e94a9",
@@ -99,7 +369,7 @@
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
       "position": [
-        704,
+        768,
         128
       ],
       "id": "223d30b6-713a-4b6b-87b4-1dfae0e15b1d",
@@ -125,7 +395,7 @@
             {
               "keyName": "server_name",
               "condition": "ilike",
-              "keyValue": "={{ $json.target_server ?? \"None\" }}"
+              "keyValue": "={{ $('trigger').item.json.target_server ?? \"None\" }}"
             }
           ]
         }
@@ -152,11 +422,20 @@
           "conditions": [
             {
               "id": "3addf701-9552-487c-981a-70fc90f9283e",
-              "leftValue": "={{ $('get_server').item.json.keys().length }}",
+              "leftValue": "={{ $('get_server').all() }}",
               "rightValue": 1,
               "operator": {
                 "type": "number",
                 "operation": "equals"
+              }
+            },
+            {
+              "id": "bacd1e34-e0c9-4693-a1d6-13cf2a655918",
+              "leftValue": "={{ $('get_apps').all().length }}",
+              "rightValue": 0,
+              "operator": {
+                "type": "number",
+                "operation": "gt"
               }
             }
           ],
@@ -167,14 +446,182 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
       "position": [
-        432,
+        560,
         0
       ],
       "id": "4995d446-e050-4a58-bbd1-4a9f9c0f53d4",
       "name": "If"
+    },
+    {
+      "parameters": {
+        "url": "={{ $('get_server').item.json.docker_hook_url }}",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "repo",
+              "value": "={{ $('trigger').item.json.repository }}"
+            },
+            {
+              "name": "name",
+              "value": "={{ $('trigger').item.json.image }}"
+            },
+            {
+              "name": "tag",
+              "value": "={{ $('trigger').item.json.tag }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        944,
+        -96
+      ],
+      "id": "b8b301dd-e406-487c-9324-55331fa66223",
+      "name": "Webhook"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "e3bf2544-2a82-494a-b91b-b8b89866123b",
+              "name": "message",
+              "value": "Invalid input",
+              "type": "string"
+            },
+            {
+              "id": "81e21d6e-937c-436e-a060-28f91cf953c2",
+              "name": "available_servers",
+              "value": "={{ Object.values($('Aggregate').item.json.data.reduce((acc, item) => { acc[item.id] = { server_name: item.server_name, id: item.id }; return acc; }, {})) }}",
+              "type": "array"
+            },
+            {
+              "id": "c338d6a1-8c6e-430e-94e0-6e243ba6691a",
+              "name": "available_apps",
+              "value": "={{ Object.values($('Aggregate').item.json.data.reduce((acc, item) => { acc[item.Scope] = { app: item.Scope }; return acc; }, {})) }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1296,
+        128
+      ],
+      "id": "03ed3b1b-4336-4913-84fd-185104e3292f",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "aggregate": "aggregateAllItemData",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.aggregate",
+      "typeVersion": 1,
+      "position": [
+        1120,
+        128
+      ],
+      "id": "0a04ea41-9571-496b-912d-a634076d7cb9",
+      "name": "Aggregate"
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "dataTableId": {
+          "__rl": true,
+          "value": "4WwY8slKZhNVr2MJ",
+          "mode": "list",
+          "cachedResultName": "docker_app_env",
+          "cachedResultUrl": "/projects/Ewpdqr0Y4bH3sf2c/datatables/4WwY8slKZhNVr2MJ"
+        },
+        "matchType": "allConditions",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "Key",
+              "keyValue": "APP_PORT"
+            },
+            {
+              "keyName": "Scope",
+              "condition": "ilike",
+              "keyValue": "={{ $('trigger').item.json.image }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [
+        400,
+        0
+      ],
+      "id": "5d89faa5-e35f-4a95-9d78-b27407b8e9af",
+      "name": "get_apps"
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "dataTableId": {
+          "__rl": true,
+          "value": "4WwY8slKZhNVr2MJ",
+          "mode": "list",
+          "cachedResultName": "docker_app_env",
+          "cachedResultUrl": "/projects/Ewpdqr0Y4bH3sf2c/datatables/4WwY8slKZhNVr2MJ"
+        },
+        "matchType": "allConditions",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "Key",
+              "keyValue": "APP_PORT"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [
+        944,
+        128
+      ],
+      "id": "eec642a1-9ba3-48a9-90b7-69140befd6fd",
+      "name": "get_all_apps"
+    },
+    {
+      "parameters": {
+        "aggregate": "aggregateAllItemData",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.aggregate",
+      "typeVersion": 1,
+      "position": [
+        768,
+        -96
+      ],
+      "id": "91e2acad-e2cf-450c-b380-07db7449df19",
+      "name": "Aggregate1"
     }
   ],
-  "pinData": {},
+  "pinData": {
+    "trigger": [
+      {
+        "json": {
+          "target_server": "hahs",
+          "repository": "maildev",
+          "image": "maildev",
+          "tag": "2.2.1"
+        }
+      }
+    ]
+  },
   "repo_name": "workflows",
   "repo_owner": "daileit",
   "repo_path": "n8n/",
@@ -195,7 +642,7 @@
   "staticData": null,
   "tags": [],
   "triggerCount": 0,
-  "updatedAt": "2026-08-10T16:07:14.405Z",
-  "versionId": "ac3e104a-d58b-4b70-a251-7a9ef916f1ef",
-  "workflow_meta": ""
+  "updatedAt": "2026-08-10T17:10:17.791Z",
+  "versionId": "d4d9f045-c2c6-4e4b-8758-a924c61b8511",
+  "workflow_meta": "[Version 5ca5d579] "
 }
