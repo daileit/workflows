@@ -1,9 +1,9 @@
 {
   "active": true,
   "activeVersion": {
-    "updatedAt": "2026-08-10T16:16:35.702Z",
-    "createdAt": "2026-08-10T16:16:32.730Z",
-    "versionId": "5ca5d579-e99e-46b3-beb9-2338d95b30db",
+    "updatedAt": "2026-08-10T17:28:10.260Z",
+    "createdAt": "2026-08-10T17:27:27.896Z",
+    "versionId": "d2dcd412-ad40-42fb-be7a-3649a95a6c6f",
     "workflowId": "iyp6mGdTFl31DZEt",
     "nodes": [
       {
@@ -28,7 +28,7 @@
         "type": "n8n-nodes-base.executeWorkflowTrigger",
         "typeVersion": 1.2,
         "position": [
-          0,
+          48,
           0
         ],
         "id": "969acb67-a2a3-475e-aa82-b37bd78e94a9",
@@ -56,8 +56,8 @@
         "type": "n8n-nodes-base.dataTable",
         "typeVersion": 1.1,
         "position": [
-          704,
-          128
+          944,
+          176
         ],
         "id": "223d30b6-713a-4b6b-87b4-1dfae0e15b1d",
         "name": "get_all_servers"
@@ -82,7 +82,7 @@
               {
                 "keyName": "server_name",
                 "condition": "ilike",
-                "keyValue": "={{ $json.target_server ?? \"None\" }}"
+                "keyValue": "={{ $('trigger').item.json.target_server ?? \"None\" }}"
               }
             ]
           }
@@ -115,6 +115,26 @@
                   "type": "number",
                   "operation": "equals"
                 }
+              },
+              {
+                "id": "bacd1e34-e0c9-4693-a1d6-13cf2a655918",
+                "leftValue": "={{ $json.data.map(item => item.Scope) }}",
+                "rightValue": "={{ $('trigger').item.json.image }}",
+                "operator": {
+                  "type": "array",
+                  "operation": "contains",
+                  "rightType": "any"
+                }
+              },
+              {
+                "id": "4014133a-a49a-47a3-beb4-7796b9df6e0f",
+                "leftValue": "={{ $('get_server').item.json }}",
+                "rightValue": "",
+                "operator": {
+                  "type": "object",
+                  "operation": "notEmpty",
+                  "singleValue": true
+                }
               }
             ],
             "combinator": "and"
@@ -124,7 +144,7 @@
         "type": "n8n-nodes-base.if",
         "typeVersion": 2.3,
         "position": [
-          432,
+          736,
           0
         ],
         "id": "4995d446-e050-4a58-bbd1-4a9f9c0f53d4",
@@ -132,7 +152,7 @@
       },
       {
         "parameters": {
-          "url": "={{ $json.docker_hook_url }}",
+          "url": "={{ $('get_server').item.json.docker_hook_url }}",
           "sendQuery": true,
           "queryParameters": {
             "parameters": [
@@ -155,11 +175,104 @@
         "type": "n8n-nodes-base.httpRequest",
         "typeVersion": 4.4,
         "position": [
-          704,
-          -96
+          944,
+          -80
         ],
         "id": "b8b301dd-e406-487c-9324-55331fa66223",
         "name": "Webhook"
+      },
+      {
+        "parameters": {
+          "assignments": {
+            "assignments": [
+              {
+                "id": "e3bf2544-2a82-494a-b91b-b8b89866123b",
+                "name": "message",
+                "value": "Invalid input",
+                "type": "string"
+              },
+              {
+                "id": "81e21d6e-937c-436e-a060-28f91cf953c2",
+                "name": "available_servers",
+                "value": "={{ Object.values($('Aggregate').item.json.data.reduce((acc, item) => { acc[item.id] = { server_name: item.server_name, id: item.id }; return acc; }, {})) }}",
+                "type": "array"
+              },
+              {
+                "id": "c338d6a1-8c6e-430e-94e0-6e243ba6691a",
+                "name": "available_apps",
+                "value": "={{ Object.values($('Aggregate1').item.json.data.reduce((acc, item) => { acc[item.Scope] = { app: item.Scope }; return acc; }, {})) }}",
+                "type": "string"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.set",
+        "typeVersion": 3.4,
+        "position": [
+          1280,
+          176
+        ],
+        "id": "03ed3b1b-4336-4913-84fd-185104e3292f",
+        "name": "Edit Fields"
+      },
+      {
+        "parameters": {
+          "aggregate": "aggregateAllItemData",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.aggregate",
+        "typeVersion": 1,
+        "position": [
+          1104,
+          176
+        ],
+        "id": "0a04ea41-9571-496b-912d-a634076d7cb9",
+        "name": "Aggregate"
+      },
+      {
+        "parameters": {
+          "operation": "get",
+          "dataTableId": {
+            "__rl": true,
+            "value": "4WwY8slKZhNVr2MJ",
+            "mode": "list",
+            "cachedResultName": "docker_app_env",
+            "cachedResultUrl": "/projects/Ewpdqr0Y4bH3sf2c/datatables/4WwY8slKZhNVr2MJ"
+          },
+          "matchType": "allConditions",
+          "filters": {
+            "conditions": [
+              {
+                "keyName": "Key",
+                "keyValue": "APP_PORT"
+              }
+            ]
+          }
+        },
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1.1,
+        "position": [
+          400,
+          0
+        ],
+        "id": "5d89faa5-e35f-4a95-9d78-b27407b8e9af",
+        "name": "get_apps",
+        "alwaysOutputData": true
+      },
+      {
+        "parameters": {
+          "aggregate": "aggregateAllItemData",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.aggregate",
+        "typeVersion": 1,
+        "position": [
+          576,
+          0
+        ],
+        "id": "91e2acad-e2cf-450c-b380-07db7449df19",
+        "name": "Aggregate1"
       }
     ],
     "connections": {
@@ -176,14 +289,20 @@
       },
       "get_all_servers": {
         "main": [
-          []
+          [
+            {
+              "node": "Aggregate",
+              "type": "main",
+              "index": 0
+            }
+          ]
         ]
       },
       "get_server": {
         "main": [
           [
             {
-              "node": "If",
+              "node": "get_apps",
               "type": "main",
               "index": 0
             }
@@ -207,15 +326,48 @@
             }
           ]
         ]
+      },
+      "Aggregate": {
+        "main": [
+          [
+            {
+              "node": "Edit Fields",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "get_apps": {
+        "main": [
+          [
+            {
+              "node": "Aggregate1",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Aggregate1": {
+        "main": [
+          [
+            {
+              "node": "If",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
       }
     },
     "nodeGroups": [],
     "authors": "Dai Le",
-    "name": "Version 5ca5d579",
+    "name": "Version d2dcd412",
     "description": "",
     "autosaved": true
   },
-  "activeVersionId": "5ca5d579-e99e-46b3-beb9-2338d95b30db",
+  "activeVersionId": "d2dcd412-ad40-42fb-be7a-3649a95a6c6f",
   "connections": {
     "trigger": {
       "main": [
@@ -232,7 +384,7 @@
       "main": [
         [
           {
-            "node": "get_all_apps",
+            "node": "merge",
             "type": "main",
             "index": 0
           }
@@ -254,7 +406,7 @@
       "main": [
         [
           {
-            "node": "Aggregate1",
+            "node": "Webhook",
             "type": "main",
             "index": 0
           }
@@ -268,33 +420,11 @@
         ]
       ]
     },
-    "Aggregate": {
-      "main": [
-        [
-          {
-            "node": "Edit Fields",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
     "get_apps": {
       "main": [
         [
           {
-            "node": "If",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "get_all_apps": {
-      "main": [
-        [
-          {
-            "node": "Aggregate",
+            "node": "Aggregate1",
             "type": "main",
             "index": 0
           }
@@ -305,7 +435,18 @@
       "main": [
         [
           {
-            "node": "Webhook",
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "merge": {
+      "main": [
+        [
+          {
+            "node": "return",
             "type": "main",
             "index": 0
           }
@@ -369,8 +510,8 @@
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
       "position": [
-        768,
-        128
+        944,
+        176
       ],
       "id": "223d30b6-713a-4b6b-87b4-1dfae0e15b1d",
       "name": "get_all_servers"
@@ -422,7 +563,7 @@
           "conditions": [
             {
               "id": "3addf701-9552-487c-981a-70fc90f9283e",
-              "leftValue": "={{ $('get_server').all() }}",
+              "leftValue": "={{ $('get_server').all().length }}",
               "rightValue": 1,
               "operator": {
                 "type": "number",
@@ -431,11 +572,22 @@
             },
             {
               "id": "bacd1e34-e0c9-4693-a1d6-13cf2a655918",
-              "leftValue": "={{ $('get_apps').all().length }}",
-              "rightValue": 0,
+              "leftValue": "={{ $json.data.map(item => item.Scope) }}",
+              "rightValue": "={{ $('trigger').item.json.image }}",
               "operator": {
-                "type": "number",
-                "operation": "gt"
+                "type": "array",
+                "operation": "contains",
+                "rightType": "any"
+              }
+            },
+            {
+              "id": "4014133a-a49a-47a3-beb4-7796b9df6e0f",
+              "leftValue": "={{ $('get_server').item.json }}",
+              "rightValue": "",
+              "operator": {
+                "type": "object",
+                "operation": "notEmpty",
+                "singleValue": true
               }
             }
           ],
@@ -446,7 +598,7 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
       "position": [
-        560,
+        736,
         0
       ],
       "id": "4995d446-e050-4a58-bbd1-4a9f9c0f53d4",
@@ -478,10 +630,54 @@
       "typeVersion": 4.4,
       "position": [
         944,
-        -96
+        -80
       ],
       "id": "b8b301dd-e406-487c-9324-55331fa66223",
       "name": "Webhook"
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "dataTableId": {
+          "__rl": true,
+          "value": "4WwY8slKZhNVr2MJ",
+          "mode": "list",
+          "cachedResultName": "docker_app_env",
+          "cachedResultUrl": "/projects/Ewpdqr0Y4bH3sf2c/datatables/4WwY8slKZhNVr2MJ"
+        },
+        "matchType": "allConditions",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "Key",
+              "keyValue": "APP_PORT"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [
+        400,
+        0
+      ],
+      "id": "5d89faa5-e35f-4a95-9d78-b27407b8e9af",
+      "name": "get_apps",
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "aggregate": "aggregateAllItemData",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.aggregate",
+      "typeVersion": 1,
+      "position": [
+        576,
+        0
+      ],
+      "id": "91e2acad-e2cf-450c-b380-07db7449df19",
+      "name": "Aggregate1"
     },
     {
       "parameters": {
@@ -496,13 +692,13 @@
             {
               "id": "81e21d6e-937c-436e-a060-28f91cf953c2",
               "name": "available_servers",
-              "value": "={{ Object.values($('Aggregate').item.json.data.reduce((acc, item) => { acc[item.id] = { server_name: item.server_name, id: item.id }; return acc; }, {})) }}",
+              "value": "={{ Object.values($('merge').item.json.data.reduce((acc, item) => { acc[item.id] = { server_name: item.server_name, id: item.id }; return acc; }, {})) }}",
               "type": "array"
             },
             {
               "id": "c338d6a1-8c6e-430e-94e0-6e243ba6691a",
               "name": "available_apps",
-              "value": "={{ Object.values($('Aggregate').item.json.data.reduce((acc, item) => { acc[item.Scope] = { app: item.Scope }; return acc; }, {})) }}",
+              "value": "={{ Object.values($('Aggregate1').item.json.data.reduce((acc, item) => { acc[item.Scope] = { app: item.Scope }; return acc; }, {})) }}",
               "type": "string"
             }
           ]
@@ -512,11 +708,11 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        1296,
-        128
+        1280,
+        176
       ],
       "id": "03ed3b1b-4336-4913-84fd-185104e3292f",
-      "name": "Edit Fields"
+      "name": "return"
     },
     {
       "parameters": {
@@ -526,95 +722,18 @@
       "type": "n8n-nodes-base.aggregate",
       "typeVersion": 1,
       "position": [
-        1120,
-        128
+        1104,
+        176
       ],
       "id": "0a04ea41-9571-496b-912d-a634076d7cb9",
-      "name": "Aggregate"
-    },
-    {
-      "parameters": {
-        "operation": "get",
-        "dataTableId": {
-          "__rl": true,
-          "value": "4WwY8slKZhNVr2MJ",
-          "mode": "list",
-          "cachedResultName": "docker_app_env",
-          "cachedResultUrl": "/projects/Ewpdqr0Y4bH3sf2c/datatables/4WwY8slKZhNVr2MJ"
-        },
-        "matchType": "allConditions",
-        "filters": {
-          "conditions": [
-            {
-              "keyName": "Key",
-              "keyValue": "APP_PORT"
-            },
-            {
-              "keyName": "Scope",
-              "condition": "ilike",
-              "keyValue": "={{ $('trigger').item.json.image }}"
-            }
-          ]
-        }
-      },
-      "type": "n8n-nodes-base.dataTable",
-      "typeVersion": 1.1,
-      "position": [
-        400,
-        0
-      ],
-      "id": "5d89faa5-e35f-4a95-9d78-b27407b8e9af",
-      "name": "get_apps"
-    },
-    {
-      "parameters": {
-        "operation": "get",
-        "dataTableId": {
-          "__rl": true,
-          "value": "4WwY8slKZhNVr2MJ",
-          "mode": "list",
-          "cachedResultName": "docker_app_env",
-          "cachedResultUrl": "/projects/Ewpdqr0Y4bH3sf2c/datatables/4WwY8slKZhNVr2MJ"
-        },
-        "matchType": "allConditions",
-        "filters": {
-          "conditions": [
-            {
-              "keyName": "Key",
-              "keyValue": "APP_PORT"
-            }
-          ]
-        }
-      },
-      "type": "n8n-nodes-base.dataTable",
-      "typeVersion": 1.1,
-      "position": [
-        944,
-        128
-      ],
-      "id": "eec642a1-9ba3-48a9-90b7-69140befd6fd",
-      "name": "get_all_apps"
-    },
-    {
-      "parameters": {
-        "aggregate": "aggregateAllItemData",
-        "options": {}
-      },
-      "type": "n8n-nodes-base.aggregate",
-      "typeVersion": 1,
-      "position": [
-        768,
-        -96
-      ],
-      "id": "91e2acad-e2cf-450c-b380-07db7449df19",
-      "name": "Aggregate1"
+      "name": "merge"
     }
   ],
   "pinData": {
     "trigger": [
       {
         "json": {
-          "target_server": "hahs",
+          "target_server": "hhs",
           "repository": "maildev",
           "image": "maildev",
           "tag": "2.2.1"
@@ -642,7 +761,7 @@
   "staticData": null,
   "tags": [],
   "triggerCount": 0,
-  "updatedAt": "2026-08-10T17:10:17.791Z",
-  "versionId": "d4d9f045-c2c6-4e4b-8758-a924c61b8511",
-  "workflow_meta": "[Version 5ca5d579] "
+  "updatedAt": "2026-08-10T17:32:03.787Z",
+  "versionId": "7d5d8aa1-913c-4f29-b268-81c02b2f337d",
+  "workflow_meta": "[Version d2dcd412] "
 }
