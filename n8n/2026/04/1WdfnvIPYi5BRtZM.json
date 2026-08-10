@@ -1,9 +1,9 @@
 {
   "active": true,
   "activeVersion": {
-    "updatedAt": "2026-05-31T09:33:15.684Z",
-    "createdAt": "2026-05-31T09:33:08.265Z",
-    "versionId": "6e847e29-9e9a-4a9f-975d-fa0b36b32098",
+    "updatedAt": "2026-08-10T15:33:11.900Z",
+    "createdAt": "2026-08-10T15:33:09.396Z",
+    "versionId": "05958ef2-35f7-4504-884e-5c95a89f8171",
     "workflowId": "1WdfnvIPYi5BRtZM",
     "nodes": [
       {
@@ -118,10 +118,10 @@
           "operation": "get",
           "dataTableId": {
             "__rl": true,
-            "value": "Y2xjpbxDXxnh9pM7",
+            "value": "BhjFEcSCm2NkvBf6",
             "mode": "list",
             "cachedResultName": "server_info",
-            "cachedResultUrl": "/projects/TgT7sbikPaxzUZlq/datatables/Y2xjpbxDXxnh9pM7"
+            "cachedResultUrl": "/projects/Ewpdqr0Y4bH3sf2c/datatables/BhjFEcSCm2NkvBf6"
           }
         },
         "type": "n8n-nodes-base.dataTable",
@@ -443,7 +443,7 @@
         "typeVersion": 3.4,
         "position": [
           0,
-          0
+          -16
         ],
         "id": "2f7fd806-e2f2-4613-8e92-20bb37812f93",
         "name": "return"
@@ -654,11 +654,11 @@
     },
     "nodeGroups": [],
     "authors": "Dai Le",
-    "name": "v1.0.1",
+    "name": "Version 05958ef2",
     "description": "",
     "autosaved": true
   },
-  "activeVersionId": "6e847e29-9e9a-4a9f-975d-fa0b36b32098",
+  "activeVersionId": "05958ef2-35f7-4504-884e-5c95a89f8171",
   "connections": {
     "Get row(s)": {
       "main": [
@@ -903,10 +903,10 @@
         "operation": "get",
         "dataTableId": {
           "__rl": true,
-          "value": "Y2xjpbxDXxnh9pM7",
+          "value": "BhjFEcSCm2NkvBf6",
           "mode": "list",
           "cachedResultName": "server_info",
-          "cachedResultUrl": "/projects/TgT7sbikPaxzUZlq/datatables/Y2xjpbxDXxnh9pM7"
+          "cachedResultUrl": "/projects/Ewpdqr0Y4bH3sf2c/datatables/BhjFEcSCm2NkvBf6"
         }
       },
       "type": "n8n-nodes-base.dataTable",
@@ -1228,7 +1228,7 @@
       "typeVersion": 3.4,
       "position": [
         0,
-        0
+        -16
       ],
       "id": "2f7fd806-e2f2-4613-8e92-20bb37812f93",
       "name": "return"
@@ -1333,7 +1333,7 @@
   "staticData": null,
   "tags": [],
   "triggerCount": 0,
-  "updatedAt": "2026-05-31T09:33:08.264Z",
-  "versionId": "6e847e29-9e9a-4a9f-975d-fa0b36b32098",
-  "workflow_meta": "[v1.0.1] "
+  "updatedAt": "2026-08-10T15:33:09.395Z",
+  "versionId": "05958ef2-35f7-4504-884e-5c95a89f8171",
+  "workflow_meta": "[Version 05958ef2] "
 }
