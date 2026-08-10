@@ -1,9 +1,9 @@
 {
   "active": true,
   "activeVersion": {
-    "updatedAt": "2026-06-10T08:25:11.502Z",
-    "createdAt": "2026-06-10T08:25:06.596Z",
-    "versionId": "9ee185ef-9019-4afb-b38a-7c3879ee15bd",
+    "updatedAt": "2026-08-10T18:12:38.007Z",
+    "createdAt": "2026-08-10T18:12:32.837Z",
+    "versionId": "08a0bf14-20e9-40d7-9d6c-b50da5e8469a",
     "workflowId": "kjXGfbKedfDI4G8c",
     "nodes": [
       {
@@ -437,7 +437,7 @@
                   "conditions": [
                     {
                       "leftValue": "={{ $json.path }}",
-                      "rightValue": 10,
+                      "rightValue": 30,
                       "operator": {
                         "type": "number",
                         "operation": "lt"
@@ -462,7 +462,7 @@
                     {
                       "id": "414a664c-7470-4fdc-84cb-ed70e2600533",
                       "leftValue": "={{ $json.path }}",
-                      "rightValue": 20,
+                      "rightValue": 60,
                       "operator": {
                         "type": "number",
                         "operation": "lt"
@@ -486,7 +486,7 @@
                     {
                       "id": "d45f1e43-e3cb-4a16-a033-13e9f5c6ded7",
                       "leftValue": "={{ $json.path }}",
-                      "rightValue": 100,
+                      "rightValue": 80,
                       "operator": {
                         "type": "number",
                         "operation": "lt"
@@ -776,11 +776,11 @@
     },
     "nodeGroups": [],
     "authors": "Dai Le",
-    "name": "Version 9ee185ef",
+    "name": "Version 08a0bf14",
     "description": "",
     "autosaved": true
   },
-  "activeVersionId": "9ee185ef-9019-4afb-b38a-7c3879ee15bd",
+  "activeVersionId": "08a0bf14-20e9-40d7-9d6c-b50da5e8469a",
   "connections": {
     "prepare_data": {
       "main": [
@@ -1408,7 +1408,7 @@
                 "conditions": [
                   {
                     "leftValue": "={{ $json.path }}",
-                    "rightValue": 10,
+                    "rightValue": 30,
                     "operator": {
                       "type": "number",
                       "operation": "lt"
@@ -1433,7 +1433,7 @@
                   {
                     "id": "414a664c-7470-4fdc-84cb-ed70e2600533",
                     "leftValue": "={{ $json.path }}",
-                    "rightValue": 20,
+                    "rightValue": 60,
                     "operator": {
                       "type": "number",
                       "operation": "lt"
@@ -1457,7 +1457,7 @@
                   {
                     "id": "d45f1e43-e3cb-4a16-a033-13e9f5c6ded7",
                     "leftValue": "={{ $json.path }}",
-                    "rightValue": 100,
+                    "rightValue": 80,
                     "operator": {
                       "type": "number",
                       "operation": "lt"
@@ -1585,7 +1585,7 @@
   "staticData": null,
   "tags": [],
   "triggerCount": 0,
-  "updatedAt": "2026-06-10T08:25:06.594Z",
-  "versionId": "9ee185ef-9019-4afb-b38a-7c3879ee15bd",
-  "workflow_meta": "[Version 9ee185ef] "
+  "updatedAt": "2026-08-10T18:12:32.835Z",
+  "versionId": "08a0bf14-20e9-40d7-9d6c-b50da5e8469a",
+  "workflow_meta": "[Version 08a0bf14] "
 }
