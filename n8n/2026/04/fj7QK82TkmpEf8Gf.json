@@ -1,14 +1,15 @@
 {
   "active": true,
   "activeVersion": {
-    "updatedAt": "2026-08-10T14:52:02.567Z",
-    "createdAt": "2026-08-10T14:51:41.343Z",
-    "versionId": "66b32ff5-c6a3-4eab-a06b-ce5cfe8c99b2",
+    "updatedAt": "2026-08-10T16:43:37.070Z",
+    "createdAt": "2026-08-10T16:43:27.423Z",
+    "versionId": "0d71fba1-5a4c-42af-8a28-9616225098ec",
     "workflowId": "fj7QK82TkmpEf8Gf",
     "nodes": [
       {
         "parameters": {
           "path": "hhs-e6bf4e1b-c8f5-4a78-b0da-cddba794dd64",
+          "responseMode": "responseNode",
           "options": {}
         },
         "type": "n8n-nodes-base.webhook",
@@ -300,6 +301,21 @@
             "name": "vpshhs_sealdesign_net"
           }
         }
+      },
+      {
+        "parameters": {
+          "respondWith": "json",
+          "responseBody": "{\n  \"message\": \"Invalid Input. Must define all parameters\",\n  \"status\": \"Ignored\"\n}",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.respondToWebhook",
+        "typeVersion": 1.5,
+        "position": [
+          -608,
+          240
+        ],
+        "id": "62093620-171a-48d0-b3d4-632a0677e1af",
+        "name": "Respond to Webhook"
       }
     ],
     "connections": {
@@ -373,6 +389,13 @@
               "type": "main",
               "index": 0
             }
+          ],
+          [
+            {
+              "node": "Respond to Webhook",
+              "type": "main",
+              "index": 0
+            }
           ]
         ]
       },
@@ -423,11 +446,11 @@
     },
     "nodeGroups": [],
     "authors": "Dai Le",
-    "name": "v1.1.3",
+    "name": "Version 0d71fba1",
     "description": "",
     "autosaved": true
   },
-  "activeVersionId": "66b32ff5-c6a3-4eab-a06b-ce5cfe8c99b2",
+  "activeVersionId": "0d71fba1-5a4c-42af-8a28-9616225098ec",
   "connections": {
     "Webhook": {
       "main": [
@@ -499,6 +522,13 @@
             "type": "main",
             "index": 0
           }
+        ],
+        [
+          {
+            "node": "Respond to Webhook",
+            "type": "main",
+            "index": 0
+          }
         ]
       ]
     },
@@ -558,6 +588,7 @@
     {
       "parameters": {
         "path": "hhs-e6bf4e1b-c8f5-4a78-b0da-cddba794dd64",
+        "responseMode": "responseNode",
         "options": {}
       },
       "type": "n8n-nodes-base.webhook",
@@ -849,6 +880,21 @@
           "name": "vpshhs_sealdesign_net"
         }
       }
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "{\n  \"message\": \"Invalid Input. Must define all parameters\",\n  \"status\": \"Ignored\"\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.5,
+      "position": [
+        -608,
+        240
+      ],
+      "id": "62093620-171a-48d0-b3d4-632a0677e1af",
+      "name": "Respond to Webhook"
     }
   ],
   "pinData": {},
@@ -871,7 +917,7 @@
   "staticData": null,
   "tags": [],
   "triggerCount": 1,
-  "updatedAt": "2026-08-10T14:51:41.342Z",
-  "versionId": "66b32ff5-c6a3-4eab-a06b-ce5cfe8c99b2",
-  "workflow_meta": "[v1.1.3] "
+  "updatedAt": "2026-08-10T16:43:27.422Z",
+  "versionId": "0d71fba1-5a4c-42af-8a28-9616225098ec",
+  "workflow_meta": "[Version 0d71fba1] "
 }
