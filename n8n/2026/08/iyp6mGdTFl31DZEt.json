@@ -1,0 +1,201 @@
+{
+  "active": false,
+  "activeVersion": null,
+  "activeVersionId": null,
+  "connections": {
+    "trigger": {
+      "main": [
+        [
+          {
+            "node": "get_server",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "get_all_servers": {
+      "main": [
+        []
+      ]
+    },
+    "get_server": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [],
+        [
+          {
+            "node": "get_all_servers",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2026-08-10T15:44:19.712Z",
+  "id": "iyp6mGdTFl31DZEt",
+  "isArchived": false,
+  "meta": null,
+  "name": "trigger_docker_deploy",
+  "nodes": [
+    {
+      "parameters": {
+        "workflowInputs": {
+          "values": [
+            {
+              "name": "target_server"
+            },
+            {
+              "name": "repository"
+            },
+            {
+              "name": "image"
+            },
+            {
+              "name": "tag"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        0,
+        0
+      ],
+      "id": "969acb67-a2a3-475e-aa82-b37bd78e94a9",
+      "name": "trigger"
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "dataTableId": {
+          "__rl": true,
+          "value": "BhjFEcSCm2NkvBf6",
+          "mode": "list",
+          "cachedResultName": "server_info",
+          "cachedResultUrl": "/projects/Ewpdqr0Y4bH3sf2c/datatables/BhjFEcSCm2NkvBf6"
+        },
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "docker_hook_url",
+              "condition": "isNotEmpty"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [
+        704,
+        128
+      ],
+      "id": "223d30b6-713a-4b6b-87b4-1dfae0e15b1d",
+      "name": "get_all_servers"
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "dataTableId": {
+          "__rl": true,
+          "value": "BhjFEcSCm2NkvBf6",
+          "mode": "list",
+          "cachedResultName": "server_info",
+          "cachedResultUrl": "/projects/Ewpdqr0Y4bH3sf2c/datatables/BhjFEcSCm2NkvBf6"
+        },
+        "matchType": "allConditions",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "docker_hook_url",
+              "condition": "isNotEmpty"
+            },
+            {
+              "keyName": "server_name",
+              "condition": "ilike",
+              "keyValue": "={{ $json.target_server ?? \"None\" }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [
+        224,
+        0
+      ],
+      "id": "b0175e69-3a0f-4d64-91f1-902092574504",
+      "name": "get_server",
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "3addf701-9552-487c-981a-70fc90f9283e",
+              "leftValue": "={{ $('get_server').item.json.keys().length }}",
+              "rightValue": 1,
+              "operator": {
+                "type": "number",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        432,
+        0
+      ],
+      "id": "4995d446-e050-4a58-bbd1-4a9f9c0f53d4",
+      "name": "If"
+    }
+  ],
+  "pinData": {},
+  "repo_name": "workflows",
+  "repo_owner": "daileit",
+  "repo_path": "n8n/",
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false
+  },
+  "shared": [
+    {
+      "updatedAt": "2026-08-10T15:44:19.712Z",
+      "createdAt": "2026-08-10T15:44:19.712Z",
+      "role": "workflow:owner",
+      "workflowId": "iyp6mGdTFl31DZEt",
+      "projectId": "Ewpdqr0Y4bH3sf2c"
+    }
+  ],
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 0,
+  "updatedAt": "2026-08-10T16:07:14.405Z",
+  "versionId": "ac3e104a-d58b-4b70-a251-7a9ef916f1ef",
+  "workflow_meta": ""
+}
