@@ -1,9 +1,9 @@
 {
   "active": true,
   "activeVersion": {
-    "updatedAt": "2026-08-10T15:31:59.919Z",
-    "createdAt": "2026-08-10T15:31:53.372Z",
-    "versionId": "16269ccf-252a-43f2-ba0d-9e772a6f8269",
+    "updatedAt": "2026-08-10T16:35:42.910Z",
+    "createdAt": "2026-08-10T16:35:36.232Z",
+    "versionId": "afa58006-2da3-42b5-933e-6c50af4d675e",
     "workflowId": "NMDJOBNFXSAzsMCa",
     "nodes": [
       {
@@ -848,6 +848,80 @@
             "name": "apm_cloudyez_com"
           }
         }
+      },
+      {
+        "parameters": {
+          "description": "Call this tool to trigger docker deployment on a server. Must input the server name and the docker image info.",
+          "workflowId": {
+            "__rl": true,
+            "value": "iyp6mGdTFl31DZEt",
+            "mode": "list",
+            "cachedResultUrl": "/workflow/iyp6mGdTFl31DZEt",
+            "cachedResultName": "trigger_docker_deploy"
+          },
+          "workflowInputs": {
+            "mappingMode": "defineBelow",
+            "value": {
+              "target_server": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('target_server', ``, 'string') }}",
+              "repository": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('repository', ``, 'string') }}",
+              "image": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('image', ``, 'string') }}",
+              "tag": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('tag', ``, 'string') }}"
+            },
+            "matchingColumns": [],
+            "schema": [
+              {
+                "id": "target_server",
+                "displayName": "target_server",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "canBeUsedToMatch": true,
+                "type": "string",
+                "removed": false
+              },
+              {
+                "id": "repository",
+                "displayName": "repository",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "canBeUsedToMatch": true,
+                "type": "string",
+                "removed": false
+              },
+              {
+                "id": "image",
+                "displayName": "image",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "canBeUsedToMatch": true,
+                "type": "string",
+                "removed": false
+              },
+              {
+                "id": "tag",
+                "displayName": "tag",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "canBeUsedToMatch": true,
+                "type": "string",
+                "removed": false
+              }
+            ],
+            "attemptToConvertTypes": false,
+            "convertFieldsToString": false
+          }
+        },
+        "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
+        "typeVersion": 2.2,
+        "position": [
+          912,
+          1264
+        ],
+        "id": "30dc1783-f7cc-4039-b6c9-d798e31b33fa",
+        "name": "Call 'trigger_docker_deploy'"
       }
     ],
     "connections": {
@@ -1160,15 +1234,26 @@
         "main": [
           []
         ]
+      },
+      "Call 'trigger_docker_deploy'": {
+        "ai_tool": [
+          [
+            {
+              "node": "Daile Agent",
+              "type": "ai_tool",
+              "index": 0
+            }
+          ]
+        ]
       }
     },
     "nodeGroups": [],
     "authors": "Dai Le",
-    "name": "Version 16269ccf",
+    "name": "Version afa58006",
     "description": "",
     "autosaved": true
   },
-  "activeVersionId": "16269ccf-252a-43f2-ba0d-9e772a6f8269",
+  "activeVersionId": "afa58006-2da3-42b5-933e-6c50af4d675e",
   "connections": {
     "Al Model": {
       "ai_languageModel": [
@@ -1478,6 +1563,17 @@
     "test_trigger": {
       "main": [
         []
+      ]
+    },
+    "Call 'trigger_docker_deploy'": {
+      "ai_tool": [
+        [
+          {
+            "node": "Daile Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
       ]
     }
   },
@@ -2331,6 +2427,80 @@
           "name": "apm_cloudyez_com"
         }
       }
+    },
+    {
+      "parameters": {
+        "description": "Call this tool to trigger docker deployment on a server. Must input the server name and the docker image info.",
+        "workflowId": {
+          "__rl": true,
+          "value": "iyp6mGdTFl31DZEt",
+          "mode": "list",
+          "cachedResultUrl": "/workflow/iyp6mGdTFl31DZEt",
+          "cachedResultName": "trigger_docker_deploy"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "target_server": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('target_server', ``, 'string') }}",
+            "repository": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('repository', ``, 'string') }}",
+            "image": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('image', ``, 'string') }}",
+            "tag": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('tag', ``, 'string') }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "target_server",
+              "displayName": "target_server",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            },
+            {
+              "id": "repository",
+              "displayName": "repository",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            },
+            {
+              "id": "image",
+              "displayName": "image",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            },
+            {
+              "id": "tag",
+              "displayName": "tag",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
+      "typeVersion": 2.2,
+      "position": [
+        912,
+        1264
+      ],
+      "id": "30dc1783-f7cc-4039-b6c9-d798e31b33fa",
+      "name": "Call 'trigger_docker_deploy'"
     }
   ],
   "pinData": {
@@ -2361,7 +2531,7 @@
   "staticData": null,
   "tags": [],
   "triggerCount": 1,
-  "updatedAt": "2026-08-10T15:43:59.562Z",
-  "versionId": "87911508-dc6e-4ebf-99d2-a21ad857c940",
-  "workflow_meta": "[Version 16269ccf] "
+  "updatedAt": "2026-08-10T16:35:36.230Z",
+  "versionId": "afa58006-2da3-42b5-933e-6c50af4d675e",
+  "workflow_meta": "[Version afa58006] "
 }
