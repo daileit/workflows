@@ -1,18 +1,18 @@
 {
   "active": true,
   "activeVersion": {
-    "updatedAt": "2026-06-17T17:39:16.711Z",
-    "createdAt": "2026-06-17T17:39:00.715Z",
-    "versionId": "df10dd7b-3e5b-4a75-af18-71139dcb48f8",
+    "updatedAt": "2026-08-10T15:31:59.919Z",
+    "createdAt": "2026-08-10T15:31:53.372Z",
+    "versionId": "16269ccf-252a-43f2-ba0d-9e772a6f8269",
     "workflowId": "NMDJOBNFXSAzsMCa",
     "nodes": [
       {
         "parameters": {
           "model": {
             "__rl": true,
-            "value": "gpt-5.4",
+            "value": "gpt-5.4-mini",
             "mode": "list",
-            "cachedResultName": "gpt-5.4"
+            "cachedResultName": "gpt-5.4-mini"
           },
           "options": {
             "maxTokens": 20000,
@@ -30,8 +30,8 @@
         "typeVersion": 1.2,
         "credentials": {
           "openAiApi": {
-            "id": "QhjH8fo0ClhRj9g8",
-            "name": "oai_timo_dev"
+            "id": "QIGg8RB3z3cRFIii",
+            "name": "oai_gtx_tyl"
           }
         }
       },
@@ -1164,11 +1164,11 @@
     },
     "nodeGroups": [],
     "authors": "Dai Le",
-    "name": "Version df10dd7b",
+    "name": "Version 16269ccf",
     "description": "",
     "autosaved": true
   },
-  "activeVersionId": "df10dd7b-3e5b-4a75-af18-71139dcb48f8",
+  "activeVersionId": "16269ccf-252a-43f2-ba0d-9e772a6f8269",
   "connections": {
     "Al Model": {
       "ai_languageModel": [
@@ -1493,9 +1493,9 @@
       "parameters": {
         "model": {
           "__rl": true,
-          "value": "gpt-5.4",
+          "value": "gpt-5.4-mini",
           "mode": "list",
-          "cachedResultName": "gpt-5.4"
+          "cachedResultName": "gpt-5.4-mini"
         },
         "options": {
           "maxTokens": 20000,
@@ -1513,8 +1513,8 @@
       "typeVersion": 1.2,
       "credentials": {
         "openAiApi": {
-          "id": "QhjH8fo0ClhRj9g8",
-          "name": "oai_timo_dev"
+          "id": "QIGg8RB3z3cRFIii",
+          "name": "oai_gtx_tyl"
         }
       }
     },
@@ -2361,7 +2361,7 @@
   "staticData": null,
   "tags": [],
   "triggerCount": 1,
-  "updatedAt": "2026-06-17T17:39:00.713Z",
-  "versionId": "df10dd7b-3e5b-4a75-af18-71139dcb48f8",
-  "workflow_meta": "[Version df10dd7b] "
+  "updatedAt": "2026-08-10T15:43:59.562Z",
+  "versionId": "87911508-dc6e-4ebf-99d2-a21ad857c940",
+  "workflow_meta": "[Version 16269ccf] "
 }
