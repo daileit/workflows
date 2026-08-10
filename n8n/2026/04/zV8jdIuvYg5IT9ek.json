@@ -1,14 +1,15 @@
 {
   "active": true,
   "activeVersion": {
-    "updatedAt": "2026-08-10T14:37:14.160Z",
-    "createdAt": "2026-08-10T14:36:41.989Z",
-    "versionId": "064df5af-55bf-4df7-bb83-277af6727eff",
+    "updatedAt": "2026-08-10T16:44:16.968Z",
+    "createdAt": "2026-08-10T16:44:03.558Z",
+    "versionId": "40461695-4aee-4db0-a8a5-03dd1fce0b47",
     "workflowId": "zV8jdIuvYg5IT9ek",
     "nodes": [
       {
         "parameters": {
           "path": "tino3-ca86-489d-b10c-e164be496d77",
+          "responseMode": "responseNode",
           "options": {}
         },
         "type": "n8n-nodes-base.webhook",
@@ -300,6 +301,21 @@
             "name": "vpstino3_sealdesign_net"
           }
         }
+      },
+      {
+        "parameters": {
+          "respondWith": "json",
+          "responseBody": "{\n  \"message\": \"Invalid Input. Must define all parameters\",\n  \"status\": \"Ignored\"\n}",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.respondToWebhook",
+        "typeVersion": 1.5,
+        "position": [
+          -608,
+          224
+        ],
+        "id": "4299bb65-1c28-4223-8e39-699fd77993f7",
+        "name": "Respond to Webhook"
       }
     ],
     "connections": {
@@ -373,6 +389,13 @@
               "type": "main",
               "index": 0
             }
+          ],
+          [
+            {
+              "node": "Respond to Webhook",
+              "type": "main",
+              "index": 0
+            }
           ]
         ]
       },
@@ -423,11 +446,11 @@
     },
     "nodeGroups": [],
     "authors": "Dai Le",
-    "name": "v1.0.4",
+    "name": "Version 40461695",
     "description": "",
     "autosaved": true
   },
-  "activeVersionId": "064df5af-55bf-4df7-bb83-277af6727eff",
+  "activeVersionId": "40461695-4aee-4db0-a8a5-03dd1fce0b47",
   "connections": {
     "Webhook": {
       "main": [
@@ -499,6 +522,13 @@
             "type": "main",
             "index": 0
           }
+        ],
+        [
+          {
+            "node": "Respond to Webhook",
+            "type": "main",
+            "index": 0
+          }
         ]
       ]
     },
@@ -558,6 +588,7 @@
     {
       "parameters": {
         "path": "tino3-ca86-489d-b10c-e164be496d77",
+        "responseMode": "responseNode",
         "options": {}
       },
       "type": "n8n-nodes-base.webhook",
@@ -849,6 +880,21 @@
           "name": "vpstino3_sealdesign_net"
         }
       }
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "{\n  \"message\": \"Invalid Input. Must define all parameters\",\n  \"status\": \"Ignored\"\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.5,
+      "position": [
+        -608,
+        224
+      ],
+      "id": "4299bb65-1c28-4223-8e39-699fd77993f7",
+      "name": "Respond to Webhook"
     }
   ],
   "pinData": {},
@@ -871,7 +917,7 @@
   "staticData": null,
   "tags": [],
   "triggerCount": 1,
-  "updatedAt": "2026-08-10T14:36:41.988Z",
-  "versionId": "064df5af-55bf-4df7-bb83-277af6727eff",
-  "workflow_meta": "[v1.0.4] "
+  "updatedAt": "2026-08-10T16:44:03.557Z",
+  "versionId": "40461695-4aee-4db0-a8a5-03dd1fce0b47",
+  "workflow_meta": "[Version 40461695] "
 }
