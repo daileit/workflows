@@ -1,8 +1,6 @@
 {
   "active": true,
   "activeVersion": {
-    "updatedAt": "2026-08-10T18:12:38.007Z",
-    "createdAt": "2026-08-10T18:12:32.837Z",
     "versionId": "08a0bf14-20e9-40d7-9d6c-b50da5e8469a",
     "workflowId": "kjXGfbKedfDI4G8c",
     "nodes": [
@@ -778,7 +776,9 @@
     "authors": "Dai Le",
     "name": "Version 08a0bf14",
     "description": "",
-    "autosaved": true
+    "autosaved": true,
+    "createdAt": "2026-08-10T18:12:32.837Z",
+    "updatedAt": "2026-08-10T18:12:38.007Z"
   },
   "activeVersionId": "08a0bf14-20e9-40d7-9d6c-b50da5e8469a",
   "connections": {
@@ -976,6 +976,7 @@
     "templateCredsSetupCompleted": true
   },
   "name": "google_ai_search",
+  "nodeGroups": [],
   "nodes": [
     {
       "parameters": {
@@ -1575,11 +1576,11 @@
   },
   "shared": [
     {
-      "updatedAt": "2026-04-21T18:38:42.282Z",
-      "createdAt": "2026-04-21T18:38:42.282Z",
       "role": "workflow:owner",
       "workflowId": "kjXGfbKedfDI4G8c",
-      "projectId": "Ewpdqr0Y4bH3sf2c"
+      "projectId": "Ewpdqr0Y4bH3sf2c",
+      "createdAt": "2026-04-21T18:38:42.282Z",
+      "updatedAt": "2026-04-21T18:38:42.282Z"
     }
   ],
   "staticData": null,
