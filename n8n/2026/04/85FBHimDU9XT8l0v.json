@@ -213,6 +213,7 @@
   "isArchived": false,
   "meta": null,
   "name": "sync_backup_files",
+  "nodeGroups": [],
   "nodes": [
     {
       "parameters": {
@@ -676,11 +677,11 @@
   },
   "shared": [
     {
-      "updatedAt": "2026-04-21T18:31:43.843Z",
-      "createdAt": "2026-04-21T18:31:43.843Z",
       "role": "workflow:owner",
       "workflowId": "85FBHimDU9XT8l0v",
-      "projectId": "Ewpdqr0Y4bH3sf2c"
+      "projectId": "Ewpdqr0Y4bH3sf2c",
+      "createdAt": "2026-04-21T18:31:43.843Z",
+      "updatedAt": "2026-04-21T18:31:43.843Z"
     }
   ],
   "staticData": null,
