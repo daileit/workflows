@@ -1,8 +1,6 @@
 {
   "active": true,
   "activeVersion": {
-    "updatedAt": "2026-08-10T16:43:37.070Z",
-    "createdAt": "2026-08-10T16:43:27.423Z",
     "versionId": "0d71fba1-5a4c-42af-8a28-9616225098ec",
     "workflowId": "fj7QK82TkmpEf8Gf",
     "nodes": [
@@ -448,7 +446,9 @@
     "authors": "Dai Le",
     "name": "Version 0d71fba1",
     "description": "",
-    "autosaved": true
+    "autosaved": true,
+    "createdAt": "2026-08-10T16:43:27.423Z",
+    "updatedAt": "2026-08-10T16:43:37.070Z"
   },
   "activeVersionId": "0d71fba1-5a4c-42af-8a28-9616225098ec",
   "connections": {
@@ -584,6 +584,7 @@
     "templateCredsSetupCompleted": true
   },
   "name": "deploy_docker_vpshhs1",
+  "nodeGroups": [],
   "nodes": [
     {
       "parameters": {
@@ -907,11 +908,11 @@
   },
   "shared": [
     {
-      "updatedAt": "2026-04-21T18:34:22.882Z",
-      "createdAt": "2026-04-21T18:34:22.882Z",
       "role": "workflow:owner",
       "workflowId": "fj7QK82TkmpEf8Gf",
-      "projectId": "Ewpdqr0Y4bH3sf2c"
+      "projectId": "Ewpdqr0Y4bH3sf2c",
+      "createdAt": "2026-04-21T18:34:22.882Z",
+      "updatedAt": "2026-04-21T18:34:22.882Z"
     }
   ],
   "staticData": null,
