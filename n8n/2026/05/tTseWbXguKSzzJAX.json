@@ -71,6 +71,7 @@
     "templateCredsSetupCompleted": true
   },
   "name": "test_workflow",
+  "nodeGroups": [],
   "nodes": [
     {
       "parameters": {},
@@ -247,11 +248,11 @@
   },
   "shared": [
     {
-      "updatedAt": "2026-05-31T09:21:17.383Z",
-      "createdAt": "2026-05-31T09:21:17.383Z",
       "role": "workflow:owner",
       "workflowId": "tTseWbXguKSzzJAX",
-      "projectId": "Ewpdqr0Y4bH3sf2c"
+      "projectId": "Ewpdqr0Y4bH3sf2c",
+      "createdAt": "2026-05-31T09:21:17.383Z",
+      "updatedAt": "2026-05-31T09:21:17.383Z"
     }
   ],
   "staticData": null,
