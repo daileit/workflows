@@ -1,8 +1,6 @@
 {
   "active": true,
   "activeVersion": {
-    "updatedAt": "2026-08-27T06:38:14.503Z",
-    "createdAt": "2026-08-27T06:38:07.160Z",
     "versionId": "1012d8b9-e3bf-46f2-b1bc-4afa09986404",
     "workflowId": "NMDJOBNFXSAzsMCa",
     "nodes": [
@@ -1251,7 +1249,9 @@
     "authors": "Dai Le",
     "name": "Version 1012d8b9",
     "description": "",
-    "autosaved": true
+    "autosaved": true,
+    "createdAt": "2026-08-27T06:38:07.160Z",
+    "updatedAt": "2026-08-27T06:38:14.503Z"
   },
   "activeVersionId": "1012d8b9-e3bf-46f2-b1bc-4afa09986404",
   "connections": {
@@ -1584,6 +1584,7 @@
     "templateCredsSetupCompleted": true
   },
   "name": "tomi_the_bot",
+  "nodeGroups": [],
   "nodes": [
     {
       "parameters": {
@@ -2521,11 +2522,11 @@
   },
   "shared": [
     {
-      "updatedAt": "2026-04-21T18:36:53.496Z",
-      "createdAt": "2026-04-21T18:36:53.496Z",
       "role": "workflow:owner",
       "workflowId": "NMDJOBNFXSAzsMCa",
-      "projectId": "Ewpdqr0Y4bH3sf2c"
+      "projectId": "Ewpdqr0Y4bH3sf2c",
+      "createdAt": "2026-04-21T18:36:53.496Z",
+      "updatedAt": "2026-04-21T18:36:53.496Z"
     }
   ],
   "staticData": null,
