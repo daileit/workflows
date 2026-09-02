@@ -1,8 +1,6 @@
 {
   "active": true,
   "activeVersion": {
-    "updatedAt": "2026-08-10T17:28:10.260Z",
-    "createdAt": "2026-08-10T17:27:27.896Z",
     "versionId": "d2dcd412-ad40-42fb-be7a-3649a95a6c6f",
     "workflowId": "iyp6mGdTFl31DZEt",
     "nodes": [
@@ -365,7 +363,9 @@
     "authors": "Dai Le",
     "name": "Version d2dcd412",
     "description": "",
-    "autosaved": true
+    "autosaved": true,
+    "createdAt": "2026-08-10T17:27:27.896Z",
+    "updatedAt": "2026-08-10T17:28:10.260Z"
   },
   "activeVersionId": "d2dcd412-ad40-42fb-be7a-3649a95a6c6f",
   "connections": {
@@ -459,6 +459,7 @@
   "isArchived": false,
   "meta": null,
   "name": "trigger_docker_deploy",
+  "nodeGroups": [],
   "nodes": [
     {
       "parameters": {
@@ -751,11 +752,11 @@
   },
   "shared": [
     {
-      "updatedAt": "2026-08-10T15:44:19.712Z",
-      "createdAt": "2026-08-10T15:44:19.712Z",
       "role": "workflow:owner",
       "workflowId": "iyp6mGdTFl31DZEt",
-      "projectId": "Ewpdqr0Y4bH3sf2c"
+      "projectId": "Ewpdqr0Y4bH3sf2c",
+      "createdAt": "2026-08-10T15:44:19.712Z",
+      "updatedAt": "2026-08-10T15:44:19.712Z"
     }
   ],
   "staticData": null,
