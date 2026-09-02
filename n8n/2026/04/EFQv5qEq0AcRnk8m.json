@@ -188,6 +188,7 @@
   "isArchived": false,
   "meta": null,
   "name": "ai_blog_post",
+  "nodeGroups": [],
   "nodes": [
     {
       "parameters": {
@@ -728,11 +729,11 @@
   },
   "shared": [
     {
-      "updatedAt": "2026-04-21T18:39:36.540Z",
-      "createdAt": "2026-04-21T18:39:36.540Z",
       "role": "workflow:owner",
       "workflowId": "EFQv5qEq0AcRnk8m",
-      "projectId": "Ewpdqr0Y4bH3sf2c"
+      "projectId": "Ewpdqr0Y4bH3sf2c",
+      "createdAt": "2026-04-21T18:39:36.540Z",
+      "updatedAt": "2026-04-21T18:39:36.540Z"
     }
   ],
   "staticData": null,
