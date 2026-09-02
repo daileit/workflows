@@ -1,8 +1,6 @@
 {
   "active": true,
   "activeVersion": {
-    "updatedAt": "2026-06-06T15:04:18.589Z",
-    "createdAt": "2026-06-06T15:03:52.542Z",
     "versionId": "fe88d9b2-4c54-4071-8e43-97f85a5f7854",
     "workflowId": "wu5z01aaBSyMbw83",
     "nodes": [
@@ -1119,7 +1117,9 @@
     "authors": "Dai Le",
     "name": "v1.1.3",
     "description": "",
-    "autosaved": true
+    "autosaved": true,
+    "createdAt": "2026-06-06T15:03:52.542Z",
+    "updatedAt": "2026-06-06T15:04:18.589Z"
   },
   "activeVersionId": "fe88d9b2-4c54-4071-8e43-97f85a5f7854",
   "connections": {
@@ -1483,6 +1483,7 @@
     "templateCredsSetupCompleted": true
   },
   "name": "github_sync",
+  "nodeGroups": [],
   "nodes": [
     {
       "parameters": {},
@@ -2249,16 +2250,21 @@
   },
   "shared": [
     {
-      "updatedAt": "2026-04-21T18:40:42.888Z",
-      "createdAt": "2026-04-21T18:40:42.888Z",
       "role": "workflow:owner",
       "workflowId": "wu5z01aaBSyMbw83",
-      "projectId": "Ewpdqr0Y4bH3sf2c"
+      "projectId": "Ewpdqr0Y4bH3sf2c",
+      "createdAt": "2026-04-21T18:40:42.888Z",
+      "updatedAt": "2026-04-21T18:40:42.888Z"
     }
   ],
   "staticData": {
     "node:Schedule Trigger": {
-      "recurrenceRules": []
+      "recurrenceRules": [
+        null
+      ],
+      "recurrenceRuleSignatures": [
+        null
+      ]
     }
   },
   "tags": [],
