@@ -200,9 +200,9 @@
       "parameters": {
         "modelId": {
           "__rl": true,
-          "value": "apac.anthropic.claude-sonnet-4-20250514-v1:0",
+          "value": "groq/compound-mini",
           "mode": "list",
-          "cachedResultName": "APAC.ANTHROPIC.CLAUDE-SONNET-4-20250514-V1:0"
+          "cachedResultName": "GROQ/COMPOUND-MINI"
         },
         "messages": {
           "values": [
@@ -224,6 +224,12 @@
       "name": "bedrock_sonnet_check",
       "retryOnFail": true,
       "waitBetweenTries": 5000,
+      "credentials": {
+        "openAiApi": {
+          "id": "eshVArCKvoaUDpPN",
+          "name": "oai_groq_daile_programer"
+        }
+      },
       "onError": "continueErrorOutput"
     },
     {
@@ -383,7 +389,13 @@
       ],
       "id": "7c60213c-1fcb-459d-8e0c-72da456c7b13",
       "name": "notify_result",
-      "webhookId": "5b5299a0-dc31-4392-b068-a5f2bb12e9c4"
+      "webhookId": "5b5299a0-dc31-4392-b068-a5f2bb12e9c4",
+      "credentials": {
+        "telegramApi": {
+          "id": "sxuxpcY3BPqjNnuB",
+          "name": "tele_doggo_bot"
+        }
+      }
     },
     {
       "parameters": {
@@ -517,7 +529,7 @@
     },
     {
       "parameters": {
-        "url": "http://kpbitgo-bag.timo-llm.svc.cluster.local/api/v1/models",
+        "url": "https://llm.tymex.ai/v1/models",
         "authentication": "predefinedCredentialType",
         "nodeCredentialType": "openAiApi",
         "options": {}
@@ -529,17 +541,23 @@
         816
       ],
       "id": "99d704cb-fbec-4f6c-951e-8df43f784394",
-      "name": "HTTP Request"
+      "name": "HTTP Request",
+      "credentials": {
+        "openAiApi": {
+          "id": "hhW6LfbU9Lb9n0Zv",
+          "name": "oai_gtx_hub"
+        }
+      }
     },
     {
       "parameters": {
         "operation": "get",
         "dataTableId": {
           "__rl": true,
-          "value": "c0YezzojRaRk5o7C",
+          "value": "W1p7t3TviOiPTq0h",
           "mode": "list",
-          "cachedResultName": "monitoring_website_list",
-          "cachedResultUrl": "/projects/TgT7sbikPaxzUZlq/datatables/c0YezzojRaRk5o7C"
+          "cachedResultName": "active_website_list",
+          "cachedResultUrl": "/projects/Ewpdqr0Y4bH3sf2c/datatables/W1p7t3TviOiPTq0h"
         },
         "matchType": "allConditions",
         "filters": {
@@ -549,7 +567,7 @@
               "keyValue": "=6"
             },
             {
-              "keyName": "active",
+              "keyName": "isActive",
               "condition": "isTrue"
             }
           ]
@@ -599,7 +617,7 @@
   "staticData": null,
   "tags": [],
   "triggerCount": 0,
-  "updatedAt": "2026-04-21T18:38:00.244Z",
-  "versionId": "1f92bf5e-89e6-46b1-8b6a-3a4215e7462f",
+  "updatedAt": "2026-09-02T16:07:02.440Z",
+  "versionId": "837f2008-3bd8-4856-9176-0950b470c399",
   "workflow_meta": ""
 }
