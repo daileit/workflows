@@ -2246,7 +2246,8 @@
   "repo_path": "n8n/",
   "settings": {
     "executionOrder": "v1",
-    "binaryMode": "separate"
+    "binaryMode": "separate",
+    "availableInMCP": true
   },
   "shared": [
     {
@@ -2269,7 +2270,7 @@
   },
   "tags": [],
   "triggerCount": 1,
-  "updatedAt": "2026-06-06T15:03:52.541Z",
+  "updatedAt": "2026-09-02T18:38:53.973Z",
   "versionId": "fe88d9b2-4c54-4071-8e43-97f85a5f7854",
   "workflow_meta": "[v1.1.3] "
 }
