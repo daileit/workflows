@@ -90,6 +90,7 @@
   "isArchived": true,
   "meta": null,
   "name": "Chat 1a8f855e-879d-44d0-85ea-fa7613e53393",
+  "nodeGroups": [],
   "nodes": [
     {
       "parameters": {},
@@ -230,11 +231,11 @@
   },
   "shared": [
     {
-      "updatedAt": "2026-06-05T16:47:50.983Z",
-      "createdAt": "2026-06-05T16:47:50.983Z",
       "role": "workflow:owner",
       "workflowId": "5JHpsqoBZ91d58nc",
-      "projectId": "Ewpdqr0Y4bH3sf2c"
+      "projectId": "Ewpdqr0Y4bH3sf2c",
+      "createdAt": "2026-06-05T16:47:50.983Z",
+      "updatedAt": "2026-06-05T16:47:50.983Z"
     }
   ],
   "staticData": null,
