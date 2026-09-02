@@ -1,8 +1,6 @@
 {
   "active": true,
   "activeVersion": {
-    "updatedAt": "2026-08-10T15:33:11.900Z",
-    "createdAt": "2026-08-10T15:33:09.396Z",
     "versionId": "05958ef2-35f7-4504-884e-5c95a89f8171",
     "workflowId": "1WdfnvIPYi5BRtZM",
     "nodes": [
@@ -656,7 +654,9 @@
     "authors": "Dai Le",
     "name": "Version 05958ef2",
     "description": "",
-    "autosaved": true
+    "autosaved": true,
+    "createdAt": "2026-08-10T15:33:09.396Z",
+    "updatedAt": "2026-08-10T15:33:11.900Z"
   },
   "activeVersionId": "05958ef2-35f7-4504-884e-5c95a89f8171",
   "connections": {
@@ -790,6 +790,7 @@
     "templateCredsSetupCompleted": true
   },
   "name": "manage_servers",
+  "nodeGroups": [],
   "nodes": [
     {
       "parameters": {
@@ -1323,11 +1324,11 @@
   },
   "shared": [
     {
-      "updatedAt": "2026-04-21T18:33:38.932Z",
-      "createdAt": "2026-04-21T18:33:38.932Z",
       "role": "workflow:owner",
       "workflowId": "1WdfnvIPYi5BRtZM",
-      "projectId": "Ewpdqr0Y4bH3sf2c"
+      "projectId": "Ewpdqr0Y4bH3sf2c",
+      "createdAt": "2026-04-21T18:33:38.932Z",
+      "updatedAt": "2026-04-21T18:33:38.932Z"
     }
   ],
   "staticData": null,
