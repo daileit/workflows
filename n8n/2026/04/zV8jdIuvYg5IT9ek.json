@@ -1,8 +1,6 @@
 {
   "active": true,
   "activeVersion": {
-    "updatedAt": "2026-08-10T16:44:16.968Z",
-    "createdAt": "2026-08-10T16:44:03.558Z",
     "versionId": "40461695-4aee-4db0-a8a5-03dd1fce0b47",
     "workflowId": "zV8jdIuvYg5IT9ek",
     "nodes": [
@@ -448,7 +446,9 @@
     "authors": "Dai Le",
     "name": "Version 40461695",
     "description": "",
-    "autosaved": true
+    "autosaved": true,
+    "createdAt": "2026-08-10T16:44:03.558Z",
+    "updatedAt": "2026-08-10T16:44:16.968Z"
   },
   "activeVersionId": "40461695-4aee-4db0-a8a5-03dd1fce0b47",
   "connections": {
@@ -584,6 +584,7 @@
     "templateCredsSetupCompleted": true
   },
   "name": "deploy_docker_vpstino3",
+  "nodeGroups": [],
   "nodes": [
     {
       "parameters": {
@@ -907,11 +908,11 @@
   },
   "shared": [
     {
-      "updatedAt": "2026-04-21T18:38:58.646Z",
-      "createdAt": "2026-04-21T18:38:58.646Z",
       "role": "workflow:owner",
       "workflowId": "zV8jdIuvYg5IT9ek",
-      "projectId": "Ewpdqr0Y4bH3sf2c"
+      "projectId": "Ewpdqr0Y4bH3sf2c",
+      "createdAt": "2026-04-21T18:38:58.646Z",
+      "updatedAt": "2026-04-21T18:38:58.646Z"
     }
   ],
   "staticData": null,
