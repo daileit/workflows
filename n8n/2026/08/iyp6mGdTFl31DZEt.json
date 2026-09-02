@@ -748,7 +748,7 @@
   "settings": {
     "executionOrder": "v1",
     "binaryMode": "separate",
-    "availableInMCP": false
+    "availableInMCP": true
   },
   "shared": [
     {
@@ -762,7 +762,7 @@
   "staticData": null,
   "tags": [],
   "triggerCount": 0,
-  "updatedAt": "2026-08-10T17:32:03.787Z",
+  "updatedAt": "2026-09-02T18:38:53.973Z",
   "versionId": "7d5d8aa1-913c-4f29-b268-81c02b2f337d",
   "workflow_meta": "[Version d2dcd412] "
 }
