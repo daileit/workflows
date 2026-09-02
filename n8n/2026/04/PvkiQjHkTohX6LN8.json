@@ -75,6 +75,7 @@
   "isArchived": false,
   "meta": null,
   "name": "image_generator",
+  "nodeGroups": [],
   "nodes": [
     {
       "parameters": {
@@ -289,11 +290,11 @@
   },
   "shared": [
     {
-      "updatedAt": "2026-04-21T18:33:11.384Z",
-      "createdAt": "2026-04-21T18:33:11.384Z",
       "role": "workflow:owner",
       "workflowId": "PvkiQjHkTohX6LN8",
-      "projectId": "Ewpdqr0Y4bH3sf2c"
+      "projectId": "Ewpdqr0Y4bH3sf2c",
+      "createdAt": "2026-04-21T18:33:11.384Z",
+      "updatedAt": "2026-04-21T18:33:11.384Z"
     }
   ],
   "staticData": null,
