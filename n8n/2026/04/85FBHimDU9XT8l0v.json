@@ -673,7 +673,8 @@
   "repo_path": "n8n/",
   "settings": {
     "executionOrder": "v1",
-    "binaryMode": "separate"
+    "binaryMode": "separate",
+    "availableInMCP": true
   },
   "shared": [
     {
@@ -687,7 +688,7 @@
   "staticData": null,
   "tags": [],
   "triggerCount": 0,
-  "updatedAt": "2026-04-21T18:31:43.843Z",
+  "updatedAt": "2026-09-02T18:38:53.973Z",
   "versionId": "28b9ca84-ccda-4524-abc3-0675bfef9701",
   "workflow_meta": ""
 }
