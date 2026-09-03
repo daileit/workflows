@@ -1,7 +1,7 @@
 {
   "active": true,
   "activeVersion": {
-    "versionId": "40461695-4aee-4db0-a8a5-03dd1fce0b47",
+    "versionId": "65b167a3-4968-4435-aba6-40558f58b4fc",
     "workflowId": "zV8jdIuvYg5IT9ek",
     "nodes": [
       {
@@ -303,8 +303,56 @@
       {
         "parameters": {
           "respondWith": "json",
-          "responseBody": "{\n  \"message\": \"Invalid Input. Must define all parameters\",\n  \"status\": \"Ignored\"\n}",
+          "responseBody": "={\n  \"message\": \"Deployment workflow finished\",\n  \"status\": {{ $('get_result').first().json.run_code === 0 && $('get_result').first().json.cleanup_code === 0 ? '\"success\"' : '\"failed\"' }}\n}",
+          "options": {
+            "responseCode": "={{ $('get_result').first().json.run_code === 0 && $('get_result').first().json.cleanup_code === 0 ? 200 : 500 }}"
+          }
+        },
+        "type": "n8n-nodes-base.respondToWebhook",
+        "typeVersion": 1.5,
+        "position": [
+          1072,
+          0
+        ],
+        "id": "818b9dd8-57e8-4d15-a399-c8df08770b0d",
+        "name": "response"
+      },
+      {
+        "parameters": {
+          "assignments": {
+            "assignments": [
+              {
+                "id": "939a9a83-723b-4419-8769-1e86606fa107",
+                "name": "run_code",
+                "value": "={{ $('docker_run').first()?.json?.code ?? 1 }}",
+                "type": "number"
+              },
+              {
+                "id": "1adec33c-01a0-4e8a-930d-8a699670e366",
+                "name": "cleanup_code",
+                "value": "={{ $('docker_images_clean').first()?.json?.code ?? 1 }}",
+                "type": "number"
+              }
+            ]
+          },
           "options": {}
+        },
+        "type": "n8n-nodes-base.set",
+        "typeVersion": 3.5,
+        "position": [
+          896,
+          0
+        ],
+        "id": "f42ae00b-0e0c-4e60-8e08-ce32577a9529",
+        "name": "get_result"
+      },
+      {
+        "parameters": {
+          "respondWith": "json",
+          "responseBody": "{\n  \"message\": \"Invalid Input. Must define all parameters\",\n  \"status\": \"Ignored\"\n}",
+          "options": {
+            "responseCode": 403
+          }
         },
         "type": "n8n-nodes-base.respondToWebhook",
         "typeVersion": 1.5,
@@ -312,8 +360,8 @@
           -608,
           224
         ],
-        "id": "4299bb65-1c28-4223-8e39-699fd77993f7",
-        "name": "Respond to Webhook"
+        "id": "c44527bd-6283-4071-8916-224e51d84eb4",
+        "name": "error"
       }
     ],
     "connections": {
@@ -390,7 +438,7 @@
           ],
           [
             {
-              "node": "Respond to Webhook",
+              "node": "error",
               "type": "main",
               "index": 0
             }
@@ -440,17 +488,39 @@
             }
           ]
         ]
+      },
+      "get_result": {
+        "main": [
+          [
+            {
+              "node": "response",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "docker_images_clean": {
+        "main": [
+          [
+            {
+              "node": "get_result",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
       }
     },
     "nodeGroups": [],
     "authors": "Dai Le",
-    "name": "Version 40461695",
+    "name": "1.4.3",
     "description": "",
     "autosaved": true,
-    "createdAt": "2026-08-10T16:44:03.558Z",
-    "updatedAt": "2026-08-10T16:44:16.968Z"
+    "createdAt": "2026-09-03T09:21:14.536Z",
+    "updatedAt": "2026-09-03T09:21:19.075Z"
   },
-  "activeVersionId": "40461695-4aee-4db0-a8a5-03dd1fce0b47",
+  "activeVersionId": "65b167a3-4968-4435-aba6-40558f58b4fc",
   "connections": {
     "Webhook": {
       "main": [
@@ -525,7 +595,7 @@
         ],
         [
           {
-            "node": "Respond to Webhook",
+            "node": "error",
             "type": "main",
             "index": 0
           }
@@ -570,6 +640,28 @@
         [
           {
             "node": "docker_images_clean",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "get_result": {
+      "main": [
+        [
+          {
+            "node": "response",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "docker_images_clean": {
+      "main": [
+        [
+          {
+            "node": "get_result",
             "type": "main",
             "index": 0
           }
@@ -885,8 +977,56 @@
     {
       "parameters": {
         "respondWith": "json",
-        "responseBody": "{\n  \"message\": \"Invalid Input. Must define all parameters\",\n  \"status\": \"Ignored\"\n}",
+        "responseBody": "={\n  \"message\": \"Deployment workflow finished\",\n  \"status\": {{ $('get_result').first().json.run_code === 0 && $('get_result').first().json.cleanup_code === 0 ? '\"success\"' : '\"failed\"' }}\n}",
+        "options": {
+          "responseCode": "={{ $('get_result').first().json.run_code === 0 && $('get_result').first().json.cleanup_code === 0 ? 200 : 500 }}"
+        }
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.5,
+      "position": [
+        1072,
+        0
+      ],
+      "id": "818b9dd8-57e8-4d15-a399-c8df08770b0d",
+      "name": "response"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "939a9a83-723b-4419-8769-1e86606fa107",
+              "name": "run_code",
+              "value": "={{ $('docker_run').first()?.json?.code ?? 1 }}",
+              "type": "number"
+            },
+            {
+              "id": "1adec33c-01a0-4e8a-930d-8a699670e366",
+              "name": "cleanup_code",
+              "value": "={{ $('docker_images_clean').first()?.json?.code ?? 1 }}",
+              "type": "number"
+            }
+          ]
+        },
         "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.5,
+      "position": [
+        896,
+        0
+      ],
+      "id": "f42ae00b-0e0c-4e60-8e08-ce32577a9529",
+      "name": "get_result"
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "{\n  \"message\": \"Invalid Input. Must define all parameters\",\n  \"status\": \"Ignored\"\n}",
+        "options": {
+          "responseCode": 403
+        }
       },
       "type": "n8n-nodes-base.respondToWebhook",
       "typeVersion": 1.5,
@@ -894,8 +1034,8 @@
         -608,
         224
       ],
-      "id": "4299bb65-1c28-4223-8e39-699fd77993f7",
-      "name": "Respond to Webhook"
+      "id": "c44527bd-6283-4071-8916-224e51d84eb4",
+      "name": "error"
     }
   ],
   "pinData": {},
@@ -919,7 +1059,7 @@
   "staticData": null,
   "tags": [],
   "triggerCount": 1,
-  "updatedAt": "2026-09-02T18:38:53.973Z",
-  "versionId": "40461695-4aee-4db0-a8a5-03dd1fce0b47",
-  "workflow_meta": "[Version 40461695] "
+  "updatedAt": "2026-09-03T09:21:14.535Z",
+  "versionId": "65b167a3-4968-4435-aba6-40558f58b4fc",
+  "workflow_meta": "[1.4.3] "
 }
