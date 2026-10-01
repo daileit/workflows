@@ -1,7 +1,7 @@
 {
   "active": true,
   "activeVersion": {
-    "versionId": "124b5686-f4d2-434d-8a60-dad201e69609",
+    "versionId": "047f9d02-c9d4-4b98-957f-18c25c4f45b6",
     "workflowId": "yaBvI4oqevNi3ydG",
     "nodes": [
       {
@@ -28,9 +28,9 @@
         "parameters": {
           "modelId": {
             "__rl": true,
-            "value": "groq/compound-mini",
+            "value": "qwen3-vl-235b-a22b",
             "mode": "list",
-            "cachedResultName": "GROQ/COMPOUND-MINI"
+            "cachedResultName": "QWEN3-VL-235B-A22B"
           },
           "messages": {
             "values": [
@@ -54,8 +54,8 @@
         "waitBetweenTries": 5000,
         "credentials": {
           "openAiApi": {
-            "id": "eshVArCKvoaUDpPN",
-            "name": "oai_groq_daile_programer"
+            "id": "hhW6LfbU9Lb9n0Zv",
+            "name": "oai_gtx_hub"
           }
         },
         "onError": "continueErrorOutput"
@@ -340,7 +340,9 @@
           "url": "https://llm.tymex.ai/v1/models",
           "authentication": "predefinedCredentialType",
           "nodeCredentialType": "openAiApi",
-          "options": {}
+          "options": {
+            "timeout": 10000
+          }
         },
         "type": "n8n-nodes-base.httpRequest",
         "typeVersion": 4.3,
@@ -500,13 +502,7 @@
       "bedrock_sonnet_check": {
         "main": [
           [],
-          [
-            {
-              "node": "HTTP Request",
-              "type": "main",
-              "index": 0
-            }
-          ]
+          []
         ]
       },
       "http_get": {
@@ -552,13 +548,13 @@
     },
     "nodeGroups": [],
     "authors": "Dai Le",
-    "name": "Version 124b5686",
+    "name": "Version 047f9d02",
     "description": "",
     "autosaved": false,
-    "createdAt": "2026-09-02T17:08:04.453Z",
-    "updatedAt": "2026-09-02T17:08:14.656Z"
+    "createdAt": "2026-10-01T17:59:10.777Z",
+    "updatedAt": "2026-10-01T17:59:25.683Z"
   },
-  "activeVersionId": "124b5686-f4d2-434d-8a60-dad201e69609",
+  "activeVersionId": "047f9d02-c9d4-4b98-957f-18c25c4f45b6",
   "connections": {
     "Schedule Trigger": {
       "main": [
@@ -654,13 +650,7 @@
     "bedrock_sonnet_check": {
       "main": [
         [],
-        [
-          {
-            "node": "HTTP Request",
-            "type": "main",
-            "index": 0
-          }
-        ]
+        []
       ]
     },
     "http_get": {
@@ -737,9 +727,9 @@
       "parameters": {
         "modelId": {
           "__rl": true,
-          "value": "groq/compound-mini",
+          "value": "qwen3-vl-235b-a22b",
           "mode": "list",
-          "cachedResultName": "GROQ/COMPOUND-MINI"
+          "cachedResultName": "QWEN3-VL-235B-A22B"
         },
         "messages": {
           "values": [
@@ -763,8 +753,8 @@
       "waitBetweenTries": 5000,
       "credentials": {
         "openAiApi": {
-          "id": "eshVArCKvoaUDpPN",
-          "name": "oai_groq_daile_programer"
+          "id": "hhW6LfbU9Lb9n0Zv",
+          "name": "oai_gtx_hub"
         }
       },
       "onError": "continueErrorOutput"
@@ -1049,7 +1039,9 @@
         "url": "https://llm.tymex.ai/v1/models",
         "authentication": "predefinedCredentialType",
         "nodeCredentialType": "openAiApi",
-        "options": {}
+        "options": {
+          "timeout": 10000
+        }
       },
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.3,
@@ -1144,7 +1136,7 @@
   },
   "tags": [],
   "triggerCount": 1,
-  "updatedAt": "2026-09-02T18:38:53.973Z",
-  "versionId": "124b5686-f4d2-434d-8a60-dad201e69609",
-  "workflow_meta": "[Version 124b5686] "
+  "updatedAt": "2026-10-01T17:59:10.775Z",
+  "versionId": "047f9d02-c9d4-4b98-957f-18c25c4f45b6",
+  "workflow_meta": "[Version 047f9d02] "
 }
