@@ -446,7 +446,13 @@
         48
       ],
       "id": "d77a93dd-d6a2-4ea3-bf42-ad03b7577584",
-      "name": "prepare"
+      "name": "prepare",
+      "credentials": {
+        "sshPrivateKey": {
+          "id": "pBSHVMen9H0PgcF0",
+          "name": "vpshhs_sealdesign_net"
+        }
+      }
     },
     {
       "parameters": {
@@ -688,7 +694,7 @@
   "staticData": null,
   "tags": [],
   "triggerCount": 0,
-  "updatedAt": "2026-09-02T18:38:53.973Z",
-  "versionId": "28b9ca84-ccda-4524-abc3-0675bfef9701",
+  "updatedAt": "2026-10-09T07:59:00.847Z",
+  "versionId": "ce679d53-68e4-444c-986d-ca5140a04c48",
   "workflow_meta": ""
 }
