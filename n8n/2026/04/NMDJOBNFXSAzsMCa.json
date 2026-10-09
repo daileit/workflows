@@ -1,7 +1,7 @@
 {
   "active": true,
   "activeVersion": {
-    "versionId": "1012d8b9-e3bf-46f2-b1bc-4afa09986404",
+    "versionId": "24cf7578-700e-4545-b645-3aea917e8600",
     "workflowId": "NMDJOBNFXSAzsMCa",
     "nodes": [
       {
@@ -714,7 +714,7 @@
         "parameters": {
           "options": {
             "systemMessage": "={{ $json.systemPrompt }}",
-            "maxIterations": 6,
+            "maxIterations": 10,
             "passthroughBinaryImages": false
           }
         },
@@ -920,6 +920,27 @@
         ],
         "id": "30dc1783-f7cc-4039-b6c9-d798e31b33fa",
         "name": "Call 'trigger_docker_deploy'"
+      },
+      {
+        "parameters": {
+          "endpointUrl": "https://n8n.daileit.com/mcp-server/http",
+          "authentication": "headerAuth",
+          "options": {}
+        },
+        "type": "@n8n/n8n-nodes-langchain.mcpClientTool",
+        "typeVersion": 1.4,
+        "position": [
+          1040,
+          1264
+        ],
+        "id": "31a66c45-4d6b-4ea2-bae4-90d365a13bf9",
+        "name": "n8n_mcp",
+        "credentials": {
+          "httpHeaderAuth": {
+            "id": "szLHGUdfY1Id0zh1",
+            "name": "n8n_daileit_mcp"
+          }
+        }
       }
     ],
     "connections": {
@@ -1243,17 +1264,28 @@
             }
           ]
         ]
+      },
+      "n8n_mcp": {
+        "ai_tool": [
+          [
+            {
+              "node": "Daile Agent",
+              "type": "ai_tool",
+              "index": 0
+            }
+          ]
+        ]
       }
     },
     "nodeGroups": [],
     "authors": "Dai Le",
-    "name": "Version 1012d8b9",
+    "name": "Version 24cf7578",
     "description": "",
     "autosaved": true,
-    "createdAt": "2026-08-27T06:38:07.160Z",
-    "updatedAt": "2026-08-27T06:38:14.503Z"
+    "createdAt": "2026-10-09T10:04:09.850Z",
+    "updatedAt": "2026-10-09T10:04:22.805Z"
   },
-  "activeVersionId": "1012d8b9-e3bf-46f2-b1bc-4afa09986404",
+  "activeVersionId": "24cf7578-700e-4545-b645-3aea917e8600",
   "connections": {
     "Al Model": {
       "ai_languageModel": [
@@ -1566,6 +1598,17 @@
       ]
     },
     "Call 'trigger_docker_deploy'": {
+      "ai_tool": [
+        [
+          {
+            "node": "Daile Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "n8n_mcp": {
       "ai_tool": [
         [
           {
@@ -2296,7 +2339,7 @@
       "parameters": {
         "options": {
           "systemMessage": "={{ $json.systemPrompt }}",
-          "maxIterations": 6,
+          "maxIterations": 10,
           "passthroughBinaryImages": false
         }
       },
@@ -2502,6 +2545,27 @@
       ],
       "id": "30dc1783-f7cc-4039-b6c9-d798e31b33fa",
       "name": "Call 'trigger_docker_deploy'"
+    },
+    {
+      "parameters": {
+        "endpointUrl": "https://n8n.daileit.com/mcp-server/http",
+        "authentication": "headerAuth",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.mcpClientTool",
+      "typeVersion": 1.4,
+      "position": [
+        1040,
+        1264
+      ],
+      "id": "31a66c45-4d6b-4ea2-bae4-90d365a13bf9",
+      "name": "n8n_mcp",
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "szLHGUdfY1Id0zh1",
+          "name": "n8n_daileit_mcp"
+        }
+      }
     }
   ],
   "pinData": {
@@ -2533,7 +2597,7 @@
   "staticData": null,
   "tags": [],
   "triggerCount": 1,
-  "updatedAt": "2026-09-02T18:38:53.973Z",
-  "versionId": "1012d8b9-e3bf-46f2-b1bc-4afa09986404",
-  "workflow_meta": "[Version 1012d8b9] "
+  "updatedAt": "2026-10-09T10:04:09.848Z",
+  "versionId": "24cf7578-700e-4545-b645-3aea917e8600",
+  "workflow_meta": "[Version 24cf7578] "
 }
