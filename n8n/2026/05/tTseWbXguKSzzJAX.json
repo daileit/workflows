@@ -21,6 +21,11 @@
             "node": "Edit Fields",
             "type": "main",
             "index": 0
+          },
+          {
+            "node": "fetch_uri_js",
+            "type": "main",
+            "index": 0
           }
         ]
       ]
@@ -236,6 +241,19 @@
       ],
       "id": "e63ed1ba-8e3d-4dcb-b7b6-84618dbc67a7",
       "name": "Google Vertex Chat Model"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Bỏ dòng: const axios = require('axios');\n\nasync function convertGroundingToCitations(groundingChunks) {\n  const headers = {\n    \"Content-Type\": \"application/json\",\n    \"User-Agent\": \"Tomi/1.0.1 (https://tomi.dev.lspm.io)\",\n  };\n\n  async function fetchUrlOnce(url, method) {\n    try {\n      console.log(`fetch [${method}] ${url}`);\n      const response = await fetch(url, {\n        method: method,\n        headers: headers,\n        signal: AbortSignal.timeout(2000), // Timeout 2s tương đương axios\n        redirect: 'follow', // Tự động follow redirects\n      });\n\n      // Bỏ qua nếu bị 404 hoặc 403\n      if (response.status === 404 || response.status === 403) {\n        return null;\n      }\n\n      // response.url tự động trả về final URL sau redirect\n      return response.url || url;\n    } catch (error) {\n      console.log(`Fetch error for ${url}:`, error.message || error);\n      return null;\n    }\n  }\n\n  async function fetchFinalUrl(url) {\n    let finalUrl = await fetchUrlOnce(url, 'HEAD');\n    if (!finalUrl) {\n      finalUrl = await fetchUrlOnce(url, 'GET');\n    }\n    return finalUrl;\n  }\n\n  // Tiếp tục phần logic xử lý groundingChunks của bạn bên dưới...\n}"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        416,
+        240
+      ],
+      "id": "f179a628-f86c-4ddc-838f-7ace151e642b",
+      "name": "fetch_uri_js"
     }
   ],
   "pinData": {},
@@ -259,7 +277,7 @@
   "staticData": null,
   "tags": [],
   "triggerCount": 0,
-  "updatedAt": "2026-09-02T18:38:53.973Z",
-  "versionId": "1bc1351f-1654-4eb5-9a31-b5e8893cb62a",
+  "updatedAt": "2026-10-09T10:43:59.073Z",
+  "versionId": "d4d0c7bd-3c6a-4765-a1cb-2b275906dd8a",
   "workflow_meta": ""
 }
