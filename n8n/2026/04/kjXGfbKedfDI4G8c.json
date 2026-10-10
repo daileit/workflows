@@ -1,7 +1,7 @@
 {
   "active": true,
   "activeVersion": {
-    "versionId": "08a0bf14-20e9-40d7-9d6c-b50da5e8469a",
+    "versionId": "760233f0-a92b-40e0-a1de-d4810f6bc730",
     "workflowId": "kjXGfbKedfDI4G8c",
     "nodes": [
       {
@@ -290,7 +290,7 @@
       },
       {
         "parameters": {
-          "jsCode": "const axios = require('axios');\n\nasync function convertGroundingToCitations(groundingChunks) {\n  const headers = {\n    \"Content-Type\": \"application/json\",\n    \"User-Agent\": \"Tomi/1.0.1 (https://tomi.dev.lspm.io)\",\n  };\n\n  async function fetchUrlOnce(url, method) {\n    try {\n      console.log(`fetch [${method}] ${url}`);\n      const response = await axios({\n        method: method,\n        url: url,\n        headers: headers,\n        timeout: 2000,\n        // CHÌA KHÓA Ở ĐÂY: Cho phép nhận tất cả các status code từ 200 đến 499 \n        // mà không ném ra lỗi (bỏ qua bước tạo AxiosError lỗi của thư viện)\n        validateStatus: function (status) {\n          return status >= 200 && status < 500; \n        },\n      });\n\n      // Nếu gặp 404 hoặc các lỗi chặn quyền như 403, coi như không lấy được URL final\n      if (response.status === 404 || response.status === 403) {\n        return null;\n      }\n      \n      // Đảm bảo responseUrl tồn tại trước khi lấy\n      return response.request?.res?.responseUrl || url;\n    } catch (error) {\n      // Bọc thêm một lớp an toàn nếu vẫn có lỗi kết nối (Timeout, Network Error)\n      console.log(`Fetch error for ${url}:`, error.message || error);\n      return null;\n    }\n  }\n\n  async function fetchFinalUrl(url) {\n    let finalUrl = await fetchUrlOnce(url, 'HEAD');\n    if (!finalUrl) {\n      finalUrl = await fetchUrlOnce(url, 'GET');\n    }\n    return finalUrl;\n  }\n\n  async function processChunk(idx, chunk) {\n    const webInfo = chunk.json?.web || {};\n    const originalUrl = webInfo.uri || '';\n    const title = webInfo.title || 'Unknown Source';\n\n    if (!originalUrl) {\n      return null;\n    }\n\n    const finalUrl = await fetchFinalUrl(originalUrl);\n\n    if (finalUrl) {\n      return {\n        citation_index: idx,\n        citation_url: finalUrl,\n        citation_title: title,\n      };\n    }\n\n    return {\n      citation_index: idx,\n      citation_url: title,\n    };\n  }\n\n  const tasks = groundingChunks.map((chunk, idx) => processChunk(idx, chunk));\n  const results = await Promise.all(tasks);\n  console.log(\"result: \" + JSON.stringify(results));\n  return results.filter((res) => res);\n}\n\n// Thực thi chính trong n8n\nconst final = await convertGroundingToCitations($input.all());\nreturn {\n  output: final\n};"
+          "jsCode": "async function convertGroundingToCitations(groundingChunks, helpers) {\n  const headers = {\n    \"Content-Type\": \"application/json\",\n    \"User-Agent\": \"Tomi/1.0.1 (https://tomi.dev.lspm.io)\",\n  };\n  const TIMEOUT = 2000;           // timeout cho helpers.httpRequest (mỗi bước redirect)\n  const FALLBACK_TIMEOUT = 500;  // timeout cho fetch dự phòng\n  const MAX_REDIRECTS = 5;\n\n  // Xử lý status giống code gốc: 404/403 -> null; 5xx (axios sẽ throw) -> null\n  function isBadStatus(status) {\n    return status === 404 || status === 403 || status >= 500;\n  }\n\n  // Cách 1: n8n helpers.httpRequest, tự theo dõi redirect để lấy URL cuối\n  async function viaHttpRequest(url, method) {\n    if (!helpers || typeof helpers.httpRequest !== 'function') {\n      throw new Error('helpers.httpRequest not available');\n    }\n    let currentUrl = url;\n    for (let hop = 0; hop <= MAX_REDIRECTS; hop++) {\n      const res = await helpers.httpRequest({\n        method,\n        url: currentUrl,\n        headers,\n        timeout: TIMEOUT,\n        returnFullResponse: true,\n        ignoreHttpStatusErrors: true,\n        disableFollowRedirect: true,\n      });\n      const status = res.statusCode;\n      const location = res.headers?.location;\n\n      if (status >= 300 && status < 400 && location) {\n        currentUrl = new URL(location, currentUrl).href;\n        continue;\n      }\n      return isBadStatus(status) ? null : currentUrl;\n    }\n    // Quá số lần redirect cho phép: trả về URL cuối cùng đã biết\n    return currentUrl;\n  }\n\n  // Cách 2: fetch dự phòng, tự follow redirect, lấy URL cuối qua res.url\n  async function viaFetch(url, method) {\n    if (typeof fetch !== 'function') {\n      throw new Error('fetch not available');\n    }\n    const res = await fetch(url, {\n      method,\n      headers,\n      redirect: 'follow',\n      signal: AbortSignal.timeout(FALLBACK_TIMEOUT),\n    });\n    return isBadStatus(res.status) ? null : (res.url || url);\n  }\n\n  async function fetchUrlOnce(url, method) {\n    console.log(`fetch [${method}] ${url}`);\n    try {\n      return await viaHttpRequest(url, method);\n    } catch (err1) {\n      console.log(`httpRequest failed for ${url}: ${err1.message || err1} -> fallback fetch`);\n      try {\n        return await viaFetch(url, method);\n      } catch (err2) {\n        console.log(`fetch failed for ${url}:`, err2.message || err2);\n        return null;\n      }\n    }\n  }\n\n  async function fetchFinalUrl(url) {\n    let finalUrl = await fetchUrlOnce(url, 'HEAD');\n    if (!finalUrl) {\n      finalUrl = await fetchUrlOnce(url, 'GET');\n    }\n    return finalUrl;\n  }\n\n  async function processChunk(idx, chunk) {\n    const webInfo = chunk.json?.web || {};\n    const originalUrl = webInfo.uri || '';\n    const title = webInfo.title || 'Unknown Source';\n\n    if (!originalUrl) {\n      return null;\n    }\n\n    const finalUrl = await fetchFinalUrl(originalUrl);\n\n    if (finalUrl) {\n      return {\n        citation_index: idx,\n        citation_url: finalUrl,\n        citation_title: title,\n      };\n    }\n\n    return {\n      citation_index: idx,\n      citation_url: title,\n    };\n  }\n\n  const tasks = groundingChunks.map((chunk, idx) => processChunk(idx, chunk));\n  const results = await Promise.all(tasks);\n  console.log(\"result: \" + JSON.stringify(results));\n  return results.filter((res) => res);\n}\n\n// Thực thi chính trong n8n\nconst final = await convertGroundingToCitations($input.all(), this.helpers);\nreturn {\n  output: final\n};"
         },
         "type": "n8n-nodes-base.code",
         "typeVersion": 2,
@@ -435,7 +435,7 @@
                   "conditions": [
                     {
                       "leftValue": "={{ $json.path }}",
-                      "rightValue": 30,
+                      "rightValue": 10,
                       "operator": {
                         "type": "number",
                         "operation": "lt"
@@ -460,7 +460,7 @@
                     {
                       "id": "414a664c-7470-4fdc-84cb-ed70e2600533",
                       "leftValue": "={{ $json.path }}",
-                      "rightValue": 60,
+                      "rightValue": 20,
                       "operator": {
                         "type": "number",
                         "operation": "lt"
@@ -774,13 +774,13 @@
     },
     "nodeGroups": [],
     "authors": "Dai Le",
-    "name": "Version 08a0bf14",
+    "name": "Version 760233f0",
     "description": "",
     "autosaved": true,
-    "createdAt": "2026-08-10T18:12:32.837Z",
-    "updatedAt": "2026-08-10T18:12:38.007Z"
+    "createdAt": "2026-10-10T14:49:30.622Z",
+    "updatedAt": "2026-10-10T14:49:36.833Z"
   },
-  "activeVersionId": "08a0bf14-20e9-40d7-9d6c-b50da5e8469a",
+  "activeVersionId": "760233f0-a92b-40e0-a1de-d4810f6bc730",
   "connections": {
     "prepare_data": {
       "main": [
@@ -1264,7 +1264,7 @@
     },
     {
       "parameters": {
-        "jsCode": "const axios = require('axios');\n\nasync function convertGroundingToCitations(groundingChunks) {\n  const headers = {\n    \"Content-Type\": \"application/json\",\n    \"User-Agent\": \"Tomi/1.0.1 (https://tomi.dev.lspm.io)\",\n  };\n\n  async function fetchUrlOnce(url, method) {\n    try {\n      console.log(`fetch [${method}] ${url}`);\n      const response = await axios({\n        method: method,\n        url: url,\n        headers: headers,\n        timeout: 2000,\n        // CHÌA KHÓA Ở ĐÂY: Cho phép nhận tất cả các status code từ 200 đến 499 \n        // mà không ném ra lỗi (bỏ qua bước tạo AxiosError lỗi của thư viện)\n        validateStatus: function (status) {\n          return status >= 200 && status < 500; \n        },\n      });\n\n      // Nếu gặp 404 hoặc các lỗi chặn quyền như 403, coi như không lấy được URL final\n      if (response.status === 404 || response.status === 403) {\n        return null;\n      }\n      \n      // Đảm bảo responseUrl tồn tại trước khi lấy\n      return response.request?.res?.responseUrl || url;\n    } catch (error) {\n      // Bọc thêm một lớp an toàn nếu vẫn có lỗi kết nối (Timeout, Network Error)\n      console.log(`Fetch error for ${url}:`, error.message || error);\n      return null;\n    }\n  }\n\n  async function fetchFinalUrl(url) {\n    let finalUrl = await fetchUrlOnce(url, 'HEAD');\n    if (!finalUrl) {\n      finalUrl = await fetchUrlOnce(url, 'GET');\n    }\n    return finalUrl;\n  }\n\n  async function processChunk(idx, chunk) {\n    const webInfo = chunk.json?.web || {};\n    const originalUrl = webInfo.uri || '';\n    const title = webInfo.title || 'Unknown Source';\n\n    if (!originalUrl) {\n      return null;\n    }\n\n    const finalUrl = await fetchFinalUrl(originalUrl);\n\n    if (finalUrl) {\n      return {\n        citation_index: idx,\n        citation_url: finalUrl,\n        citation_title: title,\n      };\n    }\n\n    return {\n      citation_index: idx,\n      citation_url: title,\n    };\n  }\n\n  const tasks = groundingChunks.map((chunk, idx) => processChunk(idx, chunk));\n  const results = await Promise.all(tasks);\n  console.log(\"result: \" + JSON.stringify(results));\n  return results.filter((res) => res);\n}\n\n// Thực thi chính trong n8n\nconst final = await convertGroundingToCitations($input.all());\nreturn {\n  output: final\n};"
+        "jsCode": "async function convertGroundingToCitations(groundingChunks, helpers) {\n  const headers = {\n    \"Content-Type\": \"application/json\",\n    \"User-Agent\": \"Tomi/1.0.1 (https://tomi.dev.lspm.io)\",\n  };\n  const TIMEOUT = 2000;           // timeout cho helpers.httpRequest (mỗi bước redirect)\n  const FALLBACK_TIMEOUT = 500;  // timeout cho fetch dự phòng\n  const MAX_REDIRECTS = 5;\n\n  // Xử lý status giống code gốc: 404/403 -> null; 5xx (axios sẽ throw) -> null\n  function isBadStatus(status) {\n    return status === 404 || status === 403 || status >= 500;\n  }\n\n  // Cách 1: n8n helpers.httpRequest, tự theo dõi redirect để lấy URL cuối\n  async function viaHttpRequest(url, method) {\n    if (!helpers || typeof helpers.httpRequest !== 'function') {\n      throw new Error('helpers.httpRequest not available');\n    }\n    let currentUrl = url;\n    for (let hop = 0; hop <= MAX_REDIRECTS; hop++) {\n      const res = await helpers.httpRequest({\n        method,\n        url: currentUrl,\n        headers,\n        timeout: TIMEOUT,\n        returnFullResponse: true,\n        ignoreHttpStatusErrors: true,\n        disableFollowRedirect: true,\n      });\n      const status = res.statusCode;\n      const location = res.headers?.location;\n\n      if (status >= 300 && status < 400 && location) {\n        currentUrl = new URL(location, currentUrl).href;\n        continue;\n      }\n      return isBadStatus(status) ? null : currentUrl;\n    }\n    // Quá số lần redirect cho phép: trả về URL cuối cùng đã biết\n    return currentUrl;\n  }\n\n  // Cách 2: fetch dự phòng, tự follow redirect, lấy URL cuối qua res.url\n  async function viaFetch(url, method) {\n    if (typeof fetch !== 'function') {\n      throw new Error('fetch not available');\n    }\n    const res = await fetch(url, {\n      method,\n      headers,\n      redirect: 'follow',\n      signal: AbortSignal.timeout(FALLBACK_TIMEOUT),\n    });\n    return isBadStatus(res.status) ? null : (res.url || url);\n  }\n\n  async function fetchUrlOnce(url, method) {\n    console.log(`fetch [${method}] ${url}`);\n    try {\n      return await viaHttpRequest(url, method);\n    } catch (err1) {\n      console.log(`httpRequest failed for ${url}: ${err1.message || err1} -> fallback fetch`);\n      try {\n        return await viaFetch(url, method);\n      } catch (err2) {\n        console.log(`fetch failed for ${url}:`, err2.message || err2);\n        return null;\n      }\n    }\n  }\n\n  async function fetchFinalUrl(url) {\n    let finalUrl = await fetchUrlOnce(url, 'HEAD');\n    if (!finalUrl) {\n      finalUrl = await fetchUrlOnce(url, 'GET');\n    }\n    return finalUrl;\n  }\n\n  async function processChunk(idx, chunk) {\n    const webInfo = chunk.json?.web || {};\n    const originalUrl = webInfo.uri || '';\n    const title = webInfo.title || 'Unknown Source';\n\n    if (!originalUrl) {\n      return null;\n    }\n\n    const finalUrl = await fetchFinalUrl(originalUrl);\n\n    if (finalUrl) {\n      return {\n        citation_index: idx,\n        citation_url: finalUrl,\n        citation_title: title,\n      };\n    }\n\n    return {\n      citation_index: idx,\n      citation_url: title,\n    };\n  }\n\n  const tasks = groundingChunks.map((chunk, idx) => processChunk(idx, chunk));\n  const results = await Promise.all(tasks);\n  console.log(\"result: \" + JSON.stringify(results));\n  return results.filter((res) => res);\n}\n\n// Thực thi chính trong n8n\nconst final = await convertGroundingToCitations($input.all(), this.helpers);\nreturn {\n  output: final\n};"
       },
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -1409,7 +1409,7 @@
                 "conditions": [
                   {
                     "leftValue": "={{ $json.path }}",
-                    "rightValue": 30,
+                    "rightValue": 10,
                     "operator": {
                       "type": "number",
                       "operation": "lt"
@@ -1434,7 +1434,7 @@
                   {
                     "id": "414a664c-7470-4fdc-84cb-ed70e2600533",
                     "leftValue": "={{ $json.path }}",
-                    "rightValue": 60,
+                    "rightValue": 20,
                     "operator": {
                       "type": "number",
                       "operation": "lt"
@@ -1587,7 +1587,7 @@
   "staticData": null,
   "tags": [],
   "triggerCount": 0,
-  "updatedAt": "2026-09-02T18:38:53.973Z",
-  "versionId": "08a0bf14-20e9-40d7-9d6c-b50da5e8469a",
-  "workflow_meta": "[Version 08a0bf14] "
+  "updatedAt": "2026-10-10T14:49:30.621Z",
+  "versionId": "760233f0-a92b-40e0-a1de-d4810f6bc730",
+  "workflow_meta": "[Version 760233f0] "
 }
