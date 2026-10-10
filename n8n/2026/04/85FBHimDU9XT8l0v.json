@@ -1,7 +1,7 @@
 {
   "active": true,
   "activeVersion": {
-    "versionId": "97ba4f3b-3c7a-4dc2-8f41-3b669feaff42",
+    "versionId": "b7e6465e-3a82-4ecc-838a-ed66b0f9b4da",
     "workflowId": "85FBHimDU9XT8l0v",
     "nodes": [
       {
@@ -459,7 +459,7 @@
       {
         "parameters": {
           "authentication": "privateKey",
-          "command": "sudo ls -t1d [0-9][0-9][0-9][0-9]-[0-9][0-9] | tail -n +6 | xargs echo",
+          "command": "sudo ls -t1d [0-9][0-9][0-9][0-9]-[0-9][0-9] | tail -n +6 | xargs -I{} sudo du -hs {}",
           "cwd": "={{ $('get_source').item.json.destination_folder }}/{{ $('get_source').item.json.server }}"
         },
         "type": "n8n-nodes-base.ssh",
@@ -762,13 +762,13 @@
     },
     "nodeGroups": [],
     "authors": "Dai Le",
-    "name": "Version 97ba4f3b",
+    "name": "Version b7e6465e",
     "description": "",
     "autosaved": true,
-    "createdAt": "2026-10-09T09:50:43.166Z",
-    "updatedAt": "2026-10-09T09:51:24.087Z"
+    "createdAt": "2026-10-10T16:12:04.445Z",
+    "updatedAt": "2026-10-10T16:12:24.786Z"
   },
-  "activeVersionId": "97ba4f3b-3c7a-4dc2-8f41-3b669feaff42",
+  "activeVersionId": "b7e6465e-3a82-4ecc-838a-ed66b0f9b4da",
   "connections": {
     "Schedule Trigger": {
       "main": [
@@ -1461,7 +1461,7 @@
     {
       "parameters": {
         "authentication": "privateKey",
-        "command": "sudo ls -t1d [0-9][0-9][0-9][0-9]-[0-9][0-9] | tail -n +6 | xargs - sudo  ",
+        "command": "sudo ls -t1d [0-9][0-9][0-9][0-9]-[0-9][0-9] | tail -n +6 | xargs -I{} sudo du -hs {}",
         "cwd": "={{ $('get_source').item.json.destination_folder }}/{{ $('get_source').item.json.server }}"
       },
       "type": "n8n-nodes-base.ssh",
@@ -1572,7 +1572,7 @@
   },
   "tags": [],
   "triggerCount": 1,
-  "updatedAt": "2026-10-10T16:06:40.402Z",
-  "versionId": "799ed209-89a8-4ed8-97d2-222b502ca6e7",
-  "workflow_meta": "[Version 97ba4f3b] "
+  "updatedAt": "2026-10-10T16:12:04.443Z",
+  "versionId": "b7e6465e-3a82-4ecc-838a-ed66b0f9b4da",
+  "workflow_meta": "[Version b7e6465e] "
 }
