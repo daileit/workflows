@@ -1461,7 +1461,7 @@
     {
       "parameters": {
         "authentication": "privateKey",
-        "command": "sudo ls -t1d [0-9][0-9][0-9][0-9]-[0-9][0-9] | tail -n +6 | xargs echo",
+        "command": "sudo ls -t1d [0-9][0-9][0-9][0-9]-[0-9][0-9] | tail -n +6 | xargs - sudo  ",
         "cwd": "={{ $('get_source').item.json.destination_folder }}/{{ $('get_source').item.json.server }}"
       },
       "type": "n8n-nodes-base.ssh",
@@ -1572,7 +1572,7 @@
   },
   "tags": [],
   "triggerCount": 1,
-  "updatedAt": "2026-10-09T09:50:43.164Z",
-  "versionId": "97ba4f3b-3c7a-4dc2-8f41-3b669feaff42",
+  "updatedAt": "2026-10-10T16:06:40.402Z",
+  "versionId": "799ed209-89a8-4ed8-97d2-222b502ca6e7",
   "workflow_meta": "[Version 97ba4f3b] "
 }
