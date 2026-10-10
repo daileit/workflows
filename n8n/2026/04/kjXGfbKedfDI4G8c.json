@@ -1,7 +1,7 @@
 {
   "active": true,
   "activeVersion": {
-    "versionId": "760233f0-a92b-40e0-a1de-d4810f6bc730",
+    "versionId": "3d5d3650-eb55-4ced-b28f-9b2d263c7638",
     "workflowId": "kjXGfbKedfDI4G8c",
     "nodes": [
       {
@@ -134,8 +134,8 @@
         "waitBetweenTries": 5000,
         "credentials": {
           "googlePalmApi": {
-            "id": "u5ZxuXLtwwiXeNqg",
-            "name": "gemini_k1"
+            "id": "LVsZagMZZFRhFgAw",
+            "name": "gemini_k5_lttdai94"
           }
         },
         "onError": "continueErrorOutput"
@@ -435,7 +435,7 @@
                   "conditions": [
                     {
                       "leftValue": "={{ $json.path }}",
-                      "rightValue": 10,
+                      "rightValue": 40,
                       "operator": {
                         "type": "number",
                         "operation": "lt"
@@ -460,7 +460,7 @@
                     {
                       "id": "414a664c-7470-4fdc-84cb-ed70e2600533",
                       "leftValue": "={{ $json.path }}",
-                      "rightValue": 20,
+                      "rightValue": 70,
                       "operator": {
                         "type": "number",
                         "operation": "lt"
@@ -484,7 +484,7 @@
                     {
                       "id": "d45f1e43-e3cb-4a16-a033-13e9f5c6ded7",
                       "leftValue": "={{ $json.path }}",
-                      "rightValue": 80,
+                      "rightValue": 100,
                       "operator": {
                         "type": "number",
                         "operation": "lt"
@@ -774,13 +774,13 @@
     },
     "nodeGroups": [],
     "authors": "Dai Le",
-    "name": "Version 760233f0",
+    "name": "Version 3d5d3650",
     "description": "",
     "autosaved": true,
-    "createdAt": "2026-10-10T14:49:30.622Z",
-    "updatedAt": "2026-10-10T14:49:36.833Z"
+    "createdAt": "2026-10-10T15:13:24.538Z",
+    "updatedAt": "2026-10-10T15:13:35.924Z"
   },
-  "activeVersionId": "760233f0-a92b-40e0-a1de-d4810f6bc730",
+  "activeVersionId": "3d5d3650-eb55-4ced-b28f-9b2d263c7638",
   "connections": {
     "prepare_data": {
       "main": [
@@ -1108,8 +1108,8 @@
       "waitBetweenTries": 5000,
       "credentials": {
         "googlePalmApi": {
-          "id": "u5ZxuXLtwwiXeNqg",
-          "name": "gemini_k1"
+          "id": "LVsZagMZZFRhFgAw",
+          "name": "gemini_k5_lttdai94"
         }
       },
       "onError": "continueErrorOutput"
@@ -1409,7 +1409,7 @@
                 "conditions": [
                   {
                     "leftValue": "={{ $json.path }}",
-                    "rightValue": 10,
+                    "rightValue": 40,
                     "operator": {
                       "type": "number",
                       "operation": "lt"
@@ -1434,7 +1434,7 @@
                   {
                     "id": "414a664c-7470-4fdc-84cb-ed70e2600533",
                     "leftValue": "={{ $json.path }}",
-                    "rightValue": 20,
+                    "rightValue": 70,
                     "operator": {
                       "type": "number",
                       "operation": "lt"
@@ -1458,7 +1458,7 @@
                   {
                     "id": "d45f1e43-e3cb-4a16-a033-13e9f5c6ded7",
                     "leftValue": "={{ $json.path }}",
-                    "rightValue": 80,
+                    "rightValue": 100,
                     "operator": {
                       "type": "number",
                       "operation": "lt"
@@ -1587,7 +1587,7 @@
   "staticData": null,
   "tags": [],
   "triggerCount": 0,
-  "updatedAt": "2026-10-10T14:49:30.621Z",
-  "versionId": "760233f0-a92b-40e0-a1de-d4810f6bc730",
-  "workflow_meta": "[Version 760233f0] "
+  "updatedAt": "2026-10-10T15:13:24.537Z",
+  "versionId": "3d5d3650-eb55-4ced-b28f-9b2d263c7638",
+  "workflow_meta": "[Version 3d5d3650] "
 }
