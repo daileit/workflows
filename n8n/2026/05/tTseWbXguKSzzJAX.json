@@ -42,6 +42,11 @@
             "node": "fetch_uri_js",
             "type": "main",
             "index": 0
+          },
+          {
+            "node": "request_ai_1",
+            "type": "main",
+            "index": 0
           }
         ]
       ]
@@ -130,8 +135,8 @@
       "type": "@n8n/n8n-nodes-langchain.openAi",
       "typeVersion": 2.3,
       "position": [
-        432,
-        -224
+        208,
+        -208
       ],
       "id": "5a6e05c4-fd92-4705-8b11-e3768d098876",
       "name": "Message a model",
@@ -260,6 +265,51 @@
       ],
       "id": "f179a628-f86c-4ddc-838f-7ace151e642b",
       "name": "fetch_uri_js"
+    },
+    {
+      "parameters": {
+        "url": "=https://www.googleapis.com/oauth2/v1/tokeninfo",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "googlePalmApi",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            },
+            {
+              "name": "User-Agent",
+              "value": "Apifox/1.0.0 (https://apifox.com)"
+            }
+          ]
+        },
+        "options": {
+          "response": {
+            "response": {
+              "responseFormat": "json"
+            }
+          }
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        672,
+        -224
+      ],
+      "id": "53e24a65-923f-4252-8ddf-25392adb2f61",
+      "name": "request_ai_1",
+      "retryOnFail": true,
+      "maxTries": 2,
+      "waitBetweenTries": 5000,
+      "credentials": {
+        "googlePalmApi": {
+          "id": "LVsZagMZZFRhFgAw",
+          "name": "gemini_k5_lttdai94"
+        }
+      },
+      "onError": "continueErrorOutput"
     }
   ],
   "pinData": {},
@@ -283,7 +333,7 @@
   "staticData": null,
   "tags": [],
   "triggerCount": 0,
-  "updatedAt": "2026-10-10T14:45:55.571Z",
-  "versionId": "a54bcaec-5a5f-4d82-84ef-b187a549f93c",
+  "updatedAt": "2026-10-10T15:18:37.795Z",
+  "versionId": "07c9fb03-79ed-4625-98dd-d54cf8ebaf57",
   "workflow_meta": ""
 }
