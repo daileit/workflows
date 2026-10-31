@@ -1047,6 +1047,17 @@
           }
         ]
       ]
+    },
+    "Call 'maildev_watcher_management'": {
+      "ai_tool": [
+        [
+          {
+            "node": "Routing Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
     }
   },
   "createdAt": "2026-04-21T18:34:52.401Z",
@@ -1684,6 +1695,58 @@
       ],
       "id": "ce9cccd7-0792-41da-893b-c6ae0db0abcb",
       "name": "command_message"
+    },
+    {
+      "parameters": {
+        "description": "Call this tool to block a sender from sending email to Maildev Caddijapan channel. There is two params needed: ${command} and ${value}.\nCommands available: get_blocked_list,",
+        "workflowId": {
+          "__rl": true,
+          "value": "YTlH4m6apxDsgIYa",
+          "mode": "list",
+          "cachedResultUrl": "/workflow/YTlH4m6apxDsgIYa",
+          "cachedResultName": "maildev_watcher_management"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "command": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('command', ``, 'string') }}",
+            "value": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('value', ``, 'string') }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "command",
+              "displayName": "command",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            },
+            {
+              "id": "value",
+              "displayName": "value",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
+      "typeVersion": 2.2,
+      "position": [
+        256,
+        928
+      ],
+      "id": "1c5ecd4f-ac10-4684-84eb-0efcc6835ca8",
+      "name": "Call 'maildev_watcher_management'"
     }
   ],
   "pinData": {
@@ -1715,7 +1778,7 @@
   "staticData": null,
   "tags": [],
   "triggerCount": 1,
-  "updatedAt": "2026-10-31T08:08:34.929Z",
-  "versionId": "9eeebe22-3ae2-46db-b4df-e544b7d0d0e3",
+  "updatedAt": "2026-10-31T10:10:52.662Z",
+  "versionId": "6c909971-46df-4404-b25d-6e055ab8d14a",
   "workflow_meta": "[Version 9eeebe22] "
 }
