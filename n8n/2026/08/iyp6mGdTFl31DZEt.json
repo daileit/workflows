@@ -1,7 +1,7 @@
 {
   "active": true,
   "activeVersion": {
-    "versionId": "f39fb636-f7fa-4046-be07-6cbbaee1f5c6",
+    "versionId": "c3ceb784-3e37-4619-8b2d-2bdbc8449255",
     "workflowId": "iyp6mGdTFl31DZEt",
     "nodes": [
       {
@@ -367,6 +367,12 @@
                 "name": "available_commands",
                 "value": "deploy: deploy a docker app (requires $target_server, $repository, $tag), get_apps: get all deployed apps (requires $target_server)",
                 "type": "string"
+              },
+              {
+                "id": "0a8bd8b5-0948-4a55-9369-be14ac4650ca",
+                "name": "message",
+                "value": "no operation was deployed",
+                "type": "string"
               }
             ]
           },
@@ -402,7 +408,7 @@
               {
                 "id": "81e21d6e-937c-436e-a060-28f91cf953c2",
                 "name": "available_servers",
-                "value": "={{ Object.values($('merge').item.json.data.reduce((acc, item) => { acc[item.id] = { server_name: item.server_name, id: item.id }; return acc; }, {})) }}",
+                "value": "={{ Object.values($('get_server').item.json.data.reduce((acc, item) => { acc[item.id] = { server_name: item.server_name, id: item.id }; return acc; }, {})) }}",
                 "type": "array"
               },
               {
@@ -581,13 +587,13 @@
     },
     "nodeGroups": [],
     "authors": "Dai Le",
-    "name": "Version f39fb636",
+    "name": "Version c3ceb784",
     "description": "",
-    "autosaved": false,
-    "createdAt": "2026-10-31T17:09:21.280Z",
-    "updatedAt": "2026-10-31T17:09:32.464Z"
+    "autosaved": true,
+    "createdAt": "2026-10-31T17:20:35.762Z",
+    "updatedAt": "2026-10-31T17:20:40.058Z"
   },
-  "activeVersionId": "f39fb636-f7fa-4046-be07-6cbbaee1f5c6",
+  "activeVersionId": "c3ceb784-3e37-4619-8b2d-2bdbc8449255",
   "connections": {
     "get_all_servers": {
       "main": [
@@ -1113,7 +1119,7 @@
             {
               "id": "0a8bd8b5-0948-4a55-9369-be14ac4650ca",
               "name": "message",
-              "value": "",
+              "value": "no operation was deployed",
               "type": "string"
             }
           ]
@@ -1150,7 +1156,7 @@
             {
               "id": "81e21d6e-937c-436e-a060-28f91cf953c2",
               "name": "available_servers",
-              "value": "={{ Object.values($('merge').item.json.data.reduce((acc, item) => { acc[item.id] = { server_name: item.server_name, id: item.id }; return acc; }, {})) }}",
+              "value": "={{ Object.values($('get_server').item.json.data.reduce((acc, item) => { acc[item.id] = { server_name: item.server_name, id: item.id }; return acc; }, {})) }}",
               "type": "array"
             },
             {
@@ -1209,7 +1215,7 @@
   "staticData": null,
   "tags": [],
   "triggerCount": 0,
-  "updatedAt": "2026-10-31T17:10:52.894Z",
-  "versionId": "a0472259-688e-45e0-88d3-9055f803d2fb",
-  "workflow_meta": "[Version f39fb636] "
+  "updatedAt": "2026-10-31T17:20:35.758Z",
+  "versionId": "c3ceb784-3e37-4619-8b2d-2bdbc8449255",
+  "workflow_meta": "[Version c3ceb784] "
 }
