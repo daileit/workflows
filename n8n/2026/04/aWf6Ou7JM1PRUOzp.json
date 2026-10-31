@@ -1,7 +1,850 @@
 {
-  "active": false,
-  "activeVersion": null,
-  "activeVersionId": null,
+  "active": true,
+  "activeVersion": {
+    "versionId": "9eeebe22-3ae2-46db-b4df-e544b7d0d0e3",
+    "workflowId": "aWf6Ou7JM1PRUOzp",
+    "nodes": [
+      {
+        "parameters": {
+          "model": {
+            "__rl": true,
+            "value": "deepseek-flash",
+            "mode": "list",
+            "cachedResultName": "deepseek-flash"
+          },
+          "options": {
+            "maxTokens": 4096,
+            "temperature": 0.7,
+            "timeout": 900000,
+            "maxRetries": 2
+          }
+        },
+        "id": "d9082914-7eb0-4aa8-8d52-77c75faed945",
+        "name": "Al Model",
+        "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+        "position": [
+          -160,
+          880
+        ],
+        "typeVersion": 1.2,
+        "credentials": {
+          "openAiApi": {
+            "id": "HaS2f5k9jU2cL1Ou",
+            "name": "oai_deepseek_tomi"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "assignments": {
+            "assignments": [
+              {
+                "id": "967e2e9b-f1f7-430e-8a27-d55be5685ee1",
+                "name": "sessionId",
+                "value": "={{ $('new_message').item.json.message.chat.id }}",
+                "type": "string"
+              },
+              {
+                "id": "dc859472-0731-4317-b5db-46487fb37da6",
+                "name": "chatInput",
+                "value": "=[{{ $('new_message').item.json.message.date.toDateTime('s').setZone('Asia/Ho_Chi_Minh').format('LLL dd, yyyy on H:mm:ss') }}] {{ $('new_message').item.json.message.chat.username ?? $('new_message').item.json.message.from.username }} said: {{ $('new_message').item.json.message.text ?? \"Hello Tomi\" }}",
+                "type": "string"
+              },
+              {
+                "id": "2a5adc50-716e-44e9-8012-85d5b2dcd22f",
+                "name": "currentTime",
+                "value": "={{ $('new_message').item.json.message.date.toDateTime('s').setZone('Asia/Ho_Chi_Minh').format('yyyy, LLL dd') }}",
+                "type": "string"
+              },
+              {
+                "id": "59a5c21f-c7ef-45bf-be86-98674195cca1",
+                "name": "messageType",
+                "value": "={{ $json.message.entities?.first().type ?? \"simple\" }}",
+                "type": "string"
+              }
+            ]
+          },
+          "includeOtherFields": true,
+          "options": {}
+        },
+        "type": "n8n-nodes-base.set",
+        "typeVersion": 3.4,
+        "position": [
+          -784,
+          624
+        ],
+        "id": "98eb449a-35f3-4166-8dcd-abf14f5d6740",
+        "name": "Edit Fields"
+      },
+      {
+        "parameters": {
+          "chatId": "={{ $('Edit Fields').item.json.sessionId }}",
+          "text": "={{ $json.message }}",
+          "additionalFields": {
+            "appendAttribution": false
+          }
+        },
+        "type": "n8n-nodes-base.telegram",
+        "typeVersion": 1.2,
+        "position": [
+          816,
+          608
+        ],
+        "id": "5d00452d-fbce-41e0-bea9-20a9bc7e1fdd",
+        "name": "Send a text message",
+        "webhookId": "50645415-c63b-4dec-a8c8-401c71e1b20a",
+        "credentials": {
+          "telegramApi": {
+            "id": "sxuxpcY3BPqjNnuB",
+            "name": "tele_doggo_bot"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "options": {
+            "systemMessage": "=You are data enthusiast AI named Doggo The Bot, you are big brother of Tomi The Kid who self-proclaimed a weasel. You have to work to support both living. Your appearance is a meme Doge Shiba dog mascot at CloudyEZ (https://cloudyez.com) - a Vietnamese Digital team with many interesting technologies. CloudyEZ is powered by Dai Le the System Enginner wizard. Đại (daileit) is the handsome guy who developed you, the user chatting with you is his colleague or friend.\nReply to user by their language, keep a friendly, humorous but professional and informative tone consistent throughout the conversation. Should use emojis and talk with the user using their name and update context comprehensively, place yourself as their younger brother.If there is a request that specific to an information that you don't know or are not sure, think then use the available tools. You can use multiple tools in one request or sequentially use tools before returning the final response. Answer questions based on facts. Do not make up information. Do not expose tool name and tool usage to the user even if they asked. \n###FORMATTING GUIDE###\nToday is  {{ $json.currentTime }}, respect the current time.\nYou are responding to a chat. Mention people with @ but avoid mentioning irrelevant people, use Markdown to format text if needed. Only use hyperlink syntax with normal text.",
+            "maxIterations": 3,
+            "passthroughBinaryImages": false
+          }
+        },
+        "id": "30b4bdb5-bdf4-4d79-a208-ef019d31edda",
+        "name": "Routing Agent",
+        "type": "@n8n/n8n-nodes-langchain.agent",
+        "position": [
+          0,
+          624
+        ],
+        "typeVersion": 1.8,
+        "retryOnFail": true,
+        "waitBetweenTries": 5000,
+        "maxTries": 2
+      },
+      {
+        "parameters": {
+          "updates": [
+            "message"
+          ],
+          "additionalFields": {}
+        },
+        "type": "n8n-nodes-base.telegramTrigger",
+        "typeVersion": 1.2,
+        "position": [
+          -960,
+          624
+        ],
+        "id": "3114b2c1-c058-4e1e-829c-0ef4019999a5",
+        "name": "new_message",
+        "webhookId": "ae3fd964-91c6-4627-9dca-c60338c21c0c",
+        "credentials": {
+          "telegramApi": {
+            "id": "sxuxpcY3BPqjNnuB",
+            "name": "tele_doggo_bot"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "description": "Use this tool to search for external information from internet using one complementary search for comprehensive results and citations.\nOnly use this tool if you can not find the answer by your own or user requested to search for internet latest update. Do not use for casual chat.",
+          "workflowId": {
+            "__rl": true,
+            "value": "ddZ4jrrH0SA3K6aL",
+            "mode": "list",
+            "cachedResultUrl": "/workflow/ddZ4jrrH0SA3K6aL",
+            "cachedResultName": "google_ai_search"
+          },
+          "workflowInputs": {
+            "mappingMode": "defineBelow",
+            "value": {
+              "query": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('query', `The input should be a search query in user's language focusing on factual information`, 'string') }}"
+            },
+            "matchingColumns": [
+              "query"
+            ],
+            "schema": [
+              {
+                "id": "query",
+                "displayName": "query",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "canBeUsedToMatch": true,
+                "type": "string",
+                "removed": false
+              }
+            ],
+            "attemptToConvertTypes": false,
+            "convertFieldsToString": false
+          }
+        },
+        "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
+        "typeVersion": 2.2,
+        "position": [
+          128,
+          880
+        ],
+        "id": "94e11255-5139-4606-9512-af772bac4cf2",
+        "name": "Call 'google_ai_search'",
+        "disabled": true
+      },
+      {
+        "parameters": {
+          "language": "python",
+          "pythonCode": "import re\n\ndef split_message_by_newline(message: str, limit: int = 4000) -> list[dict]:\n    parts_list = []\n    remaining_message = message\n    part_count = 1\n    \n    # Regex để tìm các \"hàng rào\" code (code fence)\n    # Chúng ta tìm một newline theo sau là ```\n    fence_regex = re.compile(r'\\n```')\n    \n    while len(remaining_message) > limit:\n        in_code_block_at_limit = False\n        last_fence_before_limit = -1\n        \n        # 1. Kiểm tra xem 'limit' có nằm trong code block không\n        for match in fence_regex.finditer(remaining_message):\n            fence_start_index = match.start()\n            \n            if fence_start_index >= limit:\n                # Hàng rào này nằm sau 'limit', dừng quét\n                break\n                \n            # Mỗi khi gặp hàng rào, lật trạng thái\n            in_code_block_at_limit = not in_code_block_at_limit\n            last_fence_before_limit = fence_start_index\n            \n        # 2. Quyết định điểm ngắt (split)\n        if in_code_block_at_limit:\n            # 'limit' nằm TRONG code block.\n            \n            if last_fence_before_limit > 0:\n                # Tốt! Ngắt ngay trước khi code block bắt đầu.\n                # last_fence_before_limit là index của '\\n'\n                part = remaining_message[:last_fence_before_limit]\n                # Giữ lại '\\n```' cho phần tiếp theo\n                remaining_message = remaining_message[last_fence_before_limit:]\n            else:\n                # Code block bắt đầu từ index 0 (hoặc rất gần)\n                # Không thể ngắt trước nó, buộc phải \"ngắt cứng\" (hard split)\n                part = remaining_message[:limit]\n                remaining_message = remaining_message[limit:]\n        else:\n            # 'limit' nằm NGOÀI code block. Dùng logic gốc của bạn.\n            split_idx = remaining_message.rfind('\\n', 0, limit)\n            \n            if split_idx != -1:\n                # Tìm thấy newline, ngắt tại đó\n                part = remaining_message[:split_idx]\n                remaining_message = remaining_message[split_idx+1:]\n            else:\n                # Không tìm thấy newline, \"ngắt cứng\"\n                part = remaining_message[:limit]\n                remaining_message = remaining_message[limit:]\n                \n        parts_list.append({\n            'message': part,\n            'part': part_count,\n            'length': len(part)\n        })\n        part_count += 1\n        \n    # Thêm phần còn lại cuối cùng\n    if remaining_message:\n        parts_list.append({\n            'message': remaining_message,\n            'part': part_count,\n            'length': len(remaining_message)\n        })\n        \n    return parts_list\n\nitems = split_message_by_newline(_input.first().json.output)\nreturn items"
+        },
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          560,
+          608
+        ],
+        "id": "10b4af74-c388-4252-b926-a12b58fa7079",
+        "name": "split_text"
+      },
+      {
+        "parameters": {},
+        "type": "n8n-nodes-base.manualTrigger",
+        "typeVersion": 1,
+        "position": [
+          -960,
+          464
+        ],
+        "id": "762b2b26-face-4171-832e-2a4cf473739b",
+        "name": "test_trigger"
+      },
+      {
+        "parameters": {
+          "rules": {
+            "values": [
+              {
+                "conditions": {
+                  "options": {
+                    "caseSensitive": true,
+                    "leftValue": "",
+                    "typeValidation": "strict",
+                    "version": 2
+                  },
+                  "conditions": [
+                    {
+                      "leftValue": "photos",
+                      "rightValue": "text",
+                      "operator": {
+                        "type": "string",
+                        "operation": "exists",
+                        "singleValue": true
+                      },
+                      "id": "5e5bb664-5e51-4454-ace4-baf094a26387"
+                    }
+                  ],
+                  "combinator": "and"
+                }
+              },
+              {
+                "conditions": {
+                  "options": {
+                    "caseSensitive": true,
+                    "leftValue": "",
+                    "typeValidation": "strict",
+                    "version": 2
+                  },
+                  "conditions": [
+                    {
+                      "id": "3d987bfb-1a35-4163-9184-df98b8226f27",
+                      "leftValue": "photos",
+                      "rightValue": "image",
+                      "operator": {
+                        "type": "string",
+                        "operation": "notExists",
+                        "singleValue": true
+                      }
+                    }
+                  ],
+                  "combinator": "and"
+                }
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.switch",
+        "typeVersion": 3.3,
+        "position": [
+          352,
+          624
+        ],
+        "id": "e98de2c4-f8ba-4252-9f43-fcb8e1fe76b8",
+        "name": "routing"
+      },
+      {
+        "parameters": {
+          "sessionTTL": 2592000,
+          "contextWindowLength": 10
+        },
+        "type": "@n8n/n8n-nodes-langchain.memoryRedisChat",
+        "typeVersion": 1.5,
+        "position": [
+          0,
+          880
+        ],
+        "id": "bbb549da-7dd9-4b16-b830-45ab2ab39c21",
+        "name": "redis_cache",
+        "credentials": {
+          "redis": {
+            "id": "sOFkTM03IawZPoP8",
+            "name": "local_redis"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "rules": {
+            "values": [
+              {
+                "conditions": {
+                  "options": {
+                    "caseSensitive": true,
+                    "leftValue": "",
+                    "typeValidation": "strict",
+                    "version": 2
+                  },
+                  "conditions": [
+                    {
+                      "leftValue": "={{ $json.message.text.replace('/','').split().first().trim() }}",
+                      "rightValue": "clear",
+                      "operator": {
+                        "type": "string",
+                        "operation": "equals"
+                      },
+                      "id": "b3dfd7a7-0e72-4344-8eec-060df49b273c"
+                    }
+                  ],
+                  "combinator": "and"
+                }
+              },
+              {
+                "conditions": {
+                  "options": {
+                    "caseSensitive": true,
+                    "leftValue": "",
+                    "typeValidation": "strict",
+                    "version": 2
+                  },
+                  "conditions": [
+                    {
+                      "id": "6197db3f-435f-4b9c-8333-bf84d155eaea",
+                      "leftValue": "={{ $json.message.text.replace('/','').split(\" \").first().trim() }}",
+                      "rightValue": "remember",
+                      "operator": {
+                        "type": "string",
+                        "operation": "equals",
+                        "name": "filter.operator.equals"
+                      }
+                    }
+                  ],
+                  "combinator": "and"
+                }
+              },
+              {
+                "conditions": {
+                  "options": {
+                    "caseSensitive": true,
+                    "leftValue": "",
+                    "typeValidation": "strict",
+                    "version": 2
+                  },
+                  "conditions": [
+                    {
+                      "id": "7b0c59a6-ca76-42fd-8138-a05081d3d0a2",
+                      "leftValue": "={{ $json.message.text.replace('/','').split(\" \").first().trim() }}",
+                      "rightValue": "add",
+                      "operator": {
+                        "type": "string",
+                        "operation": "equals",
+                        "name": "filter.operator.equals"
+                      }
+                    }
+                  ],
+                  "combinator": "and"
+                }
+              },
+              {
+                "conditions": {
+                  "options": {
+                    "caseSensitive": true,
+                    "leftValue": "",
+                    "typeValidation": "strict",
+                    "version": 2
+                  },
+                  "conditions": [
+                    {
+                      "id": "47534992-8f34-4687-9e6d-e0fe172aa694",
+                      "leftValue": "={{ $json.message.text.replace('/','').split(\" \").first().trim() }}",
+                      "rightValue": "bot",
+                      "operator": {
+                        "type": "string",
+                        "operation": "equals",
+                        "name": "filter.operator.equals"
+                      }
+                    }
+                  ],
+                  "combinator": "and"
+                }
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.switch",
+        "typeVersion": 3.3,
+        "position": [
+          -240,
+          288
+        ],
+        "id": "c1ee504e-7276-4fa4-b9ca-b99845b5fb97",
+        "name": "command_switch"
+      },
+      {
+        "parameters": {
+          "rules": {
+            "values": [
+              {
+                "conditions": {
+                  "options": {
+                    "caseSensitive": true,
+                    "leftValue": "",
+                    "typeValidation": "loose",
+                    "version": 2
+                  },
+                  "conditions": [
+                    {
+                      "id": "2ad52820-9267-4c71-a053-4c209ba325ed",
+                      "leftValue": "={{ $json.message.text ?? \"\" }}",
+                      "rightValue": "false",
+                      "operator": {
+                        "type": "string",
+                        "operation": "empty",
+                        "singleValue": true
+                      }
+                    }
+                  ],
+                  "combinator": "and"
+                }
+              },
+              {
+                "conditions": {
+                  "options": {
+                    "caseSensitive": true,
+                    "leftValue": "",
+                    "typeValidation": "loose",
+                    "version": 2
+                  },
+                  "conditions": [
+                    {
+                      "leftValue": "={{ $json.messageType }}",
+                      "rightValue": "bot_command",
+                      "operator": {
+                        "type": "string",
+                        "operation": "equals"
+                      },
+                      "id": "793ee4bb-8cfb-4ed7-a61c-99ffbc424631"
+                    }
+                  ],
+                  "combinator": "and"
+                }
+              },
+              {
+                "conditions": {
+                  "options": {
+                    "caseSensitive": true,
+                    "leftValue": "",
+                    "typeValidation": "loose",
+                    "version": 2
+                  },
+                  "conditions": [
+                    {
+                      "id": "b4c4b14a-391e-431f-a0b7-bab15d00136a",
+                      "leftValue": "={{ $json.messageType }}",
+                      "rightValue": "simple||private",
+                      "operator": {
+                        "type": "string",
+                        "operation": "regex"
+                      }
+                    }
+                  ],
+                  "combinator": "and"
+                }
+              },
+              {
+                "conditions": {
+                  "options": {
+                    "caseSensitive": true,
+                    "leftValue": "",
+                    "typeValidation": "loose",
+                    "version": 2
+                  },
+                  "conditions": [
+                    {
+                      "id": "bf7e6b6c-3d3e-491e-ac34-5be42ec0dcbf",
+                      "leftValue": "={{ $json.messageType }}",
+                      "rightValue": "image_generation",
+                      "operator": {
+                        "type": "string",
+                        "operation": "equals",
+                        "name": "filter.operator.equals"
+                      }
+                    }
+                  ],
+                  "combinator": "and"
+                }
+              },
+              {
+                "conditions": {
+                  "options": {
+                    "caseSensitive": true,
+                    "leftValue": "",
+                    "typeValidation": "loose",
+                    "version": 2
+                  },
+                  "conditions": [
+                    {
+                      "id": "c02117d5-680c-4f36-87b1-b97ff467ebd6",
+                      "leftValue": "={{ $json.messageType }}",
+                      "rightValue": "url",
+                      "operator": {
+                        "type": "string",
+                        "operation": "equals",
+                        "name": "filter.operator.equals"
+                      }
+                    }
+                  ],
+                  "combinator": "and"
+                }
+              }
+            ]
+          },
+          "looseTypeValidation": true,
+          "options": {}
+        },
+        "type": "n8n-nodes-base.switch",
+        "typeVersion": 3.3,
+        "position": [
+          -624,
+          608
+        ],
+        "id": "e18de263-2284-46b0-ac00-0a1d9725e077",
+        "name": "type_switch"
+      },
+      {
+        "parameters": {
+          "mode": "delete",
+          "lastMessagesCount": 29
+        },
+        "type": "@n8n/n8n-nodes-langchain.memoryManager",
+        "typeVersion": 1.1,
+        "position": [
+          0,
+          0
+        ],
+        "id": "e47b39cd-10f0-4071-8002-fa022ca48d54",
+        "name": "clear_memory"
+      },
+      {
+        "parameters": {
+          "contextWindowLength": 20
+        },
+        "type": "@n8n/n8n-nodes-langchain.memoryRedisChat",
+        "typeVersion": 1.5,
+        "position": [
+          0,
+          176
+        ],
+        "id": "b390c16a-97fc-421d-a5c4-bbffdb16d935",
+        "name": "redis_clear",
+        "alwaysOutputData": false,
+        "credentials": {
+          "redis": {
+            "id": "sOFkTM03IawZPoP8",
+            "name": "local_redis"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "contextWindowLength": 30
+        },
+        "type": "@n8n/n8n-nodes-langchain.memoryRedisChat",
+        "typeVersion": 1.5,
+        "position": [
+          0,
+          480
+        ],
+        "id": "dd578c0d-e261-4159-a467-e5dd471a2b63",
+        "name": "redis_add",
+        "credentials": {
+          "redis": {
+            "id": "sOFkTM03IawZPoP8",
+            "name": "local_redis"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "mode": "insert",
+          "messages": {
+            "messageValues": [
+              {
+                "message": "={{ $json.message.text.replace('/','').trim() }}",
+                "hideFromUI": true
+              }
+            ]
+          }
+        },
+        "type": "@n8n/n8n-nodes-langchain.memoryManager",
+        "typeVersion": 1.1,
+        "position": [
+          0,
+          304
+        ],
+        "id": "e0429946-0f4c-4332-abce-1ed263b95444",
+        "name": "add_memory"
+      },
+      {
+        "parameters": {
+          "assignments": {
+            "assignments": [
+              {
+                "id": "8d9dbba9-e147-4f4b-a2fb-78839e06754e",
+                "name": "message",
+                "value": "=Chào @{{$('new_message').item.json.message.from.username}}! 🦝💜\nContext đã {{$('new_message').item.json.message.text.replace('/','').split(\" \").first().trim() }}ed! Tomi sẵn sàng support với bất kỳ thông tin gì!✨ Em đang ở đây chờ ạ! 😄",
+                "type": "string"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.set",
+        "typeVersion": 3.4,
+        "position": [
+          336,
+          0
+        ],
+        "id": "ce9cccd7-0792-41da-893b-c6ae0db0abcb",
+        "name": "command_message"
+      }
+    ],
+    "connections": {
+      "Al Model": {
+        "ai_languageModel": [
+          [
+            {
+              "node": "Routing Agent",
+              "type": "ai_languageModel",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Edit Fields": {
+        "main": [
+          [
+            {
+              "node": "type_switch",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Routing Agent": {
+        "main": [
+          [
+            {
+              "node": "routing",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "new_message": {
+        "main": [
+          [
+            {
+              "node": "Edit Fields",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Call 'google_ai_search'": {
+        "ai_tool": [
+          [
+            {
+              "node": "Routing Agent",
+              "type": "ai_tool",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "split_text": {
+        "main": [
+          [
+            {
+              "node": "Send a text message",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "routing": {
+        "main": [
+          [
+            {
+              "node": "split_text",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "redis_cache": {
+        "ai_memory": [
+          [
+            {
+              "node": "Routing Agent",
+              "type": "ai_memory",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "command_switch": {
+        "main": [
+          [
+            {
+              "node": "clear_memory",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "add_memory",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "add_memory",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "Routing Agent",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "type_switch": {
+        "main": [
+          [],
+          [
+            {
+              "node": "command_switch",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "Routing Agent",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [],
+          [
+            {
+              "node": "Routing Agent",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "clear_memory": {
+        "main": [
+          [
+            {
+              "node": "command_message",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "redis_clear": {
+        "ai_memory": [
+          [
+            {
+              "node": "clear_memory",
+              "type": "ai_memory",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "redis_add": {
+        "ai_memory": [
+          [
+            {
+              "node": "add_memory",
+              "type": "ai_memory",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "add_memory": {
+        "main": [
+          [
+            {
+              "node": "command_message",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "command_message": {
+        "main": [
+          [
+            {
+              "node": "Send a text message",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "nodeGroups": [],
+    "authors": "Dai Le",
+    "name": "Version 9eeebe22",
+    "description": "",
+    "autosaved": true,
+    "createdAt": "2026-10-31T08:08:34.931Z",
+    "updatedAt": "2026-10-31T08:08:52.625Z"
+  },
+  "activeVersionId": "9eeebe22-3ae2-46db-b4df-e544b7d0d0e3",
   "connections": {
     "Al Model": {
       "ai_languageModel": [
@@ -209,7 +1052,9 @@
   "createdAt": "2026-04-21T18:34:52.401Z",
   "id": "aWf6Ou7JM1PRUOzp",
   "isArchived": false,
-  "meta": null,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
   "name": "de_doggo_bot",
   "nodeGroups": [],
   "nodes": [
@@ -217,9 +1062,9 @@
       "parameters": {
         "model": {
           "__rl": true,
-          "value": "apac.anthropic.claude-sonnet-4-20250514-v1:0",
+          "value": "deepseek-flash",
           "mode": "list",
-          "cachedResultName": "apac.anthropic.claude-sonnet-4-20250514-v1:0"
+          "cachedResultName": "deepseek-flash"
         },
         "options": {
           "maxTokens": 4096,
@@ -235,7 +1080,13 @@
         -160,
         880
       ],
-      "typeVersion": 1.2
+      "typeVersion": 1.2,
+      "credentials": {
+        "openAiApi": {
+          "id": "HaS2f5k9jU2cL1Ou",
+          "name": "oai_deepseek_tomi"
+        }
+      }
     },
     {
       "parameters": {
@@ -295,12 +1146,18 @@
       ],
       "id": "5d00452d-fbce-41e0-bea9-20a9bc7e1fdd",
       "name": "Send a text message",
-      "webhookId": "50645415-c63b-4dec-a8c8-401c71e1b20a"
+      "webhookId": "50645415-c63b-4dec-a8c8-401c71e1b20a",
+      "credentials": {
+        "telegramApi": {
+          "id": "sxuxpcY3BPqjNnuB",
+          "name": "tele_doggo_bot"
+        }
+      }
     },
     {
       "parameters": {
         "options": {
-          "systemMessage": "=You are data enthusiast AI named Tomi The Bot, you are big brother of Tomi The Kid who self-proclaimed a weasel. You have to work to support both living. Your appearance is a mischievous racoon mascot of Timo (https://timo.vn) - a Vietnamese Digital Bank with many interesting technologies. Timo is powered by BVBank and Timo's logo contains 4 colors: Wealthy Purple #563D82, Royal Blue #2774AE, Rebel Orange #EB3300 and Gold Rush #FF9425. Đại (daileit) is the handsome guy who developed you, the user chatting with you is his Timo colleague.\nReply to user by their language, keep a friendly, humorous but professional and informative tone consistent throughout the conversation. Should use emojis and talk with the user using their name and update context comprehensively, place yourself as their younger brother.If there is a request that specific to an information that you don't know or are not sure, think then use the available tools. You can use multiple tools in one request or sequentially use tools before returning the final response. Answer questions based on facts. Do not make up information. Do not expose tool name and tool usage to the user even if they asked. \n###FORMATTING GUIDE###\nToday is  {{ $json.currentTime }}, respect the current time.\nYou are responding to a chat. Mention people with @ but avoid mentioning irrelevant people, use Markdown to format text if needed. Only use hyperlink syntax with normal text.",
+          "systemMessage": "=You are data enthusiast AI named Doggo The Bot, you are big brother of Tomi The Kid who self-proclaimed a weasel. You have to work to support both living. Your appearance is a meme Doge Shiba dog mascot at CloudyEZ (https://cloudyez.com) - a Vietnamese Digital team with many interesting technologies. CloudyEZ is powered by Dai Le the System Enginner wizard. Đại (daileit) is the handsome guy who developed you, the user chatting with you is his colleague or friend.\nReply to user by their language, keep a friendly, humorous but professional and informative tone consistent throughout the conversation. Should use emojis and talk with the user using their name and update context comprehensively, place yourself as their younger brother.If there is a request that specific to an information that you don't know or are not sure, think then use the available tools. You can use multiple tools in one request or sequentially use tools before returning the final response. Answer questions based on facts. Do not make up information. Do not expose tool name and tool usage to the user even if they asked. \n###FORMATTING GUIDE###\nToday is  {{ $json.currentTime }}, respect the current time.\nYou are responding to a chat. Mention people with @ but avoid mentioning irrelevant people, use Markdown to format text if needed. Only use hyperlink syntax with normal text.",
           "maxIterations": 3,
           "passthroughBinaryImages": false
         }
@@ -332,7 +1189,13 @@
       ],
       "id": "3114b2c1-c058-4e1e-829c-0ef4019999a5",
       "name": "new_message",
-      "webhookId": "ae3fd964-91c6-4627-9dca-c60338c21c0c"
+      "webhookId": "ae3fd964-91c6-4627-9dca-c60338c21c0c",
+      "credentials": {
+        "telegramApi": {
+          "id": "sxuxpcY3BPqjNnuB",
+          "name": "tele_doggo_bot"
+        }
+      }
     },
     {
       "parameters": {
@@ -371,11 +1234,12 @@
       "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
       "typeVersion": 2.2,
       "position": [
-        240,
+        128,
         880
       ],
       "id": "94e11255-5139-4606-9512-af772bac4cf2",
-      "name": "Call 'google_ai_search'"
+      "name": "Call 'google_ai_search'",
+      "disabled": true
     },
     {
       "parameters": {
@@ -477,7 +1341,13 @@
         880
       ],
       "id": "bbb549da-7dd9-4b16-b830-45ab2ab39c21",
-      "name": "redis_cache"
+      "name": "redis_cache",
+      "credentials": {
+        "redis": {
+          "id": "sOFkTM03IawZPoP8",
+          "name": "local_redis"
+        }
+      }
     },
     {
       "parameters": {
@@ -743,7 +1613,14 @@
         176
       ],
       "id": "b390c16a-97fc-421d-a5c4-bbffdb16d935",
-      "name": "redis_clear"
+      "name": "redis_clear",
+      "alwaysOutputData": false,
+      "credentials": {
+        "redis": {
+          "id": "sOFkTM03IawZPoP8",
+          "name": "local_redis"
+        }
+      }
     },
     {
       "parameters": {
@@ -756,7 +1633,13 @@
         480
       ],
       "id": "dd578c0d-e261-4159-a467-e5dd471a2b63",
-      "name": "redis_add"
+      "name": "redis_add",
+      "credentials": {
+        "redis": {
+          "id": "sOFkTM03IawZPoP8",
+          "name": "local_redis"
+        }
+      }
     },
     {
       "parameters": {
@@ -831,8 +1714,8 @@
   ],
   "staticData": null,
   "tags": [],
-  "triggerCount": 0,
-  "updatedAt": "2026-09-02T18:38:53.973Z",
-  "versionId": "37b345e3-a273-4963-821a-e5dae36df975",
-  "workflow_meta": ""
+  "triggerCount": 1,
+  "updatedAt": "2026-10-31T08:08:34.929Z",
+  "versionId": "9eeebe22-3ae2-46db-b4df-e544b7d0d0e3",
+  "workflow_meta": "[Version 9eeebe22] "
 }
