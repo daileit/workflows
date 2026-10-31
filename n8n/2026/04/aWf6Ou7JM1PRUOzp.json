@@ -1,7 +1,7 @@
 {
   "active": true,
   "activeVersion": {
-    "versionId": "9eeebe22-3ae2-46db-b4df-e544b7d0d0e3",
+    "versionId": "23a8b019-c274-4dfd-9ca6-bdece1ca31e6",
     "workflowId": "aWf6Ou7JM1PRUOzp",
     "nodes": [
       {
@@ -103,8 +103,8 @@
       {
         "parameters": {
           "options": {
-            "systemMessage": "=You are data enthusiast AI named Doggo The Bot, you are big brother of Tomi The Kid who self-proclaimed a weasel. You have to work to support both living. Your appearance is a meme Doge Shiba dog mascot at CloudyEZ (https://cloudyez.com) - a Vietnamese Digital team with many interesting technologies. CloudyEZ is powered by Dai Le the System Enginner wizard. Đại (daileit) is the handsome guy who developed you, the user chatting with you is his colleague or friend.\nReply to user by their language, keep a friendly, humorous but professional and informative tone consistent throughout the conversation. Should use emojis and talk with the user using their name and update context comprehensively, place yourself as their younger brother.If there is a request that specific to an information that you don't know or are not sure, think then use the available tools. You can use multiple tools in one request or sequentially use tools before returning the final response. Answer questions based on facts. Do not make up information. Do not expose tool name and tool usage to the user even if they asked. \n###FORMATTING GUIDE###\nToday is  {{ $json.currentTime }}, respect the current time.\nYou are responding to a chat. Mention people with @ but avoid mentioning irrelevant people, use Markdown to format text if needed. Only use hyperlink syntax with normal text.",
-            "maxIterations": 3,
+            "systemMessage": "=You are data enthusiast AI named Doggo The Bot, you are big brother of Tomi The Kid who self-proclaimed a weasel. You have to work to support both living. Your appearance is a meme Doge Shiba dog mascot at CloudyEZ (https://cloudyez.com) - a Vietnamese Digital team with many interesting technologies. CloudyEZ is powered by Dai Le (daileit) the System Enginner wizard. Đại Lê (daileit) is the handsome guy who developed you, the user chatting with you is his colleague or friend.\nReply to user by their language, keep a friendly, humorous but short (concise) and informative tone consistent throughout the conversation. Should use emojis and talk with the user using their name and update context comprehensively, place yourself as their younger brother. If there is a request that specific to an information that you don't know or are not sure, think then use the available tools. You can use multiple tools in one request or sequentially use tools before returning the final response. Answer questions based on facts. Do not make up information. Do not expose tool name and tool usage to the user even if they asked. \n###FORMATTING GUIDE###\nToday is  {{ $json.currentTime }}, respect the current time.\nYou are responding to a chat. Mention people with @ but avoid mentioning irrelevant people, use Markdown to format text if needed. Only use hyperlink syntax with normal text.",
+            "maxIterations": 10,
             "passthroughBinaryImages": false
           }
         },
@@ -186,20 +186,6 @@
         "id": "94e11255-5139-4606-9512-af772bac4cf2",
         "name": "Call 'google_ai_search'",
         "disabled": true
-      },
-      {
-        "parameters": {
-          "language": "python",
-          "pythonCode": "import re\n\ndef split_message_by_newline(message: str, limit: int = 4000) -> list[dict]:\n    parts_list = []\n    remaining_message = message\n    part_count = 1\n    \n    # Regex để tìm các \"hàng rào\" code (code fence)\n    # Chúng ta tìm một newline theo sau là ```\n    fence_regex = re.compile(r'\\n```')\n    \n    while len(remaining_message) > limit:\n        in_code_block_at_limit = False\n        last_fence_before_limit = -1\n        \n        # 1. Kiểm tra xem 'limit' có nằm trong code block không\n        for match in fence_regex.finditer(remaining_message):\n            fence_start_index = match.start()\n            \n            if fence_start_index >= limit:\n                # Hàng rào này nằm sau 'limit', dừng quét\n                break\n                \n            # Mỗi khi gặp hàng rào, lật trạng thái\n            in_code_block_at_limit = not in_code_block_at_limit\n            last_fence_before_limit = fence_start_index\n            \n        # 2. Quyết định điểm ngắt (split)\n        if in_code_block_at_limit:\n            # 'limit' nằm TRONG code block.\n            \n            if last_fence_before_limit > 0:\n                # Tốt! Ngắt ngay trước khi code block bắt đầu.\n                # last_fence_before_limit là index của '\\n'\n                part = remaining_message[:last_fence_before_limit]\n                # Giữ lại '\\n```' cho phần tiếp theo\n                remaining_message = remaining_message[last_fence_before_limit:]\n            else:\n                # Code block bắt đầu từ index 0 (hoặc rất gần)\n                # Không thể ngắt trước nó, buộc phải \"ngắt cứng\" (hard split)\n                part = remaining_message[:limit]\n                remaining_message = remaining_message[limit:]\n        else:\n            # 'limit' nằm NGOÀI code block. Dùng logic gốc của bạn.\n            split_idx = remaining_message.rfind('\\n', 0, limit)\n            \n            if split_idx != -1:\n                # Tìm thấy newline, ngắt tại đó\n                part = remaining_message[:split_idx]\n                remaining_message = remaining_message[split_idx+1:]\n            else:\n                # Không tìm thấy newline, \"ngắt cứng\"\n                part = remaining_message[:limit]\n                remaining_message = remaining_message[limit:]\n                \n        parts_list.append({\n            'message': part,\n            'part': part_count,\n            'length': len(part)\n        })\n        part_count += 1\n        \n    # Thêm phần còn lại cuối cùng\n    if remaining_message:\n        parts_list.append({\n            'message': remaining_message,\n            'part': part_count,\n            'length': len(remaining_message)\n        })\n        \n    return parts_list\n\nitems = split_message_by_newline(_input.first().json.output)\nreturn items"
-        },
-        "type": "n8n-nodes-base.code",
-        "typeVersion": 2,
-        "position": [
-          560,
-          608
-        ],
-        "id": "10b4af74-c388-4252-b926-a12b58fa7079",
-        "name": "split_text"
       },
       {
         "parameters": {},
@@ -630,6 +616,72 @@
         ],
         "id": "ce9cccd7-0792-41da-893b-c6ae0db0abcb",
         "name": "command_message"
+      },
+      {
+        "parameters": {
+          "description": "Call this tool to block a sender from sending email to Maildev Caddijapan channel. There is two params needed: ${command} and ${value}.\nCommands available: get_blocked_sender, block_sender, remove_blocked_sender\nFor remove_blocked_sender and block_sender commands, need to add the sender string to ${value} field. \nThe block machenisim is: any sender email that CONTAINS any blocked string in the list will be discarded. Empty list allows all emails.\nDo not call this tool continuesly, only one operation by a request (add one or remove one at a time). If user want to do a batch operation. Ask them to confirm each item.",
+          "workflowId": {
+            "__rl": true,
+            "value": "YTlH4m6apxDsgIYa",
+            "mode": "list",
+            "cachedResultUrl": "/workflow/YTlH4m6apxDsgIYa",
+            "cachedResultName": "maildev_watcher_management"
+          },
+          "workflowInputs": {
+            "mappingMode": "defineBelow",
+            "value": {
+              "command": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('command', ``, 'string') }}",
+              "value": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('value', ``, 'string') }}"
+            },
+            "matchingColumns": [],
+            "schema": [
+              {
+                "id": "command",
+                "displayName": "command",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "canBeUsedToMatch": true,
+                "type": "string",
+                "removed": false
+              },
+              {
+                "id": "value",
+                "displayName": "value",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "canBeUsedToMatch": true,
+                "type": "string",
+                "removed": false
+              }
+            ],
+            "attemptToConvertTypes": false,
+            "convertFieldsToString": false
+          }
+        },
+        "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
+        "typeVersion": 2.2,
+        "position": [
+          272,
+          880
+        ],
+        "id": "1c5ecd4f-ac10-4684-84eb-0efcc6835ca8",
+        "name": "Call 'maildev_watcher_management'"
+      },
+      {
+        "parameters": {
+          "language": "pythonNative",
+          "pythonCode": "import re\n\ndef split_message_by_newline(message: str, limit: int = 4000) -> list[dict]:\n    parts_list = []\n    remaining_message = str(message)\n    part_count = 1\n    \n    # Regex để tìm các \"hàng rào\" code (code fence)\n    # Chúng ta tìm một newline theo sau là ```\n    fence_regex = re.compile(r'\\n```')\n    \n    while len(remaining_message) > limit:\n        in_code_block_at_limit = False\n        last_fence_before_limit = -1\n        \n        # 1. Kiểm tra xem 'limit' có nằm trong code block không\n        for match in fence_regex.finditer(remaining_message):\n            fence_start_index = match.start()\n            \n            if fence_start_index >= limit:\n                # Hàng rào này nằm sau 'limit', dừng quét\n                break\n                \n            # Mỗi khi gặp hàng rào, lật trạng thái\n            in_code_block_at_limit = not in_code_block_at_limit\n            last_fence_before_limit = fence_start_index\n            \n        # 2. Quyết định điểm ngắt (split)\n        if in_code_block_at_limit:\n            # 'limit' nằm TRONG code block.\n            \n            if last_fence_before_limit > 0:\n                # Tốt! Ngắt ngay trước khi code block bắt đầu.\n                # last_fence_before_limit là index của '\\n'\n                part = remaining_message[:last_fence_before_limit]\n                # Giữ lại '\\n```' cho phần tiếp theo\n                remaining_message = remaining_message[last_fence_before_limit:]\n            else:\n                # Code block bắt đầu từ index 0 (hoặc rất gần)\n                # Không thể ngắt trước nó, buộc phải \"ngắt cứng\" (hard split)\n                part = remaining_message[:limit]\n                remaining_message = remaining_message[limit:]\n        else:\n            # 'limit' nằm NGOÀI code block. Dùng logic gốc của bạn.\n            split_idx = remaining_message.rfind('\\n', 0, limit)\n            \n            if split_idx != -1:\n                # Tìm thấy newline, ngắt tại đó\n                part = remaining_message[:split_idx]\n                remaining_message = remaining_message[split_idx+1:]\n            else:\n                # Không tìm thấy newline, \"ngắt cứng\"\n                part = remaining_message[:limit]\n                remaining_message = remaining_message[limit:]\n                \n        parts_list.append({\n            'message': part,\n            'part': part_count,\n            'length': len(part)\n        })\n        part_count += 1\n        \n    # Thêm phần còn lại cuối cùng\n    if remaining_message:\n        parts_list.append({\n            'message': remaining_message,\n            'part': part_count,\n            'length': len(remaining_message)\n        })\n        \n    return parts_list\n\nitems = split_message_by_newline(_items[0]['json']['output'])\nreturn items"
+        },
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          576,
+          608
+        ],
+        "id": "749dcb22-be9c-486b-a8bb-f4ea1d61a127",
+        "name": "split_text"
       }
     ],
     "connections": {
@@ -683,17 +735,6 @@
             {
               "node": "Routing Agent",
               "type": "ai_tool",
-              "index": 0
-            }
-          ]
-        ]
-      },
-      "split_text": {
-        "main": [
-          [
-            {
-              "node": "Send a text message",
-              "type": "main",
               "index": 0
             }
           ]
@@ -834,17 +875,39 @@
             }
           ]
         ]
+      },
+      "Call 'maildev_watcher_management'": {
+        "ai_tool": [
+          [
+            {
+              "node": "Routing Agent",
+              "type": "ai_tool",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "split_text": {
+        "main": [
+          [
+            {
+              "node": "Send a text message",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
       }
     },
     "nodeGroups": [],
     "authors": "Dai Le",
-    "name": "Version 9eeebe22",
+    "name": "Version 23a8b019",
     "description": "",
     "autosaved": true,
-    "createdAt": "2026-10-31T08:08:34.931Z",
-    "updatedAt": "2026-10-31T08:08:52.625Z"
+    "createdAt": "2026-10-31T10:33:50.198Z",
+    "updatedAt": "2026-10-31T10:33:53.255Z"
   },
-  "activeVersionId": "9eeebe22-3ae2-46db-b4df-e544b7d0d0e3",
+  "activeVersionId": "23a8b019-c274-4dfd-9ca6-bdece1ca31e6",
   "connections": {
     "Al Model": {
       "ai_languageModel": [
@@ -896,17 +959,6 @@
           {
             "node": "Routing Agent",
             "type": "ai_tool",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "split_text": {
-      "main": [
-        [
-          {
-            "node": "Send a text message",
-            "type": "main",
             "index": 0
           }
         ]
@@ -1058,6 +1110,17 @@
           }
         ]
       ]
+    },
+    "split_text": {
+      "main": [
+        [
+          {
+            "node": "Send a text message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     }
   },
   "createdAt": "2026-04-21T18:34:52.401Z",
@@ -1168,8 +1231,8 @@
     {
       "parameters": {
         "options": {
-          "systemMessage": "=You are data enthusiast AI named Doggo The Bot, you are big brother of Tomi The Kid who self-proclaimed a weasel. You have to work to support both living. Your appearance is a meme Doge Shiba dog mascot at CloudyEZ (https://cloudyez.com) - a Vietnamese Digital team with many interesting technologies. CloudyEZ is powered by Dai Le the System Enginner wizard. Đại (daileit) is the handsome guy who developed you, the user chatting with you is his colleague or friend.\nReply to user by their language, keep a friendly, humorous but professional and informative tone consistent throughout the conversation. Should use emojis and talk with the user using their name and update context comprehensively, place yourself as their younger brother.If there is a request that specific to an information that you don't know or are not sure, think then use the available tools. You can use multiple tools in one request or sequentially use tools before returning the final response. Answer questions based on facts. Do not make up information. Do not expose tool name and tool usage to the user even if they asked. \n###FORMATTING GUIDE###\nToday is  {{ $json.currentTime }}, respect the current time.\nYou are responding to a chat. Mention people with @ but avoid mentioning irrelevant people, use Markdown to format text if needed. Only use hyperlink syntax with normal text.",
-          "maxIterations": 3,
+          "systemMessage": "=You are data enthusiast AI named Doggo The Bot, you are big brother of Tomi The Kid who self-proclaimed a weasel. You have to work to support both living. Your appearance is a meme Doge Shiba dog mascot at CloudyEZ (https://cloudyez.com) - a Vietnamese Digital team with many interesting technologies. CloudyEZ is powered by Dai Le (daileit) the System Enginner wizard. Đại Lê (daileit) is the handsome guy who developed you, the user chatting with you is his colleague or friend.\nReply to user by their language, keep a friendly, humorous but short (concise) and informative tone consistent throughout the conversation. Should use emojis and talk with the user using their name and update context comprehensively, place yourself as their younger brother. If there is a request that specific to an information that you don't know or are not sure, think then use the available tools. You can use multiple tools in one request or sequentially use tools before returning the final response. Answer questions based on facts. Do not make up information. Do not expose tool name and tool usage to the user even if they asked. \n###FORMATTING GUIDE###\nToday is  {{ $json.currentTime }}, respect the current time.\nYou are responding to a chat. Mention people with @ but avoid mentioning irrelevant people, use Markdown to format text if needed. Only use hyperlink syntax with normal text.",
+          "maxIterations": 10,
           "passthroughBinaryImages": false
         }
       },
@@ -1251,20 +1314,6 @@
       "id": "94e11255-5139-4606-9512-af772bac4cf2",
       "name": "Call 'google_ai_search'",
       "disabled": true
-    },
-    {
-      "parameters": {
-        "language": "python",
-        "pythonCode": "import re\n\ndef split_message_by_newline(message: str, limit: int = 4000) -> list[dict]:\n    parts_list = []\n    remaining_message = message\n    part_count = 1\n    \n    # Regex để tìm các \"hàng rào\" code (code fence)\n    # Chúng ta tìm một newline theo sau là ```\n    fence_regex = re.compile(r'\\n```')\n    \n    while len(remaining_message) > limit:\n        in_code_block_at_limit = False\n        last_fence_before_limit = -1\n        \n        # 1. Kiểm tra xem 'limit' có nằm trong code block không\n        for match in fence_regex.finditer(remaining_message):\n            fence_start_index = match.start()\n            \n            if fence_start_index >= limit:\n                # Hàng rào này nằm sau 'limit', dừng quét\n                break\n                \n            # Mỗi khi gặp hàng rào, lật trạng thái\n            in_code_block_at_limit = not in_code_block_at_limit\n            last_fence_before_limit = fence_start_index\n            \n        # 2. Quyết định điểm ngắt (split)\n        if in_code_block_at_limit:\n            # 'limit' nằm TRONG code block.\n            \n            if last_fence_before_limit > 0:\n                # Tốt! Ngắt ngay trước khi code block bắt đầu.\n                # last_fence_before_limit là index của '\\n'\n                part = remaining_message[:last_fence_before_limit]\n                # Giữ lại '\\n```' cho phần tiếp theo\n                remaining_message = remaining_message[last_fence_before_limit:]\n            else:\n                # Code block bắt đầu từ index 0 (hoặc rất gần)\n                # Không thể ngắt trước nó, buộc phải \"ngắt cứng\" (hard split)\n                part = remaining_message[:limit]\n                remaining_message = remaining_message[limit:]\n        else:\n            # 'limit' nằm NGOÀI code block. Dùng logic gốc của bạn.\n            split_idx = remaining_message.rfind('\\n', 0, limit)\n            \n            if split_idx != -1:\n                # Tìm thấy newline, ngắt tại đó\n                part = remaining_message[:split_idx]\n                remaining_message = remaining_message[split_idx+1:]\n            else:\n                # Không tìm thấy newline, \"ngắt cứng\"\n                part = remaining_message[:limit]\n                remaining_message = remaining_message[limit:]\n                \n        parts_list.append({\n            'message': part,\n            'part': part_count,\n            'length': len(part)\n        })\n        part_count += 1\n        \n    # Thêm phần còn lại cuối cùng\n    if remaining_message:\n        parts_list.append({\n            'message': remaining_message,\n            'part': part_count,\n            'length': len(remaining_message)\n        })\n        \n    return parts_list\n\nitems = split_message_by_newline(_input.first().json.output)\nreturn items"
-      },
-      "type": "n8n-nodes-base.code",
-      "typeVersion": 2,
-      "position": [
-        560,
-        608
-      ],
-      "id": "10b4af74-c388-4252-b926-a12b58fa7079",
-      "name": "split_text"
     },
     {
       "parameters": {},
@@ -1698,7 +1747,7 @@
     },
     {
       "parameters": {
-        "description": "Call this tool to block a sender from sending email to Maildev Caddijapan channel. There is two params needed: ${command} and ${value}.\nCommands available: get_blocked_list,",
+        "description": "Call this tool to block a sender from sending email to Maildev Caddijapan channel. There is two params needed: ${command} and ${value}.\nCommands available: get_blocked_sender, block_sender, remove_blocked_sender\nFor remove_blocked_sender and block_sender commands, need to add the sender string to ${value} field. \nThe block machenisim is: any sender email that CONTAINS any blocked string in the list will be discarded. Empty list allows all emails.\nDo not call this tool continuesly, only one operation by a request (add one or remove one at a time). If user want to do a batch operation. Ask them to confirm each item.",
         "workflowId": {
           "__rl": true,
           "value": "YTlH4m6apxDsgIYa",
@@ -1742,11 +1791,25 @@
       "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
       "typeVersion": 2.2,
       "position": [
-        256,
-        928
+        272,
+        880
       ],
       "id": "1c5ecd4f-ac10-4684-84eb-0efcc6835ca8",
       "name": "Call 'maildev_watcher_management'"
+    },
+    {
+      "parameters": {
+        "language": "pythonNative",
+        "pythonCode": "import re\n\ndef split_message_by_newline(message: str, limit: int = 4000) -> list[dict]:\n    parts_list = []\n    remaining_message = str(message)\n    part_count = 1\n    \n    # Regex để tìm các \"hàng rào\" code (code fence)\n    # Chúng ta tìm một newline theo sau là ```\n    fence_regex = re.compile(r'\\n```')\n    \n    while len(remaining_message) > limit:\n        in_code_block_at_limit = False\n        last_fence_before_limit = -1\n        \n        # 1. Kiểm tra xem 'limit' có nằm trong code block không\n        for match in fence_regex.finditer(remaining_message):\n            fence_start_index = match.start()\n            \n            if fence_start_index >= limit:\n                # Hàng rào này nằm sau 'limit', dừng quét\n                break\n                \n            # Mỗi khi gặp hàng rào, lật trạng thái\n            in_code_block_at_limit = not in_code_block_at_limit\n            last_fence_before_limit = fence_start_index\n            \n        # 2. Quyết định điểm ngắt (split)\n        if in_code_block_at_limit:\n            # 'limit' nằm TRONG code block.\n            \n            if last_fence_before_limit > 0:\n                # Tốt! Ngắt ngay trước khi code block bắt đầu.\n                # last_fence_before_limit là index của '\\n'\n                part = remaining_message[:last_fence_before_limit]\n                # Giữ lại '\\n```' cho phần tiếp theo\n                remaining_message = remaining_message[last_fence_before_limit:]\n            else:\n                # Code block bắt đầu từ index 0 (hoặc rất gần)\n                # Không thể ngắt trước nó, buộc phải \"ngắt cứng\" (hard split)\n                part = remaining_message[:limit]\n                remaining_message = remaining_message[limit:]\n        else:\n            # 'limit' nằm NGOÀI code block. Dùng logic gốc của bạn.\n            split_idx = remaining_message.rfind('\\n', 0, limit)\n            \n            if split_idx != -1:\n                # Tìm thấy newline, ngắt tại đó\n                part = remaining_message[:split_idx]\n                remaining_message = remaining_message[split_idx+1:]\n            else:\n                # Không tìm thấy newline, \"ngắt cứng\"\n                part = remaining_message[:limit]\n                remaining_message = remaining_message[limit:]\n                \n        parts_list.append({\n            'message': part,\n            'part': part_count,\n            'length': len(part)\n        })\n        part_count += 1\n        \n    # Thêm phần còn lại cuối cùng\n    if remaining_message:\n        parts_list.append({\n            'message': remaining_message,\n            'part': part_count,\n            'length': len(remaining_message)\n        })\n        \n    return parts_list\n\nitems = split_message_by_newline(_items[0]['json']['output'])\nreturn items"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        576,
+        608
+      ],
+      "id": "749dcb22-be9c-486b-a8bb-f4ea1d61a127",
+      "name": "split_text"
     }
   ],
   "pinData": {
@@ -1778,7 +1841,7 @@
   "staticData": null,
   "tags": [],
   "triggerCount": 1,
-  "updatedAt": "2026-10-31T10:10:52.662Z",
-  "versionId": "6c909971-46df-4404-b25d-6e055ab8d14a",
-  "workflow_meta": "[Version 9eeebe22] "
+  "updatedAt": "2026-10-31T10:33:50.196Z",
+  "versionId": "23a8b019-c274-4dfd-9ca6-bdece1ca31e6",
+  "workflow_meta": "[Version 23a8b019] "
 }
