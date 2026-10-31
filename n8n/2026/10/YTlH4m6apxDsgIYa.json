@@ -1,7 +1,7 @@
 {
   "active": true,
   "activeVersion": {
-    "versionId": "ab7fa9c3-f9df-40a1-b1d7-a753880c985f",
+    "versionId": "bf76cea7-0bcd-49a0-9f16-5eb4aee3997c",
     "workflowId": "YTlH4m6apxDsgIYa",
     "nodes": [
       {
@@ -408,7 +408,7 @@
           "columns": {
             "mappingMode": "defineBelow",
             "value": {
-              "Value": "={{ $json.new_blocked_list.join(\",\") }}"
+              "Value": "={{ $json.new_blocked_list.filter(item => item && item.trim() !== \"\").join(\",\") }}"
             },
             "matchingColumns": [],
             "schema": [
@@ -748,13 +748,13 @@
     },
     "nodeGroups": [],
     "authors": "Dai Le",
-    "name": "Version ab7fa9c3",
+    "name": "Version bf76cea7",
     "description": "",
     "autosaved": true,
-    "createdAt": "2026-10-31T10:08:01.170Z",
-    "updatedAt": "2026-10-31T10:08:44.135Z"
+    "createdAt": "2026-10-31T10:27:54.986Z",
+    "updatedAt": "2026-10-31T10:28:06.387Z"
   },
-  "activeVersionId": "ab7fa9c3-f9df-40a1-b1d7-a753880c985f",
+  "activeVersionId": "bf76cea7-0bcd-49a0-9f16-5eb4aee3997c",
   "connections": {
     "When clicking ‘Execute workflow’": {
       "main": [
@@ -1362,7 +1362,7 @@
         "columns": {
           "mappingMode": "defineBelow",
           "value": {
-            "Value": "={{ $json.new_blocked_list.join(\",\") }}"
+            "Value": "={{ $json.new_blocked_list.filter(item => item && item.trim() !== \"\").join(\",\") }}"
           },
           "matchingColumns": [],
           "schema": [
@@ -1534,7 +1534,7 @@
   "staticData": null,
   "tags": [],
   "triggerCount": 0,
-  "updatedAt": "2026-10-31T10:08:01.169Z",
-  "versionId": "ab7fa9c3-f9df-40a1-b1d7-a753880c985f",
-  "workflow_meta": "[Version ab7fa9c3] "
+  "updatedAt": "2026-10-31T10:27:54.983Z",
+  "versionId": "bf76cea7-0bcd-49a0-9f16-5eb4aee3997c",
+  "workflow_meta": "[Version bf76cea7] "
 }
