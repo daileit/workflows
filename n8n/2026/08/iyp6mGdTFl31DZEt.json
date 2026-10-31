@@ -1,7 +1,7 @@
 {
   "active": true,
   "activeVersion": {
-    "versionId": "335b371e-07e0-40e1-9876-e1b7e56382cb",
+    "versionId": "f39fb636-f7fa-4046-be07-6cbbaee1f5c6",
     "workflowId": "iyp6mGdTFl31DZEt",
     "nodes": [
       {
@@ -26,8 +26,8 @@
         "type": "n8n-nodes-base.dataTable",
         "typeVersion": 1.1,
         "position": [
-          576,
-          192
+          384,
+          256
         ],
         "id": "223d30b6-713a-4b6b-87b4-1dfae0e15b1d",
         "name": "get_all_servers"
@@ -88,7 +88,7 @@
               },
               {
                 "id": "bacd1e34-e0c9-4693-a1d6-13cf2a655918",
-                "leftValue": "={{ $json.data.map(item => item.Scope) }}",
+                "leftValue": "={{ $('join_data').item.json.data.map(item => item.Scope) }}",
                 "rightValue": "={{ $('click_trigger').item.json.image }}",
                 "operator": {
                   "type": "array",
@@ -114,8 +114,8 @@
         "type": "n8n-nodes-base.if",
         "typeVersion": 2.3,
         "position": [
-          976,
-          -112
+          864,
+          -32
         ],
         "id": "4995d446-e050-4a58-bbd1-4a9f9c0f53d4",
         "name": "If"
@@ -145,8 +145,8 @@
         "type": "n8n-nodes-base.httpRequest",
         "typeVersion": 4.4,
         "position": [
-          1232,
-          -128
+          1088,
+          -48
         ],
         "id": "b8b301dd-e406-487c-9324-55331fa66223",
         "name": "Webhook"
@@ -189,22 +189,8 @@
         "type": "n8n-nodes-base.aggregate",
         "typeVersion": 1,
         "position": [
-          384,
-          0
-        ],
-        "id": "91e2acad-e2cf-450c-b380-07db7449df19",
-        "name": "Aggregate1"
-      },
-      {
-        "parameters": {
-          "aggregate": "aggregateAllItemData",
-          "options": {}
-        },
-        "type": "n8n-nodes-base.aggregate",
-        "typeVersion": 1,
-        "position": [
-          768,
-          192
+          608,
+          256
         ],
         "id": "0a04ea41-9571-496b-912d-a634076d7cb9",
         "name": "merge"
@@ -301,7 +287,7 @@
                   },
                   "conditions": [
                     {
-                      "leftValue": "command",
+                      "leftValue": "={{ $('trigger').item.json.command }}",
                       "rightValue": "deploy",
                       "operator": {
                         "type": "string",
@@ -324,12 +310,33 @@
                   "conditions": [
                     {
                       "id": "3955d7e7-9377-4f75-b5b2-ceb21189a7b8",
-                      "leftValue": "command",
-                      "rightValue": "get_apps",
+                      "leftValue": "={{ $('trigger').item.json.command }}",
+                      "rightValue": "get_app",
                       "operator": {
                         "type": "string",
-                        "operation": "equals",
-                        "name": "filter.operator.equals"
+                        "operation": "startsWith"
+                      }
+                    }
+                  ],
+                  "combinator": "and"
+                }
+              },
+              {
+                "conditions": {
+                  "options": {
+                    "caseSensitive": true,
+                    "leftValue": "",
+                    "typeValidation": "strict",
+                    "version": 3
+                  },
+                  "conditions": [
+                    {
+                      "id": "aa8191ca-e317-4f78-bfd6-9d58631b07f2",
+                      "leftValue": "={{ $('trigger').item.json.command }}",
+                      "rightValue": "get_server",
+                      "operator": {
+                        "type": "string",
+                        "operation": "startsWith"
                       }
                     }
                   ],
@@ -345,7 +352,7 @@
         "type": "n8n-nodes-base.switch",
         "typeVersion": 3.4,
         "position": [
-          768,
+          608,
           -16
         ],
         "id": "bc29e579-fc4e-4fd9-b767-7ac6bd0ef8bf",
@@ -355,12 +362,6 @@
         "parameters": {
           "assignments": {
             "assignments": [
-              {
-                "id": "8861259d-78d7-48f2-84ff-89a6e72f71d9",
-                "name": "message",
-                "value": "invalid command",
-                "type": "string"
-              },
               {
                 "id": "6c997ee3-6e52-44fd-a135-f5eff6446db9",
                 "name": "available_commands",
@@ -374,11 +375,25 @@
         "type": "n8n-nodes-base.set",
         "typeVersion": 3.5,
         "position": [
-          976,
-          192
+          864,
+          256
         ],
         "id": "10a1535b-63c3-49d2-94b6-6dbad7d28f1e",
         "name": "get_commands"
+      },
+      {
+        "parameters": {
+          "aggregate": "aggregateAllItemData",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.aggregate",
+        "typeVersion": 1,
+        "position": [
+          384,
+          0
+        ],
+        "id": "91e2acad-e2cf-450c-b380-07db7449df19",
+        "name": "join_data"
       },
       {
         "parameters": {
@@ -392,8 +407,8 @@
               },
               {
                 "id": "c338d6a1-8c6e-430e-94e0-6e243ba6691a",
-                "name": "available_apps",
-                "value": "={{ Object.values($('Aggregate1').item.json.data.reduce((acc, item) => { acc[item.Scope] = { app: item.Scope }; return acc; }, {})) }}",
+                "name": "=available_apps",
+                "value": "={{ Object.values($('join_data').item.json.data.reduce((acc, item) => { acc[item.Scope] = { app: item.Scope }; return acc; }, {})) }}",
                 "type": "string"
               }
             ]
@@ -406,12 +421,11 @@
         "type": "n8n-nodes-base.set",
         "typeVersion": 3.4,
         "position": [
-          1232,
-          192
+          1088,
+          160
         ],
-        "id": "03ed3b1b-4336-4913-84fd-185104e3292f",
-        "name": "return",
-        "disabled": true
+        "id": "97edc1e2-d4a6-4203-9a5c-189f1181897c",
+        "name": "return"
       }
     ],
     "connections": {
@@ -446,25 +460,20 @@
               "index": 0
             }
           ],
-          []
-        ]
-      },
-      "get_apps": {
-        "main": [
           [
             {
-              "node": "Aggregate1",
+              "node": "get_all_servers",
               "type": "main",
               "index": 0
             }
           ]
         ]
       },
-      "Aggregate1": {
+      "get_apps": {
         "main": [
           [
             {
-              "node": "get_all_servers",
+              "node": "join_data",
               "type": "main",
               "index": 0
             }
@@ -475,7 +484,7 @@
         "main": [
           [
             {
-              "node": "Switch",
+              "node": "get_commands",
               "type": "main",
               "index": 0
             }
@@ -515,14 +524,21 @@
           ],
           [
             {
-              "node": "return",
+              "node": "get_all_servers",
               "type": "main",
               "index": 0
             }
           ],
           [
             {
-              "node": "get_commands",
+              "node": "get_all_servers",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "get_all_servers",
               "type": "main",
               "index": 0
             }
@@ -539,17 +555,39 @@
             }
           ]
         ]
+      },
+      "join_data": {
+        "main": [
+          [
+            {
+              "node": "Switch",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Webhook": {
+        "main": [
+          [
+            {
+              "node": "return",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
       }
     },
     "nodeGroups": [],
     "authors": "Dai Le",
-    "name": "Version 335b371e",
+    "name": "Version f39fb636",
     "description": "",
-    "autosaved": true,
-    "createdAt": "2026-10-31T11:58:54.552Z",
-    "updatedAt": "2026-10-31T11:59:11.392Z"
+    "autosaved": false,
+    "createdAt": "2026-10-31T17:09:21.280Z",
+    "updatedAt": "2026-10-31T17:09:32.464Z"
   },
-  "activeVersionId": "335b371e-07e0-40e1-9876-e1b7e56382cb",
+  "activeVersionId": "f39fb636-f7fa-4046-be07-6cbbaee1f5c6",
   "connections": {
     "get_all_servers": {
       "main": [
@@ -582,25 +620,20 @@
             "index": 0
           }
         ],
-        []
-      ]
-    },
-    "get_apps": {
-      "main": [
         [
           {
-            "node": "Aggregate1",
+            "node": "get_all_servers",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "Aggregate1": {
+    "get_apps": {
       "main": [
         [
           {
-            "node": "get_all_servers",
+            "node": "join_data",
             "type": "main",
             "index": 0
           }
@@ -611,7 +644,7 @@
       "main": [
         [
           {
-            "node": "Switch",
+            "node": "get_commands",
             "type": "main",
             "index": 0
           }
@@ -651,14 +684,21 @@
         ],
         [
           {
-            "node": "return",
+            "node": "get_all_servers",
             "type": "main",
             "index": 0
           }
         ],
         [
           {
-            "node": "get_commands",
+            "node": "get_all_servers",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "get_all_servers",
             "type": "main",
             "index": 0
           }
@@ -666,6 +706,28 @@
       ]
     },
     "get_commands": {
+      "main": [
+        [
+          {
+            "node": "return",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "join_data": {
+      "main": [
+        [
+          {
+            "node": "Switch",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webhook": {
       "main": [
         [
           {
@@ -706,8 +768,8 @@
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
       "position": [
-        576,
-        192
+        384,
+        256
       ],
       "id": "223d30b6-713a-4b6b-87b4-1dfae0e15b1d",
       "name": "get_all_servers"
@@ -768,7 +830,7 @@
             },
             {
               "id": "bacd1e34-e0c9-4693-a1d6-13cf2a655918",
-              "leftValue": "={{ $json.data.map(item => item.Scope) }}",
+              "leftValue": "={{ $('join_data').item.json.data.map(item => item.Scope) }}",
               "rightValue": "={{ $('click_trigger').item.json.image }}",
               "operator": {
                 "type": "array",
@@ -794,8 +856,8 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
       "position": [
-        976,
-        -112
+        864,
+        -32
       ],
       "id": "4995d446-e050-4a58-bbd1-4a9f9c0f53d4",
       "name": "If"
@@ -825,8 +887,8 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.4,
       "position": [
-        1232,
-        -128
+        1088,
+        -48
       ],
       "id": "b8b301dd-e406-487c-9324-55331fa66223",
       "name": "Webhook"
@@ -869,22 +931,8 @@
       "type": "n8n-nodes-base.aggregate",
       "typeVersion": 1,
       "position": [
-        384,
-        0
-      ],
-      "id": "91e2acad-e2cf-450c-b380-07db7449df19",
-      "name": "Aggregate1"
-    },
-    {
-      "parameters": {
-        "aggregate": "aggregateAllItemData",
-        "options": {}
-      },
-      "type": "n8n-nodes-base.aggregate",
-      "typeVersion": 1,
-      "position": [
-        768,
-        192
+        608,
+        256
       ],
       "id": "0a04ea41-9571-496b-912d-a634076d7cb9",
       "name": "merge"
@@ -981,7 +1029,7 @@
                 },
                 "conditions": [
                   {
-                    "leftValue": "command",
+                    "leftValue": "={{ $('trigger').item.json.command }}",
                     "rightValue": "deploy",
                     "operator": {
                       "type": "string",
@@ -1004,12 +1052,33 @@
                 "conditions": [
                   {
                     "id": "3955d7e7-9377-4f75-b5b2-ceb21189a7b8",
-                    "leftValue": "command",
-                    "rightValue": "get_apps",
+                    "leftValue": "={{ $('trigger').item.json.command }}",
+                    "rightValue": "get_app",
                     "operator": {
                       "type": "string",
-                      "operation": "equals",
-                      "name": "filter.operator.equals"
+                      "operation": "startsWith"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "aa8191ca-e317-4f78-bfd6-9d58631b07f2",
+                    "leftValue": "={{ $('trigger').item.json.command }}",
+                    "rightValue": "get_server",
+                    "operator": {
+                      "type": "string",
+                      "operation": "startsWith"
                     }
                   }
                 ],
@@ -1025,7 +1094,7 @@
       "type": "n8n-nodes-base.switch",
       "typeVersion": 3.4,
       "position": [
-        768,
+        608,
         -16
       ],
       "id": "bc29e579-fc4e-4fd9-b767-7ac6bd0ef8bf",
@@ -1036,15 +1105,15 @@
         "assignments": {
           "assignments": [
             {
-              "id": "8861259d-78d7-48f2-84ff-89a6e72f71d9",
-              "name": "message",
-              "value": "invalid command",
-              "type": "string"
-            },
-            {
               "id": "6c997ee3-6e52-44fd-a135-f5eff6446db9",
               "name": "available_commands",
               "value": "deploy: deploy a docker app (requires $target_server, $repository, $tag), get_apps: get all deployed apps (requires $target_server)",
+              "type": "string"
+            },
+            {
+              "id": "0a8bd8b5-0948-4a55-9369-be14ac4650ca",
+              "name": "message",
+              "value": "",
               "type": "string"
             }
           ]
@@ -1054,11 +1123,25 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.5,
       "position": [
-        976,
-        192
+        864,
+        256
       ],
       "id": "10a1535b-63c3-49d2-94b6-6dbad7d28f1e",
       "name": "get_commands"
+    },
+    {
+      "parameters": {
+        "aggregate": "aggregateAllItemData",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.aggregate",
+      "typeVersion": 1,
+      "position": [
+        384,
+        0
+      ],
+      "id": "91e2acad-e2cf-450c-b380-07db7449df19",
+      "name": "join_data"
     },
     {
       "parameters": {
@@ -1072,8 +1155,8 @@
             },
             {
               "id": "c338d6a1-8c6e-430e-94e0-6e243ba6691a",
-              "name": "available_apps",
-              "value": "={{ Object.values($('Aggregate1').item.json.data.reduce((acc, item) => { acc[item.Scope] = { app: item.Scope }; return acc; }, {})) }}",
+              "name": "=available_apps",
+              "value": "={{ Object.values($('join_data').item.json.data.reduce((acc, item) => { acc[item.Scope] = { app: item.Scope }; return acc; }, {})) }}",
               "type": "string"
             }
           ]
@@ -1086,22 +1169,22 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        1232,
-        192
+        1088,
+        160
       ],
-      "id": "03ed3b1b-4336-4913-84fd-185104e3292f",
-      "name": "return",
-      "disabled": true
+      "id": "97edc1e2-d4a6-4203-9a5c-189f1181897c",
+      "name": "return"
     }
   ],
   "pinData": {
     "click_trigger": [
       {
         "json": {
-          "target_server": "hhs",
+          "target_server": "hhss",
           "repository": "maildev",
           "image": "maildev",
-          "tag": "2.2.1"
+          "tag": "2.2.1",
+          "command": "deploya"
         }
       }
     ]
@@ -1126,7 +1209,7 @@
   "staticData": null,
   "tags": [],
   "triggerCount": 0,
-  "updatedAt": "2026-10-31T11:58:54.550Z",
-  "versionId": "335b371e-07e0-40e1-9876-e1b7e56382cb",
-  "workflow_meta": "[Version 335b371e] "
+  "updatedAt": "2026-10-31T17:10:52.894Z",
+  "versionId": "a0472259-688e-45e0-88d3-9055f803d2fb",
+  "workflow_meta": "[Version f39fb636] "
 }
