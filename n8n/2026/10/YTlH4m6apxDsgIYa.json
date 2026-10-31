@@ -1,7 +1,760 @@
 {
-  "active": false,
-  "activeVersion": null,
-  "activeVersionId": null,
+  "active": true,
+  "activeVersion": {
+    "versionId": "ab7fa9c3-f9df-40a1-b1d7-a753880c985f",
+    "workflowId": "YTlH4m6apxDsgIYa",
+    "nodes": [
+      {
+        "parameters": {},
+        "type": "n8n-nodes-base.manualTrigger",
+        "typeVersion": 1,
+        "position": [
+          -416,
+          0
+        ],
+        "id": "62723118-6421-4f42-87ae-e6ab3be1b1d6",
+        "name": "When clicking ‘Execute workflow’"
+      },
+      {
+        "parameters": {
+          "rules": {
+            "values": [
+              {
+                "conditions": {
+                  "options": {
+                    "caseSensitive": true,
+                    "leftValue": "",
+                    "typeValidation": "strict",
+                    "version": 3
+                  },
+                  "conditions": [
+                    {
+                      "leftValue": "={{ $('trigger').item.json.command }}",
+                      "rightValue": "block_sender",
+                      "operator": {
+                        "type": "string",
+                        "operation": "equals"
+                      },
+                      "id": "95f831e9-0e4c-43cd-9890-755972449493"
+                    }
+                  ],
+                  "combinator": "and"
+                }
+              },
+              {
+                "conditions": {
+                  "options": {
+                    "caseSensitive": true,
+                    "leftValue": "",
+                    "typeValidation": "strict",
+                    "version": 3
+                  },
+                  "conditions": [
+                    {
+                      "id": "51ccf8e8-cef7-447e-a339-97d9d2512cf3",
+                      "leftValue": "={{ $('trigger').item.json.command }}",
+                      "rightValue": "remove_blocked_sender",
+                      "operator": {
+                        "type": "string",
+                        "operation": "equals",
+                        "name": "filter.operator.equals"
+                      }
+                    }
+                  ],
+                  "combinator": "and"
+                }
+              },
+              {
+                "conditions": {
+                  "options": {
+                    "caseSensitive": true,
+                    "leftValue": "",
+                    "typeValidation": "strict",
+                    "version": 3
+                  },
+                  "conditions": [
+                    {
+                      "id": "eb973fb7-964a-42f2-9838-52e7d13f56a2",
+                      "leftValue": "={{ $('trigger').item.json.command }}",
+                      "rightValue": "get_blocked_sender",
+                      "operator": {
+                        "type": "string",
+                        "operation": "equals",
+                        "name": "filter.operator.equals"
+                      }
+                    }
+                  ],
+                  "combinator": "and"
+                }
+              }
+            ]
+          },
+          "options": {
+            "fallbackOutput": "extra"
+          }
+        },
+        "type": "n8n-nodes-base.switch",
+        "typeVersion": 3.4,
+        "position": [
+          400,
+          -32
+        ],
+        "id": "9a962730-3308-45d8-b517-7b82054f258a",
+        "name": "Switch"
+      },
+      {
+        "parameters": {
+          "workflowInputs": {
+            "values": [
+              {
+                "name": "command"
+              },
+              {
+                "name": "value"
+              }
+            ]
+          }
+        },
+        "type": "n8n-nodes-base.executeWorkflowTrigger",
+        "typeVersion": 1.2,
+        "position": [
+          -416,
+          -160
+        ],
+        "id": "ad76d39b-fc26-4646-9d47-6c4265abd1ac",
+        "name": "When Executed by Another Workflow"
+      },
+      {
+        "parameters": {
+          "operation": "get",
+          "dataTableId": {
+            "__rl": true,
+            "value": "4WwY8slKZhNVr2MJ",
+            "mode": "list",
+            "cachedResultName": "docker_app_env",
+            "cachedResultUrl": "/projects/Ewpdqr0Y4bH3sf2c/datatables/4WwY8slKZhNVr2MJ"
+          },
+          "matchType": "allConditions",
+          "filters": {
+            "conditions": [
+              {
+                "keyName": "Scope",
+                "keyValue": "maildev-watcher"
+              },
+              {
+                "keyName": "Key",
+                "keyValue": "APP_MAILDEV_SENDER_BLACKLIST"
+              }
+            ]
+          }
+        },
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1.1,
+        "position": [
+          32,
+          0
+        ],
+        "id": "28d647c5-5882-4896-a7fc-4bc760b78863",
+        "name": "get_config"
+      },
+      {
+        "parameters": {
+          "assignments": {
+            "assignments": [
+              {
+                "id": "578bc56f-366c-4602-aaf3-5c9c3e38ba5f",
+                "name": "blocked_list",
+                "value": "={{ $json.Value.split(\",\") }}",
+                "type": "array"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.set",
+        "typeVersion": 3.5,
+        "position": [
+          208,
+          0
+        ],
+        "id": "0e1aa392-1de5-495d-b37d-e1389d5a3f19",
+        "name": "config_to_list"
+      },
+      {
+        "parameters": {
+          "assignments": {
+            "assignments": [
+              {
+                "id": "7ec716dd-084c-475e-8e8b-6a77a674a796",
+                "name": "command",
+                "value": "={{ $json.command }}",
+                "type": "string"
+              },
+              {
+                "id": "6c2d759f-e4e7-487f-a25c-e12462f64f91",
+                "name": "value",
+                "value": "={{ $json.value ?? \"\" }}",
+                "type": "string"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.set",
+        "typeVersion": 3.5,
+        "position": [
+          -160,
+          0
+        ],
+        "id": "321cc9e0-3143-4bb8-88a4-7e395a025f26",
+        "name": "trigger"
+      },
+      {
+        "parameters": {
+          "assignments": {
+            "assignments": [
+              {
+                "id": "5ade0372-130b-4789-8eaa-e77cd0d98313",
+                "name": "current_blocked_list",
+                "value": "={{ $('config_to_list').item.json.blocked_list }}",
+                "type": "array"
+              }
+            ]
+          },
+          "includeOtherFields": true,
+          "include": "selected",
+          "includeFields": "message, updated_blocked_list, updatedAt",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.set",
+        "typeVersion": 3.5,
+        "position": [
+          1424,
+          176
+        ],
+        "id": "05984f43-a1d9-42d2-83a4-0e47441fbd88",
+        "name": "return_get"
+      },
+      {
+        "parameters": {
+          "assignments": {
+            "assignments": [
+              {
+                "id": "e6ac6264-28b0-43c3-b151-0cb7867090cf",
+                "name": "message",
+                "value": "=available \"command\"\": get_blocked_sender, block_sender (need a valid \"value\" string param), remove_blocked_sender (need a valid \"value\" string param)\n",
+                "type": "string"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.set",
+        "typeVersion": 3.5,
+        "position": [
+          944,
+          176
+        ],
+        "id": "ee6050b5-e2d4-414e-84a4-6552f0560f4b",
+        "name": "fallback_message"
+      },
+      {
+        "parameters": {
+          "conditions": {
+            "options": {
+              "caseSensitive": true,
+              "leftValue": "",
+              "typeValidation": "strict",
+              "version": 3
+            },
+            "conditions": [
+              {
+                "id": "97c1b2dc-ee6e-4e0a-ad3f-c7d8a61bead7",
+                "leftValue": "={{ $('trigger').item.json.value }}",
+                "rightValue": "",
+                "operator": {
+                  "type": "string",
+                  "operation": "notEmpty",
+                  "singleValue": true
+                }
+              }
+            ],
+            "combinator": "and"
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.if",
+        "typeVersion": 2.3,
+        "position": [
+          608,
+          -272
+        ],
+        "id": "af0ec24c-49aa-4286-bbdc-47f0229e08a4",
+        "name": "check_add_value"
+      },
+      {
+        "parameters": {
+          "conditions": {
+            "options": {
+              "caseSensitive": true,
+              "leftValue": "",
+              "typeValidation": "strict",
+              "version": 3
+            },
+            "conditions": [
+              {
+                "id": "97c1b2dc-ee6e-4e0a-ad3f-c7d8a61bead7",
+                "leftValue": "={{ $('trigger').item.json.value }}",
+                "rightValue": "",
+                "operator": {
+                  "type": "string",
+                  "operation": "notEmpty",
+                  "singleValue": true
+                }
+              },
+              {
+                "id": "3c666d94-e45c-4ece-aacb-9023089c4a03",
+                "leftValue": "={{ $('config_to_list').item.json.blocked_list }}",
+                "rightValue": "={{ $('trigger').item.json.value }}",
+                "operator": {
+                  "type": "array",
+                  "operation": "contains",
+                  "rightType": "any"
+                }
+              }
+            ],
+            "combinator": "and"
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.if",
+        "typeVersion": 2.3,
+        "position": [
+          608,
+          -96
+        ],
+        "id": "e8981637-5ad9-46bd-862c-a1b0f3d49cb0",
+        "name": "check_remove_value"
+      },
+      {
+        "parameters": {
+          "assignments": {
+            "assignments": [
+              {
+                "id": "ccd07c8a-a8e1-4959-a950-de5552ca20dd",
+                "name": "=new_blocked_list",
+                "value": "={{ Array.from(new Set($('config_to_list').item.json.blocked_list.concat([$('trigger').item.json.value]))) }}",
+                "type": "array"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.set",
+        "typeVersion": 3.5,
+        "position": [
+          832,
+          -288
+        ],
+        "id": "d45261cd-7d11-4c23-9060-2b3479b92372",
+        "name": "added_list"
+      },
+      {
+        "parameters": {
+          "assignments": {
+            "assignments": [
+              {
+                "id": "ccd07c8a-a8e1-4959-a950-de5552ca20dd",
+                "name": "=new_blocked_list",
+                "value": "={{ $('config_to_list').item.json.blocked_list.filter(item => item !== $('trigger').item.json.value) }}",
+                "type": "array"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.set",
+        "typeVersion": 3.5,
+        "position": [
+          832,
+          -112
+        ],
+        "id": "a44c5331-ab21-4bb7-b7ab-7e29bc345611",
+        "name": "remove_list"
+      },
+      {
+        "parameters": {
+          "operation": "upsert",
+          "dataTableId": {
+            "__rl": true,
+            "value": "4WwY8slKZhNVr2MJ",
+            "mode": "list",
+            "cachedResultName": "docker_app_env",
+            "cachedResultUrl": "/projects/Ewpdqr0Y4bH3sf2c/datatables/4WwY8slKZhNVr2MJ"
+          },
+          "matchType": "allConditions",
+          "filters": {
+            "conditions": [
+              {
+                "keyName": "Scope",
+                "keyValue": "maildev-watcher"
+              },
+              {
+                "keyName": "Key",
+                "keyValue": "APP_MAILDEV_SENDER_BLACKLIST"
+              }
+            ]
+          },
+          "columns": {
+            "mappingMode": "defineBelow",
+            "value": {
+              "Value": "={{ $json.new_blocked_list.join(\",\") }}"
+            },
+            "matchingColumns": [],
+            "schema": [
+              {
+                "id": "Scope",
+                "displayName": "Scope",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "readOnly": false,
+                "removed": true
+              },
+              {
+                "id": "Key",
+                "displayName": "Key",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "readOnly": false,
+                "removed": true
+              },
+              {
+                "id": "Value",
+                "displayName": "Value",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "readOnly": false,
+                "removed": false
+              }
+            ],
+            "attemptToConvertTypes": false,
+            "convertFieldsToString": false
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1.1,
+        "position": [
+          1024,
+          -112
+        ],
+        "id": "c4e1fc46-3ba2-4989-82fc-f16446f047ca",
+        "name": "Upsert row(s)"
+      },
+      {
+        "parameters": {
+          "assignments": {
+            "assignments": [
+              {
+                "id": "771a2e31-98c9-4bb8-8b38-431999e26d8f",
+                "name": "message",
+                "value": "={{ $('call_deploy').item.json.run_code === 0 ? 'update blocked list successfully' : 'update blocked list failed' }}",
+                "type": "string"
+              },
+              {
+                "id": "ca487c6e-35ec-468d-8e88-9716e9b140d2",
+                "name": "updated_blocked_list",
+                "value": "={{ $('Upsert row(s)').item.json.Value }}",
+                "type": "string"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.set",
+        "typeVersion": 3.5,
+        "position": [
+          1408,
+          -112
+        ],
+        "id": "6b92fcf9-b25e-40b4-86b4-46742121d055",
+        "name": "Edit Fields"
+      },
+      {
+        "parameters": {
+          "workflowId": {
+            "__rl": true,
+            "value": "fj7QK82TkmpEf8Gf",
+            "mode": "list",
+            "cachedResultUrl": "/workflow/fj7QK82TkmpEf8Gf",
+            "cachedResultName": "deploy_docker_vpshhs1"
+          },
+          "workflowInputs": {
+            "mappingMode": "defineBelow",
+            "value": {
+              "repo": "lanhlungbang",
+              "name": "maildev-watcher",
+              "tag": "latest"
+            },
+            "matchingColumns": [],
+            "schema": [
+              {
+                "id": "repo",
+                "displayName": "repo",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "canBeUsedToMatch": true,
+                "type": "string",
+                "removed": false
+              },
+              {
+                "id": "name",
+                "displayName": "name",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "canBeUsedToMatch": true,
+                "type": "string",
+                "removed": false
+              },
+              {
+                "id": "tag",
+                "displayName": "tag",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "canBeUsedToMatch": true,
+                "type": "string",
+                "removed": false
+              }
+            ],
+            "attemptToConvertTypes": false,
+            "convertFieldsToString": true
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.executeWorkflow",
+        "typeVersion": 1.4,
+        "position": [
+          1216,
+          -112
+        ],
+        "id": "20b8e480-9ecb-41d0-aa01-b45821e18588",
+        "name": "call_deploy"
+      }
+    ],
+    "connections": {
+      "When clicking ‘Execute workflow’": {
+        "main": [
+          [
+            {
+              "node": "trigger",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Switch": {
+        "main": [
+          [
+            {
+              "node": "check_add_value",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "check_remove_value",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "return_get",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "fallback_message",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "When Executed by Another Workflow": {
+        "main": [
+          [
+            {
+              "node": "trigger",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "get_config": {
+        "main": [
+          [
+            {
+              "node": "config_to_list",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "config_to_list": {
+        "main": [
+          [
+            {
+              "node": "Switch",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "trigger": {
+        "main": [
+          [
+            {
+              "node": "get_config",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "fallback_message": {
+        "main": [
+          [
+            {
+              "node": "return_get",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "check_add_value": {
+        "main": [
+          [
+            {
+              "node": "added_list",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "fallback_message",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "check_remove_value": {
+        "main": [
+          [
+            {
+              "node": "remove_list",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "fallback_message",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "remove_list": {
+        "main": [
+          [
+            {
+              "node": "Upsert row(s)",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "added_list": {
+        "main": [
+          [
+            {
+              "node": "Upsert row(s)",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "return_get": {
+        "main": [
+          []
+        ]
+      },
+      "Upsert row(s)": {
+        "main": [
+          [
+            {
+              "node": "call_deploy",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Edit Fields": {
+        "main": [
+          [
+            {
+              "node": "return_get",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "call_deploy": {
+        "main": [
+          [
+            {
+              "node": "Edit Fields",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "nodeGroups": [],
+    "authors": "Dai Le",
+    "name": "Version ab7fa9c3",
+    "description": "",
+    "autosaved": true,
+    "createdAt": "2026-10-31T10:08:01.170Z",
+    "updatedAt": "2026-10-31T10:08:44.135Z"
+  },
+  "activeVersionId": "ab7fa9c3-f9df-40a1-b1d7-a753880c985f",
   "connections": {
     "When clicking ‘Execute workflow’": {
       "main": [
@@ -141,7 +894,7 @@
       "main": [
         [
           {
-            "node": "Update row(s)",
+            "node": "Upsert row(s)",
             "type": "main",
             "index": 0
           }
@@ -152,7 +905,45 @@
       "main": [
         [
           {
-            "node": "Update row(s)",
+            "node": "Upsert row(s)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "return_get": {
+      "main": [
+        []
+      ]
+    },
+    "Upsert row(s)": {
+      "main": [
+        [
+          {
+            "node": "call_deploy",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "return_get",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "call_deploy": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
             "type": "main",
             "index": 0
           }
@@ -356,7 +1147,7 @@
             {
               "id": "6c2d759f-e4e7-487f-a25c-e12462f64f91",
               "name": "value",
-              "value": "={{ $json.value | \"\" }}",
+              "value": "={{ $json.value ?? \"\" }}",
               "type": "string"
             }
           ]
@@ -386,13 +1177,13 @@
         },
         "includeOtherFields": true,
         "include": "selected",
-        "includeFields": "message",
+        "includeFields": "message, updated_blocked_list, updatedAt",
         "options": {}
       },
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.5,
       "position": [
-        1296,
+        1424,
         176
       ],
       "id": "05984f43-a1d9-42d2-83a4-0e47441fbd88",
@@ -505,15 +1296,9 @@
           "assignments": [
             {
               "id": "ccd07c8a-a8e1-4959-a950-de5552ca20dd",
-              "name": "=new_list",
-              "value": "={{ $('config_to_list').item.json.blocked_list.append($('trigger').item.json.value) }}",
+              "name": "=new_blocked_list",
+              "value": "={{ Array.from(new Set($('config_to_list').item.json.blocked_list.concat([$('trigger').item.json.value]))) }}",
               "type": "array"
-            },
-            {
-              "id": "58beef7c-eae1-4ab1-a0f0-bb9b0dbe70dd",
-              "name": "message",
-              "value": "add item successfully",
-              "type": "string"
             }
           ]
         },
@@ -522,7 +1307,7 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.5,
       "position": [
-        848,
+        832,
         -288
       ],
       "id": "d45261cd-7d11-4c23-9060-2b3479b92372",
@@ -534,14 +1319,112 @@
           "assignments": [
             {
               "id": "ccd07c8a-a8e1-4959-a950-de5552ca20dd",
-              "name": "=new_list",
+              "name": "=new_blocked_list",
               "value": "={{ $('config_to_list').item.json.blocked_list.filter(item => item !== $('trigger').item.json.value) }}",
               "type": "array"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.5,
+      "position": [
+        832,
+        -112
+      ],
+      "id": "a44c5331-ab21-4bb7-b7ab-7e29bc345611",
+      "name": "remove_list"
+    },
+    {
+      "parameters": {
+        "operation": "upsert",
+        "dataTableId": {
+          "__rl": true,
+          "value": "4WwY8slKZhNVr2MJ",
+          "mode": "list",
+          "cachedResultName": "docker_app_env",
+          "cachedResultUrl": "/projects/Ewpdqr0Y4bH3sf2c/datatables/4WwY8slKZhNVr2MJ"
+        },
+        "matchType": "allConditions",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "Scope",
+              "keyValue": "maildev-watcher"
             },
             {
-              "id": "0a0d2bb5-b43f-4b38-aea8-c37cd020ce99",
+              "keyName": "Key",
+              "keyValue": "APP_MAILDEV_SENDER_BLACKLIST"
+            }
+          ]
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Value": "={{ $json.new_blocked_list.join(\",\") }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Scope",
+              "displayName": "Scope",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Key",
+              "displayName": "Key",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Value",
+              "displayName": "Value",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [
+        1024,
+        -112
+      ],
+      "id": "c4e1fc46-3ba2-4989-82fc-f16446f047ca",
+      "name": "Upsert row(s)"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "771a2e31-98c9-4bb8-8b38-431999e26d8f",
               "name": "message",
-              "value": "remove item successfully",
+              "value": "={{ $('call_deploy').item.json.run_code === 0 ? 'update blocked list successfully' : 'update blocked list failed' }}",
+              "type": "string"
+            },
+            {
+              "id": "ca487c6e-35ec-468d-8e88-9716e9b140d2",
+              "name": "updated_blocked_list",
+              "value": "={{ $('Upsert row(s)').item.json.Value }}",
               "type": "string"
             }
           ]
@@ -551,45 +1434,81 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.5,
       "position": [
-        848,
+        1408,
         -112
       ],
-      "id": "a44c5331-ab21-4bb7-b7ab-7e29bc345611",
-      "name": "remove_list"
+      "id": "6b92fcf9-b25e-40b4-86b4-46742121d055",
+      "name": "Edit Fields"
     },
     {
       "parameters": {
-        "operation": "update",
-        "dataTableId": {
+        "workflowId": {
           "__rl": true,
+          "value": "fj7QK82TkmpEf8Gf",
           "mode": "list",
-          "value": ""
+          "cachedResultUrl": "/workflow/fj7QK82TkmpEf8Gf",
+          "cachedResultName": "deploy_docker_vpshhs1"
         },
-        "columns": {
+        "workflowInputs": {
           "mappingMode": "defineBelow",
-          "value": {},
+          "value": {
+            "repo": "lanhlungbang",
+            "name": "maildev-watcher",
+            "tag": "latest"
+          },
           "matchingColumns": [],
-          "schema": [],
+          "schema": [
+            {
+              "id": "repo",
+              "displayName": "repo",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            },
+            {
+              "id": "name",
+              "displayName": "name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            },
+            {
+              "id": "tag",
+              "displayName": "tag",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            }
+          ],
           "attemptToConvertTypes": false,
-          "convertFieldsToString": false
+          "convertFieldsToString": true
         },
         "options": {}
       },
-      "type": "n8n-nodes-base.dataTable",
-      "typeVersion": 1.1,
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1.4,
       "position": [
-        1072,
-        -192
+        1216,
+        -112
       ],
-      "id": "c4e1fc46-3ba2-4989-82fc-f16446f047ca",
-      "name": "Update row(s)"
+      "id": "20b8e480-9ecb-41d0-aa01-b45821e18588",
+      "name": "call_deploy"
     }
   ],
   "pinData": {
     "When Executed by Another Workflow": [
       {
         "json": {
-          "command": "get_blocked_sender",
+          "command": "block_sender",
           "value": "daileit.com"
         }
       }
@@ -615,7 +1534,7 @@
   "staticData": null,
   "tags": [],
   "triggerCount": 0,
-  "updatedAt": "2026-10-31T09:10:55.857Z",
-  "versionId": "ecb65bf6-9db5-4691-8a0a-e9f10b3ca66e",
-  "workflow_meta": ""
+  "updatedAt": "2026-10-31T10:08:01.169Z",
+  "versionId": "ab7fa9c3-f9df-40a1-b1d7-a753880c985f",
+  "workflow_meta": "[Version ab7fa9c3] "
 }
