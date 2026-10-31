@@ -1,7 +1,7 @@
 {
   "active": true,
   "activeVersion": {
-    "versionId": "65b167a3-4968-4435-aba6-40558f58b4fc",
+    "versionId": "d0ddd065-002a-4d0f-a50c-c7380c27dfb6",
     "workflowId": "zV8jdIuvYg5IT9ek",
     "nodes": [
       {
@@ -362,6 +362,46 @@
         ],
         "id": "c44527bd-6283-4071-8916-224e51d84eb4",
         "name": "error"
+      },
+      {
+        "parameters": {
+          "workflowInputs": {
+            "values": [
+              {
+                "name": "repo"
+              },
+              {
+                "name": "name"
+              },
+              {
+                "name": "tag"
+              }
+            ]
+          }
+        },
+        "type": "n8n-nodes-base.executeWorkflowTrigger",
+        "typeVersion": 1.2,
+        "position": [
+          -1056,
+          -176
+        ],
+        "id": "7cc9cc28-ae2c-467f-8e9e-f708e11d550e",
+        "name": "When Executed by Another Workflow"
+      },
+      {
+        "parameters": {
+          "mode": "raw",
+          "jsonOutput": "={\n  \"query\":\n  {\n    \"repo\": {{ $json.repo }},\n    \"name\": {{ $json.name }},\n    \"tag\": {{ $json.tag }}\n}\n",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.set",
+        "typeVersion": 3.5,
+        "position": [
+          -848,
+          -176
+        ],
+        "id": "9264a43e-0ff7-4ac6-8a23-8506004c4d06",
+        "name": "join_variables"
       }
     ],
     "connections": {
@@ -510,17 +550,39 @@
             }
           ]
         ]
+      },
+      "When Executed by Another Workflow": {
+        "main": [
+          [
+            {
+              "node": "join_variables",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "join_variables": {
+        "main": [
+          [
+            {
+              "node": "check_input",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
       }
     },
     "nodeGroups": [],
     "authors": "Dai Le",
-    "name": "1.4.3",
+    "name": "Version d0ddd065",
     "description": "",
     "autosaved": true,
-    "createdAt": "2026-09-03T09:21:14.536Z",
-    "updatedAt": "2026-09-03T09:21:19.075Z"
+    "createdAt": "2026-10-31T08:21:59.007Z",
+    "updatedAt": "2026-10-31T08:22:03.998Z"
   },
-  "activeVersionId": "65b167a3-4968-4435-aba6-40558f58b4fc",
+  "activeVersionId": "d0ddd065-002a-4d0f-a50c-c7380c27dfb6",
   "connections": {
     "Webhook": {
       "main": [
@@ -662,6 +724,28 @@
         [
           {
             "node": "get_result",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "When Executed by Another Workflow": {
+      "main": [
+        [
+          {
+            "node": "join_variables",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "join_variables": {
+      "main": [
+        [
+          {
+            "node": "check_input",
             "type": "main",
             "index": 0
           }
@@ -1036,6 +1120,46 @@
       ],
       "id": "c44527bd-6283-4071-8916-224e51d84eb4",
       "name": "error"
+    },
+    {
+      "parameters": {
+        "workflowInputs": {
+          "values": [
+            {
+              "name": "repo"
+            },
+            {
+              "name": "name"
+            },
+            {
+              "name": "tag"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        -1056,
+        -176
+      ],
+      "id": "7cc9cc28-ae2c-467f-8e9e-f708e11d550e",
+      "name": "When Executed by Another Workflow"
+    },
+    {
+      "parameters": {
+        "mode": "raw",
+        "jsonOutput": "={\n  \"query\":\n  {\n    \"repo\": {{ $json.repo }},\n    \"name\": {{ $json.name }},\n    \"tag\": {{ $json.tag }}\n}\n",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.5,
+      "position": [
+        -848,
+        -176
+      ],
+      "id": "9264a43e-0ff7-4ac6-8a23-8506004c4d06",
+      "name": "join_variables"
     }
   ],
   "pinData": {},
@@ -1059,7 +1183,7 @@
   "staticData": null,
   "tags": [],
   "triggerCount": 1,
-  "updatedAt": "2026-09-03T09:21:14.535Z",
-  "versionId": "65b167a3-4968-4435-aba6-40558f58b4fc",
-  "workflow_meta": "[1.4.3] "
+  "updatedAt": "2026-10-31T08:21:59.005Z",
+  "versionId": "d0ddd065-002a-4d0f-a50c-c7380c27dfb6",
+  "workflow_meta": "[Version d0ddd065] "
 }
