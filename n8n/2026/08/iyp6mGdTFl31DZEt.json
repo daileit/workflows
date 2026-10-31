@@ -1,37 +1,9 @@
 {
   "active": true,
   "activeVersion": {
-    "versionId": "d2dcd412-ad40-42fb-be7a-3649a95a6c6f",
+    "versionId": "335b371e-07e0-40e1-9876-e1b7e56382cb",
     "workflowId": "iyp6mGdTFl31DZEt",
     "nodes": [
-      {
-        "parameters": {
-          "workflowInputs": {
-            "values": [
-              {
-                "name": "target_server"
-              },
-              {
-                "name": "repository"
-              },
-              {
-                "name": "image"
-              },
-              {
-                "name": "tag"
-              }
-            ]
-          }
-        },
-        "type": "n8n-nodes-base.executeWorkflowTrigger",
-        "typeVersion": 1.2,
-        "position": [
-          48,
-          0
-        ],
-        "id": "969acb67-a2a3-475e-aa82-b37bd78e94a9",
-        "name": "trigger"
-      },
       {
         "parameters": {
           "operation": "get",
@@ -54,8 +26,8 @@
         "type": "n8n-nodes-base.dataTable",
         "typeVersion": 1.1,
         "position": [
-          944,
-          176
+          576,
+          192
         ],
         "id": "223d30b6-713a-4b6b-87b4-1dfae0e15b1d",
         "name": "get_all_servers"
@@ -88,7 +60,7 @@
         "type": "n8n-nodes-base.dataTable",
         "typeVersion": 1.1,
         "position": [
-          224,
+          32,
           0
         ],
         "id": "b0175e69-3a0f-4d64-91f1-902092574504",
@@ -117,7 +89,7 @@
               {
                 "id": "bacd1e34-e0c9-4693-a1d6-13cf2a655918",
                 "leftValue": "={{ $json.data.map(item => item.Scope) }}",
-                "rightValue": "={{ $('trigger').item.json.image }}",
+                "rightValue": "={{ $('click_trigger').item.json.image }}",
                 "operator": {
                   "type": "array",
                   "operation": "contains",
@@ -142,8 +114,8 @@
         "type": "n8n-nodes-base.if",
         "typeVersion": 2.3,
         "position": [
-          736,
-          0
+          976,
+          -112
         ],
         "id": "4995d446-e050-4a58-bbd1-4a9f9c0f53d4",
         "name": "If"
@@ -156,15 +128,15 @@
             "parameters": [
               {
                 "name": "repo",
-                "value": "={{ $('trigger').item.json.repository }}"
+                "value": "={{ $('click_trigger').item.json.repository }}"
               },
               {
                 "name": "name",
-                "value": "={{ $('trigger').item.json.image }}"
+                "value": "={{ $('click_trigger').item.json.image }}"
               },
               {
                 "name": "tag",
-                "value": "={{ $('trigger').item.json.tag }}"
+                "value": "={{ $('click_trigger').item.json.tag }}"
               }
             ]
           },
@@ -173,60 +145,11 @@
         "type": "n8n-nodes-base.httpRequest",
         "typeVersion": 4.4,
         "position": [
-          944,
-          -80
+          1232,
+          -128
         ],
         "id": "b8b301dd-e406-487c-9324-55331fa66223",
         "name": "Webhook"
-      },
-      {
-        "parameters": {
-          "assignments": {
-            "assignments": [
-              {
-                "id": "e3bf2544-2a82-494a-b91b-b8b89866123b",
-                "name": "message",
-                "value": "Invalid input",
-                "type": "string"
-              },
-              {
-                "id": "81e21d6e-937c-436e-a060-28f91cf953c2",
-                "name": "available_servers",
-                "value": "={{ Object.values($('Aggregate').item.json.data.reduce((acc, item) => { acc[item.id] = { server_name: item.server_name, id: item.id }; return acc; }, {})) }}",
-                "type": "array"
-              },
-              {
-                "id": "c338d6a1-8c6e-430e-94e0-6e243ba6691a",
-                "name": "available_apps",
-                "value": "={{ Object.values($('Aggregate1').item.json.data.reduce((acc, item) => { acc[item.Scope] = { app: item.Scope }; return acc; }, {})) }}",
-                "type": "string"
-              }
-            ]
-          },
-          "options": {}
-        },
-        "type": "n8n-nodes-base.set",
-        "typeVersion": 3.4,
-        "position": [
-          1280,
-          176
-        ],
-        "id": "03ed3b1b-4336-4913-84fd-185104e3292f",
-        "name": "Edit Fields"
-      },
-      {
-        "parameters": {
-          "aggregate": "aggregateAllItemData",
-          "options": {}
-        },
-        "type": "n8n-nodes-base.aggregate",
-        "typeVersion": 1,
-        "position": [
-          1104,
-          176
-        ],
-        "id": "0a04ea41-9571-496b-912d-a634076d7cb9",
-        "name": "Aggregate"
       },
       {
         "parameters": {
@@ -251,7 +174,7 @@
         "type": "n8n-nodes-base.dataTable",
         "typeVersion": 1.1,
         "position": [
-          400,
+          208,
           0
         ],
         "id": "5d89faa5-e35f-4a95-9d78-b27407b8e9af",
@@ -266,30 +189,237 @@
         "type": "n8n-nodes-base.aggregate",
         "typeVersion": 1,
         "position": [
-          576,
+          384,
           0
         ],
         "id": "91e2acad-e2cf-450c-b380-07db7449df19",
         "name": "Aggregate1"
+      },
+      {
+        "parameters": {
+          "aggregate": "aggregateAllItemData",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.aggregate",
+        "typeVersion": 1,
+        "position": [
+          768,
+          192
+        ],
+        "id": "0a04ea41-9571-496b-912d-a634076d7cb9",
+        "name": "merge"
+      },
+      {
+        "parameters": {
+          "workflowInputs": {
+            "values": [
+              {
+                "name": "target_server"
+              },
+              {
+                "name": "repository"
+              },
+              {
+                "name": "image"
+              },
+              {
+                "name": "tag"
+              },
+              {
+                "name": "command"
+              }
+            ]
+          }
+        },
+        "type": "n8n-nodes-base.executeWorkflowTrigger",
+        "typeVersion": 1.2,
+        "position": [
+          -352,
+          0
+        ],
+        "id": "969acb67-a2a3-475e-aa82-b37bd78e94a9",
+        "name": "click_trigger"
+      },
+      {
+        "parameters": {
+          "assignments": {
+            "assignments": [
+              {
+                "id": "716dc62f-d0cc-44c5-8bf7-363a3ab57903",
+                "name": "repo",
+                "value": "={{ $json.repo ?? $json.repository }}",
+                "type": "string"
+              },
+              {
+                "id": "93535360-f14f-4f92-b492-ac56aba5f497",
+                "name": "name",
+                "value": "={{ $json.name ?? $json.image }}",
+                "type": "string"
+              },
+              {
+                "id": "f8682e17-978a-45a1-8b9c-0fcaafb1fcee",
+                "name": "tag",
+                "value": "={{ $json.tag ?? \"latest\" }}",
+                "type": "string"
+              },
+              {
+                "id": "be5bf8b1-3613-4a99-91b3-be7ad3011ebf",
+                "name": "target_server",
+                "value": "={{ $json.target_server }}",
+                "type": "string"
+              },
+              {
+                "id": "c0ed2a14-1d27-4581-afd6-68286d60c934",
+                "name": "command",
+                "value": "={{ $json.command ?? \"\" }}",
+                "type": "string"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.set",
+        "typeVersion": 3.5,
+        "position": [
+          -144,
+          0
+        ],
+        "id": "9e5443e7-0826-413d-9303-b2a026942e25",
+        "name": "trigger"
+      },
+      {
+        "parameters": {
+          "rules": {
+            "values": [
+              {
+                "conditions": {
+                  "options": {
+                    "caseSensitive": true,
+                    "leftValue": "",
+                    "typeValidation": "strict",
+                    "version": 3
+                  },
+                  "conditions": [
+                    {
+                      "leftValue": "command",
+                      "rightValue": "deploy",
+                      "operator": {
+                        "type": "string",
+                        "operation": "equals"
+                      },
+                      "id": "5ff265aa-e668-4f83-a711-095e4b321a90"
+                    }
+                  ],
+                  "combinator": "and"
+                }
+              },
+              {
+                "conditions": {
+                  "options": {
+                    "caseSensitive": true,
+                    "leftValue": "",
+                    "typeValidation": "strict",
+                    "version": 3
+                  },
+                  "conditions": [
+                    {
+                      "id": "3955d7e7-9377-4f75-b5b2-ceb21189a7b8",
+                      "leftValue": "command",
+                      "rightValue": "get_apps",
+                      "operator": {
+                        "type": "string",
+                        "operation": "equals",
+                        "name": "filter.operator.equals"
+                      }
+                    }
+                  ],
+                  "combinator": "and"
+                }
+              }
+            ]
+          },
+          "options": {
+            "fallbackOutput": "extra"
+          }
+        },
+        "type": "n8n-nodes-base.switch",
+        "typeVersion": 3.4,
+        "position": [
+          768,
+          -16
+        ],
+        "id": "bc29e579-fc4e-4fd9-b767-7ac6bd0ef8bf",
+        "name": "Switch"
+      },
+      {
+        "parameters": {
+          "assignments": {
+            "assignments": [
+              {
+                "id": "8861259d-78d7-48f2-84ff-89a6e72f71d9",
+                "name": "message",
+                "value": "invalid command",
+                "type": "string"
+              },
+              {
+                "id": "6c997ee3-6e52-44fd-a135-f5eff6446db9",
+                "name": "available_commands",
+                "value": "deploy: deploy a docker app (requires $target_server, $repository, $tag), get_apps: get all deployed apps (requires $target_server)",
+                "type": "string"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.set",
+        "typeVersion": 3.5,
+        "position": [
+          976,
+          192
+        ],
+        "id": "10a1535b-63c3-49d2-94b6-6dbad7d28f1e",
+        "name": "get_commands"
+      },
+      {
+        "parameters": {
+          "assignments": {
+            "assignments": [
+              {
+                "id": "81e21d6e-937c-436e-a060-28f91cf953c2",
+                "name": "available_servers",
+                "value": "={{ Object.values($('merge').item.json.data.reduce((acc, item) => { acc[item.id] = { server_name: item.server_name, id: item.id }; return acc; }, {})) }}",
+                "type": "array"
+              },
+              {
+                "id": "c338d6a1-8c6e-430e-94e0-6e243ba6691a",
+                "name": "available_apps",
+                "value": "={{ Object.values($('Aggregate1').item.json.data.reduce((acc, item) => { acc[item.Scope] = { app: item.Scope }; return acc; }, {})) }}",
+                "type": "string"
+              }
+            ]
+          },
+          "includeOtherFields": true,
+          "include": "selected",
+          "includeFields": "message, available_commands",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.set",
+        "typeVersion": 3.4,
+        "position": [
+          1232,
+          192
+        ],
+        "id": "03ed3b1b-4336-4913-84fd-185104e3292f",
+        "name": "return",
+        "disabled": true
       }
     ],
     "connections": {
-      "trigger": {
-        "main": [
-          [
-            {
-              "node": "get_server",
-              "type": "main",
-              "index": 0
-            }
-          ]
-        ]
-      },
       "get_all_servers": {
         "main": [
           [
             {
-              "node": "Aggregate",
+              "node": "merge",
               "type": "main",
               "index": 0
             }
@@ -316,24 +446,7 @@
               "index": 0
             }
           ],
-          [
-            {
-              "node": "get_all_servers",
-              "type": "main",
-              "index": 0
-            }
-          ]
-        ]
-      },
-      "Aggregate": {
-        "main": [
-          [
-            {
-              "node": "Edit Fields",
-              "type": "main",
-              "index": 0
-            }
-          ]
+          []
         ]
       },
       "get_apps": {
@@ -351,7 +464,76 @@
         "main": [
           [
             {
+              "node": "get_all_servers",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "merge": {
+        "main": [
+          [
+            {
+              "node": "Switch",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "click_trigger": {
+        "main": [
+          [
+            {
+              "node": "trigger",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "trigger": {
+        "main": [
+          [
+            {
+              "node": "get_server",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Switch": {
+        "main": [
+          [
+            {
               "node": "If",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "return",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "get_commands",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "get_commands": {
+        "main": [
+          [
+            {
+              "node": "return",
               "type": "main",
               "index": 0
             }
@@ -361,25 +543,14 @@
     },
     "nodeGroups": [],
     "authors": "Dai Le",
-    "name": "Version d2dcd412",
+    "name": "Version 335b371e",
     "description": "",
     "autosaved": true,
-    "createdAt": "2026-08-10T17:27:27.896Z",
-    "updatedAt": "2026-08-10T17:28:10.260Z"
+    "createdAt": "2026-10-31T11:58:54.552Z",
+    "updatedAt": "2026-10-31T11:59:11.392Z"
   },
-  "activeVersionId": "d2dcd412-ad40-42fb-be7a-3649a95a6c6f",
+  "activeVersionId": "335b371e-07e0-40e1-9876-e1b7e56382cb",
   "connections": {
-    "trigger": {
-      "main": [
-        [
-          {
-            "node": "get_server",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
     "get_all_servers": {
       "main": [
         [
@@ -411,13 +582,7 @@
             "index": 0
           }
         ],
-        [
-          {
-            "node": "get_all_servers",
-            "type": "main",
-            "index": 0
-          }
-        ]
+        []
       ]
     },
     "get_apps": {
@@ -435,7 +600,7 @@
       "main": [
         [
           {
-            "node": "If",
+            "node": "get_all_servers",
             "type": "main",
             "index": 0
           }
@@ -443,6 +608,64 @@
       ]
     },
     "merge": {
+      "main": [
+        [
+          {
+            "node": "Switch",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "click_trigger": {
+      "main": [
+        [
+          {
+            "node": "trigger",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "trigger": {
+      "main": [
+        [
+          {
+            "node": "get_server",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "return",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "get_commands",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "get_commands": {
       "main": [
         [
           {
@@ -461,34 +684,6 @@
   "name": "trigger_docker_deploy",
   "nodeGroups": [],
   "nodes": [
-    {
-      "parameters": {
-        "workflowInputs": {
-          "values": [
-            {
-              "name": "target_server"
-            },
-            {
-              "name": "repository"
-            },
-            {
-              "name": "image"
-            },
-            {
-              "name": "tag"
-            }
-          ]
-        }
-      },
-      "type": "n8n-nodes-base.executeWorkflowTrigger",
-      "typeVersion": 1.2,
-      "position": [
-        48,
-        0
-      ],
-      "id": "969acb67-a2a3-475e-aa82-b37bd78e94a9",
-      "name": "trigger"
-    },
     {
       "parameters": {
         "operation": "get",
@@ -511,8 +706,8 @@
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
       "position": [
-        944,
-        176
+        576,
+        192
       ],
       "id": "223d30b6-713a-4b6b-87b4-1dfae0e15b1d",
       "name": "get_all_servers"
@@ -545,7 +740,7 @@
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
       "position": [
-        224,
+        32,
         0
       ],
       "id": "b0175e69-3a0f-4d64-91f1-902092574504",
@@ -574,7 +769,7 @@
             {
               "id": "bacd1e34-e0c9-4693-a1d6-13cf2a655918",
               "leftValue": "={{ $json.data.map(item => item.Scope) }}",
-              "rightValue": "={{ $('trigger').item.json.image }}",
+              "rightValue": "={{ $('click_trigger').item.json.image }}",
               "operator": {
                 "type": "array",
                 "operation": "contains",
@@ -599,8 +794,8 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
       "position": [
-        736,
-        0
+        976,
+        -112
       ],
       "id": "4995d446-e050-4a58-bbd1-4a9f9c0f53d4",
       "name": "If"
@@ -613,15 +808,15 @@
           "parameters": [
             {
               "name": "repo",
-              "value": "={{ $('trigger').item.json.repository }}"
+              "value": "={{ $('click_trigger').item.json.repository }}"
             },
             {
               "name": "name",
-              "value": "={{ $('trigger').item.json.image }}"
+              "value": "={{ $('click_trigger').item.json.image }}"
             },
             {
               "name": "tag",
-              "value": "={{ $('trigger').item.json.tag }}"
+              "value": "={{ $('click_trigger').item.json.tag }}"
             }
           ]
         },
@@ -630,8 +825,8 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.4,
       "position": [
-        944,
-        -80
+        1232,
+        -128
       ],
       "id": "b8b301dd-e406-487c-9324-55331fa66223",
       "name": "Webhook"
@@ -659,7 +854,7 @@
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
       "position": [
-        400,
+        208,
         0
       ],
       "id": "5d89faa5-e35f-4a95-9d78-b27407b8e9af",
@@ -674,7 +869,7 @@
       "type": "n8n-nodes-base.aggregate",
       "typeVersion": 1,
       "position": [
-        576,
+        384,
         0
       ],
       "id": "91e2acad-e2cf-450c-b380-07db7449df19",
@@ -682,14 +877,193 @@
     },
     {
       "parameters": {
+        "aggregate": "aggregateAllItemData",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.aggregate",
+      "typeVersion": 1,
+      "position": [
+        768,
+        192
+      ],
+      "id": "0a04ea41-9571-496b-912d-a634076d7cb9",
+      "name": "merge"
+    },
+    {
+      "parameters": {
+        "workflowInputs": {
+          "values": [
+            {
+              "name": "target_server"
+            },
+            {
+              "name": "repository"
+            },
+            {
+              "name": "image"
+            },
+            {
+              "name": "tag"
+            },
+            {
+              "name": "command"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        -352,
+        0
+      ],
+      "id": "969acb67-a2a3-475e-aa82-b37bd78e94a9",
+      "name": "click_trigger"
+    },
+    {
+      "parameters": {
         "assignments": {
           "assignments": [
             {
-              "id": "e3bf2544-2a82-494a-b91b-b8b89866123b",
-              "name": "message",
-              "value": "Invalid input",
+              "id": "716dc62f-d0cc-44c5-8bf7-363a3ab57903",
+              "name": "repo",
+              "value": "={{ $json.repo ?? $json.repository }}",
               "type": "string"
             },
+            {
+              "id": "93535360-f14f-4f92-b492-ac56aba5f497",
+              "name": "name",
+              "value": "={{ $json.name ?? $json.image }}",
+              "type": "string"
+            },
+            {
+              "id": "f8682e17-978a-45a1-8b9c-0fcaafb1fcee",
+              "name": "tag",
+              "value": "={{ $json.tag ?? \"latest\" }}",
+              "type": "string"
+            },
+            {
+              "id": "be5bf8b1-3613-4a99-91b3-be7ad3011ebf",
+              "name": "target_server",
+              "value": "={{ $json.target_server }}",
+              "type": "string"
+            },
+            {
+              "id": "c0ed2a14-1d27-4581-afd6-68286d60c934",
+              "name": "command",
+              "value": "={{ $json.command ?? \"\" }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.5,
+      "position": [
+        -144,
+        0
+      ],
+      "id": "9e5443e7-0826-413d-9303-b2a026942e25",
+      "name": "trigger"
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "leftValue": "command",
+                    "rightValue": "deploy",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "5ff265aa-e668-4f83-a711-095e4b321a90"
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "3955d7e7-9377-4f75-b5b2-ceb21189a7b8",
+                    "leftValue": "command",
+                    "rightValue": "get_apps",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            }
+          ]
+        },
+        "options": {
+          "fallbackOutput": "extra"
+        }
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.4,
+      "position": [
+        768,
+        -16
+      ],
+      "id": "bc29e579-fc4e-4fd9-b767-7ac6bd0ef8bf",
+      "name": "Switch"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "8861259d-78d7-48f2-84ff-89a6e72f71d9",
+              "name": "message",
+              "value": "invalid command",
+              "type": "string"
+            },
+            {
+              "id": "6c997ee3-6e52-44fd-a135-f5eff6446db9",
+              "name": "available_commands",
+              "value": "deploy: deploy a docker app (requires $target_server, $repository, $tag), get_apps: get all deployed apps (requires $target_server)",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.5,
+      "position": [
+        976,
+        192
+      ],
+      "id": "10a1535b-63c3-49d2-94b6-6dbad7d28f1e",
+      "name": "get_commands"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
             {
               "id": "81e21d6e-937c-436e-a060-28f91cf953c2",
               "name": "available_servers",
@@ -704,34 +1078,24 @@
             }
           ]
         },
+        "includeOtherFields": true,
+        "include": "selected",
+        "includeFields": "message, available_commands",
         "options": {}
       },
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        1280,
-        176
+        1232,
+        192
       ],
       "id": "03ed3b1b-4336-4913-84fd-185104e3292f",
-      "name": "return"
-    },
-    {
-      "parameters": {
-        "aggregate": "aggregateAllItemData",
-        "options": {}
-      },
-      "type": "n8n-nodes-base.aggregate",
-      "typeVersion": 1,
-      "position": [
-        1104,
-        176
-      ],
-      "id": "0a04ea41-9571-496b-912d-a634076d7cb9",
-      "name": "merge"
+      "name": "return",
+      "disabled": true
     }
   ],
   "pinData": {
-    "trigger": [
+    "click_trigger": [
       {
         "json": {
           "target_server": "hhs",
@@ -762,7 +1126,7 @@
   "staticData": null,
   "tags": [],
   "triggerCount": 0,
-  "updatedAt": "2026-09-02T18:38:53.973Z",
-  "versionId": "7d5d8aa1-913c-4f29-b268-81c02b2f337d",
-  "workflow_meta": "[Version d2dcd412] "
+  "updatedAt": "2026-10-31T11:58:54.550Z",
+  "versionId": "335b371e-07e0-40e1-9876-e1b7e56382cb",
+  "workflow_meta": "[Version 335b371e] "
 }
