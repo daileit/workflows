@@ -1,7 +1,7 @@
 {
   "active": true,
   "activeVersion": {
-    "versionId": "403f6224-7441-4473-8bb9-74ec3290cabb",
+    "versionId": "02efce27-98b4-404e-bc2f-29039ff24473",
     "workflowId": "fj7QK82TkmpEf8Gf",
     "nodes": [
       {
@@ -13,7 +13,7 @@
         "type": "n8n-nodes-base.webhook",
         "typeVersion": 2.1,
         "position": [
-          -1056,
+          -1248,
           32
         ],
         "id": "784c3bb1-c423-4158-b9a7-0809333a9be6",
@@ -23,7 +23,7 @@
       {
         "parameters": {
           "authentication": "privateKey",
-          "command": "=sudo docker run -e APP_VERSION={{ $('Webhook').item.json.query.tag }} {{ $json.env }}-d --add-host=host.docker.internal:host-gateway --name {{ $('Webhook').item.json.query.name }} {{ $json.network.trim() ? `--network=${$json.network}` : \"\"}} --restart=always -p {{ $json.port.trim() }} {{ $json.misc.trim() }} {{ $('Webhook').item.json.query.repo }}/{{ $('Webhook').item.json.query.name }}:{{ $('Webhook').item.json.query.tag }}"
+          "command": "=sudo docker run -e APP_VERSION={{ $('trigger').item.json.tag }} {{ $json.env }}-d --add-host=host.docker.internal:host-gateway --name {{ $('trigger').item.json.name }} {{ $json.network.trim() ? `--network=${$json.network}` : \"\"}} --restart=always -p {{ $json.port.trim() }} {{ $json.misc.trim() }} {{ $('trigger').item.json.repo }}/{{ $('trigger').item.json.name }}:{{ $('trigger').item.json.tag }}"
         },
         "type": "n8n-nodes-base.ssh",
         "typeVersion": 1,
@@ -44,7 +44,7 @@
       {
         "parameters": {
           "authentication": "privateKey",
-          "command": "=sudo docker pull {{ $json.query.repo.trim() }}/{{ $json.query.name.trim() }}:{{ $json.query.tag.trim() }}"
+          "command": "=sudo docker pull {{ $('trigger').item.json.repo.trim() }}/{{ $('trigger').item.json.name.trim() }}:{{ $('trigger').item.json.tag.trim() }}"
         },
         "type": "n8n-nodes-base.ssh",
         "typeVersion": 1,
@@ -64,7 +64,7 @@
       {
         "parameters": {
           "authentication": "privateKey",
-          "command": "=sudo docker stop {{ $('Webhook').item.json.query.name }} && sudo docker rm {{ $('Webhook').item.json.query.name }}"
+          "command": "=sudo docker stop {{ $('trigger').item.json.name }} && sudo docker rm {{ $('trigger').item.json.name }}"
         },
         "type": "n8n-nodes-base.ssh",
         "typeVersion": 1,
@@ -84,7 +84,7 @@
       {
         "parameters": {
           "authentication": "privateKey",
-          "command": "=sudo docker ps -a | grep {{ $('Webhook').item.json.query.name }}"
+          "command": "=sudo docker ps -a | grep {{ $('trigger').item.json.name }}"
         },
         "type": "n8n-nodes-base.ssh",
         "typeVersion": 1,
@@ -147,7 +147,7 @@
             "conditions": [
               {
                 "id": "8816060d-ebdb-41dc-8368-9954491cae88",
-                "leftValue": "={{ $json.query.repo }}",
+                "leftValue": "={{ $('trigger').item.json.repo }}",
                 "rightValue": "",
                 "operator": {
                   "type": "string",
@@ -157,7 +157,7 @@
               },
               {
                 "id": "9b69ce9b-828c-4fb8-9f17-01d531954e15",
-                "leftValue": "={{ $json.query.name }}",
+                "leftValue": "={{ $('trigger').item.json.name }}",
                 "rightValue": "",
                 "operator": {
                   "type": "string",
@@ -167,7 +167,7 @@
               },
               {
                 "id": "0222e765-95aa-429c-8913-d42895b1f690",
-                "leftValue": "={{ $json.query.tag }}",
+                "leftValue": "={{ $('trigger').item.json.tag }}",
                 "rightValue": "",
                 "operator": {
                   "type": "string",
@@ -209,7 +209,7 @@
               },
               {
                 "keyName": "Scope",
-                "keyValue": "={{ $('Webhook').item.json.query.name }}"
+                "keyValue": "={{ $('trigger').item.json.name }}"
               }
             ]
           }
@@ -283,7 +283,7 @@
       {
         "parameters": {
           "authentication": "privateKey",
-          "command": "=sudo docker images --format \"{{'{{.ID}'}}} {{'{{.CreatedAt}'}}} {{'{{.Repository}'}}}\" | grep {{ $('Webhook').item.json.query.name }} | sort -rk2,3 | tail -n +4 | awk '{print $1}' | xargs -r sudo docker rmi || true"
+          "command": "=sudo docker images --format \"{{'{{.ID}'}}} {{'{{.CreatedAt}'}}} {{'{{.Repository}'}}}\" | grep {{ $('trigger').item.json.name }} | sort -rk2,3 | tail -n +4 | awk '{print $1}' | xargs -r sudo docker rmi || true"
         },
         "type": "n8n-nodes-base.ssh",
         "typeVersion": 1,
@@ -382,26 +382,46 @@
         "type": "n8n-nodes-base.executeWorkflowTrigger",
         "typeVersion": 1.2,
         "position": [
-          -1056,
-          -160
+          -1248,
+          -128
         ],
         "id": "a360fa63-f3ac-4218-b9f9-c2803fec1fdd",
         "name": "When Executed by Another Workflow"
       },
       {
         "parameters": {
-          "mode": "raw",
-          "jsonOutput": "={\n  \"query\":\n  {\n    \"repo\": {{ $json.repo }},\n    \"name\": {{ $json.name }},\n    \"tag\": {{ $json.tag }}\n}\n",
+          "assignments": {
+            "assignments": [
+              {
+                "id": "716dc62f-d0cc-44c5-8bf7-363a3ab57903",
+                "name": "repo",
+                "value": "={{ $json.repo ?? $json.query.repo }}",
+                "type": "string"
+              },
+              {
+                "id": "93535360-f14f-4f92-b492-ac56aba5f497",
+                "name": "name",
+                "value": "={{ $json.name ?? $json.query.name }}",
+                "type": "string"
+              },
+              {
+                "id": "f8682e17-978a-45a1-8b9c-0fcaafb1fcee",
+                "name": "tag",
+                "value": "={{ $json.tag ?? $json.query.tag }}",
+                "type": "string"
+              }
+            ]
+          },
           "options": {}
         },
         "type": "n8n-nodes-base.set",
         "typeVersion": 3.5,
         "position": [
-          -848,
-          -160
+          -1040,
+          32
         ],
         "id": "26165ce2-9e88-4653-aa75-d5fdd85c5f8f",
-        "name": "join_variables"
+        "name": "trigger"
       }
     ],
     "connections": {
@@ -409,7 +429,7 @@
         "main": [
           [
             {
-              "node": "check_input",
+              "node": "trigger",
               "type": "main",
               "index": 0
             }
@@ -555,14 +575,14 @@
         "main": [
           [
             {
-              "node": "join_variables",
+              "node": "trigger",
               "type": "main",
               "index": 0
             }
           ]
         ]
       },
-      "join_variables": {
+      "trigger": {
         "main": [
           [
             {
@@ -576,19 +596,19 @@
     },
     "nodeGroups": [],
     "authors": "Dai Le",
-    "name": "Version 403f6224",
+    "name": "Version 02efce27",
     "description": "",
     "autosaved": true,
-    "createdAt": "2026-10-31T08:21:08.647Z",
-    "updatedAt": "2026-10-31T08:21:14.784Z"
+    "createdAt": "2026-10-31T09:55:27.057Z",
+    "updatedAt": "2026-10-31T09:55:31.277Z"
   },
-  "activeVersionId": "403f6224-7441-4473-8bb9-74ec3290cabb",
+  "activeVersionId": "02efce27-98b4-404e-bc2f-29039ff24473",
   "connections": {
     "Webhook": {
       "main": [
         [
           {
-            "node": "check_input",
+            "node": "trigger",
             "type": "main",
             "index": 0
           }
@@ -734,14 +754,14 @@
       "main": [
         [
           {
-            "node": "join_variables",
+            "node": "trigger",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "join_variables": {
+    "trigger": {
       "main": [
         [
           {
@@ -771,7 +791,7 @@
       "type": "n8n-nodes-base.webhook",
       "typeVersion": 2.1,
       "position": [
-        -1056,
+        -1248,
         32
       ],
       "id": "784c3bb1-c423-4158-b9a7-0809333a9be6",
@@ -781,7 +801,7 @@
     {
       "parameters": {
         "authentication": "privateKey",
-        "command": "=sudo docker run -e APP_VERSION={{ $('Webhook').item.json.query.tag }} {{ $json.env }}-d --add-host=host.docker.internal:host-gateway --name {{ $('Webhook').item.json.query.name }} {{ $json.network.trim() ? `--network=${$json.network}` : \"\"}} --restart=always -p {{ $json.port.trim() }} {{ $json.misc.trim() }} {{ $('Webhook').item.json.query.repo }}/{{ $('Webhook').item.json.query.name }}:{{ $('Webhook').item.json.query.tag }}"
+        "command": "=sudo docker run -e APP_VERSION={{ $('trigger').item.json.tag }} {{ $json.env }}-d --add-host=host.docker.internal:host-gateway --name {{ $('trigger').item.json.name }} {{ $json.network.trim() ? `--network=${$json.network}` : \"\"}} --restart=always -p {{ $json.port.trim() }} {{ $json.misc.trim() }} {{ $('trigger').item.json.repo }}/{{ $('trigger').item.json.name }}:{{ $('trigger').item.json.tag }}"
       },
       "type": "n8n-nodes-base.ssh",
       "typeVersion": 1,
@@ -802,7 +822,7 @@
     {
       "parameters": {
         "authentication": "privateKey",
-        "command": "=sudo docker pull {{ $json.query.repo.trim() }}/{{ $json.query.name.trim() }}:{{ $json.query.tag.trim() }}"
+        "command": "=sudo docker pull {{ $('trigger').item.json.repo.trim() }}/{{ $('trigger').item.json.name.trim() }}:{{ $('trigger').item.json.tag.trim() }}"
       },
       "type": "n8n-nodes-base.ssh",
       "typeVersion": 1,
@@ -822,7 +842,7 @@
     {
       "parameters": {
         "authentication": "privateKey",
-        "command": "=sudo docker stop {{ $('Webhook').item.json.query.name }} && sudo docker rm {{ $('Webhook').item.json.query.name }}"
+        "command": "=sudo docker stop {{ $('trigger').item.json.name }} && sudo docker rm {{ $('trigger').item.json.name }}"
       },
       "type": "n8n-nodes-base.ssh",
       "typeVersion": 1,
@@ -842,7 +862,7 @@
     {
       "parameters": {
         "authentication": "privateKey",
-        "command": "=sudo docker ps -a | grep {{ $('Webhook').item.json.query.name }}"
+        "command": "=sudo docker ps -a | grep {{ $('trigger').item.json.name }}"
       },
       "type": "n8n-nodes-base.ssh",
       "typeVersion": 1,
@@ -905,7 +925,7 @@
           "conditions": [
             {
               "id": "8816060d-ebdb-41dc-8368-9954491cae88",
-              "leftValue": "={{ $json.query.repo }}",
+              "leftValue": "={{ $('trigger').item.json.repo }}",
               "rightValue": "",
               "operator": {
                 "type": "string",
@@ -915,7 +935,7 @@
             },
             {
               "id": "9b69ce9b-828c-4fb8-9f17-01d531954e15",
-              "leftValue": "={{ $json.query.name }}",
+              "leftValue": "={{ $('trigger').item.json.name }}",
               "rightValue": "",
               "operator": {
                 "type": "string",
@@ -925,7 +945,7 @@
             },
             {
               "id": "0222e765-95aa-429c-8913-d42895b1f690",
-              "leftValue": "={{ $json.query.tag }}",
+              "leftValue": "={{ $('trigger').item.json.tag }}",
               "rightValue": "",
               "operator": {
                 "type": "string",
@@ -967,7 +987,7 @@
             },
             {
               "keyName": "Scope",
-              "keyValue": "={{ $('Webhook').item.json.query.name }}"
+              "keyValue": "={{ $('trigger').item.json.name }}"
             }
           ]
         }
@@ -1041,7 +1061,7 @@
     {
       "parameters": {
         "authentication": "privateKey",
-        "command": "=sudo docker images --format \"{{'{{.ID}'}}} {{'{{.CreatedAt}'}}} {{'{{.Repository}'}}}\" | grep {{ $('Webhook').item.json.query.name }} | sort -rk2,3 | tail -n +4 | awk '{print $1}' | xargs -r sudo docker rmi || true"
+        "command": "=sudo docker images --format \"{{'{{.ID}'}}} {{'{{.CreatedAt}'}}} {{'{{.Repository}'}}}\" | grep {{ $('trigger').item.json.name }} | sort -rk2,3 | tail -n +4 | awk '{print $1}' | xargs -r sudo docker rmi || true"
       },
       "type": "n8n-nodes-base.ssh",
       "typeVersion": 1,
@@ -1140,26 +1160,46 @@
       "type": "n8n-nodes-base.executeWorkflowTrigger",
       "typeVersion": 1.2,
       "position": [
-        -1056,
-        -160
+        -1248,
+        -128
       ],
       "id": "a360fa63-f3ac-4218-b9f9-c2803fec1fdd",
       "name": "When Executed by Another Workflow"
     },
     {
       "parameters": {
-        "mode": "raw",
-        "jsonOutput": "={\n  \"query\":\n  {\n    \"repo\": {{ $json.repo }},\n    \"name\": {{ $json.name }},\n    \"tag\": {{ $json.tag }}\n}\n",
+        "assignments": {
+          "assignments": [
+            {
+              "id": "716dc62f-d0cc-44c5-8bf7-363a3ab57903",
+              "name": "repo",
+              "value": "={{ $json.repo ?? $json.query.repo }}",
+              "type": "string"
+            },
+            {
+              "id": "93535360-f14f-4f92-b492-ac56aba5f497",
+              "name": "name",
+              "value": "={{ $json.name ?? $json.query.name }}",
+              "type": "string"
+            },
+            {
+              "id": "f8682e17-978a-45a1-8b9c-0fcaafb1fcee",
+              "name": "tag",
+              "value": "={{ $json.tag ?? $json.query.tag }}",
+              "type": "string"
+            }
+          ]
+        },
         "options": {}
       },
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.5,
       "position": [
-        -848,
-        -160
+        -1040,
+        32
       ],
       "id": "26165ce2-9e88-4653-aa75-d5fdd85c5f8f",
-      "name": "join_variables"
+      "name": "trigger"
     }
   ],
   "pinData": {},
@@ -1183,7 +1223,7 @@
   "staticData": null,
   "tags": [],
   "triggerCount": 1,
-  "updatedAt": "2026-10-31T08:21:08.644Z",
-  "versionId": "403f6224-7441-4473-8bb9-74ec3290cabb",
-  "workflow_meta": "[Version 403f6224] "
+  "updatedAt": "2026-10-31T09:55:27.056Z",
+  "versionId": "02efce27-98b4-404e-bc2f-29039ff24473",
+  "workflow_meta": "[Version 02efce27] "
 }
