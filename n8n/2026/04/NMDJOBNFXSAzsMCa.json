@@ -1,7 +1,7 @@
 {
   "active": true,
   "activeVersion": {
-    "versionId": "ce7a5a8d-ddca-4212-9ae1-5d1d4887b000",
+    "versionId": "7eaecffd-f251-4284-a619-d547ee1a10af",
     "workflowId": "NMDJOBNFXSAzsMCa",
     "nodes": [
       {
@@ -849,7 +849,7 @@
       },
       {
         "parameters": {
-          "description": "Call this tool to trigger docker deployment on a server. Must input the server name and the docker image info. Available params is:\n- command (*required): can be ether get_server, get_apps or deploy\n- target_server: the server to operate (*required except for get_server)\nThree optional params only required when call \"deploy\" command.\n- repository: the dockerhub repo of the image\n- image: the image name to deploy\n- tag: the image tag version",
+          "description": "Call this tool to trigger docker deployment on a server. Must input the server name and the docker image info. Available params is:\n- command (*required *not null): can be ether get_server, get_apps or deploy\n- target_server: the server to operate (*required not null except for get_server)\nThree optional params only required when call \"deploy\" command.\n- repository: the dockerhub repo of the image\n- image: the image name to deploy\n- tag: the image tag version\nRemember: always input the $command, when the command is \"deploy\", make sure you asked and got the $target_server from user.",
           "workflowId": {
             "__rl": true,
             "value": "iyp6mGdTFl31DZEt",
@@ -863,7 +863,8 @@
               "target_server": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('target_server', ``, 'string') }}",
               "repository": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('repository', ``, 'string') }}",
               "image": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('image', ``, 'string') }}",
-              "tag": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('tag', ``, 'string') }}"
+              "tag": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('tag', ``, 'string') }}",
+              "command": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('command', ``, 'string') }}"
             },
             "matchingColumns": [],
             "schema": [
@@ -1290,13 +1291,13 @@
     },
     "nodeGroups": [],
     "authors": "Dai Le",
-    "name": "Version ce7a5a8d",
+    "name": "Version 7eaecffd",
     "description": "",
     "autosaved": true,
-    "createdAt": "2026-10-31T17:02:09.321Z",
-    "updatedAt": "2026-10-31T17:02:12.097Z"
+    "createdAt": "2026-10-31T17:17:37.557Z",
+    "updatedAt": "2026-10-31T17:17:39.839Z"
   },
-  "activeVersionId": "ce7a5a8d-ddca-4212-9ae1-5d1d4887b000",
+  "activeVersionId": "7eaecffd-f251-4284-a619-d547ee1a10af",
   "connections": {
     "Al Model": {
       "ai_languageModel": [
@@ -2485,7 +2486,7 @@
     },
     {
       "parameters": {
-        "description": "Call this tool to trigger docker deployment on a server. Must input the server name and the docker image info. Available params is:\n- command (*required): can be ether get_server, get_apps or deploy\n- target_server: the server to operate (*required except for get_server)\nThree optional params only required when call \"deploy\" command.\n- repository: the dockerhub repo of the image\n- image: the image name to deploy\n- tag: the image tag version",
+        "description": "Call this tool to trigger docker deployment on a server. Must input the server name and the docker image info. Available params is:\n- command (*required *not null): can be ether get_server, get_apps or deploy\n- target_server: the server to operate (*required not null except for get_server)\nThree optional params only required when call \"deploy\" command.\n- repository: the dockerhub repo of the image\n- image: the image name to deploy\n- tag: the image tag version\nRemember: always input the $command, when the command is \"deploy\", make sure you asked and got the $target_server from user.",
         "workflowId": {
           "__rl": true,
           "value": "iyp6mGdTFl31DZEt",
@@ -2499,7 +2500,8 @@
             "target_server": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('target_server', ``, 'string') }}",
             "repository": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('repository', ``, 'string') }}",
             "image": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('image', ``, 'string') }}",
-            "tag": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('tag', ``, 'string') }}"
+            "tag": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('tag', ``, 'string') }}",
+            "command": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('command', ``, 'string') }}"
           },
           "matchingColumns": [],
           "schema": [
@@ -2619,7 +2621,7 @@
   "staticData": null,
   "tags": [],
   "triggerCount": 1,
-  "updatedAt": "2026-10-31T17:02:09.318Z",
-  "versionId": "ce7a5a8d-ddca-4212-9ae1-5d1d4887b000",
-  "workflow_meta": "[Version ce7a5a8d] "
+  "updatedAt": "2026-10-31T17:17:37.555Z",
+  "versionId": "7eaecffd-f251-4284-a619-d547ee1a10af",
+  "workflow_meta": "[Version 7eaecffd] "
 }
