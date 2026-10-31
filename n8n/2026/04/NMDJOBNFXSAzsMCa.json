@@ -1,16 +1,16 @@
 {
   "active": true,
   "activeVersion": {
-    "versionId": "24cf7578-700e-4545-b645-3aea917e8600",
+    "versionId": "ce7a5a8d-ddca-4212-9ae1-5d1d4887b000",
     "workflowId": "NMDJOBNFXSAzsMCa",
     "nodes": [
       {
         "parameters": {
           "model": {
             "__rl": true,
-            "value": "gpt-5.6-luna",
+            "value": "deepseek-v4-pro",
             "mode": "list",
-            "cachedResultName": "gpt-5.6-luna"
+            "cachedResultName": "deepseek-v4-pro"
           },
           "options": {
             "maxTokens": 20000,
@@ -28,8 +28,8 @@
         "typeVersion": 1.2,
         "credentials": {
           "openAiApi": {
-            "id": "hhW6LfbU9Lb9n0Zv",
-            "name": "oai_gtx_hub"
+            "id": "HaS2f5k9jU2cL1Ou",
+            "name": "oai_deepseek_tomi"
           }
         }
       },
@@ -849,7 +849,7 @@
       },
       {
         "parameters": {
-          "description": "Call this tool to trigger docker deployment on a server. Must input the server name and the docker image info.",
+          "description": "Call this tool to trigger docker deployment on a server. Must input the server name and the docker image info. Available params is:\n- command (*required): can be ether get_server, get_apps or deploy\n- target_server: the server to operate (*required except for get_server)\nThree optional params only required when call \"deploy\" command.\n- repository: the dockerhub repo of the image\n- image: the image name to deploy\n- tag: the image tag version",
           "workflowId": {
             "__rl": true,
             "value": "iyp6mGdTFl31DZEt",
@@ -906,6 +906,16 @@
                 "canBeUsedToMatch": true,
                 "type": "string",
                 "removed": false
+              },
+              {
+                "id": "command",
+                "displayName": "command",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "canBeUsedToMatch": true,
+                "type": "string",
+                "removed": false
               }
             ],
             "attemptToConvertTypes": false,
@@ -940,7 +950,8 @@
             "id": "szLHGUdfY1Id0zh1",
             "name": "n8n_daileit_mcp"
           }
-        }
+        },
+        "disabled": true
       }
     ],
     "connections": {
@@ -1279,13 +1290,13 @@
     },
     "nodeGroups": [],
     "authors": "Dai Le",
-    "name": "Version 24cf7578",
+    "name": "Version ce7a5a8d",
     "description": "",
     "autosaved": true,
-    "createdAt": "2026-10-09T10:04:09.850Z",
-    "updatedAt": "2026-10-09T10:04:22.805Z"
+    "createdAt": "2026-10-31T17:02:09.321Z",
+    "updatedAt": "2026-10-31T17:02:12.097Z"
   },
-  "activeVersionId": "24cf7578-700e-4545-b645-3aea917e8600",
+  "activeVersionId": "ce7a5a8d-ddca-4212-9ae1-5d1d4887b000",
   "connections": {
     "Al Model": {
       "ai_languageModel": [
@@ -1633,9 +1644,9 @@
       "parameters": {
         "model": {
           "__rl": true,
-          "value": "gpt-5.6-luna",
+          "value": "deepseek-v4-pro",
           "mode": "list",
-          "cachedResultName": "gpt-5.6-luna"
+          "cachedResultName": "deepseek-v4-pro"
         },
         "options": {
           "maxTokens": 20000,
@@ -1653,8 +1664,8 @@
       "typeVersion": 1.2,
       "credentials": {
         "openAiApi": {
-          "id": "hhW6LfbU9Lb9n0Zv",
-          "name": "oai_gtx_hub"
+          "id": "HaS2f5k9jU2cL1Ou",
+          "name": "oai_deepseek_tomi"
         }
       }
     },
@@ -2474,7 +2485,7 @@
     },
     {
       "parameters": {
-        "description": "Call this tool to trigger docker deployment on a server. Must input the server name and the docker image info.",
+        "description": "Call this tool to trigger docker deployment on a server. Must input the server name and the docker image info. Available params is:\n- command (*required): can be ether get_server, get_apps or deploy\n- target_server: the server to operate (*required except for get_server)\nThree optional params only required when call \"deploy\" command.\n- repository: the dockerhub repo of the image\n- image: the image name to deploy\n- tag: the image tag version",
         "workflowId": {
           "__rl": true,
           "value": "iyp6mGdTFl31DZEt",
@@ -2531,6 +2542,16 @@
               "canBeUsedToMatch": true,
               "type": "string",
               "removed": false
+            },
+            {
+              "id": "command",
+              "displayName": "command",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
             }
           ],
           "attemptToConvertTypes": false,
@@ -2565,7 +2586,8 @@
           "id": "szLHGUdfY1Id0zh1",
           "name": "n8n_daileit_mcp"
         }
-      }
+      },
+      "disabled": true
     }
   ],
   "pinData": {
@@ -2597,7 +2619,7 @@
   "staticData": null,
   "tags": [],
   "triggerCount": 1,
-  "updatedAt": "2026-10-09T10:04:09.848Z",
-  "versionId": "24cf7578-700e-4545-b645-3aea917e8600",
-  "workflow_meta": "[Version 24cf7578] "
+  "updatedAt": "2026-10-31T17:02:09.318Z",
+  "versionId": "ce7a5a8d-ddca-4212-9ae1-5d1d4887b000",
+  "workflow_meta": "[Version ce7a5a8d] "
 }
