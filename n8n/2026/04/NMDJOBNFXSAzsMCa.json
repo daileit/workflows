@@ -1,16 +1,16 @@
 {
   "active": true,
   "activeVersion": {
-    "versionId": "7eaecffd-f251-4284-a619-d547ee1a10af",
+    "versionId": "61a02985-1a35-47b6-ae52-c01dffb6f096",
     "workflowId": "NMDJOBNFXSAzsMCa",
     "nodes": [
       {
         "parameters": {
           "model": {
             "__rl": true,
-            "value": "deepseek-v4-pro",
+            "value": "glm-5",
             "mode": "list",
-            "cachedResultName": "deepseek-v4-pro"
+            "cachedResultName": "glm-5"
           },
           "options": {
             "maxTokens": 20000,
@@ -28,8 +28,8 @@
         "typeVersion": 1.2,
         "credentials": {
           "openAiApi": {
-            "id": "HaS2f5k9jU2cL1Ou",
-            "name": "oai_deepseek_tomi"
+            "id": "hhW6LfbU9Lb9n0Zv",
+            "name": "oai_gtx_hub"
           }
         }
       },
@@ -1158,11 +1158,6 @@
               "node": "Daile Agent",
               "type": "ai_tool",
               "index": 0
-            },
-            {
-              "node": "Common Agent",
-              "type": "ai_tool",
-              "index": 0
             }
           ]
         ]
@@ -1238,11 +1233,6 @@
         "ai_tool": [
           [
             {
-              "node": "Daile Agent",
-              "type": "ai_tool",
-              "index": 0
-            },
-            {
               "node": "Common Agent",
               "type": "ai_tool",
               "index": 0
@@ -1291,13 +1281,13 @@
     },
     "nodeGroups": [],
     "authors": "Dai Le",
-    "name": "Version 7eaecffd",
+    "name": "Version 61a02985",
     "description": "",
     "autosaved": true,
-    "createdAt": "2026-10-31T17:17:37.557Z",
-    "updatedAt": "2026-10-31T17:17:39.839Z"
+    "createdAt": "2026-11-01T17:50:14.103Z",
+    "updatedAt": "2026-11-01T17:50:20.152Z"
   },
-  "activeVersionId": "7eaecffd-f251-4284-a619-d547ee1a10af",
+  "activeVersionId": "61a02985-1a35-47b6-ae52-c01dffb6f096",
   "connections": {
     "Al Model": {
       "ai_languageModel": [
@@ -1501,11 +1491,6 @@
             "node": "Daile Agent",
             "type": "ai_tool",
             "index": 0
-          },
-          {
-            "node": "Common Agent",
-            "type": "ai_tool",
-            "index": 0
           }
         ]
       ]
@@ -1581,11 +1566,6 @@
       "ai_tool": [
         [
           {
-            "node": "Daile Agent",
-            "type": "ai_tool",
-            "index": 0
-          },
-          {
             "node": "Common Agent",
             "type": "ai_tool",
             "index": 0
@@ -1645,9 +1625,9 @@
       "parameters": {
         "model": {
           "__rl": true,
-          "value": "deepseek-v4-pro",
+          "value": "glm-5",
           "mode": "list",
-          "cachedResultName": "deepseek-v4-pro"
+          "cachedResultName": "glm-5"
         },
         "options": {
           "maxTokens": 20000,
@@ -1665,8 +1645,8 @@
       "typeVersion": 1.2,
       "credentials": {
         "openAiApi": {
-          "id": "HaS2f5k9jU2cL1Ou",
-          "name": "oai_deepseek_tomi"
+          "id": "hhW6LfbU9Lb9n0Zv",
+          "name": "oai_gtx_hub"
         }
       }
     },
@@ -2621,7 +2601,7 @@
   "staticData": null,
   "tags": [],
   "triggerCount": 1,
-  "updatedAt": "2026-10-31T17:17:37.555Z",
-  "versionId": "7eaecffd-f251-4284-a619-d547ee1a10af",
-  "workflow_meta": "[Version 7eaecffd] "
+  "updatedAt": "2026-11-01T17:50:14.073Z",
+  "versionId": "61a02985-1a35-47b6-ae52-c01dffb6f096",
+  "workflow_meta": "[Version 61a02985] "
 }
