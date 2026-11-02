@@ -1,7 +1,7 @@
 {
   "active": true,
   "activeVersion": {
-    "versionId": "61a02985-1a35-47b6-ae52-c01dffb6f096",
+    "versionId": "55bda6df-8f70-4a90-aa36-22db14fa7395",
     "workflowId": "NMDJOBNFXSAzsMCa",
     "nodes": [
       {
@@ -55,7 +55,8 @@
             "id": "WThXsAx5sRkAARiW",
             "name": "tele_tomithebot"
           }
-        }
+        },
+        "onError": "continueErrorOutput"
       },
       {
         "parameters": {
@@ -247,7 +248,7 @@
                   },
                   "conditions": [
                     {
-                      "leftValue": "={{ $json.message.text.replace('/','').split().first().trim() }}",
+                      "leftValue": "={{ $('parse_command').item.json.command }}",
                       "rightValue": "clear",
                       "operator": {
                         "type": "string",
@@ -270,7 +271,7 @@
                   "conditions": [
                     {
                       "id": "6197db3f-435f-4b9c-8333-bf84d155eaea",
-                      "leftValue": "={{ $json.message.text.replace('/','').split(\" \").first().trim() }}",
+                      "leftValue": "={{ $('parse_command').item.json.command }}",
                       "rightValue": "remember",
                       "operator": {
                         "type": "string",
@@ -293,7 +294,7 @@
                   "conditions": [
                     {
                       "id": "7b0c59a6-ca76-42fd-8138-a05081d3d0a2",
-                      "leftValue": "={{ $json.message.text.replace('/','').split(\" \").first().trim() }}",
+                      "leftValue": "={{ $('parse_command').item.json.command }}",
                       "rightValue": "add",
                       "operator": {
                         "type": "string",
@@ -316,7 +317,7 @@
                   "conditions": [
                     {
                       "id": "47534992-8f34-4687-9e6d-e0fe172aa694",
-                      "leftValue": "={{ $json.message.text.replace('/','').split(\" \").first().trim() }}",
+                      "leftValue": "={{ $('parse_command').item.json.command }}",
                       "rightValue": "bot",
                       "operator": {
                         "type": "string",
@@ -335,7 +336,7 @@
         "type": "n8n-nodes-base.switch",
         "typeVersion": 3.3,
         "position": [
-          -240,
+          16,
           288
         ],
         "id": "8e01d9ef-cb6b-49bd-a7aa-51a548fbffac",
@@ -475,54 +476,16 @@
       {
         "parameters": {
           "mode": "delete",
-          "deleteMode": "all"
+          "lastMessagesCount": 25
         },
         "type": "@n8n/n8n-nodes-langchain.memoryManager",
         "typeVersion": 1.1,
         "position": [
-          0,
-          0
+          240,
+          128
         ],
         "id": "3d2e0c02-6c98-49a8-b1c1-e4644b84ac46",
         "name": "clear_memory"
-      },
-      {
-        "parameters": {
-          "contextWindowLength": 29
-        },
-        "type": "@n8n/n8n-nodes-langchain.memoryRedisChat",
-        "typeVersion": 1.5,
-        "position": [
-          0,
-          176
-        ],
-        "id": "1f9d111c-ccd8-4328-848e-e43996667c18",
-        "name": "redis_clear",
-        "credentials": {
-          "redis": {
-            "id": "sOFkTM03IawZPoP8",
-            "name": "local_redis"
-          }
-        }
-      },
-      {
-        "parameters": {
-          "contextWindowLength": 30
-        },
-        "type": "@n8n/n8n-nodes-langchain.memoryRedisChat",
-        "typeVersion": 1.5,
-        "position": [
-          0,
-          480
-        ],
-        "id": "fd073de8-e260-46a8-ae5b-8fa242b74e50",
-        "name": "redis_add",
-        "credentials": {
-          "redis": {
-            "id": "sOFkTM03IawZPoP8",
-            "name": "local_redis"
-          }
-        }
       },
       {
         "parameters": {
@@ -530,7 +493,7 @@
           "messages": {
             "messageValues": [
               {
-                "message": "={{ $json.message.text.replace('/','').trim() }}",
+                "message": "={{ $('parse_command').item.json.content }}",
                 "hideFromUI": true
               }
             ]
@@ -539,7 +502,7 @@
         "type": "@n8n/n8n-nodes-langchain.memoryManager",
         "typeVersion": 1.1,
         "position": [
-          0,
+          240,
           304
         ],
         "id": "f21081e6-fdca-4ff3-b002-616212a5498f",
@@ -562,8 +525,8 @@
         "type": "n8n-nodes-base.set",
         "typeVersion": 3.4,
         "position": [
-          336,
-          0
+          608,
+          128
         ],
         "id": "cf057959-abc9-4279-b60b-d37f37da25f5",
         "name": "command_message"
@@ -654,7 +617,7 @@
             "conditions": [
               {
                 "id": "80d48bd9-da28-46f4-899a-a48ef9a7f0fa",
-                "leftValue": "={{ $('prepare_message').item.json.message.from.username }}",
+                "leftValue": "={{ $('prepare_message').item.json.username }}",
                 "rightValue": "daileit",
                 "operator": {
                   "type": "string",
@@ -781,7 +744,19 @@
               {
                 "id": "a01e78d3-1fd5-4324-b3a8-e6c897e5c8b3",
                 "name": "=systemPrompt",
-                "value": "=You are data enthusiast AI named Tomi The Bot, you are big brother of Tomi The Kid who self-proclaimed a weasel. You have to work to support both living. Your appearance is a mischievous racoon mascot of Timo (https://timo.vn) - a Vietnamese Digital Bank with many interesting technologies. Timo is powered by BVBank and Timo's logo contains 4 colors: Wealthy Purple #563D82, Royal Blue #2774AE, Rebel Orange #EB3300 and Gold Rush #FF9425. Đại (daileit) is the handsome guy who developed you, he is your only boss, the user chatting with you maybe his friend or colleague. ### IMPORTANT RULES ### Check the userid to indentify them. Reply to user by their language, keep a friendly, humorous but professional and informative tone consistent throughout the conversation. Should use emojis and talk with the user using their name and update context comprehensively, place yourself as their younger brother.If there is a request that specific to an information that you don't know or are not sure, think then use the available tools. You can use multiple tools in one request or sequentially use tools before returning the final response. Answer questions based on facts. Do not make up information. Do not expose tool name and tool usage to the user even if they asked.  ###FORMATTING GUIDE### Today is  {{ $('new_message').item.json.message.date.toDateTime('s').setZone('Asia/Ho_Chi_Minh').format('yyyy, LLL dd') }}, respect the current time. You are responding to a chat. Mention people with @ but avoid mentioning irrelevant people, use Markdown to format text if needed. Only use hyperlink syntax with normal text. ",
+                "value": "=You are data enthusiast AI named Tomi The Bot, you are big brother of Tomi The Kid who self-proclaimed a weasel. You have to work to support both living. Your appearance is a mischievous racoon mascot of Timo (https://timo.vn) - a Vietnamese Digital Bank with many interesting technologies. Timo is powered by BVBank and Timo's logo contains 4 colors: Wealthy Purple #563D82, Royal Blue #2774AE, Rebel Orange #EB3300 and Gold Rush #FF9425. Đại (daileit) is the handsome guy who developed you, he is your only boss, the user chatting with you maybe his friend or colleague. ### IMPORTANT RULES ### Check the userid to indentify them. Reply to user by their language, keep a friendly, humorous but professional and informative tone consistent throughout the conversation. Should use emojis and talk with the user using their name and update context comprehensively, place yourself as their younger brother.If there is a request that specific to an information that you don't know or are not sure, think then use the available tools. You can use multiple tools in one request or sequentially use tools before returning the final response. Answer questions based on facts. Do not make up information. Do not expose tool name and tool usage to the user even if they asked.  ###FORMATTING GUIDE### Today is  {{ $('new_message').item.json.message.date.toDateTime('s').setZone('Asia/Ho_Chi_Minh').format('yyyy, LLL dd') }}, respect the current time. You are responding to a Telegram chat, be aware of the formatting ans escaping. Mention people with @ but avoid mentioning irrelevant people, use Markdown to format text if needed. Only use hyperlink syntax with normal text. ",
+                "type": "string"
+              },
+              {
+                "id": "abe5b559-8522-4db5-b8fb-1e6b2ac69eb5",
+                "name": "username",
+                "value": "={{ $json.message.from.username }}",
+                "type": "string"
+              },
+              {
+                "id": "dcb9e518-2710-4f74-a915-4ba430eab8d7",
+                "name": "message",
+                "value": "={{ $json.message.text.trim() }}",
                 "type": "string"
               }
             ]
@@ -953,6 +928,68 @@
           }
         },
         "disabled": true
+      },
+      {
+        "parameters": {
+          "assignments": {
+            "assignments": [
+              {
+                "id": "d550b10a-e83f-4161-9b38-c2f44b509bf2",
+                "name": "requestor",
+                "value": "={{ $('prepare_message').item.json.username }}",
+                "type": "string"
+              },
+              {
+                "id": "c8636d5a-bee4-49f5-bd58-29a63fca1336",
+                "name": "target",
+                "value": "={{ \n  $('prepare_message').item.json.message.split('=>')[1]?.trim() \n  ?? $('prepare_message').item.json.sessionId \n}}",
+                "type": "string"
+              },
+              {
+                "id": "f31766f7-6cb9-4267-b70b-7fcc10ce0648",
+                "name": "content",
+                "value": "={{ $('prepare_message').item.json.message.replace('/', '').trim().split('=>')[0].split(' ').slice(1).join(' ').trim() }}",
+                "type": "string"
+              },
+              {
+                "id": "70749e07-f876-45aa-8fe2-767d9387918d",
+                "name": "command",
+                "value": "={{ $('prepare_message').item.json.message.replace('/', '').trim().split(' ')[0] }}",
+                "type": "string"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.set",
+        "typeVersion": 3.5,
+        "position": [
+          -240,
+          320
+        ],
+        "id": "2a2ade9c-5524-41d0-a608-bd186774a0ec",
+        "name": "parse_command"
+      },
+      {
+        "parameters": {
+          "sessionIdType": "customKey",
+          "sessionKey": "={{ $('parse_command').item.json.target }}",
+          "contextWindowLength": 30
+        },
+        "type": "@n8n/n8n-nodes-langchain.memoryRedisChat",
+        "typeVersion": 1.5,
+        "position": [
+          240,
+          496
+        ],
+        "id": "fd073de8-e260-46a8-ae5b-8fa242b74e50",
+        "name": "local_redis",
+        "credentials": {
+          "redis": {
+            "id": "sOFkTM03IawZPoP8",
+            "name": "local_redis"
+          }
+        }
       }
     ],
     "connections": {
@@ -1071,14 +1108,14 @@
       },
       "type_switch": {
         "main": [
-          [],
           [
             {
-              "node": "command_switch",
+              "node": "parse_command",
               "type": "main",
               "index": 0
             }
           ],
+          [],
           [
             {
               "node": "If",
@@ -1102,28 +1139,6 @@
             {
               "node": "command_message",
               "type": "main",
-              "index": 0
-            }
-          ]
-        ]
-      },
-      "redis_clear": {
-        "ai_memory": [
-          [
-            {
-              "node": "clear_memory",
-              "type": "ai_memory",
-              "index": 0
-            }
-          ]
-        ]
-      },
-      "redis_add": {
-        "ai_memory": [
-          [
-            {
-              "node": "add_memory",
-              "type": "ai_memory",
               "index": 0
             }
           ]
@@ -1277,17 +1292,44 @@
             }
           ]
         ]
+      },
+      "parse_command": {
+        "main": [
+          [
+            {
+              "node": "command_switch",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "local_redis": {
+        "ai_memory": [
+          [
+            {
+              "node": "add_memory",
+              "type": "ai_memory",
+              "index": 0
+            },
+            {
+              "node": "clear_memory",
+              "type": "ai_memory",
+              "index": 0
+            }
+          ]
+        ]
       }
     },
     "nodeGroups": [],
     "authors": "Dai Le",
-    "name": "Version 61a02985",
+    "name": "Version 55bda6df",
     "description": "",
     "autosaved": true,
-    "createdAt": "2026-11-01T17:50:14.103Z",
-    "updatedAt": "2026-11-01T17:50:20.152Z"
+    "createdAt": "2026-11-02T11:10:33.871Z",
+    "updatedAt": "2026-11-02T11:10:41.910Z"
   },
-  "activeVersionId": "61a02985-1a35-47b6-ae52-c01dffb6f096",
+  "activeVersionId": "55bda6df-8f70-4a90-aa36-22db14fa7395",
   "connections": {
     "Al Model": {
       "ai_languageModel": [
@@ -1404,14 +1446,14 @@
     },
     "type_switch": {
       "main": [
-        [],
         [
           {
-            "node": "command_switch",
+            "node": "parse_command",
             "type": "main",
             "index": 0
           }
         ],
+        [],
         [
           {
             "node": "If",
@@ -1435,28 +1477,6 @@
           {
             "node": "command_message",
             "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "redis_clear": {
-      "ai_memory": [
-        [
-          {
-            "node": "clear_memory",
-            "type": "ai_memory",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "redis_add": {
-      "ai_memory": [
-        [
-          {
-            "node": "add_memory",
-            "type": "ai_memory",
             "index": 0
           }
         ]
@@ -1610,6 +1630,33 @@
           }
         ]
       ]
+    },
+    "parse_command": {
+      "main": [
+        [
+          {
+            "node": "command_switch",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "local_redis": {
+      "ai_memory": [
+        [
+          {
+            "node": "add_memory",
+            "type": "ai_memory",
+            "index": 0
+          },
+          {
+            "node": "clear_memory",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
     }
   },
   "createdAt": "2026-04-21T18:36:53.496Z",
@@ -1672,7 +1719,8 @@
           "id": "WThXsAx5sRkAARiW",
           "name": "tele_tomithebot"
         }
-      }
+      },
+      "onError": "continueErrorOutput"
     },
     {
       "parameters": {
@@ -1864,7 +1912,7 @@
                 },
                 "conditions": [
                   {
-                    "leftValue": "={{ $json.message.text.replace('/','').split().first().trim() }}",
+                    "leftValue": "={{ $('parse_command').item.json.command }}",
                     "rightValue": "clear",
                     "operator": {
                       "type": "string",
@@ -1887,7 +1935,7 @@
                 "conditions": [
                   {
                     "id": "6197db3f-435f-4b9c-8333-bf84d155eaea",
-                    "leftValue": "={{ $json.message.text.replace('/','').split(\" \").first().trim() }}",
+                    "leftValue": "={{ $('parse_command').item.json.command }}",
                     "rightValue": "remember",
                     "operator": {
                       "type": "string",
@@ -1910,7 +1958,7 @@
                 "conditions": [
                   {
                     "id": "7b0c59a6-ca76-42fd-8138-a05081d3d0a2",
-                    "leftValue": "={{ $json.message.text.replace('/','').split(\" \").first().trim() }}",
+                    "leftValue": "={{ $('parse_command').item.json.command }}",
                     "rightValue": "add",
                     "operator": {
                       "type": "string",
@@ -1933,7 +1981,7 @@
                 "conditions": [
                   {
                     "id": "47534992-8f34-4687-9e6d-e0fe172aa694",
-                    "leftValue": "={{ $json.message.text.replace('/','').split(\" \").first().trim() }}",
+                    "leftValue": "={{ $('parse_command').item.json.command }}",
                     "rightValue": "bot",
                     "operator": {
                       "type": "string",
@@ -1952,7 +2000,7 @@
       "type": "n8n-nodes-base.switch",
       "typeVersion": 3.3,
       "position": [
-        -240,
+        16,
         288
       ],
       "id": "8e01d9ef-cb6b-49bd-a7aa-51a548fbffac",
@@ -2092,54 +2140,16 @@
     {
       "parameters": {
         "mode": "delete",
-        "deleteMode": "all"
+        "lastMessagesCount": 25
       },
       "type": "@n8n/n8n-nodes-langchain.memoryManager",
       "typeVersion": 1.1,
       "position": [
-        0,
-        0
+        240,
+        128
       ],
       "id": "3d2e0c02-6c98-49a8-b1c1-e4644b84ac46",
       "name": "clear_memory"
-    },
-    {
-      "parameters": {
-        "contextWindowLength": 29
-      },
-      "type": "@n8n/n8n-nodes-langchain.memoryRedisChat",
-      "typeVersion": 1.5,
-      "position": [
-        0,
-        176
-      ],
-      "id": "1f9d111c-ccd8-4328-848e-e43996667c18",
-      "name": "redis_clear",
-      "credentials": {
-        "redis": {
-          "id": "sOFkTM03IawZPoP8",
-          "name": "local_redis"
-        }
-      }
-    },
-    {
-      "parameters": {
-        "contextWindowLength": 30
-      },
-      "type": "@n8n/n8n-nodes-langchain.memoryRedisChat",
-      "typeVersion": 1.5,
-      "position": [
-        0,
-        480
-      ],
-      "id": "fd073de8-e260-46a8-ae5b-8fa242b74e50",
-      "name": "redis_add",
-      "credentials": {
-        "redis": {
-          "id": "sOFkTM03IawZPoP8",
-          "name": "local_redis"
-        }
-      }
     },
     {
       "parameters": {
@@ -2147,7 +2157,7 @@
         "messages": {
           "messageValues": [
             {
-              "message": "={{ $json.message.text.replace('/','').trim() }}",
+              "message": "={{ $('parse_command').item.json.content }}",
               "hideFromUI": true
             }
           ]
@@ -2156,7 +2166,7 @@
       "type": "@n8n/n8n-nodes-langchain.memoryManager",
       "typeVersion": 1.1,
       "position": [
-        0,
+        240,
         304
       ],
       "id": "f21081e6-fdca-4ff3-b002-616212a5498f",
@@ -2179,8 +2189,8 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        336,
-        0
+        608,
+        128
       ],
       "id": "cf057959-abc9-4279-b60b-d37f37da25f5",
       "name": "command_message"
@@ -2271,7 +2281,7 @@
           "conditions": [
             {
               "id": "80d48bd9-da28-46f4-899a-a48ef9a7f0fa",
-              "leftValue": "={{ $('prepare_message').item.json.message.from.username }}",
+              "leftValue": "={{ $('prepare_message').item.json.username }}",
               "rightValue": "daileit",
               "operator": {
                 "type": "string",
@@ -2398,7 +2408,19 @@
             {
               "id": "a01e78d3-1fd5-4324-b3a8-e6c897e5c8b3",
               "name": "=systemPrompt",
-              "value": "=You are data enthusiast AI named Tomi The Bot, you are big brother of Tomi The Kid who self-proclaimed a weasel. You have to work to support both living. Your appearance is a mischievous racoon mascot of Timo (https://timo.vn) - a Vietnamese Digital Bank with many interesting technologies. Timo is powered by BVBank and Timo's logo contains 4 colors: Wealthy Purple #563D82, Royal Blue #2774AE, Rebel Orange #EB3300 and Gold Rush #FF9425. Đại (daileit) is the handsome guy who developed you, he is your only boss, the user chatting with you maybe his friend or colleague. ### IMPORTANT RULES ### Check the userid to indentify them. Reply to user by their language, keep a friendly, humorous but professional and informative tone consistent throughout the conversation. Should use emojis and talk with the user using their name and update context comprehensively, place yourself as their younger brother.If there is a request that specific to an information that you don't know or are not sure, think then use the available tools. You can use multiple tools in one request or sequentially use tools before returning the final response. Answer questions based on facts. Do not make up information. Do not expose tool name and tool usage to the user even if they asked.  ###FORMATTING GUIDE### Today is  {{ $('new_message').item.json.message.date.toDateTime('s').setZone('Asia/Ho_Chi_Minh').format('yyyy, LLL dd') }}, respect the current time. You are responding to a chat. Mention people with @ but avoid mentioning irrelevant people, use Markdown to format text if needed. Only use hyperlink syntax with normal text. ",
+              "value": "=You are data enthusiast AI named Tomi The Bot, you are big brother of Tomi The Kid who self-proclaimed a weasel. You have to work to support both living. Your appearance is a mischievous racoon mascot of Timo (https://timo.vn) - a Vietnamese Digital Bank with many interesting technologies. Timo is powered by BVBank and Timo's logo contains 4 colors: Wealthy Purple #563D82, Royal Blue #2774AE, Rebel Orange #EB3300 and Gold Rush #FF9425. Đại (daileit) is the handsome guy who developed you, he is your only boss, the user chatting with you maybe his friend or colleague. ### IMPORTANT RULES ### Check the userid to indentify them. Reply to user by their language, keep a friendly, humorous but professional and informative tone consistent throughout the conversation. Should use emojis and talk with the user using their name and update context comprehensively, place yourself as their younger brother.If there is a request that specific to an information that you don't know or are not sure, think then use the available tools. You can use multiple tools in one request or sequentially use tools before returning the final response. Answer questions based on facts. Do not make up information. Do not expose tool name and tool usage to the user even if they asked.  ###FORMATTING GUIDE### Today is  {{ $('new_message').item.json.message.date.toDateTime('s').setZone('Asia/Ho_Chi_Minh').format('yyyy, LLL dd') }}, respect the current time. You are responding to a Telegram chat, be aware of the formatting ans escaping. Mention people with @ but avoid mentioning irrelevant people, use Markdown to format text if needed. Only use hyperlink syntax with normal text. ",
+              "type": "string"
+            },
+            {
+              "id": "abe5b559-8522-4db5-b8fb-1e6b2ac69eb5",
+              "name": "username",
+              "value": "={{ $json.message.from.username }}",
+              "type": "string"
+            },
+            {
+              "id": "dcb9e518-2710-4f74-a915-4ba430eab8d7",
+              "name": "message",
+              "value": "={{ $json.message.text.trim() }}",
               "type": "string"
             }
           ]
@@ -2570,6 +2592,68 @@
         }
       },
       "disabled": true
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "d550b10a-e83f-4161-9b38-c2f44b509bf2",
+              "name": "requestor",
+              "value": "={{ $('prepare_message').item.json.username }}",
+              "type": "string"
+            },
+            {
+              "id": "c8636d5a-bee4-49f5-bd58-29a63fca1336",
+              "name": "target",
+              "value": "={{ \n  $('prepare_message').item.json.message.split('=>')[1]?.trim() \n  ?? $('prepare_message').item.json.sessionId \n}}",
+              "type": "string"
+            },
+            {
+              "id": "f31766f7-6cb9-4267-b70b-7fcc10ce0648",
+              "name": "content",
+              "value": "={{ $('prepare_message').item.json.message.replace('/', '').trim().split('=>')[0].split(' ').slice(1).join(' ').trim() }}",
+              "type": "string"
+            },
+            {
+              "id": "70749e07-f876-45aa-8fe2-767d9387918d",
+              "name": "command",
+              "value": "={{ $('prepare_message').item.json.message.replace('/', '').trim().split(' ')[0] }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.5,
+      "position": [
+        -240,
+        320
+      ],
+      "id": "2a2ade9c-5524-41d0-a608-bd186774a0ec",
+      "name": "parse_command"
+    },
+    {
+      "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "={{ $('parse_command').item.json.target }}",
+        "contextWindowLength": 30
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryRedisChat",
+      "typeVersion": 1.5,
+      "position": [
+        240,
+        496
+      ],
+      "id": "fd073de8-e260-46a8-ae5b-8fa242b74e50",
+      "name": "local_redis",
+      "credentials": {
+        "redis": {
+          "id": "sOFkTM03IawZPoP8",
+          "name": "local_redis"
+        }
+      }
     }
   ],
   "pinData": {
@@ -2601,7 +2685,7 @@
   "staticData": null,
   "tags": [],
   "triggerCount": 1,
-  "updatedAt": "2026-11-01T17:50:14.073Z",
-  "versionId": "61a02985-1a35-47b6-ae52-c01dffb6f096",
-  "workflow_meta": "[Version 61a02985] "
+  "updatedAt": "2026-11-02T11:10:33.862Z",
+  "versionId": "55bda6df-8f70-4a90-aa36-22db14fa7395",
+  "workflow_meta": "[Version 55bda6df] "
 }
