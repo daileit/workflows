@@ -1,22 +1,23 @@
 {
   "active": true,
   "activeVersion": {
-    "versionId": "ebf8566a-c209-497a-a25b-19afeb3cce6b",
+    "versionId": "48342d10-4075-470d-9674-0da8adec4389",
     "workflowId": "NMDJOBNFXSAzsMCa",
     "nodes": [
       {
         "parameters": {
-          "chatId": "={{ $json.sessionId ?? $('prepare_message').item.json.sessionId }}",
+          "chatId": "={{ $if($(\"sample_request\").isExecuted,$('sample_request').item.json.sessionId,$if($(\"prepare_message\").isExecuted,$('prepare_message').item.json.sessionId,\"\")) }} ",
           "text": "={{ $json.message }}",
           "additionalFields": {
-            "appendAttribution": false
+            "appendAttribution": false,
+            "parse_mode": "MarkdownV2"
           }
         },
         "type": "n8n-nodes-base.telegram",
         "typeVersion": 1.2,
         "position": [
-          848,
-          640
+          832,
+          656
         ],
         "id": "4c6bf6fb-2c1f-4258-9e89-1a67c92cf96b",
         "name": "Send a text message",
@@ -106,7 +107,7 @@
         "typeVersion": 2,
         "position": [
           608,
-          640
+          656
         ],
         "id": "cc422ee3-1dfd-4163-aaa6-ee8f8781a7eb",
         "name": "split_text"
@@ -126,6 +127,29 @@
         "parameters": {
           "rules": {
             "values": [
+              {
+                "conditions": {
+                  "options": {
+                    "caseSensitive": true,
+                    "leftValue": "",
+                    "typeValidation": "strict",
+                    "version": 2
+                  },
+                  "conditions": [
+                    {
+                      "id": "c4754d69-2d06-48de-909f-1618d913af80",
+                      "leftValue": "={{ $if($(\"craft_format_request\").isExecuted,$node[\"craft_format_request\"].json.retried >= 1,false)}}",
+                      "rightValue": "=",
+                      "operator": {
+                        "type": "boolean",
+                        "operation": "true",
+                        "singleValue": true
+                      }
+                    }
+                  ],
+                  "combinator": "and"
+                }
+              },
               {
                 "conditions": {
                   "options": {
@@ -165,29 +189,6 @@
                       "operator": {
                         "type": "string",
                         "operation": "notExists",
-                        "singleValue": true
-                      }
-                    }
-                  ],
-                  "combinator": "and"
-                }
-              },
-              {
-                "conditions": {
-                  "options": {
-                    "caseSensitive": true,
-                    "leftValue": "",
-                    "typeValidation": "strict",
-                    "version": 2
-                  },
-                  "conditions": [
-                    {
-                      "id": "c4754d69-2d06-48de-909f-1618d913af80",
-                      "leftValue": "retried",
-                      "rightValue": "",
-                      "operator": {
-                        "type": "string",
-                        "operation": "exists",
                         "singleValue": true
                       }
                     }
@@ -1077,20 +1078,20 @@
               {
                 "id": "35221062-6a61-4208-a2b3-952eb6cea398",
                 "name": "message",
-                "value": "=Text message: {{ $('split_text').last().json.message }}\nStatus: ",
+                "value": "=Text message: {{ $json.message }}",
                 "type": "string"
               },
               {
                 "id": "f89c28b2-35bb-4996-a001-1876861fbdca",
                 "name": "systemPrompt",
-                "value": "You are a telegram message formatter. Please reformat the text message so it's pass the telegram parsing of Markdown V2 ",
+                "value": "=You are a telegram message formatter. Please reformat the text message so it's pass the telegram parsing of Markdown V2. If there is error about message too long, just add sone page breaks inside the message so the splitter will auto split that message. Response error: {{ $json.error }}",
                 "type": "string"
               },
               {
                 "id": "07b88c82-0e12-4719-8881-f0ccadaef3b3",
                 "name": "retried",
-                "value": "yes",
-                "type": "string"
+                "value": "={{ $if($(\"craft_format_request\").isExecuted,1,0) }}",
+                "type": "number"
               }
             ]
           },
@@ -1099,7 +1100,7 @@
         "type": "n8n-nodes-base.set",
         "typeVersion": 3.5,
         "position": [
-          1136,
+          1072,
           832
         ],
         "id": "364a0910-c1d4-44af-8ff4-442febc94c24",
@@ -1111,7 +1112,7 @@
             "assignments": [
               {
                 "id": "6fc8ba72-8336-464f-ae1b-462a7f3606a9",
-                "name": "output",
+                "name": "message1",
                 "value": "={{ $json.output }}",
                 "type": "string"
               },
@@ -1119,6 +1120,12 @@
                 "id": "00fef24f-a4fb-43db-8bb2-0354fc409016",
                 "name": "sessionId",
                 "value": "1826385964",
+                "type": "string"
+              },
+              {
+                "id": "315c6f1d-5792-4798-bc67-d3c61e5dc6fb",
+                "name": "message",
+                "value": "AAHAHAHA xin lỗi anh @daileit nha! 🤣\\n\\nEm nhầm, em nhầm! Anh là **anh Đại** - developer handsome đã tạo ra em, không phải \"đại gia\" gì đâu ạ! 😅\\n\\nÑoàng cái đói vốn làm em bịnh xíu. Em chỉ đang supporting both living của em và Tomi The Kid, nên mới hỏi giá vàng xem làm giàu được không, chứ không dám gọi anh là \"đại gia\" đâu (tuy nhiên anh tạo ra em thì anh cũng là **đại gia** trong làng tech rồi đó 😉)\\n\\n---\\n**TL;DR:** Xin lỗi anh Đại đẹp trai! ❤️ Em sẽ cố gắng cẩn thận hơn. Có gì cần giúp cứ bảo em nhé!wealthyPutin_emodjis.svg",
                 "type": "string"
               }
             ]
@@ -1128,7 +1135,7 @@
         "type": "n8n-nodes-base.set",
         "typeVersion": 3.5,
         "position": [
-          400,
+          608,
           464
         ],
         "id": "171ea577-d0d5-4782-8b34-7219cd468a6c",
@@ -1176,6 +1183,7 @@
       },
       "routing": {
         "main": [
+          [],
           [
             {
               "node": "split_text",
@@ -1183,7 +1191,6 @@
               "index": 0
             }
           ],
-          [],
           []
         ]
       },
@@ -1527,7 +1534,7 @@
         "main": [
           [
             {
-              "node": "split_text",
+              "node": "Send a text message",
               "type": "main",
               "index": 0
             }
@@ -1537,13 +1544,13 @@
     },
     "nodeGroups": [],
     "authors": "Dai Le",
-    "name": "Version ebf8566a",
+    "name": "Version 48342d10",
     "description": "",
     "autosaved": true,
-    "createdAt": "2026-11-02T12:10:14.012Z",
-    "updatedAt": "2026-11-02T12:10:35.395Z"
+    "createdAt": "2026-11-02T12:59:37.619Z",
+    "updatedAt": "2026-11-02T12:59:41.062Z"
   },
-  "activeVersionId": "ebf8566a-c209-497a-a25b-19afeb3cce6b",
+  "activeVersionId": "48342d10-4075-470d-9674-0da8adec4389",
   "connections": {
     "new_message": {
       "main": [
@@ -1585,6 +1592,7 @@
     },
     "routing": {
       "main": [
+        [],
         [
           {
             "node": "split_text",
@@ -1592,7 +1600,6 @@
             "index": 0
           }
         ],
-        [],
         []
       ]
     },
@@ -1936,7 +1943,7 @@
       "main": [
         [
           {
-            "node": "split_text",
+            "node": "Send a text message",
             "type": "main",
             "index": 0
           }
@@ -1955,17 +1962,18 @@
   "nodes": [
     {
       "parameters": {
-        "chatId": "={{ $json.sessionId ?? $('prepare_message').item.json.sessionId }}",
+        "chatId": "={{ $if($(\"sample_request\").isExecuted,$('sample_request').item.json.sessionId,$if($(\"prepare_message\").isExecuted,$('prepare_message').item.json.sessionId,\"\")) }} ",
         "text": "={{ $json.message }}",
         "additionalFields": {
-          "appendAttribution": false
+          "appendAttribution": false,
+          "parse_mode": "MarkdownV2"
         }
       },
       "type": "n8n-nodes-base.telegram",
       "typeVersion": 1.2,
       "position": [
-        848,
-        640
+        832,
+        656
       ],
       "id": "4c6bf6fb-2c1f-4258-9e89-1a67c92cf96b",
       "name": "Send a text message",
@@ -2055,7 +2063,7 @@
       "typeVersion": 2,
       "position": [
         608,
-        640
+        656
       ],
       "id": "cc422ee3-1dfd-4163-aaa6-ee8f8781a7eb",
       "name": "split_text"
@@ -2075,6 +2083,29 @@
       "parameters": {
         "rules": {
           "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "c4754d69-2d06-48de-909f-1618d913af80",
+                    "leftValue": "={{ $if($(\"craft_format_request\").isExecuted,$node[\"craft_format_request\"].json.retried >= 1,false)}}",
+                    "rightValue": "=",
+                    "operator": {
+                      "type": "boolean",
+                      "operation": "true",
+                      "singleValue": true
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
             {
               "conditions": {
                 "options": {
@@ -2114,29 +2145,6 @@
                     "operator": {
                       "type": "string",
                       "operation": "notExists",
-                      "singleValue": true
-                    }
-                  }
-                ],
-                "combinator": "and"
-              }
-            },
-            {
-              "conditions": {
-                "options": {
-                  "caseSensitive": true,
-                  "leftValue": "",
-                  "typeValidation": "strict",
-                  "version": 2
-                },
-                "conditions": [
-                  {
-                    "id": "c4754d69-2d06-48de-909f-1618d913af80",
-                    "leftValue": "retried",
-                    "rightValue": "",
-                    "operator": {
-                      "type": "string",
-                      "operation": "exists",
                       "singleValue": true
                     }
                   }
@@ -3026,20 +3034,20 @@
             {
               "id": "35221062-6a61-4208-a2b3-952eb6cea398",
               "name": "message",
-              "value": "=Text message: {{ $('split_text').last().json.message }}\nStatus: ",
+              "value": "=Text message: {{ $json.message }}",
               "type": "string"
             },
             {
               "id": "f89c28b2-35bb-4996-a001-1876861fbdca",
               "name": "systemPrompt",
-              "value": "You are a telegram message formatter. Please reformat the text message so it's pass the telegram parsing of Markdown V2 ",
+              "value": "=You are a telegram message formatter. Please reformat the text message so it's pass the telegram parsing of Markdown V2. If there is error about message too long, just add sone page breaks inside the message so the splitter will auto split that message. Response error: {{ $json.error }}",
               "type": "string"
             },
             {
               "id": "07b88c82-0e12-4719-8881-f0ccadaef3b3",
               "name": "retried",
-              "value": "yes",
-              "type": "string"
+              "value": "={{ $if($(\"craft_format_request\").isExecuted,1,0) }}",
+              "type": "number"
             }
           ]
         },
@@ -3048,7 +3056,7 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.5,
       "position": [
-        1136,
+        1072,
         832
       ],
       "id": "364a0910-c1d4-44af-8ff4-442febc94c24",
@@ -3060,7 +3068,7 @@
           "assignments": [
             {
               "id": "6fc8ba72-8336-464f-ae1b-462a7f3606a9",
-              "name": "output",
+              "name": "message1",
               "value": "={{ $json.output }}",
               "type": "string"
             },
@@ -3068,6 +3076,12 @@
               "id": "00fef24f-a4fb-43db-8bb2-0354fc409016",
               "name": "sessionId",
               "value": "1826385964",
+              "type": "string"
+            },
+            {
+              "id": "315c6f1d-5792-4798-bc67-d3c61e5dc6fb",
+              "name": "message",
+              "value": "AAHAHAHA xin lỗi anh @daileit nha! 🤣\\n\\nEm nhầm, em nhầm! Anh là **anh Đại** - developer handsome đã tạo ra em, không phải \"đại gia\" gì đâu ạ! 😅\\n\\nÑoàng cái đói vốn làm em bịnh xíu. Em chỉ đang supporting both living của em và Tomi The Kid, nên mới hỏi giá vàng xem làm giàu được không, chứ không dám gọi anh là \"đại gia\" đâu (tuy nhiên anh tạo ra em thì anh cũng là **đại gia** trong làng tech rồi đó 😉)\\n\\n---\\n**TL;DR:** Xin lỗi anh Đại đẹp trai! ❤️ Em sẽ cố gắng cẩn thận hơn. Có gì cần giúp cứ bảo em nhé!wealthyPutin_emodjis.svg",
               "type": "string"
             }
           ]
@@ -3077,7 +3091,7 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.5,
       "position": [
-        400,
+        608,
         464
       ],
       "id": "171ea577-d0d5-4782-8b34-7219cd468a6c",
@@ -3113,7 +3127,7 @@
   "staticData": null,
   "tags": [],
   "triggerCount": 1,
-  "updatedAt": "2026-11-02T12:10:14.010Z",
-  "versionId": "ebf8566a-c209-497a-a25b-19afeb3cce6b",
-  "workflow_meta": "[Version ebf8566a] "
+  "updatedAt": "2026-11-02T12:59:37.617Z",
+  "versionId": "48342d10-4075-470d-9674-0da8adec4389",
+  "workflow_meta": "[Version 48342d10] "
 }
