@@ -1,41 +1,12 @@
 {
   "active": true,
   "activeVersion": {
-    "versionId": "55bda6df-8f70-4a90-aa36-22db14fa7395",
+    "versionId": "ebf8566a-c209-497a-a25b-19afeb3cce6b",
     "workflowId": "NMDJOBNFXSAzsMCa",
     "nodes": [
       {
         "parameters": {
-          "model": {
-            "__rl": true,
-            "value": "glm-5",
-            "mode": "list",
-            "cachedResultName": "glm-5"
-          },
-          "options": {
-            "maxTokens": 20000,
-            "timeout": 60000,
-            "maxRetries": 3
-          }
-        },
-        "id": "ac97048f-39c9-4c5d-be06-33d230e3b036",
-        "name": "Al Model",
-        "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
-        "position": [
-          -224,
-          1264
-        ],
-        "typeVersion": 1.2,
-        "credentials": {
-          "openAiApi": {
-            "id": "hhW6LfbU9Lb9n0Zv",
-            "name": "oai_gtx_hub"
-          }
-        }
-      },
-      {
-        "parameters": {
-          "chatId": "={{ $('prepare_message').item.json.sessionId }}",
+          "chatId": "={{ $json.sessionId ?? $('prepare_message').item.json.sessionId }}",
           "text": "={{ $json.message }}",
           "additionalFields": {
             "appendAttribution": false
@@ -200,6 +171,29 @@
                   ],
                   "combinator": "and"
                 }
+              },
+              {
+                "conditions": {
+                  "options": {
+                    "caseSensitive": true,
+                    "leftValue": "",
+                    "typeValidation": "strict",
+                    "version": 2
+                  },
+                  "conditions": [
+                    {
+                      "id": "c4754d69-2d06-48de-909f-1618d913af80",
+                      "leftValue": "retried",
+                      "rightValue": "",
+                      "operator": {
+                        "type": "string",
+                        "operation": "exists",
+                        "singleValue": true
+                      }
+                    }
+                  ],
+                  "combinator": "and"
+                }
               }
             ]
           },
@@ -216,6 +210,8 @@
       },
       {
         "parameters": {
+          "sessionIdType": "customKey",
+          "sessionKey": "={{ $('prepare_message').item.json.sessionId }}",
           "sessionTTL": 2592000,
           "contextWindowLength": 30
         },
@@ -331,7 +327,9 @@
               }
             ]
           },
-          "options": {}
+          "options": {
+            "fallbackOutput": "extra"
+          }
         },
         "type": "n8n-nodes-base.switch",
         "typeVersion": 3.3,
@@ -675,8 +673,10 @@
       },
       {
         "parameters": {
+          "promptType": "define",
+          "text": "={{ $('prepare_message').item.json.chatInput }}",
           "options": {
-            "systemMessage": "={{ $json.systemPrompt }}",
+            "systemMessage": "={{ $('prepare_message').item.json.systemPrompt }}",
             "maxIterations": 10,
             "passthroughBinaryImages": false
           }
@@ -695,9 +695,11 @@
       },
       {
         "parameters": {
+          "promptType": "define",
+          "text": "={{ $('prepare_message').item.json.chatInput }}",
           "options": {
-            "systemMessage": "={{ $json.systemPrompt }}",
-            "maxIterations": 3,
+            "systemMessage": "={{ $('prepare_message').item.json.systemPrompt }}",
+            "maxIterations": 10,
             "passthroughBinaryImages": false
           }
         },
@@ -706,7 +708,7 @@
         "type": "@n8n/n8n-nodes-langchain.agent",
         "position": [
           -240,
-          864
+          848
         ],
         "typeVersion": 1.8,
         "retryOnFail": true,
@@ -936,13 +938,13 @@
               {
                 "id": "d550b10a-e83f-4161-9b38-c2f44b509bf2",
                 "name": "requestor",
-                "value": "={{ $('prepare_message').item.json.username }}",
+                "value": "={{ $('prepare_message').item.json.username.trim() }}",
                 "type": "string"
               },
               {
                 "id": "c8636d5a-bee4-49f5-bd58-29a63fca1336",
                 "name": "target",
-                "value": "={{ \n  $('prepare_message').item.json.message.split('=>')[1]?.trim() \n  ?? $('prepare_message').item.json.sessionId \n}}",
+                "value": "={{ \n  $('prepare_message').item.json.username.trim() !== 'daileit' \n    ? $('prepare_message').item.json.sessionId \n    : ($('prepare_message').item.json.message.split('=>')[1]?.trim() ?? $('prepare_message').item.json.sessionId) \n}}",
                 "type": "string"
               },
               {
@@ -954,7 +956,7 @@
               {
                 "id": "70749e07-f876-45aa-8fe2-767d9387918d",
                 "name": "command",
-                "value": "={{ $('prepare_message').item.json.message.replace('/', '').trim().split(' ')[0] }}",
+                "value": "={{ $('prepare_message').item.json.message.replace('/', '').trim().split(' ')[0].trim() }}",
                 "type": "string"
               }
             ]
@@ -990,25 +992,150 @@
             "name": "local_redis"
           }
         }
+      },
+      {
+        "parameters": {
+          "model": {
+            "__rl": true,
+            "value": "glm-5",
+            "mode": "list",
+            "cachedResultName": "glm-5"
+          },
+          "options": {
+            "maxTokens": 20000,
+            "timeout": 60000,
+            "maxRetries": 3
+          }
+        },
+        "id": "ac97048f-39c9-4c5d-be06-33d230e3b036",
+        "name": "main_model",
+        "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+        "position": [
+          -224,
+          1264
+        ],
+        "typeVersion": 1.2,
+        "credentials": {
+          "openAiApi": {
+            "id": "hhW6LfbU9Lb9n0Zv",
+            "name": "oai_gtx_hub"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "promptType": "define",
+          "text": "={{ $json.message }}",
+          "options": {
+            "systemMessage": "={{ $json.systemPrompt }}",
+            "maxIterations": 10,
+            "passthroughBinaryImages": false
+          }
+        },
+        "id": "f267a6fb-6496-402d-adc9-c1e0bf266901",
+        "name": "sub_agent",
+        "type": "@n8n/n8n-nodes-langchain.agent",
+        "position": [
+          -592,
+          944
+        ],
+        "typeVersion": 1.8,
+        "retryOnFail": true,
+        "waitBetweenTries": 5000,
+        "maxTries": 2
+      },
+      {
+        "parameters": {
+          "model": {
+            "__rl": true,
+            "value": "gpt-5.6-luna",
+            "mode": "list",
+            "cachedResultName": "gpt-5.6-luna"
+          },
+          "responsesApiEnabled": false,
+          "options": {}
+        },
+        "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+        "typeVersion": 1.3,
+        "position": [
+          -336,
+          1264
+        ],
+        "id": "81ee075b-f555-47c5-a532-d634ef3fbedc",
+        "name": "sub_model",
+        "credentials": {
+          "openAiApi": {
+            "id": "hhW6LfbU9Lb9n0Zv",
+            "name": "oai_gtx_hub"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "assignments": {
+            "assignments": [
+              {
+                "id": "35221062-6a61-4208-a2b3-952eb6cea398",
+                "name": "message",
+                "value": "=Text message: {{ $('split_text').last().json.message }}\nStatus: ",
+                "type": "string"
+              },
+              {
+                "id": "f89c28b2-35bb-4996-a001-1876861fbdca",
+                "name": "systemPrompt",
+                "value": "You are a telegram message formatter. Please reformat the text message so it's pass the telegram parsing of Markdown V2 ",
+                "type": "string"
+              },
+              {
+                "id": "07b88c82-0e12-4719-8881-f0ccadaef3b3",
+                "name": "retried",
+                "value": "yes",
+                "type": "string"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.set",
+        "typeVersion": 3.5,
+        "position": [
+          1136,
+          832
+        ],
+        "id": "364a0910-c1d4-44af-8ff4-442febc94c24",
+        "name": "craft_format_request"
+      },
+      {
+        "parameters": {
+          "assignments": {
+            "assignments": [
+              {
+                "id": "6fc8ba72-8336-464f-ae1b-462a7f3606a9",
+                "name": "output",
+                "value": "={{ $json.output }}",
+                "type": "string"
+              },
+              {
+                "id": "00fef24f-a4fb-43db-8bb2-0354fc409016",
+                "name": "sessionId",
+                "value": "1826385964",
+                "type": "string"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.set",
+        "typeVersion": 3.5,
+        "position": [
+          400,
+          464
+        ],
+        "id": "171ea577-d0d5-4782-8b34-7219cd468a6c",
+        "name": "sample_request"
       }
     ],
     "connections": {
-      "Al Model": {
-        "ai_languageModel": [
-          [
-            {
-              "node": "Daile Agent",
-              "type": "ai_languageModel",
-              "index": 0
-            },
-            {
-              "node": "Common Agent",
-              "type": "ai_languageModel",
-              "index": 0
-            }
-          ]
-        ]
-      },
       "new_message": {
         "main": [
           [
@@ -1055,7 +1182,9 @@
               "type": "main",
               "index": 0
             }
-          ]
+          ],
+          [],
+          []
         ]
       },
       "redis_cache": {
@@ -1093,6 +1222,13 @@
           [
             {
               "node": "add_memory",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "If",
               "type": "main",
               "index": 0
             }
@@ -1268,7 +1404,13 @@
       },
       "test_trigger": {
         "main": [
-          []
+          [
+            {
+              "node": "sample_request",
+              "type": "main",
+              "index": 0
+            }
+          ]
         ]
       },
       "Call 'trigger_docker_deploy'": {
@@ -1319,34 +1461,90 @@
             }
           ]
         ]
+      },
+      "main_model": {
+        "ai_languageModel": [
+          [
+            {
+              "node": "Daile Agent",
+              "type": "ai_languageModel",
+              "index": 0
+            },
+            {
+              "node": "Common Agent",
+              "type": "ai_languageModel",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "sub_model": {
+        "ai_languageModel": [
+          [
+            {
+              "node": "sub_agent",
+              "type": "ai_languageModel",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Send a text message": {
+        "main": [
+          [],
+          [
+            {
+              "node": "craft_format_request",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "sub_agent": {
+        "main": [
+          [
+            {
+              "node": "routing",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "craft_format_request": {
+        "main": [
+          [
+            {
+              "node": "sub_agent",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "sample_request": {
+        "main": [
+          [
+            {
+              "node": "split_text",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
       }
     },
     "nodeGroups": [],
     "authors": "Dai Le",
-    "name": "Version 55bda6df",
+    "name": "Version ebf8566a",
     "description": "",
     "autosaved": true,
-    "createdAt": "2026-11-02T11:10:33.871Z",
-    "updatedAt": "2026-11-02T11:10:41.910Z"
+    "createdAt": "2026-11-02T12:10:14.012Z",
+    "updatedAt": "2026-11-02T12:10:35.395Z"
   },
-  "activeVersionId": "55bda6df-8f70-4a90-aa36-22db14fa7395",
+  "activeVersionId": "ebf8566a-c209-497a-a25b-19afeb3cce6b",
   "connections": {
-    "Al Model": {
-      "ai_languageModel": [
-        [
-          {
-            "node": "Daile Agent",
-            "type": "ai_languageModel",
-            "index": 0
-          },
-          {
-            "node": "Common Agent",
-            "type": "ai_languageModel",
-            "index": 0
-          }
-        ]
-      ]
-    },
     "new_message": {
       "main": [
         [
@@ -1393,7 +1591,9 @@
             "type": "main",
             "index": 0
           }
-        ]
+        ],
+        [],
+        []
       ]
     },
     "redis_cache": {
@@ -1431,6 +1631,13 @@
         [
           {
             "node": "add_memory",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "If",
             "type": "main",
             "index": 0
           }
@@ -1606,7 +1813,13 @@
     },
     "test_trigger": {
       "main": [
-        []
+        [
+          {
+            "node": "sample_request",
+            "type": "main",
+            "index": 0
+          }
+        ]
       ]
     },
     "Call 'trigger_docker_deploy'": {
@@ -1657,6 +1870,78 @@
           }
         ]
       ]
+    },
+    "main_model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Daile Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          },
+          {
+            "node": "Common Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "sub_model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "sub_agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send a text message": {
+      "main": [
+        [],
+        [
+          {
+            "node": "craft_format_request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "sub_agent": {
+      "main": [
+        [
+          {
+            "node": "routing",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "craft_format_request": {
+      "main": [
+        [
+          {
+            "node": "sub_agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "sample_request": {
+      "main": [
+        [
+          {
+            "node": "split_text",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     }
   },
   "createdAt": "2026-04-21T18:36:53.496Z",
@@ -1670,36 +1955,7 @@
   "nodes": [
     {
       "parameters": {
-        "model": {
-          "__rl": true,
-          "value": "glm-5",
-          "mode": "list",
-          "cachedResultName": "glm-5"
-        },
-        "options": {
-          "maxTokens": 20000,
-          "timeout": 60000,
-          "maxRetries": 3
-        }
-      },
-      "id": "ac97048f-39c9-4c5d-be06-33d230e3b036",
-      "name": "Al Model",
-      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
-      "position": [
-        -224,
-        1264
-      ],
-      "typeVersion": 1.2,
-      "credentials": {
-        "openAiApi": {
-          "id": "hhW6LfbU9Lb9n0Zv",
-          "name": "oai_gtx_hub"
-        }
-      }
-    },
-    {
-      "parameters": {
-        "chatId": "={{ $('prepare_message').item.json.sessionId }}",
+        "chatId": "={{ $json.sessionId ?? $('prepare_message').item.json.sessionId }}",
         "text": "={{ $json.message }}",
         "additionalFields": {
           "appendAttribution": false
@@ -1864,6 +2120,29 @@
                 ],
                 "combinator": "and"
               }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "c4754d69-2d06-48de-909f-1618d913af80",
+                    "leftValue": "retried",
+                    "rightValue": "",
+                    "operator": {
+                      "type": "string",
+                      "operation": "exists",
+                      "singleValue": true
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
             }
           ]
         },
@@ -1880,6 +2159,8 @@
     },
     {
       "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "={{ $('prepare_message').item.json.sessionId }}",
         "sessionTTL": 2592000,
         "contextWindowLength": 30
       },
@@ -1995,7 +2276,9 @@
             }
           ]
         },
-        "options": {}
+        "options": {
+          "fallbackOutput": "extra"
+        }
       },
       "type": "n8n-nodes-base.switch",
       "typeVersion": 3.3,
@@ -2339,8 +2622,10 @@
     },
     {
       "parameters": {
+        "promptType": "define",
+        "text": "={{ $('prepare_message').item.json.chatInput }}",
         "options": {
-          "systemMessage": "={{ $json.systemPrompt }}",
+          "systemMessage": "={{ $('prepare_message').item.json.systemPrompt }}",
           "maxIterations": 10,
           "passthroughBinaryImages": false
         }
@@ -2359,9 +2644,11 @@
     },
     {
       "parameters": {
+        "promptType": "define",
+        "text": "={{ $('prepare_message').item.json.chatInput }}",
         "options": {
-          "systemMessage": "={{ $json.systemPrompt }}",
-          "maxIterations": 3,
+          "systemMessage": "={{ $('prepare_message').item.json.systemPrompt }}",
+          "maxIterations": 10,
           "passthroughBinaryImages": false
         }
       },
@@ -2370,7 +2657,7 @@
       "type": "@n8n/n8n-nodes-langchain.agent",
       "position": [
         -240,
-        864
+        848
       ],
       "typeVersion": 1.8,
       "retryOnFail": true,
@@ -2600,13 +2887,13 @@
             {
               "id": "d550b10a-e83f-4161-9b38-c2f44b509bf2",
               "name": "requestor",
-              "value": "={{ $('prepare_message').item.json.username }}",
+              "value": "={{ $('prepare_message').item.json.username.trim() }}",
               "type": "string"
             },
             {
               "id": "c8636d5a-bee4-49f5-bd58-29a63fca1336",
               "name": "target",
-              "value": "={{ \n  $('prepare_message').item.json.message.split('=>')[1]?.trim() \n  ?? $('prepare_message').item.json.sessionId \n}}",
+              "value": "={{ \n  $('prepare_message').item.json.username.trim() !== 'daileit' \n    ? $('prepare_message').item.json.sessionId \n    : ($('prepare_message').item.json.message.split('=>')[1]?.trim() ?? $('prepare_message').item.json.sessionId) \n}}",
               "type": "string"
             },
             {
@@ -2618,7 +2905,7 @@
             {
               "id": "70749e07-f876-45aa-8fe2-767d9387918d",
               "name": "command",
-              "value": "={{ $('prepare_message').item.json.message.replace('/', '').trim().split(' ')[0] }}",
+              "value": "={{ $('prepare_message').item.json.message.replace('/', '').trim().split(' ')[0].trim() }}",
               "type": "string"
             }
           ]
@@ -2654,6 +2941,147 @@
           "name": "local_redis"
         }
       }
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "glm-5",
+          "mode": "list",
+          "cachedResultName": "glm-5"
+        },
+        "options": {
+          "maxTokens": 20000,
+          "timeout": 60000,
+          "maxRetries": 3
+        }
+      },
+      "id": "ac97048f-39c9-4c5d-be06-33d230e3b036",
+      "name": "main_model",
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "position": [
+        -224,
+        1264
+      ],
+      "typeVersion": 1.2,
+      "credentials": {
+        "openAiApi": {
+          "id": "hhW6LfbU9Lb9n0Zv",
+          "name": "oai_gtx_hub"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.message }}",
+        "options": {
+          "systemMessage": "={{ $json.systemPrompt }}",
+          "maxIterations": 10,
+          "passthroughBinaryImages": false
+        }
+      },
+      "id": "f267a6fb-6496-402d-adc9-c1e0bf266901",
+      "name": "sub_agent",
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "position": [
+        -592,
+        944
+      ],
+      "typeVersion": 1.8,
+      "retryOnFail": true,
+      "waitBetweenTries": 5000,
+      "maxTries": 2
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "gpt-5.6-luna",
+          "mode": "list",
+          "cachedResultName": "gpt-5.6-luna"
+        },
+        "responsesApiEnabled": false,
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.3,
+      "position": [
+        -336,
+        1264
+      ],
+      "id": "81ee075b-f555-47c5-a532-d634ef3fbedc",
+      "name": "sub_model",
+      "credentials": {
+        "openAiApi": {
+          "id": "hhW6LfbU9Lb9n0Zv",
+          "name": "oai_gtx_hub"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "35221062-6a61-4208-a2b3-952eb6cea398",
+              "name": "message",
+              "value": "=Text message: {{ $('split_text').last().json.message }}\nStatus: ",
+              "type": "string"
+            },
+            {
+              "id": "f89c28b2-35bb-4996-a001-1876861fbdca",
+              "name": "systemPrompt",
+              "value": "You are a telegram message formatter. Please reformat the text message so it's pass the telegram parsing of Markdown V2 ",
+              "type": "string"
+            },
+            {
+              "id": "07b88c82-0e12-4719-8881-f0ccadaef3b3",
+              "name": "retried",
+              "value": "yes",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.5,
+      "position": [
+        1136,
+        832
+      ],
+      "id": "364a0910-c1d4-44af-8ff4-442febc94c24",
+      "name": "craft_format_request"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "6fc8ba72-8336-464f-ae1b-462a7f3606a9",
+              "name": "output",
+              "value": "={{ $json.output }}",
+              "type": "string"
+            },
+            {
+              "id": "00fef24f-a4fb-43db-8bb2-0354fc409016",
+              "name": "sessionId",
+              "value": "1826385964",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.5,
+      "position": [
+        400,
+        464
+      ],
+      "id": "171ea577-d0d5-4782-8b34-7219cd468a6c",
+      "name": "sample_request"
     }
   ],
   "pinData": {
@@ -2685,7 +3113,7 @@
   "staticData": null,
   "tags": [],
   "triggerCount": 1,
-  "updatedAt": "2026-11-02T11:10:33.862Z",
-  "versionId": "55bda6df-8f70-4a90-aa36-22db14fa7395",
-  "workflow_meta": "[Version 55bda6df] "
+  "updatedAt": "2026-11-02T12:10:14.010Z",
+  "versionId": "ebf8566a-c209-497a-a25b-19afeb3cce6b",
+  "workflow_meta": "[Version ebf8566a] "
 }
