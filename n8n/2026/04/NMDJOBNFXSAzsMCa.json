@@ -1,7 +1,7 @@
 {
   "active": true,
   "activeVersion": {
-    "versionId": "48342d10-4075-470d-9674-0da8adec4389",
+    "versionId": "9420e14f-d7cb-4bc5-8034-8f7ff9ec9c29",
     "workflowId": "NMDJOBNFXSAzsMCa",
     "nodes": [
       {
@@ -1100,8 +1100,8 @@
         "type": "n8n-nodes-base.set",
         "typeVersion": 3.5,
         "position": [
-          1072,
-          832
+          1056,
+          896
         ],
         "id": "364a0910-c1d4-44af-8ff4-442febc94c24",
         "name": "craft_format_request"
@@ -1544,13 +1544,13 @@
     },
     "nodeGroups": [],
     "authors": "Dai Le",
-    "name": "Version 48342d10",
+    "name": "Version 9420e14f",
     "description": "",
     "autosaved": true,
-    "createdAt": "2026-11-02T12:59:37.619Z",
-    "updatedAt": "2026-11-02T12:59:41.062Z"
+    "createdAt": "2026-11-04T02:38:18.987Z",
+    "updatedAt": "2026-11-04T02:38:24.111Z"
   },
-  "activeVersionId": "48342d10-4075-470d-9674-0da8adec4389",
+  "activeVersionId": "9420e14f-d7cb-4bc5-8034-8f7ff9ec9c29",
   "connections": {
     "new_message": {
       "main": [
@@ -2993,8 +2993,8 @@
       "name": "sub_agent",
       "type": "@n8n/n8n-nodes-langchain.agent",
       "position": [
-        -592,
-        944
+        1088,
+        992
       ],
       "typeVersion": 1.8,
       "retryOnFail": true,
@@ -3015,8 +3015,8 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
       "typeVersion": 1.3,
       "position": [
-        -336,
-        1264
+        1168,
+        1280
       ],
       "id": "81ee075b-f555-47c5-a532-d634ef3fbedc",
       "name": "sub_model",
@@ -3056,8 +3056,8 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.5,
       "position": [
-        1072,
-        832
+        848,
+        896
       ],
       "id": "364a0910-c1d4-44af-8ff4-442febc94c24",
       "name": "craft_format_request"
@@ -3113,7 +3113,9 @@
   "settings": {
     "executionOrder": "v1",
     "binaryMode": "separate",
-    "availableInMCP": true
+    "availableInMCP": true,
+    "timeSavedMode": "fixed",
+    "callerPolicy": "workflowsFromSameOwner"
   },
   "shared": [
     {
@@ -3127,7 +3129,7 @@
   "staticData": null,
   "tags": [],
   "triggerCount": 1,
-  "updatedAt": "2026-11-02T12:59:37.617Z",
-  "versionId": "48342d10-4075-470d-9674-0da8adec4389",
-  "workflow_meta": "[Version 48342d10] "
+  "updatedAt": "2026-11-04T02:56:52.155Z",
+  "versionId": "0bb8ea9b-1573-4ecf-bdad-c2261eb585ab",
+  "workflow_meta": "[Version 9420e14f] "
 }
