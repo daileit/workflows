@@ -1,7 +1,7 @@
 {
   "active": true,
   "activeVersion": {
-    "versionId": "b7e6465e-3a82-4ecc-838a-ed66b0f9b4da",
+    "versionId": "e4bc4e85-47e5-49b1-b681-091ec16ea5ee",
     "workflowId": "85FBHimDU9XT8l0v",
     "nodes": [
       {
@@ -232,7 +232,7 @@
       {
         "parameters": {
           "authentication": "privateKey",
-          "command": "=sudo bash -c \"rsync -avz -e 'ssh -p 22332 -i /root/.ssh/id_rsa -o StrictHostKeyChecking=no' ./{{ $json.file }} vpstino1@apm.cloudyez.com:{{ $('get_source').item.json.destination_folder }}/{{ $('get_source').item.json.server }}/{{ $('init_context').item.json.target_period }}/\"",
+          "command": "=sudo bash -c \"rsync -avz -e 'ssh -p 22332 -i /root/.ssh/id_rsa -o StrictHostKeyChecking=no' {{ $json.file }} vpstino1@apm.cloudyez.com:{{ $('get_source').item.json.destination_folder }}/{{ $('get_source').item.json.server }}/{{ $('init_context').item.json.target_period }}/\"",
           "cwd": "={{ $('get_source').item.json.location }}"
         },
         "type": "n8n-nodes-base.ssh",
@@ -440,7 +440,7 @@
               {
                 "id": "a97febce-a8a1-4d8f-bb77-030715e97f00",
                 "name": "content",
-                "value": "=💾 * Server Backup Sync has completed: {{ $('merge').first().json.data.filter(item => item.code == 0).length }}/{{ $('merge').first().json.data.length }} websites have been synced.*\n✅ Success ({{ $('merge').first().json.data.filter(item => item.code == 0).length }}): {{ $('merge').first().json.data.filter(item => item.code == 0 ).map(item => `\\n • *${item.stdout.trim().split('.')[2]}* (${item.stdout.trim().split(':')[1]} bytes)`) }}\n{{ $('merge').first().json.data.filter(item => item.code != 0).length != 0 ? \"❌ Failed: \" : \"\" }} {{ $('merge').first().json.data.filter(item => item.code != 0 ).map(item => `\\n • ${item.stderr.trim()}`) }}",
+                "value": "=💾 * Server Backup Sync has completed: {{ $('merge').first().json.data.filter(item => item.code == 0).length }}/{{ $('merge').first().json.data.length }} websites have been synced.*\n✅ Success ({{ $('merge').first().json.data.filter(item => item.code == 0).length }}): {{ $('merge').first().json.data.filter(item => item.code == 0 ).map(item => `\\n • *${item.stdout.trim().split('.')[3]}* (${item.stdout.trim().split(':')[1]} bytes)`) }}\n{{ $('merge').first().json.data.filter(item => item.code != 0).length != 0 ? \"❌ Failed: \" : \"\" }} {{ $('merge').first().json.data.filter(item => item.code != 0 ).map(item => `\\n • ${item.stderr.trim()}`) }}",
                 "type": "string"
               }
             ]
@@ -762,13 +762,13 @@
     },
     "nodeGroups": [],
     "authors": "Dai Le",
-    "name": "Version b7e6465e",
+    "name": "Version e4bc4e85",
     "description": "",
     "autosaved": true,
-    "createdAt": "2026-10-10T16:12:04.445Z",
-    "updatedAt": "2026-10-10T16:12:24.786Z"
+    "createdAt": "2026-11-04T02:28:29.790Z",
+    "updatedAt": "2026-11-04T02:28:54.924Z"
   },
-  "activeVersionId": "b7e6465e-3a82-4ecc-838a-ed66b0f9b4da",
+  "activeVersionId": "e4bc4e85-47e5-49b1-b681-091ec16ea5ee",
   "connections": {
     "Schedule Trigger": {
       "main": [
@@ -1234,7 +1234,7 @@
     {
       "parameters": {
         "authentication": "privateKey",
-        "command": "=sudo bash -c \"rsync -avz -e 'ssh -p 22332 -i /root/.ssh/id_rsa -o StrictHostKeyChecking=no' ./{{ $json.file }} vpstino1@apm.cloudyez.com:{{ $('get_source').item.json.destination_folder }}/{{ $('get_source').item.json.server }}/{{ $('init_context').item.json.target_period }}/\"",
+        "command": "=sudo bash -c \"rsync -avz -e 'ssh -p 22332 -i /root/.ssh/id_rsa -o StrictHostKeyChecking=no' {{ $json.file }} vpstino1@apm.cloudyez.com:{{ $('get_source').item.json.destination_folder }}/{{ $('get_source').item.json.server }}/{{ $('init_context').item.json.target_period }}/\"",
         "cwd": "={{ $('get_source').item.json.location }}"
       },
       "type": "n8n-nodes-base.ssh",
@@ -1442,7 +1442,7 @@
             {
               "id": "a97febce-a8a1-4d8f-bb77-030715e97f00",
               "name": "content",
-              "value": "=💾 * Server Backup Sync has completed: {{ $('merge').first().json.data.filter(item => item.code == 0).length }}/{{ $('merge').first().json.data.length }} websites have been synced.*\n✅ Success ({{ $('merge').first().json.data.filter(item => item.code == 0).length }}): {{ $('merge').first().json.data.filter(item => item.code == 0 ).map(item => `\\n • *${item.stdout.trim().split('.')[2]}* (${item.stdout.trim().split(':')[1]} bytes)`) }}\n{{ $('merge').first().json.data.filter(item => item.code != 0).length != 0 ? \"❌ Failed: \" : \"\" }} {{ $('merge').first().json.data.filter(item => item.code != 0 ).map(item => `\\n • ${item.stderr.trim()}`) }}",
+              "value": "=💾 * Server Backup Sync has completed: {{ $('merge').first().json.data.filter(item => item.code == 0).length }}/{{ $('merge').first().json.data.length }} websites have been synced.*\n✅ Success ({{ $('merge').first().json.data.filter(item => item.code == 0).length }}): {{ $('merge').first().json.data.filter(item => item.code == 0 ).map(item => `\\n • *${item.stdout.trim().split('.')[3]}* (${item.stdout.trim().split(':')[1]} bytes)`) }}\n{{ $('merge').first().json.data.filter(item => item.code != 0).length != 0 ? \"❌ Failed: \" : \"\" }} {{ $('merge').first().json.data.filter(item => item.code != 0 ).map(item => `\\n • ${item.stderr.trim()}`) }}",
               "type": "string"
             }
           ]
@@ -1572,7 +1572,7 @@
   },
   "tags": [],
   "triggerCount": 1,
-  "updatedAt": "2026-10-10T16:12:04.443Z",
-  "versionId": "b7e6465e-3a82-4ecc-838a-ed66b0f9b4da",
-  "workflow_meta": "[Version b7e6465e] "
+  "updatedAt": "2026-11-04T02:28:29.788Z",
+  "versionId": "e4bc4e85-47e5-49b1-b681-091ec16ea5ee",
+  "workflow_meta": "[Version e4bc4e85] "
 }
